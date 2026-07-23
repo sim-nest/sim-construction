@@ -1,5 +1,5 @@
 {
-  "card_count": 5,
+  "card_count": 6,
   "cards": [
     {
       "id": "browse/catalog",
@@ -12,6 +12,12 @@
       "kind": "cookbook-recipe",
       "owner": "sim-lib-construction-project",
       "summary": "Project charter records and evidence readiness."
+    },
+    {
+      "id": "cookbook/office/dalux-site",
+      "kind": "cookbook-recipe",
+      "owner": "sim-site-dalux",
+      "summary": "Modeled Dalux project item reads with API identity live gates."
     },
     {
       "id": "cookbook/office/mspdi",

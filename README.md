@@ -14,6 +14,8 @@ name modeled projects, documents, roles, and evidence references only.
   construction Gantt documents.
 - `sim-lib-construction-project`: construction project identities, charter
   records, evidence states, and charter readiness summaries.
+- `sim-site-dalux`: Dalux project-item placement for construction evidence,
+  modeled by default and gated for live API-identity use.
 - `sim-site-powerproject`: Powerproject desktop and Project for the web
   placements for construction Gantt schedules.
 

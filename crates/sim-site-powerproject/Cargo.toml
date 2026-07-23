@@ -17,9 +17,9 @@ powerproject-ole = []
 sim-codec-mspdi = { version = "0.1.0", path = "../sim-codec-mspdi" }
 sim-cookbook = { version = "0.1.0" }
 sim-kernel = { version = "0.1.0" }
-sim-lib-doc-core = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "0a740e577565c0a40e00d90e96f7c461dab77222" }
-sim-lib-doc-site = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "0a740e577565c0a40e00d90e96f7c461dab77222" }
-sim-lib-gantt = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "0a740e577565c0a40e00d90e96f7c461dab77222" }
+sim-lib-doc-core = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "eb617e4fd3c50fc51bcdb6a11ea5a8bbae4d1a48" }
+sim-lib-doc-site = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "eb617e4fd3c50fc51bcdb6a11ea5a8bbae4d1a48" }
+sim-lib-gantt = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "eb617e4fd3c50fc51bcdb6a11ea5a8bbae4d1a48" }
 
 [build-dependencies]
 sim-cookbook = { version = "0.1.0" }

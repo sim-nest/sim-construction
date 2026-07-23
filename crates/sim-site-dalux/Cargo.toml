@@ -1,9 +1,9 @@
 [package]
-name = "sim-lib-construction-project"
+name = "sim-site-dalux"
 version = "0.1.0"
 edition = "2024"
 license = "MPL-2.0"
-description = "Construction project-control records for SIM."
+description = "Dalux API-identity site placement for SIM construction records."
 readme = "README.md"
 publish = false
 repository = "https://github.com/sim-nest/sim-construction"
@@ -11,14 +11,19 @@ homepage = "https://github.com/sim-nest/sim-construction"
 
 [dependencies]
 serde = { version = "1", features = ["derive"] }
+serde_json = "1"
 sim-cookbook = { version = "0.1.0" }
+sim-kernel = { version = "0.1.0" }
 sim-lib-doc-core = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "eb617e4fd3c50fc51bcdb6a11ea5a8bbae4d1a48" }
+sim-lib-doc-site = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "eb617e4fd3c50fc51bcdb6a11ea5a8bbae4d1a48" }
+sim-lib-sheet = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "eb617e4fd3c50fc51bcdb6a11ea5a8bbae4d1a48" }
+ureq = "2"
 
 [build-dependencies]
 sim-cookbook = { version = "0.1.0" }
 
 [dev-dependencies]
-serde_json = "1"
+sim-kernel = { version = "0.1", features = ["test-support"] }
 
 [lints]
 workspace = true

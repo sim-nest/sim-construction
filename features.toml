@@ -73,6 +73,23 @@ claims_specimens = [
 ]
 
 [[feature]]
+id = "feature/sim-construction/dalux-project-items"
+title = "Dalux project-item placement"
+summary = "Read Dalux project items into local office documents for construction evidence and keep note updates narrow."
+owner = "crate/sim-site-dalux"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when construction project control needs modeled Dalux item evidence, a gated API-identity live read, or a narrow item-note update."
+claims_anchors = [
+  "anchor/crate/sim-site-dalux",
+  "anchor/export/sim-site-dalux/site/dalux",
+  "anchor/rustdoc/sim-site-dalux/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-site-dalux/01-basics/dalux-modeled-items",
+  "spec-test/sim-construction/crates/sim-site-dalux/src/tests",
+]
+
+[[feature]]
 id = "feature/sim-construction/project-control"
 title = "Construction project control"
 summary = "Describe construction project charters with reference-only evidence and deterministic readiness states."
@@ -104,6 +121,15 @@ steps = [
   { feature = "feature/sim-construction/mspdi-schedule-exchange", why = "The MSPDI exchange row owns the portable schedule document crossing." },
   { feature = "feature/sim-construction/powerproject-schedule-placement", why = "The Powerproject row owns modeled receipts, gated desktop export, and Dataverse operation planning." },
   { specimen = "recipe/sim-construction/crates/sim-site-powerproject/01-basics/powerproject-placement", why = "The placement recipe shows the modeled OLE receipt and Project for the web operation set." },
+]
+
+[[route]]
+id = "route/read-construction-items-from-dalux"
+task = "Read construction field items from Dalux"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/dalux-project-items", why = "The Dalux row owns modeled item reads, API-identity live gating, response checks, and narrow note patches." },
+  { specimen = "recipe/sim-construction/crates/sim-site-dalux/01-basics/dalux-modeled-items", why = "The modeled recipe shows synthetic Dalux items crossing into a local office document without live service access." },
 ]
 
 [[route]]

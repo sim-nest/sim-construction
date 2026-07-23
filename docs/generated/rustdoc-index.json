@@ -16,6 +16,13 @@
       "summary": "Construction project-control records for SIM."
     },
     {
+      "crate_name": "sim_site_dalux",
+      "group": "workspace",
+      "manifest": "crates/sim-site-dalux/Cargo.toml",
+      "package": "sim-site-dalux",
+      "summary": "Dalux API-identity site adapter for construction project item evidence."
+    },
+    {
       "crate_name": "sim_site_powerproject",
       "group": "workspace",
       "manifest": "crates/sim-site-powerproject/Cargo.toml",

@@ -15,6 +15,8 @@ carrying customer data.
 - A project charter can be checked before downstream planning work depends on it.
 - Evidence links point at source systems without copying private documents into
   code.
+- Vendor schedule and field-item placements stay modeled by default and require
+  explicit live gates when hosts connect them.
 - Construction control stays loadable beside office, schedule, ledger, and
   storage owners instead of changing the kernel.
 

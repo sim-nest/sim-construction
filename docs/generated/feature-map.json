@@ -12,6 +12,11 @@
       "package": "sim-lib-construction-project"
     },
     {
+      "features": [],
+      "group": "workspace",
+      "package": "sim-site-dalux"
+    },
+    {
       "features": [
         {
           "edges": [],
