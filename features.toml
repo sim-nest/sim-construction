@@ -57,6 +57,22 @@ claims_specimens = [
 ]
 
 [[feature]]
+id = "feature/sim-construction/powerproject-schedule-placement"
+title = "Powerproject schedule placement"
+summary = "Place construction Gantt schedules at Powerproject desktop and Project for the web boundaries."
+owner = "crate/sim-site-powerproject"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when a construction schedule needs a modeled receipt, a gated Powerproject desktop export, or a reviewed Dataverse Project Schedule Service plan."
+claims_anchors = [
+  "anchor/crate/sim-site-powerproject",
+  "anchor/export/sim-site-powerproject/site/powerproject",
+  "anchor/rustdoc/sim-site-powerproject/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-site-powerproject/01-basics/powerproject-placement",
+]
+
+[[feature]]
 id = "feature/sim-construction/project-control"
 title = "Construction project control"
 summary = "Describe construction project charters with reference-only evidence and deterministic readiness states."
@@ -78,6 +94,16 @@ audiences = ["user", "code"]
 steps = [
   { feature = "feature/sim-construction/mspdi-schedule-exchange", why = "The MSPDI exchange row owns the XML codec and fidelity tests." },
   { specimen = "recipe/sim-construction/crates/sim-codec-mspdi/01-basics/mspdi-round-trip", why = "The round-trip recipe shows a modeled Gantt schedule crossing the MSPDI boundary." },
+]
+
+[[route]]
+id = "route/place-construction-schedule-in-powerproject"
+task = "Place a construction schedule in Powerproject"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/mspdi-schedule-exchange", why = "The MSPDI exchange row owns the portable schedule document crossing." },
+  { feature = "feature/sim-construction/powerproject-schedule-placement", why = "The Powerproject row owns modeled receipts, gated desktop export, and Dataverse operation planning." },
+  { specimen = "recipe/sim-construction/crates/sim-site-powerproject/01-basics/powerproject-placement", why = "The placement recipe shows the modeled OLE receipt and Project for the web operation set." },
 ]
 
 [[route]]

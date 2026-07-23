@@ -16,6 +16,13 @@
       "summary": "Construction project-control records for SIM."
     },
     {
+      "crate_name": "sim_site_powerproject",
+      "group": "workspace",
+      "manifest": "crates/sim-site-powerproject/Cargo.toml",
+      "package": "sim-site-powerproject",
+      "summary": "Powerproject and Project for the web placement for SIM Gantt documents."
+    },
+    {
       "crate_name": "xtask",
       "group": "workspace",
       "manifest": "xtask/Cargo.toml",

@@ -3,6 +3,7 @@ resolver = "3"
 members = [
   "crates/sim-codec-mspdi",
   "crates/sim-lib-construction-project",
+  "crates/sim-site-powerproject",
   "xtask",
 ]
 

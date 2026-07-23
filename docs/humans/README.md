@@ -19,6 +19,7 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 | --- | --- | ---: | --- |
 | `feature/sim-construction/generated-docs` | `crate/xtask` | 0 | Publish generated package, card, recipe, and index facts for construction project-control crates. |
 | `feature/sim-construction/mspdi-schedule-exchange` | `crate/sim-codec-mspdi` | 1 | Round-trip Microsoft Project XML schedules through the portable construction Gantt document model. |
+| `feature/sim-construction/powerproject-schedule-placement` | `crate/sim-site-powerproject` | 1 | Place construction Gantt schedules at Powerproject desktop and Project for the web boundaries. |
 | `feature/sim-construction/project-control` | `crate/sim-lib-construction-project` | 1 | Describe construction project charters with reference-only evidence and deterministic readiness states. |
 
 ## Surfaces
@@ -41,6 +42,11 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 - `crates/sim-lib-construction-project/recipes/01-basics/project-charter/recipe.toml`
 - `crates/sim-lib-construction-project/recipes/01-basics/project-charter/setup.siml`
 - `crates/sim-lib-construction-project/recipes/book.toml`
+- `crates/sim-site-powerproject/recipes/01-basics/chapter.toml`
+- `crates/sim-site-powerproject/recipes/01-basics/powerproject-placement/purpose.md`
+- `crates/sim-site-powerproject/recipes/01-basics/powerproject-placement/recipe.toml`
+- `crates/sim-site-powerproject/recipes/01-basics/powerproject-placement/setup.siml`
+- `crates/sim-site-powerproject/recipes/book.toml`
 
 ## Worked Examples
 
@@ -59,6 +65,23 @@ purpose = "purpose.md"
 order = 10
 tags = ["office", "gantt", "mspdi", "project", "codec", "sandbox-descriptor"]
 requires = ["office/gantt", "office/doc-core", "codec/mspdi"]
+```
+
+### `feature/sim-construction/powerproject-schedule-placement`
+
+Specimen `recipe/sim-construction/crates/sim-site-powerproject/01-basics/powerproject-placement` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-site-powerproject/recipes/01-basics/powerproject-placement/recipe.toml`:
+
+```toml
+id = "powerproject-placement"
+title = "Powerproject placement"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 10
+tags = ["office", "gantt", "powerproject", "dataverse", "site", "sandbox-descriptor"]
+requires = ["office/gantt", "office/doc-site", "codec/mspdi", "site/powerproject"]
 ```
 
 ### `feature/sim-construction/project-control`

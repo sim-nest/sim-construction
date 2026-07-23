@@ -12,6 +12,22 @@
       "package": "sim-lib-construction-project"
     },
     {
+      "features": [
+        {
+          "edges": [],
+          "name": "default",
+          "workspace_edges": []
+        },
+        {
+          "edges": [],
+          "name": "powerproject-ole",
+          "workspace_edges": []
+        }
+      ],
+      "group": "workspace",
+      "package": "sim-site-powerproject"
+    },
+    {
       "features": [],
       "group": "workspace",
       "package": "xtask"

@@ -1,0 +1,31 @@
+[package]
+name = "sim-site-powerproject"
+version = "0.1.0"
+edition = "2024"
+license = "MPL-2.0"
+description = "Powerproject and Project for the web site placement for SIM Gantt documents."
+readme = "README.md"
+publish = false
+repository = "https://github.com/sim-nest/sim-construction"
+homepage = "https://github.com/sim-nest/sim-construction"
+
+[features]
+default = []
+powerproject-ole = []
+
+[dependencies]
+sim-codec-mspdi = { version = "0.1.0", path = "../sim-codec-mspdi" }
+sim-cookbook = { version = "0.1.0" }
+sim-kernel = { version = "0.1.0" }
+sim-lib-doc-core = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "0a740e577565c0a40e00d90e96f7c461dab77222" }
+sim-lib-doc-site = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "0a740e577565c0a40e00d90e96f7c461dab77222" }
+sim-lib-gantt = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "0a740e577565c0a40e00d90e96f7c461dab77222" }
+
+[build-dependencies]
+sim-cookbook = { version = "0.1.0" }
+
+[dev-dependencies]
+time = "0.3"
+
+[lints]
+workspace = true
