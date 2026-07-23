@@ -1,0 +1,61 @@
+schema = "sim.features"
+
+[enforcement.audience]
+user = "strict"
+code = "strict"
+framework = "advisory"
+
+[enforcement.surface]
+cli = "strict"
+docs = "advisory"
+
+[enforcement.specimen]
+user = "strict"
+framework = "strict"
+code = "advisory"
+
+[enforcement.route]
+major_entrypoints = "advisory"
+frameworks = "advisory"
+
+[[feature]]
+id = "feature/sim-construction/generated-docs"
+title = "Repository documentation surface"
+summary = "Publish generated package, card, recipe, and index facts for construction project-control crates."
+owner = "crate/xtask"
+audiences = ["code"]
+guidance = "Use this row when checking the generated documentation and index lane for the construction repo."
+claims_anchors = [
+  "anchor/cli/xtask",
+  "anchor/crate/xtask",
+  "anchor/doc/generated/feature-map",
+  "anchor/doc/generated/sim-index-fragment",
+]
+claims_surfaces = [
+  "cli/xtask",
+  "docs/sim-construction/generated",
+]
+
+[[feature]]
+id = "feature/sim-construction/project-control"
+title = "Construction project control"
+summary = "Describe construction project charters with reference-only evidence and deterministic readiness states."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when starting a construction project-control record from a charter and checking its evidence before planning work depends on it."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/tests",
+]
+
+[[route]]
+id = "route/control-construction-project"
+task = "Control a construction project"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns the charter and evidence readiness vocabulary." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/project-charter", why = "The project-charter recipe shows a synthetic accepted charter with reference-only evidence." },
+]

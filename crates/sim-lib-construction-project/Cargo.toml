@@ -1,0 +1,24 @@
+[package]
+name = "sim-lib-construction-project"
+version = "0.1.0"
+edition = "2024"
+license = "MPL-2.0"
+description = "Construction project-control records for SIM."
+readme = "README.md"
+publish = false
+repository = "https://github.com/sim-nest/sim-construction"
+homepage = "https://github.com/sim-nest/sim-construction"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+sim-cookbook = { version = "0.1.0" }
+sim-lib-doc-core = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "0a740e577565c0a40e00d90e96f7c461dab77222" }
+
+[build-dependencies]
+sim-cookbook = { version = "0.1.0" }
+
+[dev-dependencies]
+serde_json = "1"
+
+[lints]
+workspace = true

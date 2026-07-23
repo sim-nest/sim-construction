@@ -1,0 +1,13 @@
+(expr:map
+  [kind construction/project-charter]
+  [project reference-center]
+  [customer-intent "deliver a synthetic tenant improvement with safe handover"]
+  [delivery-model collaboration]
+  [currency SEK]
+  [accepted-by project-chief]
+  [accepted-on "2026-07-23"]
+  [evidence [(expr:map
+    [backend doc/synthetic]
+    [external-id charter/reference-center]
+    [version rev-a])]]
+  [mode modeled])

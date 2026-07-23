@@ -1,0 +1,15 @@
+[workspace]
+resolver = "3"
+members = [
+  "crates/sim-lib-construction-project",
+  "xtask",
+]
+
+[workspace.package]
+edition = "2024"
+license = "MPL-2.0"
+repository = "https://github.com/sim-nest/sim-construction"
+homepage = "https://github.com/sim-nest/sim-construction"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"

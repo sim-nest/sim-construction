@@ -1,0 +1,10 @@
+{
+  "schema": "sim.card-index.v1",
+  "cards": [
+    "crates/sim-lib-construction-project/recipes/01-basics/chapter.toml",
+    "crates/sim-lib-construction-project/recipes/01-basics/project-charter/purpose.md",
+    "crates/sim-lib-construction-project/recipes/01-basics/project-charter/recipe.toml",
+    "crates/sim-lib-construction-project/recipes/01-basics/project-charter/setup.siml",
+    "crates/sim-lib-construction-project/recipes/book.toml"
+  ]
+}
