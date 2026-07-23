@@ -4,6 +4,11 @@
     {
       "features": [],
       "group": "workspace",
+      "package": "sim-codec-mspdi"
+    },
+    {
+      "features": [],
+      "group": "workspace",
       "package": "sim-lib-construction-project"
     },
     {

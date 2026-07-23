@@ -18,6 +18,7 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 | Feature | Subject | Specimens | Summary |
 | --- | --- | ---: | --- |
 | `feature/sim-construction/generated-docs` | `crate/xtask` | 0 | Publish generated package, card, recipe, and index facts for construction project-control crates. |
+| `feature/sim-construction/mspdi-schedule-exchange` | `crate/sim-codec-mspdi` | 1 | Round-trip Microsoft Project XML schedules through the portable construction Gantt document model. |
 | `feature/sim-construction/project-control` | `crate/sim-lib-construction-project` | 1 | Describe construction project charters with reference-only evidence and deterministic readiness states. |
 
 ## Surfaces
@@ -26,9 +27,15 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 | --- | --- | --- |
 | `cli/xtask` | `cli` | `crate/xtask` |
 | `docs/sim-construction/generated` | `docs` | `doc-set/sim-construction/generated` |
+| `syntax/mspdi` | `syntax` | `language/mspdi` |
 
 ## Recipes
 
+- `crates/sim-codec-mspdi/recipes/01-basics/chapter.toml`
+- `crates/sim-codec-mspdi/recipes/01-basics/mspdi-round-trip/purpose.md`
+- `crates/sim-codec-mspdi/recipes/01-basics/mspdi-round-trip/recipe.toml`
+- `crates/sim-codec-mspdi/recipes/01-basics/mspdi-round-trip/setup.siml`
+- `crates/sim-codec-mspdi/recipes/book.toml`
 - `crates/sim-lib-construction-project/recipes/01-basics/chapter.toml`
 - `crates/sim-lib-construction-project/recipes/01-basics/project-charter/purpose.md`
 - `crates/sim-lib-construction-project/recipes/01-basics/project-charter/recipe.toml`
@@ -36,6 +43,23 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 - `crates/sim-lib-construction-project/recipes/book.toml`
 
 ## Worked Examples
+
+### `feature/sim-construction/mspdi-schedule-exchange`
+
+Specimen `recipe/sim-construction/crates/sim-codec-mspdi/01-basics/mspdi-round-trip` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-codec-mspdi/recipes/01-basics/mspdi-round-trip/recipe.toml`:
+
+```toml
+id = "mspdi-round-trip"
+title = "MSPDI round trip"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 10
+tags = ["office", "gantt", "mspdi", "project", "codec", "sandbox-descriptor"]
+requires = ["office/gantt", "office/doc-core", "codec/mspdi"]
+```
 
 ### `feature/sim-construction/project-control`
 

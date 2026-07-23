@@ -1,0 +1,24 @@
+[package]
+name = "sim-codec-mspdi"
+version = "0.1.0"
+edition = "2024"
+license = "MPL-2.0"
+description = "MSPDI schedule codec for SIM construction Gantt documents."
+readme = "README.md"
+publish = false
+repository = "https://github.com/sim-nest/sim-construction"
+homepage = "https://github.com/sim-nest/sim-construction"
+
+[dependencies]
+roxmltree = "0.21"
+sim-cookbook = { version = "0.1.0" }
+sim-kernel = { version = "0.1.0" }
+sim-lib-doc-core = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "0a740e577565c0a40e00d90e96f7c461dab77222" }
+sim-lib-gantt = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "0a740e577565c0a40e00d90e96f7c461dab77222" }
+time = "0.3"
+
+[build-dependencies]
+sim-cookbook = { version = "0.1.0" }
+
+[lints]
+workspace = true

@@ -1,6 +1,11 @@
 {
   "schema": "sim.card-index.v1",
   "cards": [
+    "crates/sim-codec-mspdi/recipes/01-basics/chapter.toml",
+    "crates/sim-codec-mspdi/recipes/01-basics/mspdi-round-trip/purpose.md",
+    "crates/sim-codec-mspdi/recipes/01-basics/mspdi-round-trip/recipe.toml",
+    "crates/sim-codec-mspdi/recipes/01-basics/mspdi-round-trip/setup.siml",
+    "crates/sim-codec-mspdi/recipes/book.toml",
     "crates/sim-lib-construction-project/recipes/01-basics/chapter.toml",
     "crates/sim-lib-construction-project/recipes/01-basics/project-charter/purpose.md",
     "crates/sim-lib-construction-project/recipes/01-basics/project-charter/recipe.toml",

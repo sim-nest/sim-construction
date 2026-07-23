@@ -1,15 +1,17 @@
 # sim-construction
 
-`sim-construction` holds SIM's construction project-control domain library. The
-project crate contributes construction project identities, charter records,
-reference-only evidence links, and deterministic readiness summaries without
-adding construction policy to the kernel.
+`sim-construction` holds SIM's construction project-control domain libraries.
+The crates contribute construction project identities, charter records, schedule
+exchange, reference-only evidence links, and deterministic readiness summaries
+without adding construction policy to the kernel.
 
 The repository keeps public examples synthetic by default. Committed fixtures
 name modeled projects, documents, roles, and evidence references only.
 
 ## Crates
 
+- `sim-codec-mspdi`: Microsoft Project XML schedule exchange for portable
+  construction Gantt documents.
 - `sim-lib-construction-project`: construction project identities, charter
   records, evidence states, and charter readiness summaries.
 

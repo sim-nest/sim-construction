@@ -8,6 +8,7 @@ framework = "advisory"
 [enforcement.surface]
 cli = "strict"
 docs = "advisory"
+syntax = "strict"
 
 [enforcement.specimen]
 user = "strict"
@@ -37,6 +38,25 @@ claims_surfaces = [
 ]
 
 [[feature]]
+id = "feature/sim-construction/mspdi-schedule-exchange"
+title = "MSPDI schedule exchange"
+summary = "Round-trip Microsoft Project XML schedules through the portable construction Gantt document model."
+owner = "crate/sim-codec-mspdi"
+audiences = ["user", "code"]
+guidance = "Use this row when importing or exporting construction schedules through the MSPDI XML exchange format."
+claims_anchors = [
+  "anchor/crate/sim-codec-mspdi",
+  "anchor/export/sim-codec-mspdi/codec/mspdi",
+  "anchor/grammar/syntax/mspdi",
+]
+claims_surfaces = [
+  "syntax/mspdi",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-codec-mspdi/01-basics/mspdi-round-trip",
+]
+
+[[feature]]
 id = "feature/sim-construction/project-control"
 title = "Construction project control"
 summary = "Describe construction project charters with reference-only evidence and deterministic readiness states."
@@ -49,6 +69,15 @@ claims_anchors = [
 ]
 claims_specimens = [
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/tests",
+]
+
+[[route]]
+id = "route/exchange-construction-schedule"
+task = "Exchange a construction schedule"
+audiences = ["user", "code"]
+steps = [
+  { feature = "feature/sim-construction/mspdi-schedule-exchange", why = "The MSPDI exchange row owns the XML codec and fidelity tests." },
+  { specimen = "recipe/sim-construction/crates/sim-codec-mspdi/01-basics/mspdi-round-trip", why = "The round-trip recipe shows a modeled Gantt schedule crossing the MSPDI boundary." },
 ]
 
 [[route]]
