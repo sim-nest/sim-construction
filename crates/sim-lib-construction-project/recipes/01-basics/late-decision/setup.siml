@@ -1,0 +1,19 @@
+(expr:map
+  [kind construction/accountable-decision]
+  [project reference-center]
+  [decision decision.site-access]
+  [owner supplier-lead]
+  [due-on "2026-07-23"]
+  [decision-authority project-chief]
+  [escalation-target project-chief]
+  [consequence "mobilization cannot start until access is resolved"]
+  [state closed]
+  [references [requirement.site-access]]
+  [evidence [(expr:map
+    [backend doc/synthetic]
+    [external-id decisions/site-access]
+    [version rev-a])]]
+  [resolution (expr:map
+    [fact-seq 4]
+    [decided-by project-chief]
+    [outcome "site access accepted with customer escort"])])

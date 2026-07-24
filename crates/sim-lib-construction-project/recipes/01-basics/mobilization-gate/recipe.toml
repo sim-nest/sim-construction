@@ -1,0 +1,8 @@
+id = "mobilization-gate"
+title = "Mobilization phase gate"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 30
+tags = ["construction", "project-control", "lifecycle", "gate", "baseline"]
+requires = ["construction.project.read", "construction.project.accept", "codec/lisp"]

@@ -1,6 +1,6 @@
 //! Error types for construction project-control validation.
 
-use crate::{ControlId, ProjectId, RoleId};
+use crate::{ControlId, ProjectId, ProjectPhase, RoleId};
 
 /// Result alias for construction project-control validation.
 pub type Result<T> = std::result::Result<T, ConstructionProjectError>;
@@ -222,5 +222,87 @@ pub enum ConstructionProjectError {
         from_seq: u64,
         /// End sequence.
         through_seq: u64,
+    },
+    /// A project phase transition moved backward without an accountable decision.
+    #[error("phase regression from {from:?} to {to:?} requires an explicit decision")]
+    PhaseRegressionRequiresDecision {
+        /// Phase being left.
+        from: ProjectPhase,
+        /// Earlier phase being entered.
+        to: ProjectPhase,
+    },
+    /// A baseline comparison used a sequence older than the accepted baseline.
+    #[error(
+        "baseline {baseline} accepted at sequence {accepted_seq} cannot compare stale sequence {as_of_seq}"
+    )]
+    StaleBaselineComparison {
+        /// Baseline control identifier.
+        baseline: ControlId,
+        /// Sequence accepting the baseline.
+        accepted_seq: u64,
+        /// Rejected comparison sequence.
+        as_of_seq: u64,
+    },
+    /// A control reference was not present in the derived snapshot.
+    #[error("control {control} is not present in snapshot sequence {as_of_seq}")]
+    OrphanControlRef {
+        /// Missing control reference.
+        control: ControlId,
+        /// Snapshot sequence used for validation.
+        as_of_seq: u64,
+    },
+    /// An accountable item was closed without a resolution fact.
+    #[error("{kind} {control} is closed without a resolution fact")]
+    MissingResolutionFact {
+        /// Accountable item kind.
+        kind: &'static str,
+        /// Closed item control.
+        control: ControlId,
+    },
+    /// A gate decision was made by a role that lacks matching authority.
+    #[error("gate {gate} approval by {actual} does not match authority {expected}")]
+    ApprovalAuthorityMismatch {
+        /// Gate control.
+        gate: ControlId,
+        /// Role authorized by the gate.
+        expected: RoleId,
+        /// Role carried by the decision.
+        actual: RoleId,
+    },
+    /// A project decision was closed by a role that lacks matching authority.
+    #[error("decision {decision} resolution by {actual} does not match authority {expected}")]
+    DecisionAuthorityMismatch {
+        /// Decision control.
+        decision: ControlId,
+        /// Role authorized by the decision.
+        expected: RoleId,
+        /// Role carried by the resolution.
+        actual: RoleId,
+    },
+    /// A gate decision pointed at a different gate than the report.
+    #[error("gate decision for {actual} does not match report gate {expected}")]
+    GateMismatch {
+        /// Gate named by the report.
+        expected: ControlId,
+        /// Gate named by the decision.
+        actual: ControlId,
+    },
+    /// A gate approval used a different sequence than the derived report.
+    #[error(
+        "gate {gate} approval sequence {decision_seq} does not match report sequence {report_seq}"
+    )]
+    GateSequenceMismatch {
+        /// Gate control.
+        gate: ControlId,
+        /// Sequence on the report.
+        report_seq: u64,
+        /// Sequence on the decision.
+        decision_seq: u64,
+    },
+    /// A gate approval tried to approve an unready derived report.
+    #[error("gate {gate} cannot be approved because the derived report is not ready")]
+    GateReportNotReady {
+        /// Gate control.
+        gate: ControlId,
     },
 }

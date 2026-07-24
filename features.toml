@@ -92,18 +92,37 @@ claims_specimens = [
 [[feature]]
 id = "feature/sim-construction/project-control"
 title = "Construction project control"
-summary = "Describe construction as-of snapshot records, project charter identity, append-only fact books, deterministic deltas, governance, capabilities, and readiness with reference-only evidence."
+summary = "Describe construction phase gate and baseline control through as-of snapshot records, project charter identity, append-only fact books, lifecycle vocabulary, baselines, gates, actions, decisions, deterministic deltas, governance, capabilities, and readiness with reference-only evidence."
 owner = "crate/sim-lib-construction-project"
 audiences = ["user", "code", "framework"]
-guidance = "Use this row when starting a construction project-control record from stable ids, a charter, an append-only fact book, deterministic as-of snapshots, what-changed reports, organization-role governance, due-date and visibility policy, library-owned capabilities, and evidence readiness before planning work depends on it."
+guidance = "Use this row when starting a construction project-control record from stable ids, a charter, an append-only fact book, accepted baselines, accountable actions and decisions, derived lifecycle gate reports, what-changed reports, organization-role governance, due-date and visibility policy, library-owned capabilities, and evidence readiness before planning work depends on it."
 claims_anchors = [
   "anchor/crate/sim-lib-construction-project",
   "anchor/rustdoc/sim-lib-construction-project/crate-root",
 ]
 claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/mobilization-gate",
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/late-decision",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/what-changed",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/fact_book_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/tests",
+]
+
+[[feature]]
+id = "feature/sim-construction/phase-gates"
+title = "Construction lifecycle gates"
+summary = "Derive construction phase gate baseline readiness from accepted project-control facts while keeping human approval as a separate accountable decision."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when checking a construction phase gate against accepted baselines, required controls, exceptions, conflicts, expiry, and matching approval authority for the exact report sequence."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/mobilization-gate",
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/late-decision",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/lifecycle_tests",
 ]
 
 [[route]]
@@ -141,6 +160,16 @@ audiences = ["user", "code", "framework"]
 steps = [
   { feature = "feature/sim-construction/project-control", why = "The project-control row owns the identity, charter, fact book, snapshot, governance, capability, visibility, and evidence readiness vocabulary." },
   { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/project-charter", why = "The project-charter recipe shows a synthetic accepted charter and governance record with reference-only evidence." },
+]
+
+[[route]]
+id = "route/check-construction-phase-gate"
+task = "Check a construction phase gate"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns the accepted fact book and baseline vocabulary the gate reads." },
+  { feature = "feature/sim-construction/phase-gates", why = "The lifecycle-gates row owns reproducible reports and accountable approvals." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/mobilization-gate", why = "The mobilization-gate recipe shows a derived report and matching approval at the same sequence." },
 ]
 
 [[route]]

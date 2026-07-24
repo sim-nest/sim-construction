@@ -1,0 +1,36 @@
+(expr:map
+  [kind construction/phase-gate]
+  [project reference-center]
+  [phase Mobilization]
+  [gate gate.mobilization]
+  [as-of-seq 2]
+  [requirements [
+    (expr:map [control requirement.site-access])
+    (expr:map [control requirement.risk])
+    (expr:map
+      [control requirement.reporting]
+      [exception exception.reporting-waiver])]]
+  [accepted-baselines [
+    (expr:map
+      [baseline baseline.scope]
+      [kind Scope]
+      [accepted-by project-chief]
+      [accepted-seq 2]
+      [accepted-on "2026-07-23"]
+      [evidence [(expr:map [backend doc/synthetic] [external-id baseline/scope] [version rev-a])]])]]
+  [derived-report (expr:map
+    [gate gate.mobilization]
+    [as-of-seq 2]
+    [ready true]
+    [unmet []]
+    [conflicted []]
+    [expired []]
+    [applied-exceptions []])]
+  [approval (expr:map
+    [gate gate.mobilization]
+    [decision approve]
+    [decided-by project-chief]
+    [as-of-seq 2]
+    [decision-seq 3]
+    [evidence [(expr:map [backend doc/synthetic] [external-id gate/mobilization] [version rev-a])]])]
+  [mode modeled])

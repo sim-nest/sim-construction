@@ -10,16 +10,22 @@
 #![forbid(unsafe_code)]
 #![deny(missing_docs)]
 
+mod action;
 mod authority;
+mod baseline;
 mod book;
 mod charter;
+mod decision;
 mod error;
 mod fact;
+mod gate;
 mod governance;
 mod identity;
+mod lifecycle;
 mod readiness;
 mod snapshot;
 
+pub use action::{ActionResolution, ActionState, ProjectAction};
 pub use authority::{
     CONSTRUCTION_EXCEPTION_CAPABILITY, CONSTRUCTION_PROJECT_ACCEPT_CAPABILITY,
     CONSTRUCTION_PROJECT_READ_CAPABILITY, CONSTRUCTION_PROJECT_WRITE_CAPABILITY,
@@ -27,14 +33,18 @@ pub use authority::{
     construction_project_accept_capability, construction_project_read_capability,
     construction_project_write_capability, construction_reference_publish_capability,
 };
+pub use baseline::{AcceptedBaseline, BaselineKind};
 pub use book::{DEFAULT_MAX_PROJECT_FACTS, ProjectBook};
 pub use charter::{CurrencyCode, PROJECT_CHARTER_KIND, ProjectCharter, ReportingCadence};
+pub use decision::{DecisionResolution, DecisionState, ProjectDecision};
 pub use error::{ConstructionProjectError, Result};
 pub use fact::{MAX_FACT_BODY_NODES, MAX_FACT_EVIDENCE_REFS, ProjectFact, expr_node_count};
+pub use gate::{GateDecision, GateDecisionKind, GateReport, GateRequirement, PhaseGate};
 pub use governance::{
     DueDatePolicy, ProjectGovernance, RoleAssignment, Visibility, VisibilityPolicy,
 };
 pub use identity::{BaselineId, ControlId, OrganizationId, ProjectId, RoleId};
+pub use lifecycle::{LifecyclePolicy, PhaseOverlap, PhaseTransition, ProjectPhase};
 pub use readiness::{CharterReadiness, EvidenceState, evaluate_charter};
 pub use snapshot::{
     ProjectDelta, ProjectSnapshot, ProjectSnapshotExplanation, SnapshotExplanationKind,
@@ -47,5 +57,7 @@ pub static RECIPES: sim_cookbook::EmbeddedDir =
 
 #[cfg(test)]
 mod fact_book_tests;
+#[cfg(test)]
+mod lifecycle_tests;
 #[cfg(test)]
 mod tests;

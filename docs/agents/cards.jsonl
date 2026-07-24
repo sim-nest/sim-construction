@@ -4,6 +4,12 @@
 {"kind":"recipe","path":"crates/sim-codec-mspdi/recipes/01-basics/mspdi-round-trip/setup.siml"}
 {"kind":"recipe","path":"crates/sim-codec-mspdi/recipes/book.toml"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/chapter.toml"}
+{"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/late-decision/purpose.md"}
+{"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/late-decision/recipe.toml"}
+{"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/late-decision/setup.siml"}
+{"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/mobilization-gate/purpose.md"}
+{"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/mobilization-gate/recipe.toml"}
+{"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/mobilization-gate/setup.siml"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/project-charter/purpose.md"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/project-charter/recipe.toml"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/project-charter/setup.siml"}
