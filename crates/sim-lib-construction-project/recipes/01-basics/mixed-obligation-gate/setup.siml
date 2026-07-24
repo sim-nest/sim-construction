@@ -1,0 +1,87 @@
+(expr:map
+  [kind construction/mixed-obligation-gate]
+  [project reference-center]
+  [as-of-seq 5]
+  [as-of-date "2026-07-23"]
+  [capabilities [construction.exception]]
+  [obligations [
+    (expr:map
+      [id requirement.authority.notice]
+      [lane construction-lane/authority]
+      [policy Mandatory]
+      [owner supplier-lead]
+      [acceptance-authority project-chief]
+      [evidence-state Accepted]
+      [evidence [(expr:map [backend doc/synthetic] [external-id authority/notice] [version rev-a])]]
+      [source-refs [(expr:map [backend doc/synthetic] [external-id authority/source] [version rev-a])]]
+      [non-waivable true])
+    (expr:map
+      [id requirement.people.cover]
+      [lane construction-lane/people]
+      [policy Mandatory]
+      [owner supplier-lead]
+      [acceptance-authority project-chief]
+      [evidence-state Missing]
+      [source-refs [(expr:map [backend doc/synthetic] [external-id people/source] [version rev-a])]]
+      [exception exception.people.cover])
+    (expr:map
+      [id requirement.quality.pack]
+      [lane construction-lane/quality]
+      [policy Mandatory]
+      [owner supplier-lead]
+      [acceptance-authority project-chief]
+      [evidence-state Reported]
+      [source-refs [(expr:map [backend doc/synthetic] [external-id quality/source] [version rev-a])]])
+    (expr:map
+      [id requirement.sustainability.note]
+      [lane construction-lane/sustainability]
+      [policy Optional]
+      [owner supplier-lead]
+      [acceptance-authority project-chief]
+      [evidence-state Missing]
+      [source-refs [(expr:map [backend doc/synthetic] [external-id sustainability/source] [version rev-a])]])]]
+  [exceptions [
+    (expr:map
+      [id exception.people.cover]
+      [scope [requirement.people.cover]]
+      [decided-by project-chief]
+      [authority project-chief]
+      [reason "Temporary staffing cover accepted for one week"]
+      [decided-on "2026-07-23"]
+      [expires-on "2026-07-30"]
+      [evidence [(expr:map [backend doc/synthetic] [external-id exception/people-cover] [version rev-a])]])]]
+  [explanations [
+    (expr:map
+      [requirement requirement.authority.notice]
+      [current-seq 1]
+      [rule mandatory]
+      [evidence-state Accepted]
+      [dependencies []]
+      [exception nil]
+      [reason "accepted evidence satisfies the obligation"])
+    (expr:map
+      [requirement requirement.people.cover]
+      [current-seq nil]
+      [rule exception]
+      [evidence-state Missing]
+      [dependencies []]
+      [exception exception.people.cover]
+      [reason "bounded exception exception.people.cover covers the obligation"])
+    (expr:map
+      [requirement requirement.quality.pack]
+      [current-seq 2]
+      [rule evidence-required]
+      [evidence-state Reported]
+      [dependencies []]
+      [exception nil]
+      [reason "reported without accepted evidence"])
+    (expr:map
+      [requirement requirement.sustainability.note]
+      [current-seq nil]
+      [rule optional]
+      [evidence-state Missing]
+      [dependencies []]
+      [exception nil]
+      [reason "optional obligation is reported but does not block the gate"])]]
+  [ready false]
+  [mode modeled])

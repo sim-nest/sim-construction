@@ -1,25 +1,6 @@
 //! Deterministic readiness checks for construction charters.
 
-use crate::ProjectCharter;
-
-/// Evidence state used by construction control summaries.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
-pub enum EvidenceState {
-    /// No usable project information is present.
-    Missing,
-    /// Some information is reported, but mandatory proof is incomplete.
-    Reported,
-    /// Evidence is present but not accepted by an accountable role.
-    Evidenced,
-    /// Mandatory information is current, evidenced, and accepted.
-    Accepted,
-    /// Evidence has been rejected by an accountable role.
-    Rejected,
-    /// Evidence is present but outside its valid window.
-    Expired,
-    /// Competing accepted records require human resolution.
-    Conflicted,
-}
+use crate::{EvidenceState, ProjectCharter};
 
 /// Readiness result for a project charter at an event sequence.
 #[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]

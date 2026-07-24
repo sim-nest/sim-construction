@@ -1,5 +1,7 @@
 //! Error types for construction project-control validation.
 
+use time::Date;
+
 use crate::{ControlId, ProjectId, ProjectPhase, RoleId};
 
 /// Result alias for construction project-control validation.
@@ -304,5 +306,39 @@ pub enum ConstructionProjectError {
     GateReportNotReady {
         /// Gate control.
         gate: ControlId,
+    },
+    /// A policy operation was attempted without the required capability.
+    #[error("missing required capability {capability}")]
+    MissingCapability {
+        /// Required capability name.
+        capability: &'static str,
+    },
+    /// An exception decision was made by a role that lacks matching authority.
+    #[error("exception {exception} by {actual} does not match authority {expected}")]
+    ExceptionAuthorityMismatch {
+        /// Exception control.
+        exception: ControlId,
+        /// Role authorized by the exception.
+        expected: RoleId,
+        /// Role carried by the decision.
+        actual: RoleId,
+    },
+    /// An exception expired before the policy evaluation date.
+    #[error("exception {exception} expired on {expired_on} before {as_of_date}")]
+    ExpiredException {
+        /// Exception control.
+        exception: ControlId,
+        /// Expiry date.
+        expired_on: Date,
+        /// Policy evaluation date.
+        as_of_date: Date,
+    },
+    /// A non-waivable requirement was covered by an exception.
+    #[error("requirement {requirement} is non-waivable but exception {exception} covers it")]
+    NonWaivableRequirement {
+        /// Non-waivable requirement.
+        requirement: ControlId,
+        /// Rejected exception.
+        exception: ControlId,
     },
 }

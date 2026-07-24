@@ -17,12 +17,17 @@ mod book;
 mod charter;
 mod decision;
 mod error;
+mod evidence_state;
+mod exception;
 mod fact;
 mod gate;
 mod governance;
 mod identity;
 mod lifecycle;
+mod obligation;
+mod policy;
 mod readiness;
+mod requirement;
 mod snapshot;
 
 pub use action::{ActionResolution, ActionState, ProjectAction};
@@ -38,6 +43,8 @@ pub use book::{DEFAULT_MAX_PROJECT_FACTS, ProjectBook};
 pub use charter::{CurrencyCode, PROJECT_CHARTER_KIND, ProjectCharter, ReportingCadence};
 pub use decision::{DecisionResolution, DecisionState, ProjectDecision};
 pub use error::{ConstructionProjectError, Result};
+pub use evidence_state::{EvidenceState, EvidenceValidity};
+pub use exception::{ExceptionDecision, ExceptionScope};
 pub use fact::{MAX_FACT_BODY_NODES, MAX_FACT_EVIDENCE_REFS, ProjectFact, expr_node_count};
 pub use gate::{GateDecision, GateDecisionKind, GateReport, GateRequirement, PhaseGate};
 pub use governance::{
@@ -45,7 +52,10 @@ pub use governance::{
 };
 pub use identity::{BaselineId, ControlId, OrganizationId, ProjectId, RoleId};
 pub use lifecycle::{LifecyclePolicy, PhaseOverlap, PhaseTransition, ProjectPhase};
-pub use readiness::{CharterReadiness, EvidenceState, evaluate_charter};
+pub use obligation::{ObligationPolicy, ProjectObligation};
+pub use policy::{GatePolicy, GatePolicyReport, RequirementExplanation};
+pub use readiness::{CharterReadiness, evaluate_charter};
+pub use requirement::{Requirement, RequirementLane};
 pub use snapshot::{
     ProjectDelta, ProjectSnapshot, ProjectSnapshotExplanation, SnapshotExplanationKind,
     snapshot_at, snapshot_delta,
@@ -59,5 +69,7 @@ pub static RECIPES: sim_cookbook::EmbeddedDir =
 mod fact_book_tests;
 #[cfg(test)]
 mod lifecycle_tests;
+#[cfg(test)]
+mod obligation_tests;
 #[cfg(test)]
 mod tests;

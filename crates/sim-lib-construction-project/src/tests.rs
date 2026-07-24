@@ -264,6 +264,11 @@ fn recipes_export_project_charter() {
             .any(|card| card.id.ends_with("mobilization-gate"))
     );
     assert!(cards.iter().any(|card| card.id.ends_with("late-decision")));
+    assert!(
+        cards
+            .iter()
+            .any(|card| card.id.ends_with("mixed-obligation-gate"))
+    );
 }
 
 fn accepted_charter() -> ProjectCharter {
