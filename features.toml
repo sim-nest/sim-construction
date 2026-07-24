@@ -92,15 +92,17 @@ claims_specimens = [
 [[feature]]
 id = "feature/sim-construction/project-control"
 title = "Construction project control"
-summary = "Describe construction project charter identity, governance, capabilities, and readiness with reference-only evidence."
+summary = "Describe construction as-of snapshot records, project charter identity, append-only fact books, deterministic deltas, governance, capabilities, and readiness with reference-only evidence."
 owner = "crate/sim-lib-construction-project"
 audiences = ["user", "code", "framework"]
-guidance = "Use this row when starting a construction project-control record from stable ids, a charter, organization-role governance, due-date and visibility policy, library-owned capabilities, and evidence readiness before planning work depends on it."
+guidance = "Use this row when starting a construction project-control record from stable ids, a charter, an append-only fact book, deterministic as-of snapshots, what-changed reports, organization-role governance, due-date and visibility policy, library-owned capabilities, and evidence readiness before planning work depends on it."
 claims_anchors = [
   "anchor/crate/sim-lib-construction-project",
   "anchor/rustdoc/sim-lib-construction-project/crate-root",
 ]
 claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/what-changed",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/fact_book_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/tests",
 ]
 
@@ -137,6 +139,15 @@ id = "route/control-construction-project"
 task = "Control a construction project"
 audiences = ["user", "code", "framework"]
 steps = [
-  { feature = "feature/sim-construction/project-control", why = "The project-control row owns the identity, charter, governance, capability, visibility, and evidence readiness vocabulary." },
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns the identity, charter, fact book, snapshot, governance, capability, visibility, and evidence readiness vocabulary." },
   { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/project-charter", why = "The project-charter recipe shows a synthetic accepted charter and governance record with reference-only evidence." },
+]
+
+[[route]]
+id = "route/show-construction-project-changes"
+task = "Show what changed in a construction project"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns append-only facts, deterministic as-of snapshots, deltas, conflicts, corrections, and reference-only evidence." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/what-changed", why = "The what-changed recipe shows a modeled fact correction and a stable change report between project sequences." },
 ]

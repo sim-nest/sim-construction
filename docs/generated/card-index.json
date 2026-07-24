@@ -11,7 +11,7 @@
       "id": "cookbook/construction/project",
       "kind": "cookbook-recipe",
       "owner": "sim-lib-construction-project",
-      "summary": "Project charter records and evidence readiness."
+      "summary": "Project charter records, append-only facts, snapshots, and evidence readiness."
     },
     {
       "id": "cookbook/office/dalux-site",

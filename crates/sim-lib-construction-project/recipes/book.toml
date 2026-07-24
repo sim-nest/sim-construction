@@ -1,5 +1,5 @@
 book = "construction/project"
 title = "Construction Project"
-summary = "Project charter records and evidence readiness."
+summary = "Project charter records, append-only facts, snapshots, and evidence readiness."
 order = 520
 chapters = ["01-basics"]

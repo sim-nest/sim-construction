@@ -1,6 +1,6 @@
 //! Error types for construction project-control validation.
 
-use crate::RoleId;
+use crate::{ControlId, ProjectId, RoleId};
 
 /// Result alias for construction project-control validation.
 pub type Result<T> = std::result::Result<T, ConstructionProjectError>;
@@ -108,5 +108,119 @@ pub enum ConstructionProjectError {
         value: String,
         /// Reason the symbol text is not accepted.
         reason: String,
+    },
+    /// A fact sequence or snapshot sequence was outside the accepted range.
+    #[error("{field} sequence {sequence} is invalid")]
+    InvalidSequence {
+        /// Invalid sequence field.
+        field: &'static str,
+        /// Rejected sequence.
+        sequence: u64,
+    },
+    /// A fact append attempted to move backward or reuse the current tail.
+    #[error("fact sequence {next_sequence} is not after current tail {last_sequence}")]
+    OutOfOrderSequence {
+        /// Current highest sequence in the book.
+        last_sequence: u64,
+        /// Rejected appended sequence.
+        next_sequence: u64,
+    },
+    /// More than one fact used the same sequence number.
+    #[error("duplicate fact sequence {sequence}")]
+    DuplicateSequence {
+        /// Reused sequence.
+        sequence: u64,
+    },
+    /// A fact belonged to a different project than the book.
+    #[error("fact project {actual} does not match project book {expected}")]
+    ProjectMismatch {
+        /// Project owned by the book.
+        expected: ProjectId,
+        /// Project carried by the fact.
+        actual: ProjectId,
+    },
+    /// A fact was written by a role other than the book's authoritative writer.
+    #[error("fact writer {actual} does not match authoritative writer {expected}")]
+    WriterMismatch {
+        /// Authoritative writer for the book.
+        expected: RoleId,
+        /// Actor role carried by the fact.
+        actual: RoleId,
+    },
+    /// A project book exceeded its configured fact count bound.
+    #[error("project book exceeds {max} facts")]
+    FactLimitExceeded {
+        /// Maximum fact count.
+        max: usize,
+    },
+    /// A fact body exceeded the expression node bound.
+    #[error("fact {sequence} body has {nodes} expression nodes, above {max}")]
+    FactBodyTooLarge {
+        /// Fact sequence.
+        sequence: u64,
+        /// Counted expression nodes.
+        nodes: usize,
+        /// Maximum accepted node count.
+        max: usize,
+    },
+    /// A fact exceeded the reference-only evidence count bound.
+    #[error("fact {sequence} carries {count} evidence references, above {max}")]
+    EvidenceLimitExceeded {
+        /// Fact sequence.
+        sequence: u64,
+        /// Evidence reference count.
+        count: usize,
+        /// Maximum accepted evidence reference count.
+        max: usize,
+    },
+    /// A superseding fact pointed at a missing prior sequence.
+    #[error("fact {sequence} supersedes missing sequence {supersedes}")]
+    MissingSupersededFact {
+        /// Superseding fact sequence.
+        sequence: u64,
+        /// Missing prior sequence.
+        supersedes: u64,
+    },
+    /// A supersession edge was not a valid backward correction edge.
+    #[error("fact {sequence} cannot supersede {supersedes}: {reason}")]
+    InvalidSupersession {
+        /// Superseding fact sequence.
+        sequence: u64,
+        /// Referenced prior sequence.
+        supersedes: u64,
+        /// Reason the edge was rejected.
+        reason: &'static str,
+    },
+    /// A superseding fact targeted a different subject than its predecessor.
+    #[error(
+        "fact {sequence} subject {actual} does not match superseded {supersedes} subject {expected}"
+    )]
+    SupersessionSubjectMismatch {
+        /// Superseding fact sequence.
+        sequence: u64,
+        /// Referenced prior sequence.
+        supersedes: u64,
+        /// Subject on the superseded fact.
+        expected: ControlId,
+        /// Subject on the superseding fact.
+        actual: ControlId,
+    },
+    /// More than one fact tried to supersede the same prior sequence.
+    #[error("sequence {supersedes} is already superseded by {existing}, not {attempted}")]
+    SupersessionFork {
+        /// Prior sequence that already has a correction edge.
+        supersedes: u64,
+        /// Existing superseding sequence.
+        existing: u64,
+        /// Rejected superseding sequence.
+        attempted: u64,
+    },
+    /// A delta query used an inverted sequence range.
+    #[error("snapshot range {from_seq}..={through_seq} is invalid")]
+    InvalidSnapshotRange {
+        /// Start sequence.
+        from_seq: u64,
+        /// End sequence.
+        through_seq: u64,
     },
 }
