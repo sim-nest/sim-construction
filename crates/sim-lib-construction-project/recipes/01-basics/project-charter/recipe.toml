@@ -4,5 +4,5 @@ codec = "lisp"
 setup = "setup.siml"
 purpose = "purpose.md"
 order = 10
-tags = ["construction", "project-control", "charter"]
-requires = ["construction/project", "codec/lisp"]
+tags = ["construction", "project-control", "charter", "governance"]
+requires = ["construction.project.read", "construction.project.accept", "codec/lisp"]

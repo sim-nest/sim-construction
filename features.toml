@@ -92,10 +92,10 @@ claims_specimens = [
 [[feature]]
 id = "feature/sim-construction/project-control"
 title = "Construction project control"
-summary = "Describe construction project charters with reference-only evidence and deterministic readiness states."
+summary = "Describe construction project charter identity, governance, capabilities, and readiness with reference-only evidence."
 owner = "crate/sim-lib-construction-project"
 audiences = ["user", "code", "framework"]
-guidance = "Use this row when starting a construction project-control record from a charter and checking its evidence before planning work depends on it."
+guidance = "Use this row when starting a construction project-control record from stable ids, a charter, organization-role governance, due-date and visibility policy, library-owned capabilities, and evidence readiness before planning work depends on it."
 claims_anchors = [
   "anchor/crate/sim-lib-construction-project",
   "anchor/rustdoc/sim-lib-construction-project/crate-root",
@@ -137,6 +137,6 @@ id = "route/control-construction-project"
 task = "Control a construction project"
 audiences = ["user", "code", "framework"]
 steps = [
-  { feature = "feature/sim-construction/project-control", why = "The project-control row owns the charter and evidence readiness vocabulary." },
-  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/project-charter", why = "The project-charter recipe shows a synthetic accepted charter with reference-only evidence." },
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns the identity, charter, governance, capability, visibility, and evidence readiness vocabulary." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/project-charter", why = "The project-charter recipe shows a synthetic accepted charter and governance record with reference-only evidence." },
 ]

@@ -1,4 +1,5 @@
 # Construction project charter
 
-Shows a synthetic construction charter with customer intent, delivery model,
-project currency, accountable acceptance, and a reference-only evidence link.
+Shows a synthetic construction charter with stable identity, customer outcome,
+project currency, governance roles, escalation policy, visibility policy,
+accountable acceptance, and reference-only evidence links.

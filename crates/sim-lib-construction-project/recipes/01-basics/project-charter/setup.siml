@@ -1,12 +1,43 @@
 (expr:map
   [kind construction/project-charter]
   [project reference-center]
-  [customer-intent "deliver a synthetic tenant improvement with safe handover"]
-  [delivery-model collaboration]
+  [control control.reference-center]
+  [baseline baseline.reference-center]
+  [customer-outcome "deliver a synthetic tenant improvement with safe handover"]
+  [property-constraints ["existing shell boundary is fixed"]]
+  [product-constraints ["handover pack must be referenceable"]]
+  [procurement-form collaboration]
   [currency SEK]
+  [objectives ["open the reference center safely"]]
+  [non-negotiables ["no personal profiles in the charter"]]
+  [target-outcomes ["accepted customer handover"]]
+  [reference-criteria ["evidence can support a public reference candidate"]]
+  [reporting-cadence (expr:map
+    [label weekly]
+    [interval-days 7])]
+  [governance (expr:map
+    [due-date-policy (expr:map
+      [response-days 5]
+      [escalation-grace-days 2])]
+    [visibility-policy (expr:map
+      [default project]
+      [restricted [commercial-confidential]])]
+    [roles [(expr:map
+      [role project-chief]
+      [organization customer-org]
+      [visibility restricted:commercial-confidential]
+      [responsibilities ["accept charter baseline"]]
+      [may-decide [accept-charter]])
+      (expr:map
+      [role supplier-lead]
+      [organization supplier-org]
+      [visibility supplier]
+      [responsibilities ["maintain supplier delivery commitments"]]
+      [may-decide [raise-exception]]
+      [escalates-to project-chief])]])]
   [accepted-by project-chief]
   [accepted-on "2026-07-23"]
-  [evidence [(expr:map
+  [source-refs [(expr:map
     [backend doc/synthetic]
     [external-id charter/reference-center]
     [version rev-a])]]
