@@ -341,4 +341,38 @@ pub enum ConstructionProjectError {
         /// Rejected exception.
         exception: ControlId,
     },
+    /// A control-graph edge named an endpoint that is not present as a node.
+    #[error("control graph edge {edge} references missing {endpoint_role} endpoint {endpoint}")]
+    ControlGraphMissingEndpoint {
+        /// Edge kind.
+        edge: &'static str,
+        /// Whether the endpoint was the source or target.
+        endpoint_role: &'static str,
+        /// Missing control id.
+        endpoint: ControlId,
+    },
+    /// A control-graph edge reused an existing source, target, and kind.
+    #[error("duplicate control graph edge {kind} from {from} to {target}")]
+    DuplicateControlGraphEdge {
+        /// Edge kind.
+        kind: &'static str,
+        /// Source control.
+        from: ControlId,
+        /// Target control.
+        target: ControlId,
+    },
+    /// A non-informational control-graph cycle would make readiness recursive.
+    #[error("control graph has a prohibited readiness cycle: {cycle:?}")]
+    ControlGraphCycle {
+        /// Stable cycle member ids.
+        cycle: Vec<ControlId>,
+    },
+    /// The canonical graph engine rejected the construction control graph.
+    #[error("control graph {operation} failed: {reason}")]
+    ControlGraphAlgorithm {
+        /// Algorithm operation.
+        operation: &'static str,
+        /// Error text from the canonical graph engine.
+        reason: String,
+    },
 }

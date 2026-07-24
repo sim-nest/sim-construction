@@ -21,9 +21,9 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 | `feature/sim-construction/mspdi-schedule-exchange` | `crate/sim-codec-mspdi` | 1 | Round-trip Microsoft Project XML schedules through the portable construction Gantt document model. |
 | `feature/sim-construction/powerproject-schedule-placement` | `crate/sim-site-powerproject` | 1 | Place construction Gantt schedules at Powerproject desktop and Project for the web boundaries. |
 | `feature/sim-construction/dalux-project-items` | `crate/sim-site-dalux` | 2 | Read Dalux project items into local office documents for construction evidence and keep note updates narrow. |
-| `feature/sim-construction/project-control` | `crate/sim-lib-construction-project` | 6 | Describe construction phase gate and baseline control through as-of snapshot records, project charter identity, append-only fact books, lifecycle vocabulary, baselines, gates, actions, decisions, deterministic deltas, governance, capabilities, shared obligations, bounded exceptions, and readiness with reference-only evidence. |
+| `feature/sim-construction/project-control` | `crate/sim-lib-construction-project` | 7 | Describe construction phase gate and baseline control through as-of snapshot records, project charter identity, append-only fact books, lifecycle vocabulary, baselines, gates, actions, decisions, deterministic deltas, governance, capabilities, shared obligations, bounded exceptions, graph-composed blockers, and readiness with reference-only evidence. |
 | `feature/sim-construction/phase-gates` | `crate/sim-lib-construction-project` | 5 | Derive construction phase gate baseline and obligation readiness from accepted project-control facts while keeping human approval and exceptions as separate accountable decisions. |
-| `feature/sim-construction/obligation-evidence-exceptions` | `crate/sim-lib-construction-project` | 2 | Evaluate shared construction requirements and project obligations across open lanes with stable evidence states, validity windows, dependencies, source references, optional policy, bounded exceptions, and deterministic explanations. |
+| `feature/sim-construction/obligation-evidence-exceptions` | `crate/sim-lib-construction-project` | 3 | Evaluate shared construction requirements and project obligations across open lanes with stable evidence states, validity windows, graph-composed dependencies, source references, optional policy, bounded exceptions, and deterministic explanation paths. |
 
 ## Surfaces
 
@@ -40,6 +40,9 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 - `crates/sim-codec-mspdi/recipes/01-basics/mspdi-round-trip/recipe.toml`
 - `crates/sim-codec-mspdi/recipes/01-basics/mspdi-round-trip/setup.siml`
 - `crates/sim-codec-mspdi/recipes/book.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/blocked-gate-graph/purpose.md`
+- `crates/sim-lib-construction-project/recipes/01-basics/blocked-gate-graph/recipe.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/blocked-gate-graph/setup.siml`
 - `crates/sim-lib-construction-project/recipes/01-basics/chapter.toml`
 - `crates/sim-lib-construction-project/recipes/01-basics/late-decision/purpose.md`
 - `crates/sim-lib-construction-project/recipes/01-basics/late-decision/recipe.toml`
@@ -409,6 +412,21 @@ setup = "setup.siml"
 purpose = "purpose.md"
 order = 35
 tags = ["construction", "project-control", "obligation", "evidence", "exception", "gate"]
+requires = ["construction.project.read", "construction.exception", "codec/lisp"]
+```
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/blocked-gate-graph` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/blocked-gate-graph/recipe.toml`:
+
+```toml
+id = "blocked-gate-graph"
+title = "Blocked gate graph"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 36
+tags = ["construction", "project-control", "obligation", "dependency-graph", "blocker", "gate"]
 requires = ["construction.project.read", "construction.exception", "codec/lisp"]
 ```
 
@@ -1513,6 +1531,7 @@ fn accepted_dependencies_are_required_before_dependent_obligation_is_green() {
 
     let report = GatePolicy::new()
         .with_obligation(mandatory("requirement.authority", lane("authority")))
+        .with_obligation(mandatory("requirement.supplier", lane("supplier")))
         .with_obligation(
             mandatory("requirement.procurement", lane("procurement"))
                 .requirement_depends_on("requirement.supplier"),
@@ -1531,6 +1550,166 @@ fn accepted_dependencies_are_required_before_dependent_obligation_is_green() {
         procurement.dependencies,
         vec![ControlId::new("requirement.supplier").unwrap()]
     );
+    assert_eq!(procurement.paths.len(), 1);
+    assert_eq!(
+        procurement.paths[0]
+            .steps
+            .iter()
+            .map(|step| (
+                step.control.as_str().to_owned(),
+                step.edge_kind.map(|kind| kind.label()).unwrap_or("root"),
+                step.evidence_state,
+            ))
+            .collect::<Vec<_>>(),
+        vec![
+            (
+                "requirement.supplier".to_owned(),
+                "root",
+                EvidenceState::Missing,
+            ),
+            (
+                "requirement.procurement".to_owned(),
+                "prerequisite",
+                EvidenceState::Accepted,
+            ),
+        ]
+    );
+}
+
+#[test]
+fn missing_dependency_endpoints_are_rejected_before_evaluation() {
+    let result = GatePolicy::new()
+        .with_obligation(
+            mandatory("requirement.procurement", lane("procurement"))
+                .requirement_depends_on("requirement.supplier"),
+        )
+        .evaluate(&ProjectBook::new(project(), writer()), 0, today());
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::ControlGraphMissingEndpoint { .. })
+    ));
+}
+
+#[test]
+fn diamond_dependencies_use_transitive_blockers_and_stable_critical_cut() {
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(fact(1, "requirement.target").with_evidence(evidence_ref("target")))
+        .unwrap();
+    book.append(fact(2, "requirement.left").with_evidence(evidence_ref("left")))
+        .unwrap();
+    book.append(fact(3, "requirement.right").with_evidence(evidence_ref("right")))
+        .unwrap();
+
+    let report = GatePolicy::new()
+        .with_obligation(mandatory("requirement.root", lane("customer")))
+        .with_obligation(
+            mandatory("requirement.left", lane("quality"))
+                .requirement_depends_on("requirement.root"),
+        )
+        .with_obligation(
+            mandatory("requirement.right", lane("safety"))
+                .requirement_depends_on("requirement.root"),
+        )
+        .with_obligation(
+            mandatory("requirement.target", lane("handover"))
+                .requirement_depends_on("requirement.left")
+                .requirement_depends_on("requirement.right"),
+        )
+        .evaluate(&book, 3, today())
+        .unwrap();
+
+    let target = report
+        .explanations
+        .iter()
+        .find(|explanation| explanation.requirement.as_str() == "requirement.target")
+        .unwrap();
+    assert_eq!(target.rule, "dependency");
+    assert_eq!(
+        target
+            .paths
+            .iter()
+            .map(|path| path.blocker.as_str())
+            .collect::<Vec<_>>(),
+        vec!["requirement.root"]
+    );
+    assert_eq!(
+        target.paths[0]
+            .steps
+            .iter()
+            .map(|step| step.control.as_str())
+            .collect::<Vec<_>>(),
+        vec!["requirement.root", "requirement.left", "requirement.target"]
+    );
+}
+
+#[test]
+fn disconnected_nodes_do_not_block_readiness() {
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(fact(1, "requirement.target").with_evidence(evidence_ref("target")))
+        .unwrap();
+
+    let report = GatePolicy::new()
+        .with_obligation(mandatory("requirement.disconnected", lane("customer")))
+        .with_obligation(mandatory("requirement.target", lane("handover")))
+        .evaluate(&book, 1, today())
+        .unwrap();
+
+    let target = report
+        .explanations
+        .iter()
+        .find(|explanation| explanation.requirement.as_str() == "requirement.target")
+        .unwrap();
+    assert_eq!(target.rule, "mandatory");
+    assert!(target.paths.is_empty());
+    assert!(!report.ready);
+}
+
+#[test]
+fn multiple_blockers_and_corrected_facts_remain_deterministic() {
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(fact(1, "requirement.alpha").with_evidence_state(EvidenceState::Reported))
+        .unwrap();
+    book.append(
+        fact(2, "requirement.alpha")
+            .with_evidence(evidence_ref("alpha"))
+            .supersedes(1),
+    )
+    .unwrap();
+    book.append(fact(3, "requirement.target").with_evidence(evidence_ref("target")))
+        .unwrap();
+
+    let report = GatePolicy::new()
+        .with_obligation(mandatory("requirement.zulu", lane("customer")))
+        .with_obligation(mandatory("requirement.alpha", lane("quality")))
+        .with_obligation(
+            mandatory("requirement.target", lane("handover"))
+                .requirement_depends_on("requirement.zulu")
+                .requirement_depends_on("requirement.alpha"),
+        )
+        .evaluate(&book, 3, today())
+        .unwrap();
+
+    let target = report
+        .explanations
+        .iter()
+        .find(|explanation| explanation.requirement.as_str() == "requirement.target")
+        .unwrap();
+    assert_eq!(
+        target
+            .paths
+            .iter()
+            .map(|path| path.blocker.as_str())
+            .collect::<Vec<_>>(),
+        vec!["requirement.zulu"]
+    );
+    let alpha = report
+        .explanations
+        .iter()
+        .find(|explanation| explanation.requirement.as_str() == "requirement.alpha")
+        .unwrap();
+    assert_eq!(alpha.current_seq, Some(2));
+    assert_eq!(alpha.evidence_state, EvidenceState::Accepted);
 }
 
 #[test]
@@ -1759,6 +1938,21 @@ tags = ["construction", "project-control", "obligation", "evidence", "exception"
 requires = ["construction.project.read", "construction.exception", "codec/lisp"]
 ```
 
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/blocked-gate-graph` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/blocked-gate-graph/recipe.toml`:
+
+```toml
+id = "blocked-gate-graph"
+title = "Blocked gate graph"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 36
+tags = ["construction", "project-control", "obligation", "dependency-graph", "blocker", "gate"]
+requires = ["construction.project.read", "construction.exception", "codec/lisp"]
+```
+
 Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/obligation_tests` is checked by `cargo test`.
 
 Source `crates/sim-lib-construction-project/src/obligation_tests.rs`:
@@ -1860,6 +2054,7 @@ fn accepted_dependencies_are_required_before_dependent_obligation_is_green() {
 
     let report = GatePolicy::new()
         .with_obligation(mandatory("requirement.authority", lane("authority")))
+        .with_obligation(mandatory("requirement.supplier", lane("supplier")))
         .with_obligation(
             mandatory("requirement.procurement", lane("procurement"))
                 .requirement_depends_on("requirement.supplier"),
@@ -1878,6 +2073,166 @@ fn accepted_dependencies_are_required_before_dependent_obligation_is_green() {
         procurement.dependencies,
         vec![ControlId::new("requirement.supplier").unwrap()]
     );
+    assert_eq!(procurement.paths.len(), 1);
+    assert_eq!(
+        procurement.paths[0]
+            .steps
+            .iter()
+            .map(|step| (
+                step.control.as_str().to_owned(),
+                step.edge_kind.map(|kind| kind.label()).unwrap_or("root"),
+                step.evidence_state,
+            ))
+            .collect::<Vec<_>>(),
+        vec![
+            (
+                "requirement.supplier".to_owned(),
+                "root",
+                EvidenceState::Missing,
+            ),
+            (
+                "requirement.procurement".to_owned(),
+                "prerequisite",
+                EvidenceState::Accepted,
+            ),
+        ]
+    );
+}
+
+#[test]
+fn missing_dependency_endpoints_are_rejected_before_evaluation() {
+    let result = GatePolicy::new()
+        .with_obligation(
+            mandatory("requirement.procurement", lane("procurement"))
+                .requirement_depends_on("requirement.supplier"),
+        )
+        .evaluate(&ProjectBook::new(project(), writer()), 0, today());
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::ControlGraphMissingEndpoint { .. })
+    ));
+}
+
+#[test]
+fn diamond_dependencies_use_transitive_blockers_and_stable_critical_cut() {
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(fact(1, "requirement.target").with_evidence(evidence_ref("target")))
+        .unwrap();
+    book.append(fact(2, "requirement.left").with_evidence(evidence_ref("left")))
+        .unwrap();
+    book.append(fact(3, "requirement.right").with_evidence(evidence_ref("right")))
+        .unwrap();
+
+    let report = GatePolicy::new()
+        .with_obligation(mandatory("requirement.root", lane("customer")))
+        .with_obligation(
+            mandatory("requirement.left", lane("quality"))
+                .requirement_depends_on("requirement.root"),
+        )
+        .with_obligation(
+            mandatory("requirement.right", lane("safety"))
+                .requirement_depends_on("requirement.root"),
+        )
+        .with_obligation(
+            mandatory("requirement.target", lane("handover"))
+                .requirement_depends_on("requirement.left")
+                .requirement_depends_on("requirement.right"),
+        )
+        .evaluate(&book, 3, today())
+        .unwrap();
+
+    let target = report
+        .explanations
+        .iter()
+        .find(|explanation| explanation.requirement.as_str() == "requirement.target")
+        .unwrap();
+    assert_eq!(target.rule, "dependency");
+    assert_eq!(
+        target
+            .paths
+            .iter()
+            .map(|path| path.blocker.as_str())
+            .collect::<Vec<_>>(),
+        vec!["requirement.root"]
+    );
+    assert_eq!(
+        target.paths[0]
+            .steps
+            .iter()
+            .map(|step| step.control.as_str())
+            .collect::<Vec<_>>(),
+        vec!["requirement.root", "requirement.left", "requirement.target"]
+    );
+}
+
+#[test]
+fn disconnected_nodes_do_not_block_readiness() {
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(fact(1, "requirement.target").with_evidence(evidence_ref("target")))
+        .unwrap();
+
+    let report = GatePolicy::new()
+        .with_obligation(mandatory("requirement.disconnected", lane("customer")))
+        .with_obligation(mandatory("requirement.target", lane("handover")))
+        .evaluate(&book, 1, today())
+        .unwrap();
+
+    let target = report
+        .explanations
+        .iter()
+        .find(|explanation| explanation.requirement.as_str() == "requirement.target")
+        .unwrap();
+    assert_eq!(target.rule, "mandatory");
+    assert!(target.paths.is_empty());
+    assert!(!report.ready);
+}
+
+#[test]
+fn multiple_blockers_and_corrected_facts_remain_deterministic() {
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(fact(1, "requirement.alpha").with_evidence_state(EvidenceState::Reported))
+        .unwrap();
+    book.append(
+        fact(2, "requirement.alpha")
+            .with_evidence(evidence_ref("alpha"))
+            .supersedes(1),
+    )
+    .unwrap();
+    book.append(fact(3, "requirement.target").with_evidence(evidence_ref("target")))
+        .unwrap();
+
+    let report = GatePolicy::new()
+        .with_obligation(mandatory("requirement.zulu", lane("customer")))
+        .with_obligation(mandatory("requirement.alpha", lane("quality")))
+        .with_obligation(
+            mandatory("requirement.target", lane("handover"))
+                .requirement_depends_on("requirement.zulu")
+                .requirement_depends_on("requirement.alpha"),
+        )
+        .evaluate(&book, 3, today())
+        .unwrap();
+
+    let target = report
+        .explanations
+        .iter()
+        .find(|explanation| explanation.requirement.as_str() == "requirement.target")
+        .unwrap();
+    assert_eq!(
+        target
+            .paths
+            .iter()
+            .map(|path| path.blocker.as_str())
+            .collect::<Vec<_>>(),
+        vec!["requirement.zulu"]
+    );
+    let alpha = report
+        .explanations
+        .iter()
+        .find(|explanation| explanation.requirement.as_str() == "requirement.alpha")
+        .unwrap();
+    assert_eq!(alpha.current_seq, Some(2));
+    assert_eq!(alpha.evidence_state, EvidenceState::Accepted);
 }
 
 #[test]

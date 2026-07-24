@@ -5,8 +5,9 @@ use std::collections::{BTreeMap, BTreeSet};
 use time::Date;
 
 use crate::{
-    ConstructionProjectError, ControlId, EvidenceState, ExceptionDecision, ObligationPolicy,
-    ProjectBook, ProjectObligation, Result,
+    ConstructionProjectError, ControlEdgeKind, ControlExplanationPath, ControlGraph, ControlId,
+    ControlNodeKind, EvidenceState, ExceptionDecision, ObligationPolicy, ProjectBook,
+    ProjectObligation, Result,
 };
 
 /// Stable explanation for one requirement under a gate policy.
@@ -24,6 +25,8 @@ pub struct RequirementExplanation {
     pub dependencies: Vec<ControlId>,
     /// Applied exception id, when one covers the obligation.
     pub exception: Option<ControlId>,
+    /// Stable blocker-to-requirement paths from the canonical control graph.
+    pub paths: Vec<ControlExplanationPath>,
     /// Human-readable deterministic reason.
     pub reason: String,
 }
@@ -95,9 +98,28 @@ impl GatePolicy {
             ));
         }
         let snapshot = book.snapshot_at(as_of_seq)?;
-        let mut fact_states = BTreeMap::new();
+        let mut graph = ControlGraph::new();
+        for obligation in &self.obligations {
+            graph.add_node(
+                obligation.requirement.id.clone(),
+                ControlNodeKind::Requirement,
+            )?;
+        }
         for obligation in &self.obligations {
             obligation.requirement.validate()?;
+            let requirement = &obligation.requirement.id;
+            for dependency in &obligation.requirement.dependencies {
+                graph.add_edge(
+                    dependency.clone(),
+                    requirement.clone(),
+                    ControlEdgeKind::Prerequisite,
+                )?;
+            }
+        }
+        graph.validate_readiness()?;
+
+        let mut fact_states = BTreeMap::new();
+        for obligation in &self.obligations {
             let requirement = &obligation.requirement.id;
             let (current_seq, evidence_state) = if snapshot.conflicted.contains_key(requirement) {
                 (None, EvidenceState::Conflicted)
@@ -122,6 +144,34 @@ impl GatePolicy {
             fact_states.insert(requirement.clone(), (current_seq, evidence_state));
         }
 
+        let mut exceptions = BTreeMap::new();
+        for obligation in self.sorted_obligations() {
+            exceptions.insert(
+                obligation.requirement.id.clone(),
+                self.find_exception(obligation, as_of_date)?,
+            );
+        }
+
+        let mut effective_states = BTreeMap::new();
+        for obligation in self.sorted_obligations() {
+            let (current_seq, evidence_state) = fact_states
+                .get(&obligation.requirement.id)
+                .cloned()
+                .unwrap_or((None, EvidenceState::Missing));
+            let evidence_state = if current_seq.is_some()
+                && evidence_state.satisfies_required_evidence()
+                && !obligation.evidence_validity.contains(as_of_date)
+            {
+                EvidenceState::Expired
+            } else {
+                evidence_state
+            };
+            effective_states.insert(
+                obligation.requirement.id.clone(),
+                (current_seq, evidence_state),
+            );
+        }
+
         let mut explanations = Vec::new();
         let mut ready = true;
         for obligation in self.sorted_obligations() {
@@ -138,17 +188,38 @@ impl GatePolicy {
             } else {
                 evidence_state
             };
-            let blocked_dependencies = requirement
-                .dependencies
-                .iter()
-                .filter(|dependency| {
-                    fact_states
-                        .get(*dependency)
+            let exception = exceptions.get(&requirement.id).cloned().flatten();
+            let analysis = graph.analyze_target(
+                &requirement.id,
+                |control| {
+                    if exceptions.get(control).is_some_and(Option::is_some) {
+                        return false;
+                    }
+                    let Some(dependency) = self
+                        .obligations
+                        .iter()
+                        .find(|candidate| candidate.requirement.id == *control)
+                    else {
+                        return true;
+                    };
+                    if dependency.policy == ObligationPolicy::Optional
+                        || !dependency.requirement.evidence_required
+                    {
+                        return false;
+                    }
+                    effective_states
+                        .get(control)
                         .is_none_or(|(_, state)| !state.satisfies_required_evidence())
-                })
-                .cloned()
-                .collect::<Vec<_>>();
-            let exception = self.find_exception(obligation, as_of_date)?;
+                },
+                |control| {
+                    effective_states
+                        .get(control)
+                        .cloned()
+                        .unwrap_or((None, EvidenceState::Missing))
+                },
+                |control| exceptions.get(control).cloned().flatten(),
+            )?;
+            let blocked_dependencies = analysis.transitive_blockers;
             let mut rule = "mandatory".to_owned();
             let mut reason = "accepted evidence satisfies the obligation".to_owned();
             let mut blocks_gate = false;
@@ -189,6 +260,7 @@ impl GatePolicy {
                 evidence_state,
                 dependencies: requirement.dependencies.clone(),
                 exception,
+                paths: analysis.explanation_paths,
                 reason,
             });
         }

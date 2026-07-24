@@ -92,10 +92,10 @@ claims_specimens = [
 [[feature]]
 id = "feature/sim-construction/project-control"
 title = "Construction project control"
-summary = "Describe construction phase gate and baseline control through as-of snapshot records, project charter identity, append-only fact books, lifecycle vocabulary, baselines, gates, actions, decisions, deterministic deltas, governance, capabilities, shared obligations, bounded exceptions, and readiness with reference-only evidence."
+summary = "Describe construction phase gate and baseline control through as-of snapshot records, project charter identity, append-only fact books, lifecycle vocabulary, baselines, gates, actions, decisions, deterministic deltas, governance, capabilities, shared obligations, bounded exceptions, graph-composed blockers, and readiness with reference-only evidence."
 owner = "crate/sim-lib-construction-project"
 audiences = ["user", "code", "framework"]
-guidance = "Use this row when starting a construction project-control record from stable ids, a charter, an append-only fact book, accepted baselines, accountable actions and decisions, shared requirements and obligations, evidence states and validity windows, bounded construction exceptions, derived lifecycle gate reports, what-changed reports, organization-role governance, due-date and visibility policy, library-owned capabilities, and evidence readiness before planning work depends on it."
+guidance = "Use this row when starting a construction project-control record from stable ids, a charter, an append-only fact book, accepted baselines, accountable actions and decisions, shared requirements and obligations, evidence states and validity windows, bounded construction exceptions, graph-composed blocker propagation, derived lifecycle gate reports, what-changed reports, organization-role governance, due-date and visibility policy, library-owned capabilities, and evidence readiness before planning work depends on it."
 claims_anchors = [
   "anchor/crate/sim-lib-construction-project",
   "anchor/rustdoc/sim-lib-construction-project/crate-root",
@@ -103,6 +103,7 @@ claims_anchors = [
 claims_specimens = [
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/mobilization-gate",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/mixed-obligation-gate",
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/blocked-gate-graph",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/late-decision",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/what-changed",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/fact_book_tests",
@@ -131,16 +132,17 @@ claims_specimens = [
 [[feature]]
 id = "feature/sim-construction/obligation-evidence-exceptions"
 title = "Construction obligation evidence and exceptions"
-summary = "Evaluate shared construction requirements and project obligations across open lanes with stable evidence states, validity windows, dependencies, source references, optional policy, bounded exceptions, and deterministic explanations."
+summary = "Evaluate shared construction requirements and project obligations across open lanes with stable evidence states, validity windows, graph-composed dependencies, source references, optional policy, bounded exceptions, and deterministic explanation paths."
 owner = "crate/sim-lib-construction-project"
 audiences = ["user", "code", "framework"]
-guidance = "Use this row when a construction gate must explain why an obligation is blocked, prove that reported-without-evidence is not green, apply only scoped current exceptions under construction.exception, or reject exceptions for non-waivable safety and authority requirements."
+guidance = "Use this row when a construction gate must explain why an obligation is blocked, derive transitive blockers and stable prerequisite paths through sim-lib-discrete-graph, prove that reported-without-evidence is not green, apply only scoped current exceptions under construction.exception, or reject exceptions for non-waivable safety and authority requirements."
 claims_anchors = [
   "anchor/crate/sim-lib-construction-project",
   "anchor/rustdoc/sim-lib-construction-project/crate-root",
 ]
 claims_specimens = [
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/mixed-obligation-gate",
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/blocked-gate-graph",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/obligation_tests",
 ]
 
@@ -197,8 +199,17 @@ task = "Explain why a construction gate is blocked"
 audiences = ["user", "code", "framework"]
 steps = [
   { feature = "feature/sim-construction/project-control", why = "The project-control row owns the stable ids, fact book, source references, capability vocabulary, and evidence state substrate." },
-  { feature = "feature/sim-construction/obligation-evidence-exceptions", why = "The obligation row owns mandatory and optional policy, dependencies, validity windows, scoped exceptions, and deterministic requirement explanations." },
-  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/mixed-obligation-gate", why = "The mixed-obligation recipe shows accepted, missing, reported, optional, and exception-covered obligations in one gate report." },
+  { feature = "feature/sim-construction/obligation-evidence-exceptions", why = "The obligation row owns mandatory and optional policy, dependencies, validity windows, scoped exceptions, and deterministic requirement explanations over the canonical graph." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/blocked-gate-graph", why = "The blocked-gate graph recipe shows transitive blockers, stable paths, and evidence states through one graph-backed gate report." },
+]
+
+[[route]]
+id = "route/explain-construction-dependency-blockers"
+task = "Explain construction dependency blockers"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/obligation-evidence-exceptions", why = "The construction obligation row lowers requirements to the canonical graph and attaches fact evidence, exceptions, and stable ids." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/blocked-gate-graph", why = "The blocked-gate graph recipe demonstrates deterministic blocker explanation paths." },
 ]
 
 [[route]]

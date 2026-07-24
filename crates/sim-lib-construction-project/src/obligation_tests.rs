@@ -94,6 +94,7 @@ fn accepted_dependencies_are_required_before_dependent_obligation_is_green() {
 
     let report = GatePolicy::new()
         .with_obligation(mandatory("requirement.authority", lane("authority")))
+        .with_obligation(mandatory("requirement.supplier", lane("supplier")))
         .with_obligation(
             mandatory("requirement.procurement", lane("procurement"))
                 .requirement_depends_on("requirement.supplier"),
@@ -112,6 +113,166 @@ fn accepted_dependencies_are_required_before_dependent_obligation_is_green() {
         procurement.dependencies,
         vec![ControlId::new("requirement.supplier").unwrap()]
     );
+    assert_eq!(procurement.paths.len(), 1);
+    assert_eq!(
+        procurement.paths[0]
+            .steps
+            .iter()
+            .map(|step| (
+                step.control.as_str().to_owned(),
+                step.edge_kind.map(|kind| kind.label()).unwrap_or("root"),
+                step.evidence_state,
+            ))
+            .collect::<Vec<_>>(),
+        vec![
+            (
+                "requirement.supplier".to_owned(),
+                "root",
+                EvidenceState::Missing,
+            ),
+            (
+                "requirement.procurement".to_owned(),
+                "prerequisite",
+                EvidenceState::Accepted,
+            ),
+        ]
+    );
+}
+
+#[test]
+fn missing_dependency_endpoints_are_rejected_before_evaluation() {
+    let result = GatePolicy::new()
+        .with_obligation(
+            mandatory("requirement.procurement", lane("procurement"))
+                .requirement_depends_on("requirement.supplier"),
+        )
+        .evaluate(&ProjectBook::new(project(), writer()), 0, today());
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::ControlGraphMissingEndpoint { .. })
+    ));
+}
+
+#[test]
+fn diamond_dependencies_use_transitive_blockers_and_stable_critical_cut() {
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(fact(1, "requirement.target").with_evidence(evidence_ref("target")))
+        .unwrap();
+    book.append(fact(2, "requirement.left").with_evidence(evidence_ref("left")))
+        .unwrap();
+    book.append(fact(3, "requirement.right").with_evidence(evidence_ref("right")))
+        .unwrap();
+
+    let report = GatePolicy::new()
+        .with_obligation(mandatory("requirement.root", lane("customer")))
+        .with_obligation(
+            mandatory("requirement.left", lane("quality"))
+                .requirement_depends_on("requirement.root"),
+        )
+        .with_obligation(
+            mandatory("requirement.right", lane("safety"))
+                .requirement_depends_on("requirement.root"),
+        )
+        .with_obligation(
+            mandatory("requirement.target", lane("handover"))
+                .requirement_depends_on("requirement.left")
+                .requirement_depends_on("requirement.right"),
+        )
+        .evaluate(&book, 3, today())
+        .unwrap();
+
+    let target = report
+        .explanations
+        .iter()
+        .find(|explanation| explanation.requirement.as_str() == "requirement.target")
+        .unwrap();
+    assert_eq!(target.rule, "dependency");
+    assert_eq!(
+        target
+            .paths
+            .iter()
+            .map(|path| path.blocker.as_str())
+            .collect::<Vec<_>>(),
+        vec!["requirement.root"]
+    );
+    assert_eq!(
+        target.paths[0]
+            .steps
+            .iter()
+            .map(|step| step.control.as_str())
+            .collect::<Vec<_>>(),
+        vec!["requirement.root", "requirement.left", "requirement.target"]
+    );
+}
+
+#[test]
+fn disconnected_nodes_do_not_block_readiness() {
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(fact(1, "requirement.target").with_evidence(evidence_ref("target")))
+        .unwrap();
+
+    let report = GatePolicy::new()
+        .with_obligation(mandatory("requirement.disconnected", lane("customer")))
+        .with_obligation(mandatory("requirement.target", lane("handover")))
+        .evaluate(&book, 1, today())
+        .unwrap();
+
+    let target = report
+        .explanations
+        .iter()
+        .find(|explanation| explanation.requirement.as_str() == "requirement.target")
+        .unwrap();
+    assert_eq!(target.rule, "mandatory");
+    assert!(target.paths.is_empty());
+    assert!(!report.ready);
+}
+
+#[test]
+fn multiple_blockers_and_corrected_facts_remain_deterministic() {
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(fact(1, "requirement.alpha").with_evidence_state(EvidenceState::Reported))
+        .unwrap();
+    book.append(
+        fact(2, "requirement.alpha")
+            .with_evidence(evidence_ref("alpha"))
+            .supersedes(1),
+    )
+    .unwrap();
+    book.append(fact(3, "requirement.target").with_evidence(evidence_ref("target")))
+        .unwrap();
+
+    let report = GatePolicy::new()
+        .with_obligation(mandatory("requirement.zulu", lane("customer")))
+        .with_obligation(mandatory("requirement.alpha", lane("quality")))
+        .with_obligation(
+            mandatory("requirement.target", lane("handover"))
+                .requirement_depends_on("requirement.zulu")
+                .requirement_depends_on("requirement.alpha"),
+        )
+        .evaluate(&book, 3, today())
+        .unwrap();
+
+    let target = report
+        .explanations
+        .iter()
+        .find(|explanation| explanation.requirement.as_str() == "requirement.target")
+        .unwrap();
+    assert_eq!(
+        target
+            .paths
+            .iter()
+            .map(|path| path.blocker.as_str())
+            .collect::<Vec<_>>(),
+        vec!["requirement.zulu"]
+    );
+    let alpha = report
+        .explanations
+        .iter()
+        .find(|explanation| explanation.requirement.as_str() == "requirement.alpha")
+        .unwrap();
+    assert_eq!(alpha.current_seq, Some(2));
+    assert_eq!(alpha.evidence_state, EvidenceState::Accepted);
 }
 
 #[test]

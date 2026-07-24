@@ -15,6 +15,7 @@ mod authority;
 mod baseline;
 mod book;
 mod charter;
+mod control_graph;
 mod decision;
 mod error;
 mod evidence_state;
@@ -41,6 +42,10 @@ pub use authority::{
 pub use baseline::{AcceptedBaseline, BaselineKind};
 pub use book::{DEFAULT_MAX_PROJECT_FACTS, ProjectBook};
 pub use charter::{CurrencyCode, PROJECT_CHARTER_KIND, ProjectCharter, ReportingCadence};
+pub use control_graph::{
+    ControlEdge, ControlEdgeKind, ControlExplanationPath, ControlExplanationStep, ControlGraph,
+    ControlGraphAnalysis, ControlGraphProjection, ControlNode, ControlNodeKind,
+};
 pub use decision::{DecisionResolution, DecisionState, ProjectDecision};
 pub use error::{ConstructionProjectError, Result};
 pub use evidence_state::{EvidenceState, EvidenceValidity};
@@ -65,6 +70,8 @@ pub use snapshot::{
 pub static RECIPES: sim_cookbook::EmbeddedDir =
     include!(concat!(env!("OUT_DIR"), "/cookbook_recipes.rs"));
 
+#[cfg(test)]
+mod control_graph_tests;
 #[cfg(test)]
 mod fact_book_tests;
 #[cfg(test)]
