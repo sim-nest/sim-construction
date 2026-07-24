@@ -1,0 +1,44 @@
+(expr:map
+  [kind construction/blocked-gate-graph]
+  [project reference-center]
+  [as-of-seq 4]
+  [as-of-date "2026-07-23"]
+  [graph (expr:map
+    [nodes [
+      (expr:map [id requirement.permit] [kind Requirement])
+      (expr:map [id requirement.supplier-pack] [kind Requirement])
+      (expr:map [id requirement.mobilization] [kind Gate])]]
+    [edges [
+      (expr:map [source requirement.permit] [target requirement.supplier-pack] [kind Prerequisite])
+      (expr:map [source requirement.supplier-pack] [target requirement.mobilization] [kind Prerequisite])
+      (expr:map [source requirement.mobilization] [target requirement.permit] [kind Informational])]])]
+  [facts [
+    (expr:map [seq 1] [subject requirement.permit] [evidence-state Missing])
+    (expr:map [seq 2] [subject requirement.supplier-pack] [evidence-state Accepted])
+    (expr:map [seq 3] [subject requirement.mobilization] [evidence-state Accepted])
+    (expr:map [seq 4] [subject exception.permit] [evidence-state Rejected])]]
+  [explanation-paths [
+    (expr:map
+      [blocker requirement.permit]
+      [target requirement.mobilization]
+      [steps [
+        (expr:map
+          [control requirement.permit]
+          [current-seq nil]
+          [evidence-state Missing]
+          [edge-kind nil]
+          [exception nil])
+        (expr:map
+          [control requirement.supplier-pack]
+          [current-seq 2]
+          [evidence-state Accepted]
+          [edge-kind Prerequisite]
+          [exception nil])
+        (expr:map
+          [control requirement.mobilization]
+          [current-seq 3]
+          [evidence-state Accepted]
+          [edge-kind Prerequisite]
+          [exception nil])]])]]
+  [ready false]
+  [mode modeled])

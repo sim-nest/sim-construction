@@ -1,5 +1,5 @@
 {
-  "card_count": 4,
+  "card_count": 6,
   "cards": [
     {
       "id": "browse/catalog",
@@ -11,13 +11,25 @@
       "id": "cookbook/construction/project",
       "kind": "cookbook-recipe",
       "owner": "sim-lib-construction-project",
-      "summary": "Project charter records and evidence readiness."
+      "summary": "Project charter records, append-only facts, snapshots, lifecycle gates, decisions, and evidence readiness."
+    },
+    {
+      "id": "cookbook/office/dalux-site",
+      "kind": "cookbook-recipe",
+      "owner": "sim-site-dalux",
+      "summary": "Modeled Dalux project item reads with API identity live gates."
     },
     {
       "id": "cookbook/office/mspdi",
       "kind": "cookbook-recipe",
       "owner": "sim-codec-mspdi",
       "summary": "Microsoft Project XML exchange for local Gantt documents."
+    },
+    {
+      "id": "cookbook/office/powerproject-site",
+      "kind": "cookbook-recipe",
+      "owner": "sim-site-powerproject",
+      "summary": "Powerproject and Project for the web placements for Gantt plans."
     },
     {
       "id": "registry/catalog",
@@ -37,12 +49,14 @@
     "workspace": [
       "sim-codec-mspdi",
       "sim-lib-construction-project",
+      "sim-site-dalux",
+      "sim-site-powerproject",
       "xtask"
     ]
   },
   "non_citizen_exemption_count": 0,
   "non_citizen_exemptions": [],
-  "package_count": 3,
+  "package_count": 5,
   "packages": [
     {
       "crate_name": "sim_codec_mspdi",
@@ -121,6 +135,101 @@
       ]
     },
     {
+      "crate_name": "sim_site_dalux",
+      "dependencies": [],
+      "description": "Dalux API-identity site placement for SIM construction records.",
+      "features": [],
+      "group": "workspace",
+      "manifest": "crates/sim-site-dalux/Cargo.toml",
+      "name": "sim-site-dalux",
+      "publish": "false",
+      "root": "crates/sim-site-dalux",
+      "rustdoc_summary": "Dalux API-identity site adapter for construction project item evidence.",
+      "target_kinds": [
+        "custom-build",
+        "lib"
+      ],
+      "targets": [
+        {
+          "crate_types": [
+            "lib"
+          ],
+          "kind": [
+            "lib"
+          ],
+          "name": "sim_site_dalux",
+          "src": "crates/sim-site-dalux/src/lib.rs"
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "custom-build"
+          ],
+          "name": "build-script-build",
+          "src": "crates/sim-site-dalux/build.rs"
+        }
+      ]
+    },
+    {
+      "crate_name": "sim_site_powerproject",
+      "dependencies": [
+        {
+          "kind": "normal",
+          "optional": false,
+          "package": "sim-codec-mspdi",
+          "rename": null,
+          "target": null
+        }
+      ],
+      "description": "Powerproject and Project for the web site placement for SIM Gantt documents.",
+      "features": [
+        {
+          "edges": [],
+          "name": "default",
+          "workspace_edges": []
+        },
+        {
+          "edges": [],
+          "name": "powerproject-ole",
+          "workspace_edges": []
+        }
+      ],
+      "group": "workspace",
+      "manifest": "crates/sim-site-powerproject/Cargo.toml",
+      "name": "sim-site-powerproject",
+      "publish": "false",
+      "root": "crates/sim-site-powerproject",
+      "rustdoc_summary": "Powerproject and Project for the web placement for SIM Gantt documents.",
+      "target_kinds": [
+        "custom-build",
+        "lib"
+      ],
+      "targets": [
+        {
+          "crate_types": [
+            "lib"
+          ],
+          "kind": [
+            "lib"
+          ],
+          "name": "sim_site_powerproject",
+          "src": "crates/sim-site-powerproject/src/lib.rs"
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "custom-build"
+          ],
+          "name": "build-script-build",
+          "src": "crates/sim-site-powerproject/build.rs"
+        }
+      ]
+    },
+    {
       "crate_name": "xtask",
       "dependencies": [],
       "description": "SIM workspace package for xtask.",
@@ -153,10 +262,10 @@
     "generated_by": "cargo run -p xtask -- simdoc",
     "generation_timestamp": "2026-07-23T14:26:39+02:00",
     "generator": "xtask repo-contract v1",
-    "git_commit": "12966a9c517e8a3a3c0d40ce89c4767fbabe8fca",
+    "git_commit": "98c24ff46e783577130c480a6dcaeda0e6cea7de",
     "repo": "sim-construction",
     "schema": "sim.provenance.v1",
-    "source_commit": "12966a9c517e8a3a3c0d40ce89c4767fbabe8fca",
+    "source_commit": "98c24ff46e783577130c480a6dcaeda0e6cea7de",
     "source_remote": "https://github.com/sim-nest/sim-construction",
     "validation_commands": [
       "cargo fmt --all --check",
@@ -169,9 +278,9 @@
       "cargo run -p xtask -- validation-matrix --check --repo .",
       "cargo run -p xtask -- crate-catalog --check --repo ."
     ],
-    "workspace_hash": "139a18ea298ca139",
+    "workspace_hash": "108eebfc00cece5a",
     "workspace_hash_algorithm": "fnv1a64",
-    "workspace_hash_input_count": 20,
+    "workspace_hash_input_count": 65,
     "workspace_hash_inputs": [
       "Cargo.toml",
       "crates/sim-codec-mspdi/Cargo.toml",
@@ -185,17 +294,62 @@
       "crates/sim-codec-mspdi/src/write.rs",
       "crates/sim-lib-construction-project/Cargo.toml",
       "crates/sim-lib-construction-project/build.rs",
+      "crates/sim-lib-construction-project/recipes/01-basics/blocked-gate-graph/recipe.toml",
+      "crates/sim-lib-construction-project/recipes/01-basics/late-decision/recipe.toml",
+      "crates/sim-lib-construction-project/recipes/01-basics/mixed-obligation-gate/recipe.toml",
+      "crates/sim-lib-construction-project/recipes/01-basics/mobilization-gate/recipe.toml",
       "crates/sim-lib-construction-project/recipes/01-basics/project-charter/recipe.toml",
+      "crates/sim-lib-construction-project/recipes/01-basics/what-changed/recipe.toml",
       "crates/sim-lib-construction-project/recipes/book.toml",
+      "crates/sim-lib-construction-project/src/action.rs",
+      "crates/sim-lib-construction-project/src/authority.rs",
+      "crates/sim-lib-construction-project/src/baseline.rs",
+      "crates/sim-lib-construction-project/src/book.rs",
+      "crates/sim-lib-construction-project/src/charter.rs",
+      "crates/sim-lib-construction-project/src/control_graph.rs",
+      "crates/sim-lib-construction-project/src/control_graph_tests.rs",
+      "crates/sim-lib-construction-project/src/decision.rs",
+      "crates/sim-lib-construction-project/src/error.rs",
+      "crates/sim-lib-construction-project/src/evidence_state.rs",
+      "crates/sim-lib-construction-project/src/exception.rs",
+      "crates/sim-lib-construction-project/src/fact.rs",
+      "crates/sim-lib-construction-project/src/fact_book_tests.rs",
+      "crates/sim-lib-construction-project/src/gate.rs",
+      "crates/sim-lib-construction-project/src/governance.rs",
+      "crates/sim-lib-construction-project/src/identity.rs",
       "crates/sim-lib-construction-project/src/lib.rs",
-      "crates/sim-lib-construction-project/src/model.rs",
+      "crates/sim-lib-construction-project/src/lifecycle.rs",
+      "crates/sim-lib-construction-project/src/lifecycle_tests.rs",
+      "crates/sim-lib-construction-project/src/obligation.rs",
+      "crates/sim-lib-construction-project/src/obligation_tests.rs",
+      "crates/sim-lib-construction-project/src/policy.rs",
       "crates/sim-lib-construction-project/src/readiness.rs",
+      "crates/sim-lib-construction-project/src/requirement.rs",
+      "crates/sim-lib-construction-project/src/snapshot.rs",
       "crates/sim-lib-construction-project/src/tests.rs",
+      "crates/sim-site-dalux/Cargo.toml",
+      "crates/sim-site-dalux/build.rs",
+      "crates/sim-site-dalux/recipes/01-basics/dalux-modeled-items/recipe.toml",
+      "crates/sim-site-dalux/recipes/book.toml",
+      "crates/sim-site-dalux/src/client.rs",
+      "crates/sim-site-dalux/src/lib.rs",
+      "crates/sim-site-dalux/src/model.rs",
+      "crates/sim-site-dalux/src/modeled.rs",
+      "crates/sim-site-dalux/src/tests.rs",
+      "crates/sim-site-powerproject/Cargo.toml",
+      "crates/sim-site-powerproject/build.rs",
+      "crates/sim-site-powerproject/recipes/01-basics/powerproject-placement/recipe.toml",
+      "crates/sim-site-powerproject/recipes/book.toml",
+      "crates/sim-site-powerproject/src/dataverse.rs",
+      "crates/sim-site-powerproject/src/lib.rs",
+      "crates/sim-site-powerproject/src/modeled.rs",
+      "crates/sim-site-powerproject/src/ole.rs",
+      "crates/sim-site-powerproject/src/tests.rs",
       "features.toml",
       "xtask/Cargo.toml"
     ]
   },
-  "recipe_book_count": 2,
+  "recipe_book_count": 4,
   "recipes": [
     {
       "book": "office/mspdi",
@@ -223,8 +377,40 @@
       "card_id": "cookbook/construction/project",
       "group": "workspace",
       "package": "sim-lib-construction-project",
-      "recipe_count": 1,
+      "recipe_count": 6,
       "recipes": [
+        {
+          "card_id": "construction/project/01-basics/blocked-gate-graph",
+          "codec": "lisp",
+          "id": "blocked-gate-graph",
+          "package": "sim-lib-construction-project",
+          "recipe_toml": "crates/sim-lib-construction-project/recipes/01-basics/blocked-gate-graph/recipe.toml",
+          "title": "Blocked gate graph"
+        },
+        {
+          "card_id": "construction/project/01-basics/late-decision",
+          "codec": "lisp",
+          "id": "late-decision",
+          "package": "sim-lib-construction-project",
+          "recipe_toml": "crates/sim-lib-construction-project/recipes/01-basics/late-decision/recipe.toml",
+          "title": "Late accountable decision"
+        },
+        {
+          "card_id": "construction/project/01-basics/mixed-obligation-gate",
+          "codec": "lisp",
+          "id": "mixed-obligation-gate",
+          "package": "sim-lib-construction-project",
+          "recipe_toml": "crates/sim-lib-construction-project/recipes/01-basics/mixed-obligation-gate/recipe.toml",
+          "title": "Mixed obligation gate"
+        },
+        {
+          "card_id": "construction/project/01-basics/mobilization-gate",
+          "codec": "lisp",
+          "id": "mobilization-gate",
+          "package": "sim-lib-construction-project",
+          "recipe_toml": "crates/sim-lib-construction-project/recipes/01-basics/mobilization-gate/recipe.toml",
+          "title": "Mobilization phase gate"
+        },
         {
           "card_id": "construction/project/01-basics/project-charter",
           "codec": "lisp",
@@ -232,10 +418,58 @@
           "package": "sim-lib-construction-project",
           "recipe_toml": "crates/sim-lib-construction-project/recipes/01-basics/project-charter/recipe.toml",
           "title": "Construction project charter"
+        },
+        {
+          "card_id": "construction/project/01-basics/what-changed",
+          "codec": "lisp",
+          "id": "what-changed",
+          "package": "sim-lib-construction-project",
+          "recipe_toml": "crates/sim-lib-construction-project/recipes/01-basics/what-changed/recipe.toml",
+          "title": "Construction project changes"
         }
       ],
-      "summary": "Project charter records and evidence readiness.",
+      "summary": "Project charter records, append-only facts, snapshots, lifecycle gates, decisions, and evidence readiness.",
       "title": "Construction Project"
+    },
+    {
+      "book": "office/dalux-site",
+      "book_toml": "crates/sim-site-dalux/recipes/book.toml",
+      "card_id": "cookbook/office/dalux-site",
+      "group": "workspace",
+      "package": "sim-site-dalux",
+      "recipe_count": 1,
+      "recipes": [
+        {
+          "card_id": "office/dalux-site/01-basics/dalux-modeled-items",
+          "codec": "lisp",
+          "id": "dalux-modeled-items",
+          "package": "sim-site-dalux",
+          "recipe_toml": "crates/sim-site-dalux/recipes/01-basics/dalux-modeled-items/recipe.toml",
+          "title": "Modeled Dalux items"
+        }
+      ],
+      "summary": "Modeled Dalux project item reads with API identity live gates.",
+      "title": "Dalux Site"
+    },
+    {
+      "book": "office/powerproject-site",
+      "book_toml": "crates/sim-site-powerproject/recipes/book.toml",
+      "card_id": "cookbook/office/powerproject-site",
+      "group": "workspace",
+      "package": "sim-site-powerproject",
+      "recipe_count": 1,
+      "recipes": [
+        {
+          "card_id": "office/powerproject-site/01-basics/powerproject-placement",
+          "codec": "lisp",
+          "id": "powerproject-placement",
+          "package": "sim-site-powerproject",
+          "recipe_toml": "crates/sim-site-powerproject/recipes/01-basics/powerproject-placement/recipe.toml",
+          "title": "Powerproject placement"
+        }
+      ],
+      "summary": "Powerproject and Project for the web placements for Gantt plans.",
+      "title": "Powerproject Site"
     }
   ]
 }

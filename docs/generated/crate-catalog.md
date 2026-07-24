@@ -8,4 +8,6 @@ Generated from Cargo metadata by `xtask crate-catalog v1`.
 | --- | --- | --- | --- |
 | `sim-codec-mspdi` | `false` | `custom-build, lib` | MSPDI schedule codec for SIM construction Gantt documents. |
 | `sim-lib-construction-project` | `false` | `custom-build, lib` | Construction project-control records for SIM. |
+| `sim-site-dalux` | `false` | `custom-build, lib` | Dalux API-identity site placement for SIM construction records. |
+| `sim-site-powerproject` | `false` | `custom-build, lib` | Powerproject and Project for the web site placement for SIM Gantt documents. |
 | `xtask` | `false` | `bin` | SIM workspace package for xtask. |

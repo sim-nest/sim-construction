@@ -1,0 +1,51 @@
+(expr:map
+  [kind construction/project-what-changed]
+  [project reference-center]
+  [writer project-chief]
+  [from-seq 1]
+  [through-seq 3]
+  [facts [(expr:map
+    [seq 1]
+    [subject decision.fixture]
+    [kind construction/fact]
+    [effective-on "2026-07-23"]
+    [actor-role project-chief]
+    [visibility project]
+    [state accepted]
+    [body "open fixture package"]
+    [evidence [(expr:map
+      [backend doc/synthetic]
+      [external-id facts/reference-center/1]
+      [version rev-1])]])
+    (expr:map
+    [seq 2]
+    [subject requirement.access]
+    [kind construction/fact]
+    [effective-on "2026-07-24"]
+    [actor-role project-chief]
+    [visibility project]
+    [state accepted]
+    [body "maintain tenant access through lobby"]
+    [evidence [(expr:map
+      [backend doc/synthetic]
+      [external-id facts/reference-center/2]
+      [version rev-2])]])
+    (expr:map
+    [seq 3]
+    [subject decision.fixture]
+    [kind construction/fact]
+    [effective-on "2026-07-24"]
+    [actor-role project-chief]
+    [supersedes 1]
+    [visibility project]
+    [state accepted]
+    [body "approve fixture package"]
+    [evidence [(expr:map
+      [backend doc/synthetic]
+      [external-id facts/reference-center/3]
+      [version rev-3])]])]]
+  [delta (expr:map
+    [added [decision.fixture requirement.access]]
+    [superseded [decision.fixture]]
+    [conflicted []])]
+  [mode modeled])

@@ -1,6 +1,6 @@
 {
   "generator": "xtask crate-catalog v1",
-  "package_count": 3,
+  "package_count": 5,
   "packages": [
     {
       "description": "MSPDI schedule codec for SIM construction Gantt documents.",
@@ -23,6 +23,32 @@
       "publish": "false",
       "readme": "crates/sim-lib-construction-project/README.md",
       "root": "crates/sim-lib-construction-project",
+      "target_kinds": [
+        "custom-build",
+        "lib"
+      ]
+    },
+    {
+      "description": "Dalux API-identity site placement for SIM construction records.",
+      "generated_readme": false,
+      "manifest": "crates/sim-site-dalux/Cargo.toml",
+      "name": "sim-site-dalux",
+      "publish": "false",
+      "readme": "crates/sim-site-dalux/README.md",
+      "root": "crates/sim-site-dalux",
+      "target_kinds": [
+        "custom-build",
+        "lib"
+      ]
+    },
+    {
+      "description": "Powerproject and Project for the web site placement for SIM Gantt documents.",
+      "generated_readme": false,
+      "manifest": "crates/sim-site-powerproject/Cargo.toml",
+      "name": "sim-site-powerproject",
+      "publish": "false",
+      "readme": "crates/sim-site-powerproject/README.md",
+      "root": "crates/sim-site-powerproject",
       "target_kinds": [
         "custom-build",
         "lib"

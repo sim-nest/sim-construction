@@ -6,4 +6,6 @@
 | --- | --- | --- |
 | `sim-codec-mspdi` | `workspace` | MSPDI XML codec for local Gantt schedule documents. |
 | `sim-lib-construction-project` | `workspace` | Construction project-control records for SIM. |
+| `sim-site-dalux` | `workspace` | Dalux API-identity site adapter for construction project item evidence. |
+| `sim-site-powerproject` | `workspace` | Powerproject and Project for the web placement for SIM Gantt documents. |
 | `xtask` | `workspace` | SIM workspace package for xtask. |

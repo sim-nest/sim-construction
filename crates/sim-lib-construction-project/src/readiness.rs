@@ -1,25 +1,6 @@
 //! Deterministic readiness checks for construction charters.
 
-use crate::ProjectCharter;
-
-/// Evidence state used by construction control summaries.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
-pub enum EvidenceState {
-    /// No usable project information is present.
-    Missing,
-    /// Some information is reported, but mandatory proof is incomplete.
-    Reported,
-    /// Evidence is present but not accepted by an accountable role.
-    Evidenced,
-    /// Mandatory information is current, evidenced, and accepted.
-    Accepted,
-    /// Evidence has been rejected by an accountable role.
-    Rejected,
-    /// Evidence is present but outside its valid window.
-    Expired,
-    /// Competing accepted records require human resolution.
-    Conflicted,
-}
+use crate::{EvidenceState, ProjectCharter};
 
 /// Readiness result for a project charter at an event sequence.
 #[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
@@ -54,36 +35,59 @@ impl ProjectCharter {
 #[must_use]
 pub fn evaluate_charter(charter: &ProjectCharter, as_of_seq: u64) -> CharterReadiness {
     let mut missing_fields = Vec::new();
-    require_text(&charter.project.0, "project", &mut missing_fields);
+    require_text(charter.project.as_str(), "project", &mut missing_fields);
+    require_text(charter.control.as_str(), "control", &mut missing_fields);
     require_text(&charter.name, "name", &mut missing_fields);
     require_text(
-        &charter.customer_intent,
-        "customer_intent",
+        &charter.customer_outcome,
+        "customer_outcome",
         &mut missing_fields,
     );
     require_text(
-        &charter.delivery_model,
-        "delivery_model",
+        &charter.procurement_form,
+        "procurement_form",
         &mut missing_fields,
     );
-    require_text(&charter.currency, "currency", &mut missing_fields);
+    require_list(
+        &charter.property_constraints,
+        "property_constraints",
+        &mut missing_fields,
+    );
+    require_list(
+        &charter.product_constraints,
+        "product_constraints",
+        &mut missing_fields,
+    );
+    require_list(&charter.objectives, "objectives", &mut missing_fields);
+    require_list(
+        &charter.non_negotiables,
+        "non_negotiables",
+        &mut missing_fields,
+    );
+    require_list(
+        &charter.target_outcomes,
+        "target_outcomes",
+        &mut missing_fields,
+    );
+    require_list(
+        &charter.reference_criteria,
+        "reference_criteria",
+        &mut missing_fields,
+    );
+    require_text(charter.currency.as_str(), "currency", &mut missing_fields);
     if charter.accepted_by.is_none() {
         missing_fields.push("accepted_by".to_owned());
     }
-    if charter
-        .accepted_on
-        .as_deref()
-        .is_none_or(|accepted_on| accepted_on.trim().is_empty())
-    {
+    if charter.accepted_on.is_none() {
         missing_fields.push("accepted_on".to_owned());
     }
-    if charter.evidence.is_empty() {
-        missing_fields.push("evidence".to_owned());
+    if charter.source_refs.is_empty() {
+        missing_fields.push("source_refs".to_owned());
     }
 
     let state = if missing_fields.is_empty() {
         EvidenceState::Accepted
-    } else if charter.evidence.is_empty() {
+    } else if charter.source_refs.is_empty() {
         EvidenceState::Reported
     } else {
         EvidenceState::Evidenced
@@ -93,12 +97,18 @@ pub fn evaluate_charter(charter: &ProjectCharter, as_of_seq: u64) -> CharterRead
         as_of_seq,
         state,
         missing_fields,
-        evidence_refs: charter.evidence.len(),
+        evidence_refs: charter.source_refs.len(),
     }
 }
 
 fn require_text(value: &str, field: &str, missing_fields: &mut Vec<String>) {
     if value.trim().is_empty() {
+        missing_fields.push(field.to_owned());
+    }
+}
+
+fn require_list(values: &[String], field: &str, missing_fields: &mut Vec<String>) {
+    if values.is_empty() || values.iter().any(|value| value.trim().is_empty()) {
         missing_fields.push(field.to_owned());
     }
 }

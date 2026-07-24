@@ -1,0 +1,8 @@
+id = "late-decision"
+title = "Late accountable decision"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 40
+tags = ["construction", "project-control", "decision", "action", "escalation"]
+requires = ["construction.project.read", "construction.project.write", "codec/lisp"]
