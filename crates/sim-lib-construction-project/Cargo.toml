@@ -16,6 +16,7 @@ sim-kernel = { version = "0.1.0" }
 sim-ledger = { version = "0.1.0", git = "https://github.com/sim-nest/sim-ledger", rev = "e3f49c24257fea045a1d2c29c867981fcd3692de" }
 sim-lib-discrete-graph = { version = "0.1.0", git = "https://github.com/sim-nest/sim-discrete", rev = "0a037cc4d12294c90d323bb473aaeb7150127b2e" }
 sim-lib-doc-core = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "eb617e4fd3c50fc51bcdb6a11ea5a8bbae4d1a48" }
+sim-lib-gantt = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "2c76395bf66978822210f2397a03482b1f429da8" }
 thiserror = "1"
 time = { version = "0.3", features = ["serde"] }
 

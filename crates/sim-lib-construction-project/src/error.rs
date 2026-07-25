@@ -3,7 +3,7 @@
 use time::Date;
 
 use crate::OrganizationId;
-use crate::{ControlId, ProjectId, ProjectPhase, RoleId};
+use crate::{BaselineId, ControlId, ProjectId, ProjectPhase, RoleId};
 
 /// Result alias for construction project-control validation.
 pub type Result<T> = std::result::Result<T, ConstructionProjectError>;
@@ -575,6 +575,50 @@ pub enum ConstructionProjectError {
         handoff: ControlId,
         /// Expected package.
         expected: ControlId,
+    },
+    /// The canonical Gantt plan rejected the imported schedule.
+    #[error("schedule plan validation failed: {reason}")]
+    SchedulePlan {
+        /// Schedule validation reason.
+        reason: String,
+    },
+    /// The imported schedule plan did not match the accepted baseline plan.
+    #[error(
+        "schedule plan mismatch: baseline plan {baseline_plan}, imported revision plan {imported_plan}, actual plan {actual_plan}"
+    )]
+    SchedulePlanMismatch {
+        /// Baseline plan id.
+        baseline_plan: String,
+        /// Imported revision plan id.
+        imported_plan: String,
+        /// Actual Gantt plan id.
+        actual_plan: String,
+    },
+    /// The imported schedule revision is not the accepted baseline revision.
+    #[error(
+        "schedule baseline {baseline} accepts revision {accepted_revision}, not imported revision {imported_revision}"
+    )]
+    ScheduleRevisionMismatch {
+        /// Accepted schedule baseline.
+        baseline: BaselineId,
+        /// Accepted revision.
+        accepted_revision: String,
+        /// Imported revision.
+        imported_revision: String,
+    },
+    /// A control joined a task id that does not exist in the Gantt plan.
+    #[error("schedule join {control} references missing task id {task_id}")]
+    MissingScheduleTask {
+        /// Construction control id.
+        control: ControlId,
+        /// Missing Gantt task id.
+        task_id: String,
+    },
+    /// More than one construction control joined the same Gantt task id.
+    #[error("duplicate schedule join task id {task_id}")]
+    DuplicateScheduleTaskJoin {
+        /// Duplicate Gantt task id.
+        task_id: String,
     },
     /// A non-informational control-graph cycle would make readiness recursive.
     #[error("control graph has a prohibited readiness cycle: {cycle:?}")]

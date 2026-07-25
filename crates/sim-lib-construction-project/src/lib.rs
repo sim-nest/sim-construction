@@ -43,6 +43,8 @@ mod release;
 mod requirement;
 mod review;
 mod rfi;
+mod schedule_join;
+mod schedule_status;
 mod snapshot;
 mod supplier;
 mod tender;
@@ -108,6 +110,13 @@ pub use release::{DesignRelease, DesignReleasePurpose};
 pub use requirement::{Requirement, RequirementLane};
 pub use review::{DesignReview, DesignReviewState};
 pub use rfi::{RfiRecord, RfiState};
+pub use schedule_join::{
+    ScheduleBaseline, ScheduleJoinKind, SchedulePlanRevision, ScheduleTaskJoin, ScheduleTaskJoinSet,
+};
+pub use schedule_status::{
+    ScheduleControlState, ScheduleExplanationKind, ScheduleImpactExplanation, ScheduleStatusReport,
+    explain_schedule_impact,
+};
 pub use snapshot::{
     ProjectDelta, ProjectSnapshot, ProjectSnapshotExplanation, SnapshotExplanationKind,
     snapshot_at, snapshot_delta,
@@ -140,6 +149,8 @@ mod opportunity_tests;
 mod outcome_tests;
 #[cfg(test)]
 mod procurement_tests;
+#[cfg(test)]
+mod schedule_tests;
 #[cfg(test)]
 mod supplier_tests;
 #[cfg(test)]

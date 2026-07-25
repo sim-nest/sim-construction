@@ -7,6 +7,9 @@
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/blocked-gate-graph/recipe.toml"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/blocked-gate-graph/setup.siml"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/chapter.toml"}
+{"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/control-graph-meets-gantt/purpose.md"}
+{"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/control-graph-meets-gantt/recipe.toml"}
+{"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/control-graph-meets-gantt/setup.siml"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/customer-intent-to-collaboration/purpose.md"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/customer-intent-to-collaboration/recipe.toml"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/customer-intent-to-collaboration/setup.siml"}

@@ -1,0 +1,1 @@
+Join stable construction controls to a local Gantt plan, keep the accepted baseline revision explicit, and explain critical-path, downstream, lead-time, decision, change, and optional modeled Powerproject schedule consequences.

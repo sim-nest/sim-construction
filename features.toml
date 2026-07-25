@@ -92,10 +92,10 @@ claims_specimens = [
 [[feature]]
 id = "feature/sim-construction/project-control"
 title = "Construction project control"
-summary = "Describe construction phase gate and baseline control through as-of snapshot records, project charter identity, opportunity, bid/no-bid, customer-intent, collaboration charter, append-only fact books, lifecycle vocabulary, baselines, gates, actions, decisions, design/RFI/review/release/permit/authority control, deterministic deltas, governance, capabilities, shared obligations, bounded exceptions, graph-composed blockers, and readiness with reference-only evidence."
+summary = "Describe construction phase gate and baseline control through as-of snapshot records, project charter identity, opportunity, bid/no-bid, customer-intent, collaboration charter, append-only fact books, lifecycle vocabulary, baselines, gates, actions, decisions, design/RFI/review/release/permit/authority control, deterministic deltas, governance, capabilities, shared obligations, bounded exceptions, graph-composed blockers, readiness with reference-only evidence, and baseline-aware Gantt schedule impact."
 owner = "crate/sim-lib-construction-project"
 audiences = ["user", "code", "framework"]
-guidance = "Use this row when starting a construction project-control record from stable ids, a charter, opportunity intake, customer intent with explicit unknowns, bid/no-bid or conditional-bid control, collaboration charter readiness, an append-only fact book, accepted baselines, accountable actions and decisions, design deliverables, RFIs, reviews, purpose-specific releases, permits, inspections, authority obligations, shared requirements and obligations, evidence states and validity windows, bounded construction exceptions, graph-composed blocker propagation, derived lifecycle gate reports, what-changed reports, organization-role governance, due-date and visibility policy, library-owned capabilities, and evidence readiness before planning work depends on it. Customer assumptions remain stated intent only until the shared requirement graph has accepted evidence. BCF/IFC/CAD payloads stay in installed codecs/sites; project control records only external references and decisions."
+guidance = "Use this row when starting a construction project-control record from stable ids, a charter, opportunity intake, customer intent with explicit unknowns, bid/no-bid or conditional-bid control, collaboration charter readiness, an append-only fact book, accepted baselines, accountable actions and decisions, design deliverables, RFIs, reviews, purpose-specific releases, permits, inspections, authority obligations, shared requirements and obligations, evidence states and validity windows, bounded construction exceptions, graph-composed blocker propagation, derived lifecycle gate reports, what-changed reports, organization-role governance, due-date and visibility policy, library-owned capabilities, evidence readiness before planning work depends on it, and control-to-Gantt joins that explain critical path, downstream, float-risk, late-decision, procurement lead-time, and change consequences without copying Gantt validation or placement logic. Customer assumptions remain stated intent only until the shared requirement graph has accepted evidence. BCF/IFC/CAD payloads stay in installed codecs/sites; project control records only external references and decisions."
 claims_anchors = [
   "anchor/crate/sim-lib-construction-project",
   "anchor/rustdoc/sim-lib-construction-project/crate-root",
@@ -109,12 +109,30 @@ claims_specimens = [
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/what-changed",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/design-release-to-production",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/work-package-award",
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/control-graph-meets-gantt",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/sustainability-to-reference-evidence",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/opportunity_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/fact_book_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/design_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/procurement_tests",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/schedule_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/tests",
+]
+
+[[feature]]
+id = "feature/sim-construction/gantt-schedule-impact"
+title = "Gantt critical path construction schedule impact"
+summary = "Join stable construction controls to canonical Gantt task ids and explain baseline-aware Gantt critical path construction consequences: downstream, need-date, float-risk, late-decision, procurement lead-time, and change impact."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when construction project control needs schedule impact analysis from an accepted Gantt baseline. The construction crate owns only stable control-to-task joins, baseline revision checks, as-of sequence checks, and explanations; sim-lib-gantt owns plan validation, task dependency semantics, local snapshots, and critical-path calculation, while Powerproject placement remains in the site crate."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/control-graph-meets-gantt",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/schedule_tests",
 ]
 
 [[feature]]
@@ -243,6 +261,17 @@ audiences = ["user", "code", "framework"]
 steps = [
   { feature = "feature/sim-construction/dalux-project-items", why = "The Dalux row owns modeled item reads, API-identity live gating, response checks, and narrow note patches." },
   { specimen = "recipe/sim-construction/crates/sim-site-dalux/01-basics/dalux-modeled-items", why = "The modeled recipe shows synthetic Dalux items crossing into a local office document without live service access." },
+]
+
+[[route]]
+id = "route/explain-construction-schedule-impact"
+task = "Explain construction schedule impact"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns stable control ids, accepted baselines, and control graph blockers." },
+  { feature = "feature/sim-construction/gantt-schedule-impact", why = "The schedule-impact row owns construction task joins, baseline revision checks, as-of sequence checks, and Gantt-derived schedule explanations." },
+  { feature = "feature/sim-construction/powerproject-schedule-placement", why = "The Powerproject row owns optional modeled or gated external schedule placement." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/control-graph-meets-gantt", why = "The recipe shows a local baseline plan joined to construction controls with optional modeled Powerproject placement." },
 ]
 
 [[route]]
