@@ -269,6 +269,11 @@ fn recipes_export_project_charter() {
             .iter()
             .any(|card| card.id.ends_with("mixed-obligation-gate"))
     );
+    assert!(
+        cards
+            .iter()
+            .any(|card| card.id.ends_with("customer-intent-to-collaboration"))
+    );
 }
 
 fn accepted_charter() -> ProjectCharter {

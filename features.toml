@@ -92,10 +92,10 @@ claims_specimens = [
 [[feature]]
 id = "feature/sim-construction/project-control"
 title = "Construction project control"
-summary = "Describe construction phase gate and baseline control through as-of snapshot records, project charter identity, append-only fact books, lifecycle vocabulary, baselines, gates, actions, decisions, deterministic deltas, governance, capabilities, shared obligations, bounded exceptions, graph-composed blockers, and readiness with reference-only evidence."
+summary = "Describe construction phase gate and baseline control through as-of snapshot records, project charter identity, opportunity, bid/no-bid, customer-intent, collaboration charter, append-only fact books, lifecycle vocabulary, baselines, gates, actions, decisions, deterministic deltas, governance, capabilities, shared obligations, bounded exceptions, graph-composed blockers, and readiness with reference-only evidence."
 owner = "crate/sim-lib-construction-project"
 audiences = ["user", "code", "framework"]
-guidance = "Use this row when starting a construction project-control record from stable ids, a charter, an append-only fact book, accepted baselines, accountable actions and decisions, shared requirements and obligations, evidence states and validity windows, bounded construction exceptions, graph-composed blocker propagation, derived lifecycle gate reports, what-changed reports, organization-role governance, due-date and visibility policy, library-owned capabilities, and evidence readiness before planning work depends on it."
+guidance = "Use this row when starting a construction project-control record from stable ids, a charter, opportunity intake, customer intent with explicit unknowns, bid/no-bid or conditional-bid control, collaboration charter readiness, an append-only fact book, accepted baselines, accountable actions and decisions, shared requirements and obligations, evidence states and validity windows, bounded construction exceptions, graph-composed blocker propagation, derived lifecycle gate reports, what-changed reports, organization-role governance, due-date and visibility policy, library-owned capabilities, and evidence readiness before planning work depends on it. Customer assumptions remain stated intent only until the shared requirement graph has accepted evidence."
 claims_anchors = [
   "anchor/crate/sim-lib-construction-project",
   "anchor/rustdoc/sim-lib-construction-project/crate-root",
@@ -105,7 +105,9 @@ claims_specimens = [
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/mixed-obligation-gate",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/blocked-gate-graph",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/late-decision",
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/customer-intent-to-collaboration",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/what-changed",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/opportunity_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/fact_book_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/tests",
 ]
@@ -219,4 +221,14 @@ audiences = ["user", "code", "framework"]
 steps = [
   { feature = "feature/sim-construction/project-control", why = "The project-control row owns append-only facts, deterministic as-of snapshots, deltas, conflicts, corrections, and reference-only evidence." },
   { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/what-changed", why = "The what-changed recipe shows a modeled fact correction and a stable change report between project sequences." },
+]
+
+[[route]]
+id = "route/customer-intent-to-collaboration-gate"
+task = "Take customer intent to a construction collaboration gate"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns explicit customer intent, bid/no-bid control, and collaboration readiness without a CRM or estimating workflow substrate." },
+  { feature = "feature/sim-construction/obligation-evidence-exceptions", why = "The shared requirement graph proves that unstated customer assumptions remain missing until accepted evidence satisfies the requirement." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/customer-intent-to-collaboration", why = "The recipe traces modeled customer intent through conditional bid control to missing main-contract evidence for a collaboration gate." },
 ]

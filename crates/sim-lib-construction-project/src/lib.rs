@@ -13,8 +13,10 @@
 mod action;
 mod authority;
 mod baseline;
+mod bid;
 mod book;
 mod charter;
+mod collaboration;
 mod control_graph;
 mod decision;
 mod error;
@@ -24,8 +26,10 @@ mod fact;
 mod gate;
 mod governance;
 mod identity;
+mod intent;
 mod lifecycle;
 mod obligation;
+mod opportunity;
 mod policy;
 mod readiness;
 mod requirement;
@@ -40,8 +44,10 @@ pub use authority::{
     construction_project_write_capability, construction_reference_publish_capability,
 };
 pub use baseline::{AcceptedBaseline, BaselineKind};
+pub use bid::{BidDecision, BidDecisionKind, OfferBasisReport};
 pub use book::{DEFAULT_MAX_PROJECT_FACTS, ProjectBook};
 pub use charter::{CurrencyCode, PROJECT_CHARTER_KIND, ProjectCharter, ReportingCadence};
+pub use collaboration::{CollaborationCharter, CollaborationReadinessReport};
 pub use control_graph::{
     ControlEdge, ControlEdgeKind, ControlExplanationPath, ControlExplanationStep, ControlGraph,
     ControlGraphAnalysis, ControlGraphProjection, ControlNode, ControlNodeKind,
@@ -56,8 +62,13 @@ pub use governance::{
     DueDatePolicy, ProjectGovernance, RoleAssignment, Visibility, VisibilityPolicy,
 };
 pub use identity::{BaselineId, ControlId, OrganizationId, ProjectId, RoleId};
+pub use intent::{
+    ConstructionVariant, CustomerIntent, CustomerIntentAcceptance, IntentCoverageReport,
+    IntentField,
+};
 pub use lifecycle::{LifecyclePolicy, PhaseOverlap, PhaseTransition, ProjectPhase};
 pub use obligation::{ObligationPolicy, ProjectObligation};
+pub use opportunity::{OpportunityRecord, OpportunitySource};
 pub use policy::{GatePolicy, GatePolicyReport, RequirementExplanation};
 pub use readiness::{CharterReadiness, evaluate_charter};
 pub use requirement::{Requirement, RequirementLane};
@@ -78,5 +89,7 @@ mod fact_book_tests;
 mod lifecycle_tests;
 #[cfg(test)]
 mod obligation_tests;
+#[cfg(test)]
+mod opportunity_tests;
 #[cfg(test)]
 mod tests;
