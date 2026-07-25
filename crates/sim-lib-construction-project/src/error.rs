@@ -341,6 +341,64 @@ pub enum ConstructionProjectError {
         /// Rejected exception.
         exception: ControlId,
     },
+    /// A design-control record references a revision that is not present.
+    #[error("{kind} {control} references missing design revision {revision}")]
+    MissingDesignRevision {
+        /// Referencing record kind.
+        kind: &'static str,
+        /// Referencing control.
+        control: ControlId,
+        /// Missing revision control.
+        revision: ControlId,
+    },
+    /// More than one current revision exists for an affected control.
+    #[error("affected control {affected} has conflicting current design revisions {revisions:?}")]
+    ConflictingDesignRevisions {
+        /// Affected package, task, or control.
+        affected: ControlId,
+        /// Current revision controls.
+        revisions: Vec<ControlId>,
+    },
+    /// A design release used the wrong purpose for the requested readiness.
+    #[error("release {release} purpose {actual} does not satisfy required purpose {required}")]
+    DesignReleasePurposeMismatch {
+        /// Release control.
+        release: ControlId,
+        /// Required purpose.
+        required: String,
+        /// Actual purpose.
+        actual: String,
+    },
+    /// A release points at a superseded design revision and has not been revalidated.
+    #[error(
+        "release {release} for revision {revision} is stale after superseding revision {superseding}"
+    )]
+    StaleDesignRelease {
+        /// Stale release control.
+        release: ControlId,
+        /// Released revision.
+        revision: ControlId,
+        /// Superseding revision.
+        superseding: ControlId,
+    },
+    /// A release decision was made by a role that lacks matching authority.
+    #[error("release {release} by {actual} does not match authority {expected}")]
+    DesignReleaseAuthorityMismatch {
+        /// Release control.
+        release: ControlId,
+        /// Authorized release role.
+        expected: RoleId,
+        /// Actual decision role.
+        actual: RoleId,
+    },
+    /// A non-waivable production blocker was still active.
+    #[error("production blocker {blocker} is non-waivable for {target}")]
+    NonWaivableProductionBlocker {
+        /// Blocked control.
+        target: ControlId,
+        /// Non-waivable blocker.
+        blocker: ControlId,
+    },
     /// A control-graph edge named an endpoint that is not present as a node.
     #[error("control graph edge {edge} references missing {endpoint_role} endpoint {endpoint}")]
     ControlGraphMissingEndpoint {

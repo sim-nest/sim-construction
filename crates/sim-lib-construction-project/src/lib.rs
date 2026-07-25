@@ -19,6 +19,7 @@ mod charter;
 mod collaboration;
 mod control_graph;
 mod decision;
+mod design;
 mod error;
 mod evidence_state;
 mod exception;
@@ -30,9 +31,13 @@ mod intent;
 mod lifecycle;
 mod obligation;
 mod opportunity;
+mod permit;
 mod policy;
 mod readiness;
+mod release;
 mod requirement;
+mod review;
+mod rfi;
 mod snapshot;
 
 pub use action::{ActionResolution, ActionState, ProjectAction};
@@ -53,6 +58,7 @@ pub use control_graph::{
     ControlGraphAnalysis, ControlGraphProjection, ControlNode, ControlNodeKind,
 };
 pub use decision::{DecisionResolution, DecisionState, ProjectDecision};
+pub use design::{DesignBlocker, DesignControlSet, DesignReadinessReport, DesignRevision};
 pub use error::{ConstructionProjectError, Result};
 pub use evidence_state::{EvidenceState, EvidenceValidity};
 pub use exception::{ExceptionDecision, ExceptionScope};
@@ -69,9 +75,16 @@ pub use intent::{
 pub use lifecycle::{LifecyclePolicy, PhaseOverlap, PhaseTransition, ProjectPhase};
 pub use obligation::{ObligationPolicy, ProjectObligation};
 pub use opportunity::{OpportunityRecord, OpportunitySource};
+pub use permit::{
+    AuthorityObligation, AuthorityObligationState, InspectionRecord, InspectionState, PermitRecord,
+    PermitState,
+};
 pub use policy::{GatePolicy, GatePolicyReport, RequirementExplanation};
 pub use readiness::{CharterReadiness, evaluate_charter};
+pub use release::{DesignRelease, DesignReleasePurpose};
 pub use requirement::{Requirement, RequirementLane};
+pub use review::{DesignReview, DesignReviewState};
+pub use rfi::{RfiRecord, RfiState};
 pub use snapshot::{
     ProjectDelta, ProjectSnapshot, ProjectSnapshotExplanation, SnapshotExplanationKind,
     snapshot_at, snapshot_delta,
@@ -83,6 +96,8 @@ pub static RECIPES: sim_cookbook::EmbeddedDir =
 
 #[cfg(test)]
 mod control_graph_tests;
+#[cfg(test)]
+mod design_tests;
 #[cfg(test)]
 mod fact_book_tests;
 #[cfg(test)]

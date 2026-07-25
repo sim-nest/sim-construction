@@ -31,6 +31,20 @@ pub enum ControlNodeKind {
     Outcome,
     /// Readiness or lifecycle gate.
     Gate,
+    /// Design deliverable revision.
+    DesignRevision,
+    /// Design review.
+    DesignReview,
+    /// Request for information.
+    Rfi,
+    /// Purpose-specific design release.
+    DesignRelease,
+    /// Authority permit.
+    Permit,
+    /// Authority inspection.
+    Inspection,
+    /// Authority obligation.
+    AuthorityObligation,
 }
 
 /// Stable construction-control graph node.

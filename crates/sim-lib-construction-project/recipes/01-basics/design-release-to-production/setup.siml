@@ -1,0 +1,91 @@
+(expr:map
+  [kind construction/design-release-to-production]
+  [project reference-center]
+  [target package.frame]
+  [as-of-date "2026-07-23"]
+  [required-purpose production]
+  [design-revisions [
+    (expr:map
+      [id design.a]
+      [revision A]
+      [responsible-role designer]
+      [need-date "2026-07-20"]
+      [affected-control-ids [package.frame]]
+      [evidence-state Accepted]
+      [external-refs [
+        (expr:map [backend doc/synthetic] [external-id cad/frame] [version A])
+        (expr:map [backend codec/ifc] [external-id model/frame] [version A])]])]
+  [reviews [
+    (expr:map
+      [id review.design-a]
+      [design-revision design.a]
+      [responsible-role reviewer]
+      [need-date "2026-07-21"]
+      [affected-control-ids [package.frame]]
+      [state Accepted]
+      [evidence-state Accepted]
+      [external-refs [
+        (expr:map [backend doc/synthetic] [external-id review/design-a] [version accepted])]])]
+  [rfis [
+    (expr:map
+      [id rfi.fire-rating]
+      [responsible-role designer]
+      [need-date "2026-07-21"]
+      [affected-control-ids [package.frame]]
+      [state Accepted]
+      [evidence-state Accepted]
+      [external-refs [
+        (expr:map [backend doc/synthetic] [external-id rfi/fire-rating] [version accepted])]])]
+  [releases [
+    (expr:map
+      [id release.prod]
+      [design-revision design.a]
+      [revision A]
+      [purpose production]
+      [responsible-role designer]
+      [release-authority project-chief]
+      [released-by project-chief]
+      [need-date "2026-07-22"]
+      [affected-control-ids [package.frame]]
+      [evidence-state Accepted]
+      [external-refs [
+        (expr:map [backend doc/synthetic] [external-id release/production] [version accepted])]])]
+  [permits [
+    (expr:map
+      [id permit.fire]
+      [responsible-role authority-lead]
+      [need-date "2026-07-22"]
+      [affected-control-ids [package.frame]]
+      [state Granted]
+      [evidence-state Accepted]
+      [valid-until "2026-08-31"]
+      [external-refs [
+        (expr:map [backend doc/synthetic] [external-id permit/fire] [version granted])]])]
+  [inspections [
+    (expr:map
+      [id inspection.mockup]
+      [responsible-role authority-lead]
+      [need-date "2026-07-22"]
+      [affected-control-ids [package.frame]]
+      [state Passed]
+      [evidence-state Accepted]
+      [external-refs [
+        (expr:map [backend doc/synthetic] [external-id inspection/mockup] [version passed])]])]
+  [authority-obligations [
+    (expr:map
+      [id authority.noise]
+      [responsible-role authority-lead]
+      [need-date "2026-07-22"]
+      [affected-control-ids [package.frame]]
+      [state Satisfied]
+      [evidence-state Accepted]
+      [non-waivable true]
+      [external-refs [
+        (expr:map [backend doc/synthetic] [external-id authority/noise] [version satisfied])]])]
+  [readiness
+    (expr:map
+      [ready true]
+      [current-revisions [design.a]]
+      [releases [release.prod]]
+      [blockers []])]
+  [payload-boundary references-only])

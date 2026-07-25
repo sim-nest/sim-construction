@@ -92,10 +92,10 @@ claims_specimens = [
 [[feature]]
 id = "feature/sim-construction/project-control"
 title = "Construction project control"
-summary = "Describe construction phase gate and baseline control through as-of snapshot records, project charter identity, opportunity, bid/no-bid, customer-intent, collaboration charter, append-only fact books, lifecycle vocabulary, baselines, gates, actions, decisions, deterministic deltas, governance, capabilities, shared obligations, bounded exceptions, graph-composed blockers, and readiness with reference-only evidence."
+summary = "Describe construction phase gate and baseline control through as-of snapshot records, project charter identity, opportunity, bid/no-bid, customer-intent, collaboration charter, append-only fact books, lifecycle vocabulary, baselines, gates, actions, decisions, design/RFI/review/release/permit/authority control, deterministic deltas, governance, capabilities, shared obligations, bounded exceptions, graph-composed blockers, and readiness with reference-only evidence."
 owner = "crate/sim-lib-construction-project"
 audiences = ["user", "code", "framework"]
-guidance = "Use this row when starting a construction project-control record from stable ids, a charter, opportunity intake, customer intent with explicit unknowns, bid/no-bid or conditional-bid control, collaboration charter readiness, an append-only fact book, accepted baselines, accountable actions and decisions, shared requirements and obligations, evidence states and validity windows, bounded construction exceptions, graph-composed blocker propagation, derived lifecycle gate reports, what-changed reports, organization-role governance, due-date and visibility policy, library-owned capabilities, and evidence readiness before planning work depends on it. Customer assumptions remain stated intent only until the shared requirement graph has accepted evidence."
+guidance = "Use this row when starting a construction project-control record from stable ids, a charter, opportunity intake, customer intent with explicit unknowns, bid/no-bid or conditional-bid control, collaboration charter readiness, an append-only fact book, accepted baselines, accountable actions and decisions, design deliverables, RFIs, reviews, purpose-specific releases, permits, inspections, authority obligations, shared requirements and obligations, evidence states and validity windows, bounded construction exceptions, graph-composed blocker propagation, derived lifecycle gate reports, what-changed reports, organization-role governance, due-date and visibility policy, library-owned capabilities, and evidence readiness before planning work depends on it. Customer assumptions remain stated intent only until the shared requirement graph has accepted evidence. BCF/IFC/CAD payloads stay in installed codecs/sites; project control records only external references and decisions."
 claims_anchors = [
   "anchor/crate/sim-lib-construction-project",
   "anchor/rustdoc/sim-lib-construction-project/crate-root",
@@ -107,9 +107,27 @@ claims_specimens = [
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/late-decision",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/customer-intent-to-collaboration",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/what-changed",
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/design-release-to-production",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/opportunity_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/fact_book_tests",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/design_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/tests",
+]
+
+[[feature]]
+id = "feature/sim-construction/design-release-authority-control"
+title = "Construction design release and authority control"
+summary = "Trace current design revisions, RFIs, reviews, purpose-specific releases, permits, inspections, and authority obligations into package or task readiness through the shared construction control graph."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when a construction package must prove a named design revision is current, reviewed, RFI-resolved, released for procurement/production/handover or an open purpose, and free of current permit, inspection, and authority blockers. Store only ExternalRef evidence and accountable decisions; leave BCF, IFC, CAD, and office payload handling to installed codecs and sites."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/design-release-to-production",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/design_tests",
 ]
 
 [[feature]]
@@ -221,6 +239,16 @@ audiences = ["user", "code", "framework"]
 steps = [
   { feature = "feature/sim-construction/project-control", why = "The project-control row owns append-only facts, deterministic as-of snapshots, deltas, conflicts, corrections, and reference-only evidence." },
   { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/what-changed", why = "The what-changed recipe shows a modeled fact correction and a stable change report between project sequences." },
+]
+
+[[route]]
+id = "route/prove-construction-design-release"
+task = "Prove design is released for construction production"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns stable construction ids, evidence states, role accountability, and the shared graph substrate." },
+  { feature = "feature/sim-construction/design-release-authority-control", why = "The design-control row owns current revision, RFI, review, purpose-specific release, permit, inspection, authority obligation, stale release, and blocker derivation." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/design-release-to-production", why = "The recipe proves a production package through synthetic references without storing design payloads." },
 ]
 
 [[route]]

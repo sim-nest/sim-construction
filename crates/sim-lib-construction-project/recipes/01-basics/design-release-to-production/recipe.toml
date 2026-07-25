@@ -1,0 +1,8 @@
+id = "design-release-to-production"
+title = "Design release to production"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 65
+tags = ["construction", "project-control", "design", "rfi", "release", "permit", "authority"]
+requires = ["construction.project.read", "construction.project.write", "codec/lisp"]

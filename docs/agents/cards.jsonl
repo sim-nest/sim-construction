@@ -10,6 +10,9 @@
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/customer-intent-to-collaboration/purpose.md"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/customer-intent-to-collaboration/recipe.toml"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/customer-intent-to-collaboration/setup.siml"}
+{"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/design-release-to-production/purpose.md"}
+{"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/design-release-to-production/recipe.toml"}
+{"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/design-release-to-production/setup.siml"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/late-decision/purpose.md"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/late-decision/recipe.toml"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/late-decision/setup.siml"}
