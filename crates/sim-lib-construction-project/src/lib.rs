@@ -27,6 +27,7 @@ mod exception;
 mod fact;
 mod gate;
 mod governance;
+mod handoff;
 mod identity;
 mod intent;
 mod lifecycle;
@@ -41,6 +42,7 @@ mod requirement;
 mod review;
 mod rfi;
 mod snapshot;
+mod supplier;
 mod tender;
 mod work_package;
 
@@ -48,9 +50,10 @@ pub use action::{ActionResolution, ActionState, ProjectAction};
 pub use authority::{
     CONSTRUCTION_EXCEPTION_CAPABILITY, CONSTRUCTION_PROJECT_ACCEPT_CAPABILITY,
     CONSTRUCTION_PROJECT_READ_CAPABILITY, CONSTRUCTION_PROJECT_WRITE_CAPABILITY,
-    CONSTRUCTION_REFERENCE_PUBLISH_CAPABILITY, construction_exception_capability,
-    construction_project_accept_capability, construction_project_read_capability,
-    construction_project_write_capability, construction_reference_publish_capability,
+    CONSTRUCTION_REFERENCE_PUBLISH_CAPABILITY, CONSTRUCTION_SUPPLIER_READ_CAPABILITY,
+    construction_exception_capability, construction_project_accept_capability,
+    construction_project_read_capability, construction_project_write_capability,
+    construction_reference_publish_capability, construction_supplier_read_capability,
 };
 pub use award::{AwardDecision, AwardDecisionKind};
 pub use baseline::{AcceptedBaseline, BaselineKind};
@@ -71,6 +74,9 @@ pub use fact::{MAX_FACT_BODY_NODES, MAX_FACT_EVIDENCE_REFS, ProjectFact, expr_no
 pub use gate::{GateDecision, GateDecisionKind, GateReport, GateRequirement, PhaseGate};
 pub use governance::{
     DueDatePolicy, ProjectGovernance, RoleAssignment, Visibility, VisibilityPolicy,
+};
+pub use handoff::{
+    HandoffReadinessReport, PackageHandoff, PackageHandoffBlocker, PackageHandoffControlSet,
 };
 pub use identity::{BaselineId, ControlId, OrganizationId, ProjectId, RoleId};
 pub use intent::{
@@ -98,6 +104,11 @@ pub use snapshot::{
     ProjectDelta, ProjectSnapshot, ProjectSnapshotExplanation, SnapshotExplanationKind,
     snapshot_at, snapshot_delta,
 };
+pub use supplier::{
+    QualificationEvidence, QualificationRequirement, QualificationStatus,
+    SupplierQualificationArea, SupplierQualificationReport, SupplierQualificationSet,
+    SupplierReference,
+};
 pub use tender::{ScopeCompliance, TenderComparison, TenderQualification};
 pub use work_package::{CommercialAmount, SupplierCandidate, WorkPackage};
 
@@ -119,5 +130,7 @@ mod obligation_tests;
 mod opportunity_tests;
 #[cfg(test)]
 mod procurement_tests;
+#[cfg(test)]
+mod supplier_tests;
 #[cfg(test)]
 mod tests;

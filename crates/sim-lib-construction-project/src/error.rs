@@ -2,6 +2,7 @@
 
 use time::Date;
 
+use crate::OrganizationId;
 use crate::{ControlId, ProjectId, ProjectPhase, RoleId};
 
 /// Result alias for construction project-control validation.
@@ -526,6 +527,54 @@ pub enum ConstructionProjectError {
         decided_on: Date,
         /// Package need date.
         need_date: Date,
+    },
+    /// A supplier exceeds the accepted subcontract depth.
+    #[error(
+        "supplier {supplier} subcontract depth {depth} exceeds accepted depth {max_accepted_depth}"
+    )]
+    SupplierDepthExceeded {
+        /// Supplier organization.
+        supplier: OrganizationId,
+        /// Actual subcontract depth.
+        depth: u8,
+        /// Accepted subcontract depth.
+        max_accepted_depth: u8,
+    },
+    /// A supplier qualification record references a missing supplier.
+    #[error("supplier qualification references missing supplier {supplier}")]
+    UnknownSupplier {
+        /// Supplier organization.
+        supplier: OrganizationId,
+    },
+    /// A qualification decision references a missing requirement.
+    #[error("qualification decision references missing requirement {requirement}")]
+    UnknownQualificationRequirement {
+        /// Missing requirement.
+        requirement: ControlId,
+    },
+    /// A qualification decision was made by a role without supplier authority.
+    #[error("supplier {supplier} qualification by {actual} does not match authority {expected}")]
+    QualificationAuthorityMismatch {
+        /// Supplier organization.
+        supplier: OrganizationId,
+        /// Authorized role.
+        expected: RoleId,
+        /// Actual role.
+        actual: RoleId,
+    },
+    /// A package handoff record was not present.
+    #[error("package handoff {handoff} is missing")]
+    MissingPackageHandoff {
+        /// Missing handoff control.
+        handoff: ControlId,
+    },
+    /// Handoff package did not match its derived report inputs.
+    #[error("handoff {handoff} does not match report package {expected}")]
+    HandoffPackageMismatch {
+        /// Handoff control.
+        handoff: ControlId,
+        /// Expected package.
+        expected: ControlId,
     },
     /// A non-informational control-graph cycle would make readiness recursive.
     #[error("control graph has a prohibited readiness cycle: {cycle:?}")]

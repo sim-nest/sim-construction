@@ -51,6 +51,8 @@ pub enum ProcurementStatus {
     Awarded {
         /// Selected supplier.
         supplier: String,
+        /// Accountable award decision.
+        award: ControlId,
         /// Selected tender.
         tender: ControlId,
     },
@@ -148,6 +150,7 @@ impl ProcurementControlSet {
         let status = if let Some((award, tender)) = &award {
             ProcurementStatus::Awarded {
                 supplier: tender.supplier.clone(),
+                award: award.control.clone(),
                 tender: award
                     .selected_tender
                     .clone()

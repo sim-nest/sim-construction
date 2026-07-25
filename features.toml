@@ -133,6 +133,22 @@ claims_specimens = [
 ]
 
 [[feature]]
+id = "feature/sim-construction/supplier-production-handoff"
+title = "Construction supplier qualification and production handoff"
+summary = "Derive project-scoped supplier qualification and production handoff readiness from subcontract-chain references, shared qualification obligations, restricted external evidence, accountable award decisions, production design releases, material lead time, production need dates, and explicit responsibility acceptance."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when a construction work package must prove that an awarded supplier is actually ready for production handoff. Keep suppliers as stable organization references and restricted evidence refs; do not use this crate as a vendor master, credential store, identity provider, bank-detail system, or compliance web client. A signed contract or award alone is not production readiness."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/supplier-to-production-handoff",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/supplier_tests",
+]
+
+[[feature]]
 id = "feature/sim-construction/design-release-authority-control"
 title = "Construction design release and authority control"
 summary = "Trace current design revisions, RFIs, reviews, purpose-specific releases, permits, inspections, and authority obligations into package or task readiness through the shared construction control graph."
@@ -277,6 +293,18 @@ steps = [
   { feature = "feature/sim-construction/project-control", why = "The project-control row supplies stable project ids, evidence references, governance roles, design inputs, and the accepted charter currency." },
   { feature = "feature/sim-construction/work-package-procurement-awards", why = "The procurement row owns stable package scope, supplier candidates, tender comparison facts, checked Amount comparisons, award authority, date consequences, and exposed interfaces." },
   { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/work-package-award", why = "The recipe shows one package through inquiry basis, corrected tender evidence, accountable award, and need-date consequence without ledger cloning." },
+]
+
+[[route]]
+id = "route/prove-construction-supplier-production-handoff"
+task = "Prove a construction supplier is ready to hand off"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns stable project ids, evidence states, role accountability, and reference-only evidence boundaries." },
+  { feature = "feature/sim-construction/work-package-procurement-awards", why = "The procurement row proves the package has an accountable award without treating award as production readiness." },
+  { feature = "feature/sim-construction/design-release-authority-control", why = "The design-control row proves the released design is current for production." },
+  { feature = "feature/sim-construction/supplier-production-handoff", why = "The supplier handoff row owns qualification obligations, restricted supplier evidence, subcontract depth, expiry/conflict/rejection states, material lead time, and responsibility acceptance." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/supplier-to-production-handoff", why = "The recipe joins award, qualified supplier, production release, material timing, and accepted responsibility into one handoff-ready report." },
 ]
 
 [[route]]
