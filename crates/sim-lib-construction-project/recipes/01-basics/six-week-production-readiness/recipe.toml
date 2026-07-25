@@ -1,0 +1,8 @@
+id = "six-week-production-readiness"
+title = "Six-week production readiness"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 95
+tags = ["construction", "project-control", "production", "lookahead", "readiness", "gantt"]
+requires = ["construction.project.read", "construction.project.write", "codec/lisp"]

@@ -1,0 +1,60 @@
+(expr:map
+  [kind construction/six-week-production-readiness]
+  [project reference-center]
+  [as-of-seq 20]
+  [as-of-date "2026-07-01"]
+  [schedule-baseline (expr:map
+    [baseline baseline.schedule]
+    [plan baseline-plan]
+    [accepted-revision rev-a]
+    [accepted-seq 1])]
+  [activity (expr:map
+    [id activity.frame]
+    [task task.frame]
+    [work-package package.frame]
+    [system structure]
+    [area area-a]
+    [location level-02]
+    [responsible-role site-manager]
+    [planned-interval ["2026-07-08" "2026-07-10"])]
+  [shared-requirements [
+    release.design
+    permit.authority
+    award.handoff
+    work-preparation
+    risk-assessment
+    method
+    material
+    equipment
+    staffing
+    competence
+    introduction
+    logistics
+    inspection-plan
+    predecessor-work]]
+  [requirement-facts [
+    (expr:map [id release.design] [state Accepted] [seq 2] [owner design-lead])
+    (expr:map [id risk-assessment] [state Expired] [seq 11] [owner safety-lead] [need-on "2026-07-08"])
+    (expr:map [id material] [state Reported] [seq 4] [owner procurement] [need-on "2026-07-08"])
+    (expr:map [id introduction] [state Missing] [owner site-manager] [need-on "2026-07-08"])]]
+  [exception (expr:map
+    [id exception.material]
+    [scope [material]]
+    [decided-by project-chief]
+    [expires-on "2026-07-12"]
+    [reason "Supplier delivery accepted for resequenced frame start"])]
+  [commitment (expr:map
+    [activity activity.frame]
+    [committed-by site-manager]
+    [seq 19]
+    [note "Foreman commits to frame start"])]
+  [derived (expr:map
+    [six-week-demand [activity.frame]]
+    [three-week-commitment [activity.frame]]
+    [state NotReady]
+    [constraint-owner safety-lead]
+    [need-date "2026-07-08"]
+    [consequence "frame production cannot start until non-waivable safety readiness is current"]
+    [escalation project-chief]
+    [commitment-is-separate true]
+    [explanation-sequence-retained true])])

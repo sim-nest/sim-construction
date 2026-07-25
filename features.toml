@@ -110,11 +110,13 @@ claims_specimens = [
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/design-release-to-production",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/work-package-award",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/control-graph-meets-gantt",
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/six-week-production-readiness",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/sustainability-to-reference-evidence",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/opportunity_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/fact_book_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/design_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/procurement_tests",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/production_plan_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/schedule_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/tests",
 ]
@@ -149,6 +151,22 @@ claims_anchors = [
 claims_specimens = [
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/sustainability-to-reference-evidence",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/outcome_tests",
+]
+
+[[feature]]
+id = "feature/sim-construction/production-lookahead-readiness"
+title = "Construction lookahead production readiness"
+summary = "Derive six-week demand and three-week production commitments from accepted Gantt task joins, work packages, location/system breakdowns, shared requirements, validity windows, accountable exceptions, and separate human commitment facts."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when a project chief needs near-term executable work: production activities remain joined to canonical Gantt tasks, work packages, system, area, location, responsible role, planned interval, and accepted baseline; released design, permits, award/handoff, work preparation, risk assessment, method, material, equipment, staffing, competence, introduction, logistics, inspection plan, and predecessor work are shared requirements rather than planning booleans; commitment facts stay distinct from computed ready/not-ready/unknown results so weekly reliability can distinguish late evidence from bad commitments."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/six-week-production-readiness",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/production_plan_tests",
 ]
 
 [[feature]]
@@ -291,6 +309,17 @@ steps = [
   { feature = "feature/sim-construction/project-control", why = "The project-control row supplies charter identity, shared obligations, evidence states, and reference-only evidence." },
   { feature = "feature/sim-construction/sustainability-reference-outcomes", why = "The sustainability row owns method and boundary provenance, source-retained quantities, coverage, blockers, supersession, disclosure, and reference-claim admissibility." },
   { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/sustainability-to-reference-evidence", why = "The recipe shows climate and place targets traced from charter references to accepted or rejected reference evidence." },
+]
+
+[[route]]
+id = "route/prove-three-to-six-week-construction-readiness"
+task = "Prove three-to-six-week construction readiness"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns accepted facts, shared requirements, exceptions, and retained snapshot sequence evidence." },
+  { feature = "feature/sim-construction/gantt-schedule-impact", why = "The schedule row owns accepted baseline task joins and Gantt validation without duplicating schedule logic." },
+  { feature = "feature/sim-construction/production-lookahead-readiness", why = "The lookahead row derives six-week demand, three-week commitments, constraint owner, need date, consequence, escalation, ready/not-ready/unknown, and separate human commitments." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/six-week-production-readiness", why = "The recipe shows a project-chief readiness snapshot over shared construction facts and accepted schedule joins." },
 ]
 
 [[route]]

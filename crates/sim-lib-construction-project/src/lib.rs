@@ -31,6 +31,7 @@ mod handoff;
 mod identity;
 mod intent;
 mod lifecycle;
+mod lookahead;
 mod obligation;
 mod opportunity;
 mod outcome;
@@ -38,6 +39,7 @@ mod outcome_symbol;
 mod permit;
 mod policy;
 mod procurement;
+mod production_plan;
 mod readiness;
 mod release;
 mod requirement;
@@ -88,6 +90,11 @@ pub use intent::{
     IntentField,
 };
 pub use lifecycle::{LifecyclePolicy, PhaseOverlap, PhaseTransition, ProjectPhase};
+pub use lookahead::{
+    AcceptedTaskWindow, LookaheadWindow, ProductionActivity, ProductionActivityReadiness,
+    ProductionCommitment, ProductionConstraint, ProductionReadinessSnapshot,
+    ProductionReadinessState, ProductionTaskMovement,
+};
 pub use obligation::{ObligationPolicy, ProjectObligation};
 pub use opportunity::{OpportunityRecord, OpportunitySource};
 pub use outcome::{
@@ -105,6 +112,7 @@ pub use procurement::{
     AwardConsequence, InterfaceExposure, PackageReadinessReport, ProcurementComparison,
     ProcurementControlSet, ProcurementDateReport, ProcurementStatus, TenderEvaluation,
 };
+pub use production_plan::ProductionPlan;
 pub use readiness::{CharterReadiness, evaluate_charter};
 pub use release::{DesignRelease, DesignReleasePurpose};
 pub use requirement::{Requirement, RequirementLane};
@@ -149,6 +157,8 @@ mod opportunity_tests;
 mod outcome_tests;
 #[cfg(test)]
 mod procurement_tests;
+#[cfg(test)]
+mod production_plan_tests;
 #[cfg(test)]
 mod schedule_tests;
 #[cfg(test)]
