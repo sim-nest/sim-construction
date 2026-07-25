@@ -1,0 +1,71 @@
+(expr:map
+  [kind construction/work-package-award]
+  [project reference-center]
+  [charter-currency SEK]
+  [package
+    (expr:map
+      [id package.frame]
+      [name "Frame work package"]
+      [scope-inclusions ["glulam frame supply" "site installation"]]
+      [scope-exclusions ["foundation anchors"]]
+      [interfaces [interface.foundation interface.facade]]
+      [design-inputs [design.frame]]
+      [inquiry-due-on "2026-07-10"]
+      [award-due-on "2026-07-20"]
+      [need-on "2026-07-25"]
+      [procurement-owner procurement]
+      [award-authority project-chief]
+      [target-amount (expr:map [amount "120000.00"] [currency SEK])]
+      [supplier-candidates [
+        (expr:map [supplier supplier-alpha] [awardable true] [evidence [candidate/supplier-alpha]])
+        (expr:map [supplier supplier-beta] [awardable true] [evidence [candidate/supplier-beta]])]]
+      [evidence [inquiry/frame/basis-a]])]
+  [tenders [
+    (expr:map
+      [id tender.alpha]
+      [supplier supplier-alpha]
+      [scope-compliance Compliant]
+      [lead-time-days 21]
+      [capacity "capacity reserved for need date"]
+      [qualification Qualified]
+      [commercial-amount (expr:map [amount "100000.00"] [currency SEK])]
+      [evidence [tender/alpha/evaluation]])
+    (expr:map
+      [id tender.alpha.corrected]
+      [supplier supplier-alpha]
+      [supersedes tender.alpha]
+      [scope-compliance Compliant]
+      [lead-time-days 21]
+      [capacity "capacity reserved for need date"]
+      [qualification Qualified]
+      [commercial-amount (expr:map [amount "95000.00"] [currency SEK])]
+      [evidence [tender/alpha/corrected-evaluation]])
+    (expr:map
+      [id tender.beta]
+      [supplier supplier-beta]
+      [scope-compliance Compliant]
+      [lead-time-days 23]
+      [capacity "capacity available after shop drawing freeze"]
+      [qualification Qualified]
+      [commercial-amount (expr:map [amount "105000.00"] [currency SEK])]
+      [evidence [tender/beta/evaluation]])]
+  [comparison
+    (expr:map
+      [comparable [tender.alpha.corrected tender.beta]]
+      [corrected [tender.alpha]]
+      [lowest tender.alpha.corrected]
+      [variance-to-target "-25000.00"])]
+  [award
+    (expr:map
+      [id award.frame]
+      [selected-tender tender.alpha.corrected]
+      [decided-by project-chief]
+      [decided-on "2026-07-18"]
+      [evidence [award/frame/approved]])]
+  [readiness
+    (expr:map
+      [status Awarded]
+      [supplier supplier-alpha]
+      [need-date-exposed false]
+      [interfaces-exposed []])]
+  [payload-boundary references-only])

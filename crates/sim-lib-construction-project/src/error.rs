@@ -419,6 +419,114 @@ pub enum ConstructionProjectError {
         /// Target control.
         target: ControlId,
     },
+    /// A commercial amount used a currency different from the project charter.
+    #[error("{field} currency {actual} does not match project charter currency {expected}")]
+    CurrencyMismatch {
+        /// Field carrying the rejected currency.
+        field: &'static str,
+        /// Expected project currency.
+        expected: String,
+        /// Actual currency.
+        actual: String,
+    },
+    /// A commercial amount was zero or negative.
+    #[error("{field} amount must be positive")]
+    NonPositiveAmount {
+        /// Field carrying the rejected amount.
+        field: &'static str,
+    },
+    /// Checked commercial amount arithmetic overflowed.
+    #[error("{field} amount arithmetic overflowed")]
+    AmountOverflow {
+        /// Arithmetic field that overflowed.
+        field: &'static str,
+    },
+    /// A tender references a supplier that is not a package candidate.
+    #[error("tender {tender} references supplier {supplier} that is not a package candidate")]
+    UnknownTenderSupplier {
+        /// Tender control.
+        tender: ControlId,
+        /// Unknown supplier.
+        supplier: String,
+    },
+    /// A tender references a different work package.
+    #[error("tender {tender} package {actual} does not match work package {expected}")]
+    TenderPackageMismatch {
+        /// Expected work package.
+        expected: ControlId,
+        /// Actual work package.
+        actual: ControlId,
+        /// Tender control.
+        tender: ControlId,
+    },
+    /// A tender cannot be compared for an award decision.
+    #[error("tender {tender} is not comparable: {reason}")]
+    NonComparableTender {
+        /// Tender control.
+        tender: ControlId,
+        /// Reason the tender is not comparable.
+        reason: &'static str,
+    },
+    /// A tender supersession points at a missing tender.
+    #[error("tender {tender} corrects missing tender {supersedes}")]
+    MissingSupersededTender {
+        /// Correcting tender.
+        tender: ControlId,
+        /// Missing tender.
+        supersedes: ControlId,
+    },
+    /// A tender supersession points at a tender for a different supplier.
+    #[error("tender {tender} corrects tender {supersedes} from a different supplier")]
+    TenderSupersessionSupplierMismatch {
+        /// Correcting tender.
+        tender: ControlId,
+        /// Superseded tender.
+        supersedes: ControlId,
+    },
+    /// An award was made by a role that lacks package award authority.
+    #[error("award {award} by {actual} does not match authority {expected}")]
+    AwardAuthorityMismatch {
+        /// Award control.
+        award: ControlId,
+        /// Authorized role.
+        expected: RoleId,
+        /// Actual decision role.
+        actual: RoleId,
+    },
+    /// An award selected a supplier that is not accepted for award.
+    #[error("award {award} selected supplier {supplier} that is not awardable")]
+    RejectedSupplierAward {
+        /// Award control.
+        award: ControlId,
+        /// Rejected supplier.
+        supplier: String,
+    },
+    /// An award references a missing tender.
+    #[error("award {award} references missing tender {tender}")]
+    MissingAwardTender {
+        /// Award control.
+        award: ControlId,
+        /// Missing tender.
+        tender: ControlId,
+    },
+    /// An award selected a tender that was not comparable.
+    #[error("award {award} selected non-comparable tender {tender}")]
+    AwardTenderNotComparable {
+        /// Award control.
+        award: ControlId,
+        /// Non-comparable tender.
+        tender: ControlId,
+    },
+    /// An award decision was made after the package need date.
+    #[error("award {award} decided on {decided_on} after need date {need_date}")]
+    AwardAfterNeedDate {
+        /// Award control.
+        award: ControlId,
+        /// Decision date.
+        decided_on: Date,
+        /// Package need date.
+        need_date: Date,
+    },
     /// A non-informational control-graph cycle would make readiness recursive.
     #[error("control graph has a prohibited readiness cycle: {cycle:?}")]
     ControlGraphCycle {

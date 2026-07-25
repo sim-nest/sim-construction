@@ -12,6 +12,7 @@
 
 mod action;
 mod authority;
+mod award;
 mod baseline;
 mod bid;
 mod book;
@@ -33,12 +34,15 @@ mod obligation;
 mod opportunity;
 mod permit;
 mod policy;
+mod procurement;
 mod readiness;
 mod release;
 mod requirement;
 mod review;
 mod rfi;
 mod snapshot;
+mod tender;
+mod work_package;
 
 pub use action::{ActionResolution, ActionState, ProjectAction};
 pub use authority::{
@@ -48,6 +52,7 @@ pub use authority::{
     construction_project_accept_capability, construction_project_read_capability,
     construction_project_write_capability, construction_reference_publish_capability,
 };
+pub use award::{AwardDecision, AwardDecisionKind};
 pub use baseline::{AcceptedBaseline, BaselineKind};
 pub use bid::{BidDecision, BidDecisionKind, OfferBasisReport};
 pub use book::{DEFAULT_MAX_PROJECT_FACTS, ProjectBook};
@@ -80,6 +85,10 @@ pub use permit::{
     PermitState,
 };
 pub use policy::{GatePolicy, GatePolicyReport, RequirementExplanation};
+pub use procurement::{
+    AwardConsequence, InterfaceExposure, PackageReadinessReport, ProcurementComparison,
+    ProcurementControlSet, ProcurementDateReport, ProcurementStatus, TenderEvaluation,
+};
 pub use readiness::{CharterReadiness, evaluate_charter};
 pub use release::{DesignRelease, DesignReleasePurpose};
 pub use requirement::{Requirement, RequirementLane};
@@ -89,6 +98,8 @@ pub use snapshot::{
     ProjectDelta, ProjectSnapshot, ProjectSnapshotExplanation, SnapshotExplanationKind,
     snapshot_at, snapshot_delta,
 };
+pub use tender::{ScopeCompliance, TenderComparison, TenderQualification};
+pub use work_package::{CommercialAmount, SupplierCandidate, WorkPackage};
 
 /// Cookbook recipes for this lib, embedded at build time.
 pub static RECIPES: sim_cookbook::EmbeddedDir =
@@ -106,5 +117,7 @@ mod lifecycle_tests;
 mod obligation_tests;
 #[cfg(test)]
 mod opportunity_tests;
+#[cfg(test)]
+mod procurement_tests;
 #[cfg(test)]
 mod tests;

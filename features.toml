@@ -108,10 +108,28 @@ claims_specimens = [
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/customer-intent-to-collaboration",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/what-changed",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/design-release-to-production",
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/work-package-award",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/opportunity_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/fact_book_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/design_tests",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/procurement_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/tests",
+]
+
+[[feature]]
+id = "feature/sim-construction/work-package-procurement-awards"
+title = "Construction work package procurement supplier award control"
+summary = "Carry a construction work package procurement record from inquiry basis through supplier candidates and comparable tender facts to an accountable award decision while keeping commercial values on sim-ledger Amount and project-charter currency."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when a construction project needs stable package scope, inclusions, exclusions, interfaces, design inputs, inquiry and award dates, supplier candidates, tender comparison facts, corrected tender evidence, accountable award authority, overdue decision consequences, and exposed package interfaces. Keep invoices, payments, journals, taxes, and cost codes out of this layer; commercial values are exact Amount comparisons under the project charter currency only."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/work-package-award",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/procurement_tests",
 ]
 
 [[feature]]
@@ -249,6 +267,16 @@ steps = [
   { feature = "feature/sim-construction/project-control", why = "The project-control row owns stable construction ids, evidence states, role accountability, and the shared graph substrate." },
   { feature = "feature/sim-construction/design-release-authority-control", why = "The design-control row owns current revision, RFI, review, purpose-specific release, permit, inspection, authority obligation, stale release, and blocker derivation." },
   { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/design-release-to-production", why = "The recipe proves a production package through synthetic references without storing design payloads." },
+]
+
+[[route]]
+id = "route/decide-construction-work-package-award"
+task = "Decide a construction work-package award"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row supplies stable project ids, evidence references, governance roles, design inputs, and the accepted charter currency." },
+  { feature = "feature/sim-construction/work-package-procurement-awards", why = "The procurement row owns stable package scope, supplier candidates, tender comparison facts, checked Amount comparisons, award authority, date consequences, and exposed interfaces." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/work-package-award", why = "The recipe shows one package through inquiry basis, corrected tender evidence, accountable award, and need-date consequence without ledger cloning." },
 ]
 
 [[route]]
