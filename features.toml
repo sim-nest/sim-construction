@@ -109,11 +109,28 @@ claims_specimens = [
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/what-changed",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/design-release-to-production",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/work-package-award",
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/sustainability-to-reference-evidence",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/opportunity_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/fact_book_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/design_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/procurement_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/tests",
+]
+
+[[feature]]
+id = "feature/sim-construction/sustainability-reference-outcomes"
+title = "Construction sustainability certification climate reuse outcomes"
+summary = "Trace project-chartered certification, climate, efficiency, reuse, waste, responsible-material, quality, safety, work-environment, property, and city-district targets to source-retained quantities, method and boundary provenance, reviewed evidence, gate blockers, and admissible reference claims."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when a construction project needs sustainability or place outcomes controlled from charter to evidence without a second ESG database, unit-conversion framework, calculator, certification engine, or material-system implementation. Certification schemes, calculation methods, material systems, and outcome categories remain open symbols with registered Shapes; specialist calculators own calculations, while SIM derives coverage, variance, overdue evidence, expired certificates, superseded records, reuse substitutions, and disclosure-safe reference admissibility."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/sustainability-to-reference-evidence",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/outcome_tests",
 ]
 
 [[feature]]
@@ -235,6 +252,16 @@ audiences = ["user", "code", "framework"]
 steps = [
   { feature = "feature/sim-construction/project-control", why = "The project-control row owns the identity, charter, fact book, snapshot, governance, capability, visibility, and evidence readiness vocabulary." },
   { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/project-charter", why = "The project-charter recipe shows a synthetic accepted charter and governance record with reference-only evidence." },
+]
+
+[[route]]
+id = "route/trace-construction-sustainability-target-to-reference-evidence"
+task = "Trace a construction sustainability target to reference evidence"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row supplies charter identity, shared obligations, evidence states, and reference-only evidence." },
+  { feature = "feature/sim-construction/sustainability-reference-outcomes", why = "The sustainability row owns method and boundary provenance, source-retained quantities, coverage, blockers, supersession, disclosure, and reference-claim admissibility." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/sustainability-to-reference-evidence", why = "The recipe shows climate and place targets traced from charter references to accepted or rejected reference evidence." },
 ]
 
 [[route]]

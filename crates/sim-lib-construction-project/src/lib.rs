@@ -33,6 +33,8 @@ mod intent;
 mod lifecycle;
 mod obligation;
 mod opportunity;
+mod outcome;
+mod outcome_symbol;
 mod permit;
 mod policy;
 mod procurement;
@@ -86,6 +88,12 @@ pub use intent::{
 pub use lifecycle::{LifecyclePolicy, PhaseOverlap, PhaseTransition, ProjectPhase};
 pub use obligation::{ObligationPolicy, ProjectObligation};
 pub use opportunity::{OpportunityRecord, OpportunitySource};
+pub use outcome::{
+    DisclosureState, DomainQuantity, OutcomeBlocker, OutcomeBoundary, OutcomeControlReport,
+    OutcomeMethod, OutcomeRecord, OutcomeRecordKind, OutcomeRecordSpec, OutcomeTargetKind,
+    OutcomeTargetReport, OutcomeVariance, RegisteredOutcomeShape, SustainabilityTarget,
+    SustainabilityTargetSpec, evaluate_outcomes,
+};
 pub use permit::{
     AuthorityObligation, AuthorityObligationState, InspectionRecord, InspectionState, PermitRecord,
     PermitState,
@@ -128,6 +136,8 @@ mod lifecycle_tests;
 mod obligation_tests;
 #[cfg(test)]
 mod opportunity_tests;
+#[cfg(test)]
+mod outcome_tests;
 #[cfg(test)]
 mod procurement_tests;
 #[cfg(test)]
