@@ -1,0 +1,12 @@
+# sim-lib-construction-office
+
+Reference-only office evidence composition for construction project control.
+
+This crate joins a construction project, control, and fact sequence to an
+existing office document and external reference. It reuses the office evidence
+store and its broad link roles while the construction fact keeps the precise
+semantic relation and acceptance state.
+
+The bridge applies project visibility and capability checks before resolving a
+link. It stores no document bodies, credentials, service responses, or vendor
+tokens.
