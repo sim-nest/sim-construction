@@ -4,7 +4,7 @@ use time::Date;
 
 use crate::OrganizationId;
 use crate::{
-    BaselineId, ControlId, ForecastConsequenceKind, ProjectId, ProjectPhase, RoleId,
+    BaselineId, ChangeId, ControlId, ForecastConsequenceKind, ProjectId, ProjectPhase, RoleId,
     UncertaintyKind, UncertaintyState,
 };
 
@@ -444,6 +444,50 @@ pub enum ConstructionProjectError {
     AmountOverflow {
         /// Arithmetic field that overflowed.
         field: &'static str,
+    },
+    /// A referenced commercial value had no version or other source as-of marker.
+    #[error("change reference {reference} has no source version as-of marker")]
+    MissingChangeAsOfMarker {
+        /// External source identity lacking a version marker.
+        reference: String,
+    },
+    /// A change-chain invariant failed closed.
+    #[error("change {change} derivation failed: {reason}")]
+    ChangeDerivation {
+        /// Stable change identity.
+        change: ChangeId,
+        /// Stable invariant failure reason.
+        reason: &'static str,
+    },
+    /// A change stage fact failed validation or derivation.
+    #[error("change fact {fact} derivation failed: {reason}")]
+    ChangeFactDerivation {
+        /// Fact that failed.
+        fact: ControlId,
+        /// Stable invariant failure reason.
+        reason: &'static str,
+    },
+    /// A commercial fact included both a summarized parent and its child.
+    #[error("change amount double counts parent {parent} and child {child}")]
+    ChangeAmountDoubleCount {
+        /// Summary component.
+        parent: ControlId,
+        /// Component already included by the summary.
+        child: ControlId,
+    },
+    /// A closure total did not match the final settlement total.
+    #[error(
+        "change {change} {side} closure total {closure} does not match settlement total {settlement}"
+    )]
+    ChangeSettlementMismatch {
+        /// Stable change identity.
+        change: ChangeId,
+        /// Supplier or customer lane.
+        side: &'static str,
+        /// Exact settlement total.
+        settlement: String,
+        /// Exact closure total.
+        closure: String,
     },
     /// A risk carried opportunity-only state, or an opportunity carried risk-only state.
     #[error("uncertainty {control} kind {kind:?} cannot carry state {state:?}")]

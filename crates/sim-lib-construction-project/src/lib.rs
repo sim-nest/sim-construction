@@ -16,8 +16,11 @@ mod award;
 mod baseline;
 mod bid;
 mod book;
+mod change;
+mod change_exposure;
 mod charter;
 mod collaboration;
+mod commercial;
 mod control_graph;
 mod decision;
 mod design;
@@ -75,8 +78,19 @@ pub use award::{AwardDecision, AwardDecisionKind};
 pub use baseline::{AcceptedBaseline, BaselineKind};
 pub use bid::{BidDecision, BidDecisionKind, OfferBasisReport};
 pub use book::{DEFAULT_MAX_PROJECT_FACTS, ProjectBook};
+pub use change::{
+    ChangeDirection, ChangeFact, ChangeRecord, ChangeScheduleImpact, ChangeStage, ChangeStatus,
+    ContractualBasis,
+};
+pub use change_exposure::{
+    ChangeControlSet, ChangeExposureReport, ChangeExposureView, ChangeSettlementView,
+};
 pub use charter::{CurrencyCode, PROJECT_CHARTER_KIND, ProjectCharter, ReportingCadence};
 pub use collaboration::{CollaborationCharter, CollaborationReadinessReport};
+pub use commercial::{
+    ChangeAmountComponent, CommercialEvidenceSource, CommercialSide, ReferencedAmount,
+    ReferencedAmountEvidence,
+};
 pub use control_graph::{
     ControlEdge, ControlEdgeKind, ControlExplanationPath, ControlExplanationStep, ControlGraph,
     ControlGraphAnalysis, ControlGraphProjection, ControlNode, ControlNodeKind,
@@ -108,7 +122,7 @@ pub use governance::{
 pub use handoff::{
     HandoffReadinessReport, PackageHandoff, PackageHandoffBlocker, PackageHandoffControlSet,
 };
-pub use identity::{BaselineId, ControlId, OrganizationId, ProjectId, RoleId};
+pub use identity::{BaselineId, ChangeId, ControlId, OrganizationId, ProjectId, RoleId};
 pub use incident::{IncidentEscalation, ProjectIncident};
 pub use inspection::{InspectionPoint, InspectionResult};
 pub use intent::{
@@ -173,6 +187,8 @@ pub use work_package::{CommercialAmount, SupplierCandidate, WorkPackage};
 pub static RECIPES: sim_cookbook::EmbeddedDir =
     include!(concat!(env!("OUT_DIR"), "/cookbook_recipes.rs"));
 
+#[cfg(test)]
+mod change_tests;
 #[cfg(test)]
 mod control_graph_tests;
 #[cfg(test)]
