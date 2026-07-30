@@ -327,7 +327,7 @@ claims_specimens = [
 
 [[feature]]
 id = "feature/sim-construction/final-economy-closeout-reference-admission"
-title = "Construction final economy closeout learning people place reference evidence admission"
+title = "Construction final economy learning reference evidence closeout people place admission"
 summary = "Reconcile exact accepted-contract, forecast, final-position, exposure, settlement, guarantee, retention, claim, and ledger Amount facts at one explained cutoff; close warranty/contact, retention-policy, unresolved-work, evidence-disposition, and lesson obligations; and admit only current, consent- and confidentiality-cleared aggregate people/property/city claims through a named authority into an immutable reference manifest."
 owner = "crate/sim-lib-construction-project"
 audiences = ["user", "code", "framework"]
