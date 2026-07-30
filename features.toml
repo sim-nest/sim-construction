@@ -126,7 +126,7 @@ claims_specimens = [
 [[feature]]
 id = "feature/sim-construction/production-field-control"
 title = "Construction production observations incidents quality and field-item control"
-summary = "Control every construction field item, incident, and quality condition, including Dalux-linked observations, deviations, inspection and test points, defects, and corrective actions, with accountable evidence and safety-first rollups."
+summary = "Control Dalux construction field item incident quality reports alongside local observations, deviations, inspection and test points, defects, and corrective actions with accountable evidence and safety-first rollups."
 owner = "crate/sim-lib-construction-project"
 audiences = ["user", "code", "framework"]
 guidance = "Use this row when field reality must become traceable project facts. One shared field-control record carries severity, lane, responsible role, due date, affected control ids, state, non-waivable policy, and reference-only evidence. Rollups place imminent safety and work-environment blockers first, then active non-waivable controls without allowing lower severity to hide them. External imports are idempotent, changed source state supersedes the prior fact, and import remains Reported until corrective or inspection evidence is accepted by an accountable role."
