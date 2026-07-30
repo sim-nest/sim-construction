@@ -1,0 +1,100 @@
+(expr:map
+  [kind construction/closeout-to-reference-admission]
+  [project reference-center]
+  [as-of-date "2026-07-30"]
+  [as-of-seq 12]
+  [final-economy
+    (expr:map
+      [basis
+        (expr:map
+          [through-seq 12]
+          [as-of "2026-07-30"]
+          [explanation "accepted project facts and external balances share the July cutoff"])]
+      [currency SEK]
+      [facts [
+        (expr:map [id economy.contract] [kind AcceptedContract] [amount "1000000.00"] [fact-seq 1] [source Document] [version contract-rev-a] [evidence-state Accepted])
+        (expr:map [id economy.forecast] [kind CurrentForecast] [amount "900000.00"] [fact-seq 2] [source Document] [version forecast-rev-c] [evidence-state Accepted])
+        (expr:map [id economy.final] [kind FinalPosition] [amount "900000.00"] [fact-seq 3] [source Document] [version final-rev-a] [evidence-state Accepted])
+        (expr:map [id economy.change] [kind OpenChange] [amount "25000.00"] [fact-seq 4] [source Document] [version change-rev-b] [evidence-state Accepted])
+        (expr:map [id economy.customer-settlement] [kind CustomerSettlement] [amount "25000.00"] [fact-seq 5] [settles [economy.change]] [source LedgerBalance] [version ledger-42] [evidence-state Accepted])
+        (expr:map [id economy.ledger] [kind LedgerBalance] [amount "900000.00"] [fact-seq 6] [source LedgerBalance] [version ledger-42] [evidence-state Accepted])]]
+      [reconciliation
+        (expr:map
+          [final-position economy.final]
+          [ledger-balance economy.ledger]
+          [explanation "the exact final position matches ledger snapshot 42; no reconciling items remain"])]
+      [unsettled-exposure []]
+      [ledger-reconciled true]
+      [ready true])]
+  [closeout
+    (expr:map
+      [control closeout.final]
+      [obligations [
+        (expr:map [id closeout.warranty] [kind WarrantyContactHandoff] [fact-seq 7] [evidence-state Accepted])
+        (expr:map [id closeout.retention] [kind RetentionPolicy] [fact-seq 8] [evidence-state Accepted])
+        (expr:map [id closeout.unresolved] [kind UnresolvedWork] [fact-seq 9] [evidence-state Accepted] [disposition none-open])
+        (expr:map [id closeout.evidence] [kind EvidenceDisposition] [fact-seq 10] [evidence-state Accepted])
+        (expr:map [id closeout.lesson] [kind Lesson] [fact-seq 11] [evidence-state Accepted])]]
+      [report (expr:map [as-of-seq 12] [ready true])]
+      [closure
+        (expr:map
+          [decision closeout.final]
+          [report-seq 12]
+          [decision-seq 13]
+          [decided-by project-director]
+          [evidence [decision/closeout-final]])])]
+  [claims [
+    (expr:map
+      [id claim.people]
+      [kind PeopleDevelopment]
+      [statement "aggregate chartered competence outcome achieved"]
+      [source-fact-sequences [7 12]]
+      [external-refs [outcome/people-aggregate]]
+      [outcome-target outcome.people]
+      [outcome-variance OnTarget]
+      [consent (expr:map [required true] [state Satisfied] [evidence consent/current])]
+      [visibility reference-candidate]
+      [approval (expr:map [decision decision.claim.people] [decided-by reference-authority] [decision-seq 14])])
+    (expr:map
+      [id claim.property]
+      [kind PropertyOutcome]
+      [statement "chartered property outcome achieved"]
+      [source-fact-sequences [8 12]]
+      [external-refs [outcome/property]]
+      [outcome-target outcome.property]
+      [outcome-variance OnTarget]
+      [visibility reference-candidate]
+      [approval (expr:map [decision decision.claim.property] [decided-by reference-authority] [decision-seq 15])])
+    (expr:map
+      [id claim.city]
+      [kind CityDistrictOutcome]
+      [statement "chartered city-district outcome achieved"]
+      [source-fact-sequences [9 12]]
+      [external-refs [outcome/city-district]]
+      [outcome-target outcome.city]
+      [outcome-variance OnTarget]
+      [confidentiality (expr:map [required true] [state Satisfied] [evidence confidentiality/approved])]
+      [visibility reference-candidate]
+      [approval (expr:map [decision decision.claim.city] [decided-by reference-authority] [decision-seq 16])])]]
+  [reference-manifest
+    (expr:map
+      [immutable true]
+      [as-of-date "2026-07-30"]
+      [closeout-decision closeout.final]
+      [claims [
+        (expr:map [id claim.city] [source-fact-sequences [9 12]] [external-refs [outcome/city-district]] [visibility reference-candidate] [approving-decision decision.claim.city])
+        (expr:map [id claim.people] [source-fact-sequences [7 12]] [external-refs [outcome/people-aggregate]] [visibility reference-candidate] [approving-decision decision.claim.people])
+        (expr:map [id claim.property] [source-fact-sequences [8 12]] [external-refs [outcome/property]] [visibility reference-candidate] [approving-decision decision.claim.property])]]
+      [copies-source-artifacts false]
+      [publishes false])]
+  [ownership-boundary
+    (expr:map
+      [amount-type sim-ledger/Amount]
+      [documents reference-only]
+      [ledger reference-only]
+      [people-evidence aggregate-minimal]
+      [performance-dossier false]
+      [journal-posting false]
+      [content-repository false]
+      [marketing-publisher false])]
+  [mode modeled])

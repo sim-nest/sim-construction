@@ -1,0 +1,8 @@
+id = "closeout-to-reference-admission"
+title = "Closeout to reference admission"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 99
+tags = ["construction", "final-economy", "closeout", "learning", "people", "place", "reference"]
+requires = ["construction.project.read", "construction.project.write", "construction.project.accept", "construction.reference.publish", "codec/lisp"]

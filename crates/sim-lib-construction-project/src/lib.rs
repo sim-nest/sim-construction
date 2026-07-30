@@ -22,6 +22,7 @@ mod change_exposure;
 mod change_settlement;
 mod change_validation;
 mod charter;
+mod closeout;
 mod collaboration;
 mod commercial;
 mod commissioning;
@@ -37,6 +38,7 @@ mod exposure;
 mod fact;
 mod field_import;
 mod field_item;
+mod final_economy;
 mod forecast;
 mod gate;
 mod governance;
@@ -59,6 +61,8 @@ mod procurement;
 mod production_plan;
 mod quality;
 mod readiness;
+mod reference;
+mod reference_admission;
 mod release;
 mod requirement;
 mod review;
@@ -71,10 +75,7 @@ mod supplier;
 mod tender;
 mod work_package;
 
-pub use acceptance::{
-    HandoverGate, HandoverGateDecision, HandoverGateDecisionKind, HandoverGateKind,
-    HandoverGateReport,
-};
+pub use acceptance::*;
 pub use action::{ActionResolution, ActionState, ProjectAction};
 pub use authority::{
     CONSTRUCTION_EXCEPTION_CAPABILITY, CONSTRUCTION_PROJECT_ACCEPT_CAPABILITY,
@@ -95,6 +96,7 @@ pub use change::{
 pub use change_exposure::{ChangeControlSet, ChangeExposureReport, ChangeExposureView};
 pub use change_settlement::ChangeSettlementView;
 pub use charter::{CurrencyCode, PROJECT_CHARTER_KIND, ProjectCharter, ReportingCadence};
+pub use closeout::*;
 pub use collaboration::{CollaborationCharter, CollaborationReadinessReport};
 pub use commercial::{
     ChangeAmountComponent, CommercialEvidenceSource, CommercialSide, ReferencedAmount,
@@ -130,6 +132,7 @@ pub use field_item::{
     FieldItem, FieldItemKind, FieldItemReference, FieldItemState, FieldLane, FieldRollupEntry,
     FieldSeverity, safety_first_rollup,
 };
+pub use final_economy::*;
 pub use forecast::{ForecastBasis, ForecastConsequence, ForecastConsequenceKind, ForecastValue};
 pub use gate::{GateDecision, GateDecisionKind, GateReport, GateRequirement, PhaseGate};
 pub use governance::{
@@ -173,6 +176,7 @@ pub use procurement::{
 pub use production_plan::ProductionPlan;
 pub use quality::{CorrectiveAction, Defect, QualityDeviation};
 pub use readiness::{CharterReadiness, evaluate_charter};
+pub use reference::*;
 pub use release::{DesignRelease, DesignReleasePurpose};
 pub use requirement::{Requirement, RequirementLane};
 pub use review::{DesignReview, DesignReviewState};

@@ -325,6 +325,29 @@ claims_specimens = [
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/obligation_tests",
 ]
 
+[[feature]]
+id = "feature/sim-construction/final-economy-closeout-reference-admission"
+title = "Construction final economy closeout learning people place reference admission"
+summary = "Reconcile exact accepted-contract, forecast, final-position, exposure, settlement, guarantee, retention, claim, and ledger Amount facts at one explained cutoff; close warranty/contact, retention-policy, unresolved-work, evidence-disposition, and lesson obligations; and admit only current, consent- and confidentiality-cleared aggregate people/property/city claims through a named authority into an immutable reference manifest."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when a construction project is ready to move from final economy and accountable closeout to a candidate reference manifest. sim-ledger remains the Amount and accounting owner, office and ledger evidence stays as versioned ExternalRefs, people evidence is aggregate and source-minimal, and outcome achievement reuses the chartered sustainability/place report. The admission result contains claim ids, source fact sequences, external refs, as-of date, visibility, closeout decision, and approving decisions only; it does not copy artifacts, keep performance dossiers, publish marketing, post journals, or create content, HR, or accounting systems."
+supports = [
+  "feature/sim-construction/change-commercial-exposure",
+  "feature/sim-construction/system-handover-commissioning-acceptance",
+  "feature/sim-construction/sustainability-reference-outcomes",
+]
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/closeout-to-reference-admission",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/tests/final_economy",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/tests/closeout",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/tests/reference_admission",
+]
+
 [[route]]
 id = "route/exchange-construction-schedule"
 task = "Exchange a construction schedule"
@@ -506,6 +529,19 @@ steps = [
   { feature = "feature/sim-construction/design-release-authority-control", why = "The design-control row proves the released design is current for production." },
   { feature = "feature/sim-construction/supplier-production-handoff", why = "The supplier handoff row owns qualification obligations, restricted supplier evidence, subcontract depth, expiry/conflict/rejection states, material lead time, and responsibility acceptance." },
   { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/supplier-to-production-handoff", why = "The recipe joins award, qualified supplier, production release, material timing, and accepted responsibility into one handoff-ready report." },
+]
+
+[[route]]
+id = "route/admit-evidence-backed-construction-reference"
+task = "Admit an evidence-backed construction reference"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns append-only accepted facts, corrections, conflicts, role authority, visibility, and reference-only evidence." },
+  { feature = "feature/sim-construction/change-commercial-exposure", why = "The change row owns exact open exposure and settlement evidence without duplicating the ledger." },
+  { feature = "feature/sim-construction/system-handover-commissioning-acceptance", why = "The handover row proves distinct completion obligations before final closeout." },
+  { feature = "feature/sim-construction/sustainability-reference-outcomes", why = "The outcome row proves chartered people, property, and city-district targets current and achieved." },
+  { feature = "feature/sim-construction/final-economy-closeout-reference-admission", why = "The final row reconciles economy, closes typed obligations, enforces disclosure and authority, and creates only an immutable manifest." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/closeout-to-reference-admission", why = "The modeled recipe follows exact Amount and evidence facts through accountable closeout to an admitted synthetic reference manifest." },
 ]
 
 [[route]]

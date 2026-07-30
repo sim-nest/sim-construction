@@ -34,6 +34,7 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 | `feature/sim-construction/phase-gates` | `crate/sim-lib-construction-project` | 5 | Derive construction phase gate baseline and obligation readiness from accepted project-control facts while keeping human approval and exceptions as separate accountable decisions. |
 | `feature/sim-construction/system-handover-commissioning-acceptance` | `crate/sim-lib-construction-project` | 3 | Roll system, area, work-package, asset-group, and contractual-milestone readiness up from explicit commissioning, inspection/test, defect, O&M, as-built, training, certification, authority, customer-acceptance, and remaining-work evidence. |
 | `feature/sim-construction/obligation-evidence-exceptions` | `crate/sim-lib-construction-project` | 3 | Evaluate shared construction requirements and project obligations across open lanes with stable evidence states, validity windows, graph-composed dependencies, source references, optional policy, bounded exceptions, and deterministic explanation paths. |
+| `feature/sim-construction/final-economy-closeout-reference-admission` | `crate/sim-lib-construction-project` | 4 | Reconcile exact accepted-contract, forecast, final-position, exposure, settlement, guarantee, retention, claim, and ledger Amount facts at one explained cutoff; close warranty/contact, retention-policy, unresolved-work, evidence-disposition, and lesson obligations; and admit only current, consent- and confidentiality-cleared aggregate people/property/city claims through a named authority into an immutable reference manifest. |
 
 ## Surfaces
 
@@ -54,6 +55,9 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 - `crates/sim-lib-construction-project/recipes/01-basics/blocked-gate-graph/recipe.toml`
 - `crates/sim-lib-construction-project/recipes/01-basics/blocked-gate-graph/setup.siml`
 - `crates/sim-lib-construction-project/recipes/01-basics/chapter.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/closeout-to-reference-admission/purpose.md`
+- `crates/sim-lib-construction-project/recipes/01-basics/closeout-to-reference-admission/recipe.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/closeout-to-reference-admission/setup.siml`
 - `crates/sim-lib-construction-project/recipes/01-basics/control-graph-meets-gantt/purpose.md`
 - `crates/sim-lib-construction-project/recipes/01-basics/control-graph-meets-gantt/recipe.toml`
 - `crates/sim-lib-construction-project/recipes/01-basics/control-graph-meets-gantt/setup.siml`
@@ -9432,5 +9436,962 @@ fn evidence_ref(id: &str) -> ExternalRef {
 
 fn today() -> Date {
     Date::from_calendar_date(2026, Month::July, 23).unwrap()
+}
+```
+
+### `feature/sim-construction/final-economy-closeout-reference-admission`
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/closeout-to-reference-admission` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/closeout-to-reference-admission/recipe.toml`:
+
+```toml
+id = "closeout-to-reference-admission"
+title = "Closeout to reference admission"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 99
+tags = ["construction", "final-economy", "closeout", "learning", "people", "place", "reference"]
+requires = ["construction.project.read", "construction.project.write", "construction.project.accept", "construction.reference.publish", "codec/lisp"]
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/tests/final_economy` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/tests/final_economy.rs`:
+
+```rust
+// conformance: construction final economy uses exact Amount facts and explicit reconciliation
+
+use sim_ledger::Amount;
+use sim_lib_construction_project::{
+    CommercialEvidenceSource, ControlId, CurrencyCode, EvidenceState, FinalEconomyAmountFact,
+    FinalEconomyBasis, FinalEconomyBlocker, FinalEconomyControl, FinalEconomyFactKind,
+    FinalEconomyReconciliation, ProjectId,
+};
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+#[test]
+fn unsettled_exposure_stays_visible_and_blocks_closeout() {
+    let control = base_control().with_fact(amount_fact(
+        "economy.claim",
+        FinalEconomyFactKind::Claim,
+        "125000.00",
+        5,
+        CommercialEvidenceSource::Document,
+    ));
+
+    let report = control.derive().unwrap();
+
+    assert!(!report.ready);
+    assert_eq!(report.unsettled_exposure, vec![id("economy.claim")]);
+    assert!(
+        report
+            .blockers
+            .contains(&FinalEconomyBlocker::UnsettledExposure(id("economy.claim")))
+    );
+}
+
+#[test]
+fn ledger_mismatch_fails_exact_reconciliation() {
+    let mut control = base_control();
+    control
+        .facts
+        .retain(|fact| fact.kind != FinalEconomyFactKind::LedgerBalance);
+    control.facts.push(amount_fact(
+        "economy.ledger",
+        FinalEconomyFactKind::LedgerBalance,
+        "899999.99",
+        4,
+        CommercialEvidenceSource::LedgerBalance,
+    ));
+
+    let report = control.derive().unwrap();
+
+    assert!(!report.ledger_reconciled);
+    assert!(report.blockers.iter().any(|blocker| matches!(
+        blocker,
+        FinalEconomyBlocker::LedgerMismatch { final_position, ledger_balance }
+            if *final_position == amount("900000.00")
+                && *ledger_balance == amount("899999.99")
+    )));
+}
+
+#[test]
+fn accepted_settlement_and_ledger_evidence_produce_ready_exact_totals() {
+    let control = base_control()
+        .with_fact(amount_fact(
+            "economy.change",
+            FinalEconomyFactKind::OpenChange,
+            "25000.00",
+            5,
+            CommercialEvidenceSource::Document,
+        ))
+        .with_fact(
+            amount_fact(
+                "economy.customer-settlement",
+                FinalEconomyFactKind::CustomerSettlement,
+                "25000.00",
+                6,
+                CommercialEvidenceSource::LedgerBalance,
+            )
+            .settles(id("economy.change")),
+        )
+        .with_fact(
+            amount_fact(
+                "economy.guarantee",
+                FinalEconomyFactKind::Guarantee,
+                "5000.00",
+                7,
+                CommercialEvidenceSource::Document,
+            )
+            .supersedes(id("economy.guarantee.open")),
+        )
+        .with_fact(amount_fact(
+            "economy.guarantee.open",
+            FinalEconomyFactKind::Guarantee,
+            "5000.00",
+            6,
+            CommercialEvidenceSource::Document,
+        ))
+        .with_fact(
+            amount_fact(
+                "economy.supplier-settlement",
+                FinalEconomyFactKind::SupplierSettlement,
+                "5000.00",
+                8,
+                CommercialEvidenceSource::LedgerBalance,
+            )
+            .settles(id("economy.guarantee")),
+        );
+
+    let report = control.derive().unwrap();
+
+    assert!(report.ready);
+    assert!(report.ledger_reconciled);
+    assert!(report.unsettled_exposure.is_empty());
+    assert_eq!(
+        report.total(FinalEconomyFactKind::AcceptedContract),
+        Some(amount("1000000.00"))
+    );
+    assert_eq!(
+        report.total(FinalEconomyFactKind::CustomerSettlement),
+        Some(amount("25000.00"))
+    );
+}
+
+fn base_control() -> FinalEconomyControl {
+    FinalEconomyControl::new(
+        project(),
+        currency(),
+        FinalEconomyBasis::new(
+            20,
+            date(30),
+            "accepted project facts through sequence 20 at the July cutoff",
+        ),
+        FinalEconomyReconciliation::new(
+            id("economy.final-position"),
+            id("economy.ledger"),
+            "final position matches the versioned ledger balance at one cutoff",
+        ),
+    )
+    .with_fact(amount_fact(
+        "economy.contract",
+        FinalEconomyFactKind::AcceptedContract,
+        "1000000.00",
+        1,
+        CommercialEvidenceSource::Document,
+    ))
+    .with_fact(amount_fact(
+        "economy.forecast",
+        FinalEconomyFactKind::CurrentForecast,
+        "900000.00",
+        2,
+        CommercialEvidenceSource::Document,
+    ))
+    .with_fact(amount_fact(
+        "economy.final-position",
+        FinalEconomyFactKind::FinalPosition,
+        "900000.00",
+        3,
+        CommercialEvidenceSource::Document,
+    ))
+    .with_fact(amount_fact(
+        "economy.ledger",
+        FinalEconomyFactKind::LedgerBalance,
+        "900000.00",
+        4,
+        CommercialEvidenceSource::LedgerBalance,
+    ))
+}
+
+fn amount_fact(
+    id_text: &str,
+    kind: FinalEconomyFactKind,
+    value: &str,
+    sequence: u64,
+    source: CommercialEvidenceSource,
+) -> FinalEconomyAmountFact {
+    FinalEconomyAmountFact::new(
+        project(),
+        id(id_text),
+        kind,
+        amount(value),
+        currency(),
+        date(u8::try_from(sequence + 5).unwrap()),
+        sequence,
+        source,
+        ExternalRef::new(
+            match source {
+                CommercialEvidenceSource::Document => "doc/synthetic",
+                CommercialEvidenceSource::LedgerBalance => "ledger/synthetic",
+            },
+            id_text,
+            Some(format!("snapshot-{sequence}")),
+            None,
+        ),
+    )
+    .with_evidence_state(EvidenceState::Accepted)
+}
+
+fn project() -> ProjectId {
+    ProjectId::new("reference-center").unwrap()
+}
+
+fn id(value: &str) -> ControlId {
+    ControlId::new(value).unwrap()
+}
+
+fn currency() -> CurrencyCode {
+    CurrencyCode::new("SEK").unwrap()
+}
+
+fn amount(value: &str) -> Amount {
+    Amount::parse(value).unwrap()
+}
+
+fn date(day: u8) -> Date {
+    Date::from_calendar_date(2026, Month::July, day).unwrap()
+}
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/tests/closeout` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/tests/closeout.rs`:
+
+```rust
+// conformance: construction closeout keeps typed obligations and accountable closure
+
+use sim_kernel::{Expr, Symbol};
+use sim_ledger::Amount;
+use sim_lib_construction_project::{
+    CloseoutControlSet, CloseoutDecision, CloseoutObligation, CloseoutObligationKind,
+    CommercialEvidenceSource, ConstructionProjectError, ControlId, CurrencyCode, EvidenceState,
+    FinalEconomyAmountFact, FinalEconomyBasis, FinalEconomyControl, FinalEconomyFactKind,
+    FinalEconomyReconciliation, ProjectBook, ProjectFact, ProjectId, ProjectObligation,
+    Requirement, RequirementLane, RoleId,
+};
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+#[test]
+fn unresolved_obligation_blocks_accountable_closure() {
+    let controls = closeout_controls();
+    let mut book = closeout_book();
+    book.append(
+        evidence_fact(3, "closeout.unresolved-work").with_evidence_state(EvidenceState::Rejected),
+    )
+    .unwrap();
+    append_fact(&mut book, 4, "closeout.evidence-disposition");
+    append_fact(&mut book, 5, "closeout.lesson");
+    let economy = ready_economy().derive().unwrap();
+
+    let report = controls.report(&book, &economy, 5, date(30)).unwrap();
+
+    assert!(!report.ready);
+    assert_eq!(
+        report
+            .items
+            .iter()
+            .find(|item| item.kind == CloseoutObligationKind::UnresolvedWork)
+            .unwrap()
+            .evidence_state,
+        EvidenceState::Rejected
+    );
+    let result = CloseoutDecision::new(id("closeout.final"), 5, 6, role("project-director"))
+        .with_evidence(ext("closeout/decision"))
+        .close(&controls, &report);
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::GateReportNotReady { .. })
+    ));
+}
+
+#[test]
+fn ready_obligations_create_immutable_accountable_closeout() {
+    let controls = closeout_controls();
+    let mut book = closeout_book();
+    append_fact(&mut book, 3, "closeout.unresolved-work");
+    append_fact(&mut book, 4, "closeout.evidence-disposition");
+    append_fact(&mut book, 5, "closeout.lesson");
+    let economy = ready_economy().derive().unwrap();
+    let report = controls.report(&book, &economy, 5, date(30)).unwrap();
+
+    let closure = CloseoutDecision::new(id("closeout.final"), 5, 6, role("project-director"))
+        .with_evidence(ext("closeout/decision"))
+        .close(&controls, &report)
+        .unwrap();
+
+    assert!(report.ready);
+    assert_eq!(closure.project(), &project());
+    assert_eq!(closure.report_seq(), 5);
+    assert_eq!(closure.decision_seq(), 6);
+    assert_eq!(closure.decided_by(), &role("project-director"));
+}
+
+fn closeout_controls() -> CloseoutControlSet {
+    [
+        (
+            CloseoutObligationKind::WarrantyContactHandoff,
+            "closeout.warranty-contact",
+        ),
+        (
+            CloseoutObligationKind::RetentionPolicy,
+            "closeout.retention-policy",
+        ),
+        (
+            CloseoutObligationKind::UnresolvedWork,
+            "closeout.unresolved-work",
+        ),
+        (
+            CloseoutObligationKind::EvidenceDisposition,
+            "closeout.evidence-disposition",
+        ),
+        (CloseoutObligationKind::Lesson, "closeout.lesson"),
+    ]
+    .into_iter()
+    .fold(
+        CloseoutControlSet::new(project(), id("closeout.final"), role("project-director")),
+        |controls, (kind, requirement)| {
+            controls.with_obligation(CloseoutObligation::new(
+                kind,
+                ProjectObligation::mandatory(
+                    project(),
+                    Requirement::new(
+                        id(requirement),
+                        RequirementLane::new(Symbol::qualified("construction", "closeout")),
+                        format!("{kind:?}"),
+                        role("project-chief"),
+                        role("project-director"),
+                    )
+                    .with_evidence_kind(Symbol::qualified("construction", "closeout-evidence"))
+                    .with_source_ref(ext(&format!("policy/{requirement}"))),
+                ),
+            ))
+        },
+    )
+}
+
+fn closeout_book() -> ProjectBook {
+    let mut book = ProjectBook::new(project(), role("project-chief"));
+    append_fact(&mut book, 1, "closeout.warranty-contact");
+    append_fact(&mut book, 2, "closeout.retention-policy");
+    book
+}
+
+fn append_fact(book: &mut ProjectBook, sequence: u64, subject: &str) {
+    book.append(evidence_fact(sequence, subject)).unwrap();
+}
+
+fn evidence_fact(sequence: u64, subject: &str) -> ProjectFact {
+    ProjectFact::new(
+        sequence,
+        project(),
+        id(subject),
+        Symbol::qualified("construction", "closeout-evidence"),
+        date(u8::try_from(sequence + 20).unwrap()),
+        role("project-chief"),
+        Expr::String(format!("{subject} accepted")),
+    )
+    .with_evidence(ext(&format!("evidence/{subject}")))
+}
+
+fn ready_economy() -> FinalEconomyControl {
+    let basis = FinalEconomyBasis::new(5, date(30), "accepted closeout cutoff");
+    let reconciliation = FinalEconomyReconciliation::new(
+        id("economy.final"),
+        id("economy.ledger"),
+        "final position and ledger evidence share the cutoff",
+    );
+    [
+        (
+            "economy.contract",
+            FinalEconomyFactKind::AcceptedContract,
+            CommercialEvidenceSource::Document,
+        ),
+        (
+            "economy.forecast",
+            FinalEconomyFactKind::CurrentForecast,
+            CommercialEvidenceSource::Document,
+        ),
+        (
+            "economy.final",
+            FinalEconomyFactKind::FinalPosition,
+            CommercialEvidenceSource::Document,
+        ),
+        (
+            "economy.ledger",
+            FinalEconomyFactKind::LedgerBalance,
+            CommercialEvidenceSource::LedgerBalance,
+        ),
+    ]
+    .into_iter()
+    .enumerate()
+    .fold(
+        FinalEconomyControl::new(project(), currency(), basis, reconciliation),
+        |control, (index, (fact_id, kind, source))| {
+            control.with_fact(
+                FinalEconomyAmountFact::new(
+                    project(),
+                    id(fact_id),
+                    kind,
+                    Amount::parse("1000000.00").unwrap(),
+                    currency(),
+                    date(25),
+                    u64::try_from(index + 1).unwrap(),
+                    source,
+                    ext(fact_id),
+                )
+                .with_evidence_state(EvidenceState::Accepted),
+            )
+        },
+    )
+}
+
+fn project() -> ProjectId {
+    ProjectId::new("reference-center").unwrap()
+}
+
+fn id(value: &str) -> ControlId {
+    ControlId::new(value).unwrap()
+}
+
+fn role(value: &str) -> RoleId {
+    RoleId::new(value).unwrap()
+}
+
+fn currency() -> CurrencyCode {
+    CurrencyCode::new("SEK").unwrap()
+}
+
+fn ext(value: &str) -> ExternalRef {
+    ExternalRef::new("doc/synthetic", value, Some("rev-a".to_owned()), None)
+}
+
+fn date(day: u8) -> Date {
+    Date::from_calendar_date(2026, Month::July, day).unwrap()
+}
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/tests/reference_admission` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/tests/reference_admission.rs`:
+
+```rust
+// conformance: evidence-backed reference claims require current facts, clearance, and authority
+
+use sim_kernel::{Expr, Symbol};
+use sim_ledger::Amount;
+use sim_lib_construction_project::{
+    AccountableCloseout, CloseoutControlSet, CloseoutDecision, CloseoutObligation,
+    CloseoutObligationKind, CommercialEvidenceSource, ControlId, CurrencyCode, DisclosureClearance,
+    DisclosureCondition, EvidenceState, FinalEconomyAmountFact, FinalEconomyBasis,
+    FinalEconomyControl, FinalEconomyFactKind, FinalEconomyReconciliation, OutcomeControlReport,
+    OutcomeTargetReport, OutcomeVariance, ProjectBook, ProjectFact, ProjectId, ProjectObligation,
+    ReferenceAdmissionBlocker, ReferenceApproval, ReferenceClaim, ReferenceClaimKind,
+    ReferenceDecisionKind, ReferencePackAdmission, Requirement, RequirementLane, RoleId,
+    Visibility,
+};
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+#[test]
+fn rejected_lesson_evidence_is_not_admitted() {
+    let mut fixture = fixture();
+    fixture
+        .book
+        .append(source_fact(7, "charter.lesson"))
+        .unwrap();
+    fixture
+        .book
+        .append(source_fact(8, "lesson.evidence").with_evidence_state(EvidenceState::Rejected))
+        .unwrap();
+    let claim = claim(
+        "claim.lesson",
+        ReferenceClaimKind::Lesson,
+        7,
+        8,
+        Visibility::ReferenceCandidate,
+    );
+
+    let report = admission(claim, 8)
+        .evaluate(&fixture.book, &fixture.closeout, &[])
+        .unwrap();
+
+    assert!(report.manifest.is_none());
+    assert!(report.claims[0].blockers.iter().any(|blocker| matches!(
+        blocker,
+        ReferenceAdmissionBlocker::SourceFactNotAccepted {
+            sequence: 8,
+            state: EvidenceState::Rejected
+        }
+    )));
+}
+
+#[test]
+fn outcome_shortfall_blocks_people_or_place_achievement_claim() {
+    let fixture = fixture_with_sources(Visibility::ReferenceCandidate);
+    let claim = claim(
+        "claim.people",
+        ReferenceClaimKind::PeopleDevelopment,
+        7,
+        8,
+        Visibility::ReferenceCandidate,
+    )
+    .asserts_outcome(id("outcome.people"));
+    let shortfall = outcome_report(
+        id("outcome.people"),
+        OutcomeVariance::ReportedDifferent {
+            target: quantity("10"),
+            current: quantity("8"),
+        },
+    );
+
+    let report = admission(claim, 8)
+        .evaluate(&fixture.book, &fixture.closeout, &[shortfall])
+        .unwrap();
+
+    assert!(report.manifest.is_none());
+    assert!(
+        report.claims[0]
+            .blockers
+            .contains(&ReferenceAdmissionBlocker::OutcomeShortfall(id(
+                "outcome.people"
+            )))
+    );
+}
+
+#[test]
+fn confidential_source_requires_named_clearance() {
+    let fixture = fixture_with_sources(Visibility::Restricted(Symbol::qualified(
+        "construction",
+        "confidential",
+    )));
+    let claim = claim(
+        "claim.property",
+        ReferenceClaimKind::PropertyOutcome,
+        7,
+        8,
+        Visibility::ReferenceCandidate,
+    );
+
+    let report = admission(claim, 8)
+        .evaluate(&fixture.book, &fixture.closeout, &[])
+        .unwrap();
+
+    assert!(report.manifest.is_none());
+    assert!(
+        report.claims[0]
+            .blockers
+            .contains(&ReferenceAdmissionBlocker::ConfidentialityUnsatisfied)
+    );
+}
+
+#[test]
+fn withdrawn_consent_blocks_people_claim() {
+    let fixture = fixture_with_sources(Visibility::ReferenceCandidate);
+    let claim = claim(
+        "claim.people",
+        ReferenceClaimKind::PeopleDevelopment,
+        7,
+        8,
+        Visibility::ReferenceCandidate,
+    )
+    .requires_consent();
+    let clearance = DisclosureClearance::new(id("claim.people"))
+        .with_consent(DisclosureCondition::Withdrawn(ext("consent/withdrawn")));
+
+    let report = admission(claim, 8)
+        .with_clearance(clearance)
+        .evaluate(&fixture.book, &fixture.closeout, &[])
+        .unwrap();
+
+    assert!(report.manifest.is_none());
+    assert!(
+        report.claims[0]
+            .blockers
+            .contains(&ReferenceAdmissionBlocker::ConsentWithdrawn)
+    );
+}
+
+#[test]
+fn misleading_superseded_claim_cannot_use_stale_fact_sequence() {
+    let mut fixture = fixture_with_sources(Visibility::ReferenceCandidate);
+    fixture
+        .book
+        .append(source_fact(9, "outcome.synthetic").supersedes(8))
+        .unwrap();
+    let claim = claim(
+        "claim.lesson",
+        ReferenceClaimKind::Lesson,
+        7,
+        8,
+        Visibility::ReferenceCandidate,
+    );
+
+    let report = admission(claim, 9)
+        .evaluate(&fixture.book, &fixture.closeout, &[])
+        .unwrap();
+
+    assert!(report.manifest.is_none());
+    assert!(
+        report.claims[0]
+            .blockers
+            .contains(&ReferenceAdmissionBlocker::SourceFactNotCurrent {
+                sequence: 8,
+                current: Some(9),
+            })
+    );
+}
+
+#[test]
+fn admitted_synthetic_people_property_and_city_claims_create_only_an_immutable_manifest() {
+    let mut fixture = fixture_with_sources(Visibility::ReferenceCandidate);
+    fixture
+        .book
+        .append(source_fact(9, "charter.property"))
+        .unwrap();
+    fixture
+        .book
+        .append(source_fact(10, "outcome.property"))
+        .unwrap();
+    fixture
+        .book
+        .append(
+            source_fact(11, "charter.city").with_visibility(Visibility::Restricted(
+                Symbol::qualified("construction", "customer-confidential"),
+            )),
+        )
+        .unwrap();
+    fixture
+        .book
+        .append(source_fact(12, "outcome.city"))
+        .unwrap();
+
+    let people = claim(
+        "claim.people",
+        ReferenceClaimKind::PeopleDevelopment,
+        7,
+        8,
+        Visibility::ReferenceCandidate,
+    )
+    .requires_consent()
+    .asserts_outcome(id("outcome.people"));
+    let property = claim(
+        "claim.property",
+        ReferenceClaimKind::PropertyOutcome,
+        9,
+        10,
+        Visibility::ReferenceCandidate,
+    )
+    .asserts_outcome(id("outcome.property"));
+    let city = claim(
+        "claim.city",
+        ReferenceClaimKind::CityDistrictOutcome,
+        11,
+        12,
+        Visibility::ReferenceCandidate,
+    )
+    .requires_confidentiality_clearance()
+    .asserts_outcome(id("outcome.city"));
+    let pack = ReferencePackAdmission::new(project(), 12, date(30), role("reference-authority"))
+        .with_claim(people)
+        .with_claim(property)
+        .with_claim(city)
+        .with_clearance(
+            DisclosureClearance::new(id("claim.people"))
+                .with_consent(DisclosureCondition::Satisfied(ext("consent/current"))),
+        )
+        .with_clearance(
+            DisclosureClearance::new(id("claim.city")).with_confidentiality(
+                DisclosureCondition::Satisfied(ext("confidentiality/approved")),
+            ),
+        )
+        .with_approval(approval("claim.people", 12, 13))
+        .with_approval(approval("claim.property", 12, 14))
+        .with_approval(approval("claim.city", 12, 15));
+    let outcomes = [
+        outcome_report(id("outcome.people"), OutcomeVariance::OnTarget),
+        outcome_report(id("outcome.property"), OutcomeVariance::OnTarget),
+        outcome_report(id("outcome.city"), OutcomeVariance::OnTarget),
+    ];
+
+    let report = pack
+        .evaluate(&fixture.book, &fixture.closeout, &outcomes)
+        .unwrap();
+    let manifest = report.manifest.unwrap();
+
+    assert!(report.claims.iter().all(|claim| claim.admitted));
+    assert_eq!(manifest.project(), &project());
+    assert_eq!(manifest.closeout_decision().as_str(), "closeout.final");
+    assert_eq!(manifest.claims().len(), 3);
+    assert_eq!(manifest.claims()[0].claim_id().as_str(), "claim.city");
+    assert_eq!(manifest.claims()[0].source_fact_sequences(), &[11, 12]);
+    assert_eq!(
+        manifest.claims()[0].approving_decision().as_str(),
+        "decision.claim.city"
+    );
+    assert_eq!(manifest.claims()[0].external_refs().len(), 1);
+}
+
+struct Fixture {
+    book: ProjectBook,
+    closeout: AccountableCloseout,
+}
+
+fn fixture_with_sources(visibility: Visibility) -> Fixture {
+    let mut fixture = fixture();
+    fixture
+        .book
+        .append(source_fact(7, "charter.synthetic"))
+        .unwrap();
+    fixture
+        .book
+        .append(source_fact(8, "outcome.synthetic").with_visibility(visibility))
+        .unwrap();
+    fixture
+}
+
+fn fixture() -> Fixture {
+    let controls = closeout_controls();
+    let mut book = ProjectBook::new(project(), role("project-chief"));
+    for (index, subject) in [
+        "closeout.warranty",
+        "closeout.retention",
+        "closeout.unresolved",
+        "closeout.evidence",
+        "closeout.lesson",
+    ]
+    .into_iter()
+    .enumerate()
+    {
+        book.append(source_fact(u64::try_from(index + 1).unwrap(), subject))
+            .unwrap();
+    }
+    let economy = ready_economy().derive().unwrap();
+    let report = controls.report(&book, &economy, 5, date(30)).unwrap();
+    let closeout = CloseoutDecision::new(id("closeout.final"), 5, 6, role("project-director"))
+        .with_evidence(ext("closeout/decision"))
+        .close(&controls, &report)
+        .unwrap();
+    Fixture { book, closeout }
+}
+
+fn closeout_controls() -> CloseoutControlSet {
+    [
+        CloseoutObligationKind::WarrantyContactHandoff,
+        CloseoutObligationKind::RetentionPolicy,
+        CloseoutObligationKind::UnresolvedWork,
+        CloseoutObligationKind::EvidenceDisposition,
+        CloseoutObligationKind::Lesson,
+    ]
+    .into_iter()
+    .enumerate()
+    .fold(
+        CloseoutControlSet::new(project(), id("closeout.final"), role("project-director")),
+        |controls, (index, kind)| {
+            let requirement = [
+                "closeout.warranty",
+                "closeout.retention",
+                "closeout.unresolved",
+                "closeout.evidence",
+                "closeout.lesson",
+            ][index];
+            controls.with_obligation(CloseoutObligation::new(
+                kind,
+                ProjectObligation::mandatory(
+                    project(),
+                    Requirement::new(
+                        id(requirement),
+                        RequirementLane::new(Symbol::qualified("construction", "closeout")),
+                        format!("{kind:?}"),
+                        role("project-chief"),
+                        role("project-director"),
+                    )
+                    .with_evidence_kind(Symbol::qualified("construction", "closeout-evidence"))
+                    .with_source_ref(ext(&format!("policy/{requirement}"))),
+                ),
+            ))
+        },
+    )
+}
+
+fn ready_economy() -> FinalEconomyControl {
+    let basis = FinalEconomyBasis::new(5, date(30), "accepted closeout cutoff");
+    let reconciliation = FinalEconomyReconciliation::new(
+        id("economy.final"),
+        id("economy.ledger"),
+        "final position matches ledger evidence",
+    );
+    [
+        (
+            "economy.contract",
+            FinalEconomyFactKind::AcceptedContract,
+            CommercialEvidenceSource::Document,
+        ),
+        (
+            "economy.forecast",
+            FinalEconomyFactKind::CurrentForecast,
+            CommercialEvidenceSource::Document,
+        ),
+        (
+            "economy.final",
+            FinalEconomyFactKind::FinalPosition,
+            CommercialEvidenceSource::Document,
+        ),
+        (
+            "economy.ledger",
+            FinalEconomyFactKind::LedgerBalance,
+            CommercialEvidenceSource::LedgerBalance,
+        ),
+    ]
+    .into_iter()
+    .enumerate()
+    .fold(
+        FinalEconomyControl::new(project(), currency(), basis, reconciliation),
+        |control, (index, (fact_id, kind, source))| {
+            control.with_fact(
+                FinalEconomyAmountFact::new(
+                    project(),
+                    id(fact_id),
+                    kind,
+                    Amount::parse("1000000.00").unwrap(),
+                    currency(),
+                    date(25),
+                    u64::try_from(index + 1).unwrap(),
+                    source,
+                    ext(fact_id),
+                )
+                .with_evidence_state(EvidenceState::Accepted),
+            )
+        },
+    )
+}
+
+fn source_fact(sequence: u64, subject: &str) -> ProjectFact {
+    ProjectFact::new(
+        sequence,
+        project(),
+        id(subject),
+        Symbol::qualified("construction", "reference-evidence"),
+        date(25),
+        role("project-chief"),
+        Expr::String(format!("accepted aggregate fact {subject}")),
+    )
+    .with_evidence(ext(&format!("evidence/{subject}")))
+}
+
+fn claim(
+    claim_id: &str,
+    kind: ReferenceClaimKind,
+    charter_seq: u64,
+    outcome_seq: u64,
+    visibility: Visibility,
+) -> ReferenceClaim {
+    ReferenceClaim::new(
+        project(),
+        id(claim_id),
+        kind,
+        format!("synthetic aggregate {kind:?} claim"),
+        charter_seq,
+        visibility,
+    )
+    .with_source_fact(outcome_seq)
+    .with_external_ref(ext(&format!("reference/{claim_id}")))
+}
+
+fn admission(claim: ReferenceClaim, as_of_seq: u64) -> ReferencePackAdmission {
+    let claim_id = claim.id.clone();
+    ReferencePackAdmission::new(project(), as_of_seq, date(30), role("reference-authority"))
+        .with_claim(claim)
+        .with_approval(
+            ReferenceApproval::new(
+                claim_id.clone(),
+                id(&format!("decision.{claim_id}")),
+                as_of_seq,
+                as_of_seq + 1,
+                ReferenceDecisionKind::Approve,
+                role("reference-authority"),
+            )
+            .with_evidence(ext("approval/reference")),
+        )
+}
+
+fn approval(claim_id: &str, report_seq: u64, decision_seq: u64) -> ReferenceApproval {
+    ReferenceApproval::new(
+        id(claim_id),
+        id(&format!("decision.{claim_id}")),
+        report_seq,
+        decision_seq,
+        ReferenceDecisionKind::Approve,
+        role("reference-authority"),
+    )
+    .with_evidence(ext(&format!("approval/{claim_id}")))
+}
+
+fn outcome_report(target: ControlId, variance: OutcomeVariance) -> OutcomeControlReport {
+    OutcomeControlReport {
+        project: project(),
+        as_of: date(30),
+        targets: vec![OutcomeTargetReport {
+            target,
+            current_record: Some(id("outcome.record")),
+            forecasts: Vec::new(),
+            covered: true,
+            variance,
+            blockers: Vec::new(),
+            reference_claim_admissible: true,
+        }],
+        gates_clear: true,
+    }
+}
+
+fn quantity(value: &str) -> sim_lib_construction_project::DomainQuantity {
+    sim_lib_construction_project::DomainQuantity::new(value, Symbol::qualified("unit", "aggregate"))
+}
+
+fn project() -> ProjectId {
+    ProjectId::new("reference-center").unwrap()
+}
+
+fn id(value: &str) -> ControlId {
+    ControlId::new(value).unwrap()
+}
+
+fn role(value: &str) -> RoleId {
+    RoleId::new(value).unwrap()
+}
+
+fn currency() -> CurrencyCode {
+    CurrencyCode::new("SEK").unwrap()
+}
+
+fn ext(value: &str) -> ExternalRef {
+    ExternalRef::new("doc/synthetic", value, Some("rev-a".to_owned()), None)
+}
+
+fn date(day: u8) -> Date {
+    Date::from_calendar_date(2026, Month::July, day).unwrap()
 }
 ```
