@@ -17,7 +17,7 @@ sim-kernel = { version = "0.1.0" }
 sim-lib-doc-core = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "eb617e4fd3c50fc51bcdb6a11ea5a8bbae4d1a48" }
 sim-lib-doc-site = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "eb617e4fd3c50fc51bcdb6a11ea5a8bbae4d1a48" }
 sim-lib-sheet = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "eb617e4fd3c50fc51bcdb6a11ea5a8bbae4d1a48" }
-ureq = "2"
+ureq = "3"
 
 [build-dependencies]
 sim-cookbook = { version = "0.1.0" }
