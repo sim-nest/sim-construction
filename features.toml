@@ -293,7 +293,7 @@ claims_specimens = [
 
 [[feature]]
 id = "feature/sim-construction/system-handover-commissioning-acceptance"
-title = "Construction system handover commissioning and acceptance"
+title = "Construction handover commissioning acceptance control"
 summary = "Roll system, area, work-package, asset-group, and contractual-milestone readiness up from explicit commissioning, inspection/test, defect, O&M, as-built, training, certification, authority, customer-acceptance, and remaining-work evidence."
 owner = "crate/sim-lib-construction-project"
 audiences = ["user", "code", "framework"]
