@@ -12,7 +12,7 @@ use sim_lib_construction_project::{
     SchedulePlanRevision, ScheduleTaskJoin, ScheduleTaskJoinSet, UncertaintyKind,
     UncertaintyRecord, UncertaintyResponse, explain_schedule_impact, safety_first_rollup,
 };
-use sim_lib_gantt_control::{GanttPlan, LinkKind, Task, TaskLink};
+use sim_lib_gantt::{GanttPlan, LinkKind, Task, TaskLink};
 
 use super::support::{baseline_id, currency, day, id, project, reference, role};
 

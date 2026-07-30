@@ -14,7 +14,7 @@ use sim_lib_construction_project::{
     SustainabilityTarget, SustainabilityTargetSpec, TenderComparison, TenderQualification,
     WorkPackage, evaluate_outcomes,
 };
-use sim_lib_gantt_control::{GanttPlan, Task};
+use sim_lib_gantt::{GanttPlan, Task};
 
 use super::support::{
     accepted_book, august, baseline_id, control_fact, currency, day, id, mandatory, project,

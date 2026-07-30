@@ -30,8 +30,7 @@ sim-kernel = { version = "0.1", features = ["test-support"] }
 sim-ledger = { version = "0.1.0", git = "https://github.com/sim-nest/sim-ledger", rev = "e3f49c24257fea045a1d2c29c867981fcd3692de" }
 sim-lib-construction-office = { version = "0.1.0", path = "../sim-lib-construction-office" }
 sim-lib-construction-project = { version = "0.1.0", path = "../sim-lib-construction-project" }
-sim-lib-gantt = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "eb617e4fd3c50fc51bcdb6a11ea5a8bbae4d1a48" }
-sim-lib-gantt-control = { package = "sim-lib-gantt", version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "2c76395bf66978822210f2397a03482b1f429da8" }
+sim-lib-gantt = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "2c76395bf66978822210f2397a03482b1f429da8" }
 sim-site-powerproject = { version = "0.1.0", path = "../sim-site-powerproject" }
 sim-table-hash = { version = "0.1.2" }
 time = "0.3"
