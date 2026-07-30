@@ -18,6 +18,7 @@ sim-lib-doc-core = { version = "0.1.0", git = "https://github.com/sim-nest/sim-o
 sim-lib-doc-surface = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "eb617e4fd3c50fc51bcdb6a11ea5a8bbae4d1a48" }
 sim-lib-doc-store = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "eb617e4fd3c50fc51bcdb6a11ea5a8bbae4d1a48" }
 sim-lib-sheet = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "eb617e4fd3c50fc51bcdb6a11ea5a8bbae4d1a48" }
+sim-value = { version = "0.1.2" }
 thiserror = "1"
 time = "0.3"
 

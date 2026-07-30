@@ -4,6 +4,7 @@ use sim_kernel::{Cx, Expr};
 use sim_lib_deck::{Deck, Slide, SlideBlock};
 use sim_lib_doc_core::{Doc, DocId, DocKind};
 use sim_lib_sheet::{CellRef, CellValue, Sheet};
+use sim_value::build::entry;
 
 use super::{Metadata, StatusRow, evidence_text, status_label};
 use crate::{OfficePackError, PackSection};
@@ -15,12 +16,12 @@ pub(super) fn report_doc(
     rows: &[StatusRow],
 ) -> Result<Doc, OfficePackError> {
     let body = Expr::Map(vec![
-        field(
+        entry(
             "kind",
             Expr::Symbol(sim_kernel::Symbol::qualified("construction", "office-pack")),
         ),
-        field("metadata", metadata_expr(metadata)),
-        field("sections", sections_expr(rows)),
+        entry("metadata", metadata_expr(metadata)),
+        entry("sections", sections_expr(rows)),
     ]);
     let body = cx.factory().expr(body)?;
     Ok(Doc::new(
@@ -36,7 +37,7 @@ fn metadata_expr(metadata: &Metadata) -> Expr {
         metadata
             .fields()
             .into_iter()
-            .map(|(key, value)| field(key, Expr::String(value)))
+            .map(|(key, value)| entry(key, Expr::String(value)))
             .collect(),
     )
 }
@@ -53,8 +54,8 @@ fn sections_expr(rows: &[StatusRow]) -> Expr {
                     .collect::<Vec<_>>();
                 (!section_rows.is_empty()).then(|| {
                     Expr::Map(vec![
-                        field("section", Expr::String(section.as_str().to_owned())),
-                        field("rows", Expr::List(section_rows)),
+                        entry("section", Expr::String(section.as_str().to_owned())),
+                        entry("rows", Expr::List(section_rows)),
                     ])
                 })
             })
@@ -64,16 +65,16 @@ fn sections_expr(rows: &[StatusRow]) -> Expr {
 
 fn row_expr(row: &StatusRow) -> Expr {
     Expr::Map(vec![
-        field("control-id", Expr::String(row.control.to_string())),
-        field("value", Expr::String(row.value.clone())),
-        field(
+        entry("control-id", Expr::String(row.control.to_string())),
+        entry("value", Expr::String(row.value.clone())),
+        entry(
             "status-value",
             Expr::String(status_label(row.status).to_owned()),
         ),
-        field("status-explanation", Expr::String(row.explanation.clone())),
-        field("mandatory", Expr::Bool(row.mandatory)),
-        field("changed-since-meeting", Expr::Bool(row.changed)),
-        field("evidence-refs", Expr::String(evidence_text(&row.evidence))),
+        entry("status-explanation", Expr::String(row.explanation.clone())),
+        entry("mandatory", Expr::Bool(row.mandatory)),
+        entry("changed-since-meeting", Expr::Bool(row.changed)),
+        entry("evidence-refs", Expr::String(evidence_text(&row.evidence))),
     ])
 }
 
@@ -166,11 +167,4 @@ fn set_text(sheet: &mut Sheet, column: u32, row: u32, value: impl Into<String>) 
         CellRef::new(column, row).expect("positive office pack cell"),
         CellValue::Text(value.into()),
     );
-}
-
-fn field(name: &str, value: Expr) -> (Expr, Expr) {
-    (
-        Expr::Symbol(sim_kernel::Symbol::qualified("construction-pack", name)),
-        value,
-    )
 }
