@@ -38,6 +38,7 @@ mod forecast;
 mod gate;
 mod governance;
 mod handoff;
+mod handover;
 mod identity;
 mod incident;
 mod inspection;
@@ -123,6 +124,7 @@ pub use governance::{
 pub use handoff::{
     HandoffReadinessReport, PackageHandoff, PackageHandoffBlocker, PackageHandoffControlSet,
 };
+pub use handover::{HandoverControlKind, HandoverHierarchy};
 pub use identity::{BaselineId, ChangeId, ControlId, OrganizationId, ProjectId, RoleId};
 pub use incident::{IncidentEscalation, ProjectIncident};
 pub use inspection::{InspectionPoint, InspectionResult};
@@ -204,6 +206,8 @@ mod exposure_tests;
 mod fact_book_tests;
 #[cfg(test)]
 mod field_control_tests;
+#[cfg(test)]
+mod handover_tests;
 #[cfg(test)]
 mod lifecycle_tests;
 #[cfg(test)]
