@@ -140,6 +140,22 @@ claims_specimens = [
 ]
 
 [[feature]]
+id = "feature/sim-construction/office-evidence-bridge"
+title = "Construction to office evidence bridge"
+summary = "Attach project-scoped construction fact evidence to existing office documents while preserving precise construction meaning, visibility, and acceptance."
+owner = "crate/sim-lib-construction-office"
+audiences = ["user", "code", "framework"]
+guidance = "Use EvidenceAttachment and attach_evidence when an existing office document must cite a current construction fact. The fact kind retains the precise construction relation while the office projection uses only SourceDocument, ScheduleReference, ProjectIssue, AccountingSupport, or PublishedTo. Query with evidence_for_documents using a project-bound ProjectEvidenceAccess. Construction project-read and office evidence-read capabilities are required before resolution; attachment separately requires office evidence-write. The office row points only to the immutable construction fact and evidence slot, so the original ExternalRef and EvidenceState remain construction-owned, rejected evidence stays rejected, superseded facts do not resolve as current, and no document payload, credential, vendor response, or second evidence store crosses the bridge."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-office",
+  "anchor/rustdoc/sim-lib-construction-office/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-office/01-basics/construction-office-evidence",
+  "spec-test/sim-construction/crates/sim-lib-construction-office/src/tests",
+]
+
+[[feature]]
 id = "feature/sim-construction/production-field-control"
 title = "Construction production observations incidents quality and field-item control"
 summary = "Control Dalux construction field item incident quality reports alongside local observations, deviations, inspection and test points, defects, and corrective actions with accountable evidence and safety-first rollups."
@@ -380,6 +396,16 @@ audiences = ["user", "code", "framework"]
 steps = [
   { feature = "feature/sim-construction/table-backed-project-books", why = "The construction row composes feature/sim-foundation/table-dir-core and feature/sim-storage/table-dir-backends: it binds one project and authoritative writer to injected storage, validates every TablePath and fact before append, rebuilds from facts, and verifies disposable projections." },
   { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/table-backed-project-book", why = "The checked recipe documents backend injection, the canonical semantic layout, historical rebuild, and harmless projection loss." },
+]
+
+[[route]]
+id = "route/attach-office-evidence-to-construction-control"
+task = "Attach office evidence to construction control"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns the immutable fact sequence, precise construction relation, visibility, original ExternalRef, and EvidenceState." },
+  { feature = "feature/sim-construction/office-evidence-bridge", why = "The bridge composes feature/sim-office/document-codecs and feature/sim-office/document-surfaces through the existing Doc, ExternalRef, Evidence, LinkRole, attach, and evidence_for contracts; it maps the precise construction relation without copying payloads or acceptance." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-office/01-basics/construction-office-evidence", why = "The checked recipe shows a project-scoped design-source fact attached and resolved through an office design register." },
 ]
 
 [[route]]

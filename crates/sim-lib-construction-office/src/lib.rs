@@ -19,5 +19,9 @@ pub use evidence::{
     published_deliverable_relation, schedule_basis_relation,
 };
 
+/// Cookbook recipes for this bridge, embedded at build time.
+pub static RECIPES: sim_cookbook::EmbeddedDir =
+    include!(concat!(env!("OUT_DIR"), "/cookbook_recipes.rs"));
+
 #[cfg(test)]
 mod tests;

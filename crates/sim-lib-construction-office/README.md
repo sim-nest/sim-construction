@@ -10,3 +10,8 @@ semantic relation and acceptance state.
 The bridge applies project visibility and capability checks before resolving a
 link. It stores no document bodies, credentials, service responses, or vendor
 tokens.
+
+`construction-office-evidence` is the shortest checked recipe. It shows the
+project-scoped pointer written to the office evidence store and the precise
+relation, original external reference, and acceptance state resolved from the
+construction fact.

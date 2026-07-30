@@ -1,0 +1,8 @@
+id = "construction-office-evidence"
+title = "Attach office evidence to construction control"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 10
+tags = ["construction", "office", "evidence", "document", "provenance"]
+requires = ["construction.project.read", "office.evidence.read", "office.evidence.write", "codec/lisp"]

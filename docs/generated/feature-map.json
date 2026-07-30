@@ -9,6 +9,11 @@
     {
       "features": [],
       "group": "workspace",
+      "package": "sim-lib-construction-office"
+    },
+    {
+      "features": [],
+      "group": "workspace",
       "package": "sim-lib-construction-project"
     },
     {

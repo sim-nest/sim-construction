@@ -1,0 +1,22 @@
+(expr:map
+  [kind construction/office-evidence]
+  [project reference-center]
+  [control design.wall-release]
+  [fact (expr:map
+    [seq 17]
+    [relation construction-evidence/design-source]
+    [visibility project]
+    [evidence-state accepted]
+    [external-ref "doc/synthetic:design/wall/revision-7"])]
+  [office-document office/design-register]
+  [office-role office/source-document]
+  [stored (expr:map
+    [subject office/design-register]
+    [reference "construction/project-fact:projects/reference-center/controls/design.wall-release/facts/17/evidence/0"]
+    [payload-copied false])]
+  [resolved (expr:map
+    [relation construction-evidence/design-source]
+    [external-ref "doc/synthetic:design/wall/revision-7"]
+    [evidence-state accepted]
+    [office-link-proves provenance]
+    [office-link-accepts false])])

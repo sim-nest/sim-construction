@@ -9,6 +9,13 @@
       "summary": "MSPDI XML codec for local Gantt schedule documents."
     },
     {
+      "crate_name": "sim_lib_construction_office",
+      "group": "workspace",
+      "manifest": "crates/sim-lib-construction-office/Cargo.toml",
+      "package": "sim-lib-construction-office",
+      "summary": "Reference-only office evidence composition for construction control."
+    },
+    {
       "crate_name": "sim_lib_construction_project",
       "group": "workspace",
       "manifest": "crates/sim-lib-construction-project/Cargo.toml",

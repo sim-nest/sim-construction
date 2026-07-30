@@ -13,6 +13,8 @@ name modeled projects, documents, roles, and evidence references only.
 
 - `sim-codec-mspdi`: Microsoft Project XML schedule exchange for portable
   construction Gantt documents.
+- `sim-lib-construction-office`: reference-only evidence composition between
+  construction facts and existing office documents.
 - `sim-lib-construction-project`: construction project identities, charter
   records, append-only fact books, deterministic snapshots, change reports,
   evidence states, commissioning/handover hierarchy, accountable acceptance
