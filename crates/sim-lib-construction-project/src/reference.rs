@@ -290,7 +290,7 @@ pub struct ReferenceClaimAdmission {
 }
 
 /// Result of evaluating a whole reference pack.
-#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize)]
+#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct ReferenceAdmissionReport {
     /// Per-claim results in stable claim-id order.
     pub claims: Vec<ReferenceClaimAdmission>,
@@ -299,7 +299,7 @@ pub struct ReferenceAdmissionReport {
 }
 
 /// Immutable manifest of admitted reference claims.
-#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize)]
+#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct ReferenceManifest {
     pub(crate) project: ProjectId,
     pub(crate) as_of_date: Date,
@@ -334,7 +334,7 @@ impl ReferenceManifest {
 }
 
 /// Immutable manifest row containing references, never copied source artifacts.
-#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize)]
+#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct ReferenceManifestClaim {
     pub(crate) claim_id: ControlId,
     pub(crate) source_fact_sequences: Vec<u64>,

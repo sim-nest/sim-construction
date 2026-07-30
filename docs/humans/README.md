@@ -21,7 +21,7 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 | `feature/sim-construction/mspdi-schedule-exchange` | `crate/sim-codec-mspdi` | 1 | Round-trip Microsoft Project XML schedules through the portable construction Gantt document model. |
 | `feature/sim-construction/powerproject-schedule-placement` | `crate/sim-site-powerproject` | 1 | Place construction Gantt schedules at Powerproject desktop and Project for the web boundaries. |
 | `feature/sim-construction/dalux-project-items` | `crate/sim-site-dalux` | 2 | Read Dalux project items into local office documents through ledgered site effects, expose URL-free item correlations, and keep writes limited to notes. |
-| `feature/sim-construction/project-control` | `crate/sim-lib-construction-project` | 20 | Describe construction phase gate and baseline control through as-of snapshot records, project charter identity, opportunity, bid/no-bid, customer-intent, collaboration charter, append-only fact books, lifecycle vocabulary, baselines, gates, actions, decisions, field observations/incidents/quality controls, design/RFI/review/release/permit/authority control, deterministic deltas, governance, capabilities, shared obligations, bounded exceptions, graph-composed blockers, readiness with reference-only evidence, and baseline-aware Gantt schedule impact. |
+| `feature/sim-construction/project-control` | `crate/sim-lib-construction-project` | 21 | Load complete construction project control as semantic Citizens, checked Shapes, and capability-minimal operations over append-only books, historical snapshots, lifecycle gates, schedule impact, readiness, exposure, handover, outcomes, and reference admission. |
 | `feature/sim-construction/production-field-control` | `crate/sim-lib-construction-project` | 2 | Control Dalux construction field item incident quality reports alongside local observations, deviations, inspection and test points, defects, and corrective actions with accountable evidence and safety-first rollups. |
 | `feature/sim-construction/gantt-schedule-impact` | `crate/sim-lib-construction-project` | 2 | Join stable construction controls to canonical Gantt task ids and explain baseline-aware Gantt critical path construction consequences: downstream, need-date, float-risk, late-decision, procurement lead-time, and change impact. |
 | `feature/sim-construction/sustainability-reference-outcomes` | `crate/sim-lib-construction-project` | 2 | Trace project-chartered certification, climate, efficiency, reuse, waste, responsible-material, quality, safety, work-environment, property, and city-district targets to source-retained quantities, method and boundary provenance, reviewed evidence, gate blockers, and admissible reference claims. |
@@ -76,6 +76,10 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 - `crates/sim-lib-construction-project/recipes/01-basics/late-decision/purpose.md`
 - `crates/sim-lib-construction-project/recipes/01-basics/late-decision/recipe.toml`
 - `crates/sim-lib-construction-project/recipes/01-basics/late-decision/setup.siml`
+- `crates/sim-lib-construction-project/recipes/01-basics/loadable-project-control/expected.txt`
+- `crates/sim-lib-construction-project/recipes/01-basics/loadable-project-control/purpose.md`
+- `crates/sim-lib-construction-project/recipes/01-basics/loadable-project-control/recipe.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/loadable-project-control/setup.siml`
 - `crates/sim-lib-construction-project/recipes/01-basics/mixed-obligation-gate/purpose.md`
 - `crates/sim-lib-construction-project/recipes/01-basics/mixed-obligation-gate/recipe.toml`
 - `crates/sim-lib-construction-project/recipes/01-basics/mixed-obligation-gate/setup.siml`
@@ -670,6 +674,25 @@ purpose = "purpose.md"
 order = 96
 tags = ["construction", "field-control", "dalux", "incident", "inspection", "corrective-evidence", "safety"]
 requires = ["construction.project.read", "construction.project.write", "site/dalux", "codec/lisp"]
+```
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/loadable-project-control` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/loadable-project-control/recipe.toml`:
+
+```toml
+id = "loadable-project-control"
+title = "Load and exercise construction project control"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 190
+tags = ["construction", "framework", "citizen", "shape-checked", "bootloader", "runnable"]
+requires = ["codec/lisp", "sim-run-core", "sim/construction-project", "construction.project.read", "construction.project.write"]
+harness = "cargo-test"
+package = "sim-lib-construction-project"
+test = "runtime_tests::loadable_lisp_specimen_constructs_appends_snapshots_and_explains"
+expected = "expected.txt"
 ```
 
 Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/opportunity_tests` is checked by `cargo test`.
@@ -5908,7 +5931,7 @@ use sim_ledger::Amount;
 use sim_lib_doc_core::ExternalRef;
 use time::{Date, Month};
 
-use crate::change_test_chain::complete_chain;
+use super::change_test_chain::complete_chain;
 use crate::{
     BaselineId, ChangeAmountComponent, ChangeControlSet, ChangeDirection, ChangeFact, ChangeId,
     ChangeRecord, ChangeScheduleImpact, ChangeStage, ChangeStatus, CommercialAmount,

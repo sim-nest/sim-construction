@@ -298,7 +298,7 @@ impl CloseoutDecision {
 }
 
 /// Immutable proof that a named authority closed a ready report.
-#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize)]
+#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct AccountableCloseout {
     project: ProjectId,
     control: ControlId,

@@ -14,3 +14,18 @@ and closure together while leaving journals and payment truth with
 `sim-ledger`. Graph-backed system, area, work-package, asset-group, and milestone
 handover derives distinct technical, evidence, authority, contractual,
 occupancy/use, and final completion gates from leaf commissioning evidence.
+
+`ConstructionProjectLib` exposes the domain through normal SIM contracts. It
+registers semantic Citizen read-constructs for durable records and reports,
+Shapes for every public constructor and operation, and a thin
+`sim/construction-project` host library. The operations cover append,
+snapshot/as-of, validate, status, explain, diff-since, gate-report,
+schedule-impact, readiness, exposure, handover burn-down, and reference
+admission. Pure validation needs no capability; book reads and writes require
+only their construction capabilities, and reference publication remains
+separate.
+
+The `loadable-project-control` Lisp recipe demonstrates standard bootloader
+loading, fact construction and append, a historical snapshot, and blocker
+explanation. Vendor integrations remain independently placed through
+`EvalFabric`; this crate adds no parser, matcher, loader, or vendor effect path.

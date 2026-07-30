@@ -1,0 +1,18 @@
+(let ((project-id (construction/project-id "project-runtime")))
+  (let ((book (construction/book project-id "project-chief")))
+    (let ((fact
+      (construction/fact
+        (expr:map
+          [seq 1]
+          [project "project-runtime"]
+          [subject "permit"]
+          [kind "construction/authority"]
+          [effective-on "2026-07-30"]
+          [actor-role "project-chief"]
+          [visibility "project"]
+          [body "accepted authority evidence is missing"]
+          [evidence []]
+          [evidence-state "Reported"]))))
+      (construction/append book fact)
+      (let ((historical (construction/snapshot-as-of book 1)))
+        (construction/explain historical "permit")))))

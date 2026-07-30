@@ -92,10 +92,10 @@ claims_specimens = [
 [[feature]]
 id = "feature/sim-construction/project-control"
 title = "Construction project control"
-summary = "Describe construction phase gate and baseline control through as-of snapshot records, project charter identity, opportunity, bid/no-bid, customer-intent, collaboration charter, append-only fact books, lifecycle vocabulary, baselines, gates, actions, decisions, field observations/incidents/quality controls, design/RFI/review/release/permit/authority control, deterministic deltas, governance, capabilities, shared obligations, bounded exceptions, graph-composed blockers, readiness with reference-only evidence, and baseline-aware Gantt schedule impact."
+summary = "Load complete construction project control as semantic Citizens, checked Shapes, and capability-minimal operations over append-only books, historical snapshots, lifecycle gates, schedule impact, readiness, exposure, handover, outcomes, and reference admission."
 owner = "crate/sim-lib-construction-project"
 audiences = ["user", "code", "framework"]
-guidance = "Use this row when starting a construction project-control record from stable ids, a charter, opportunity intake, customer intent with explicit unknowns, bid/no-bid or conditional-bid control, collaboration charter readiness, an append-only fact book, accepted baselines, accountable actions and decisions, production observations, deviations, incidents, inspection/test points, defects, corrective actions, design deliverables, RFIs, reviews, purpose-specific releases, permits, authority obligations, shared requirements and obligations, evidence states and validity windows, bounded construction exceptions, graph-composed blocker propagation, derived lifecycle gate reports, what-changed reports, organization-role governance, due-date and visibility policy, library-owned capabilities, evidence readiness before planning work depends on it, and control-to-Gantt joins that explain critical path, downstream, float-risk, late-decision, procurement lead-time, and change consequences without copying Gantt validation or placement logic. Customer assumptions and imported external items remain reported facts until accountable acceptance supplies evidence. BCF/IFC/CAD and field-system payloads stay in installed codecs/sites; project control records only minimized external references, effect references, control state, and decisions."
+guidance = "Load sim/construction-project through the standard runtime loader when expressions need to construct, append, snapshot, validate, status, explain, diff, gate, schedule-impact, readiness, exposure, handover, or reference-admission values. Durable ids, facts, baselines, requirements, packages, joins, changes, handover items, outcomes, snapshots, and reports are Citizen read-constructs with semantic codec round trips; their open symbols and metadata remain extensible. Registered Shapes own keyword sets, reference and policy validation, result contracts, output-position behavior, and actionable diagnostics, so do not add a construction parser or matcher. Read and write operations require only construction.project.read or construction.project.write; pure validation needs neither, reference admission separately requires construction.reference.publish, and live vendor behavior remains placed through EvalFabric. Customer assumptions and imported external items remain reported until accountable acceptance supplies evidence. BCF/IFC/CAD and field-system payloads stay in installed codecs/sites; project control records only minimized external references, effect references, control state, and decisions."
 claims_anchors = [
   "anchor/crate/sim-lib-construction-project",
   "anchor/rustdoc/sim-lib-construction-project/crate-root",
@@ -113,6 +113,7 @@ claims_specimens = [
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/six-week-production-readiness",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/sustainability-to-reference-evidence",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/field-item-to-corrective-evidence",
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/loadable-project-control",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/opportunity_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/fact_book_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/design_tests",
@@ -346,6 +347,15 @@ claims_specimens = [
   "spec-test/sim-construction/crates/sim-lib-construction-project/tests/final_economy",
   "spec-test/sim-construction/crates/sim-lib-construction-project/tests/closeout",
   "spec-test/sim-construction/crates/sim-lib-construction-project/tests/reference_admission",
+]
+
+[[route]]
+id = "route/load-construction-project-control"
+task = "Load construction project control"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The construction row composes Citizen read-constructs, Shape contracts, and standard runtime loading into one thin capability-minimal library over the complete project-control domain." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/loadable-project-control", why = "The checked Lisp specimen loads the library through the standard bootloader, constructs and appends a fact, queries a historical snapshot, and explains a blocker." },
 ]
 
 [[route]]

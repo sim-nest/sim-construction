@@ -1,10 +1,10 @@
 //! Complete one-chain settlement fixture shared by change conformance tests.
 
+use super::change_tests::{
+    amount, change_record, control, date, document_reference, fact, ledger_reference,
+};
 use crate::{
     BaselineId, ChangeControlSet, ChangeScheduleImpact, ChangeStage, ChangeStatus, CommercialSide,
-    change_tests::{
-        amount, change_record, control, date, document_reference, fact, ledger_reference,
-    },
 };
 
 pub(crate) fn complete_chain(closure_customer: &str) -> ChangeControlSet {

@@ -15,7 +15,7 @@ pub const MAX_FACT_BODY_NODES: usize = 256;
 pub const MAX_FACT_EVIDENCE_REFS: usize = 32;
 
 /// Evidence-backed construction project fact.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct ProjectFact {
     /// Monotone event sequence assigned by the project book writer.
     pub seq: u64,
@@ -24,6 +24,7 @@ pub struct ProjectFact {
     /// Stable construction-control subject identity.
     pub subject: ControlId,
     /// Open fact kind symbol.
+    #[serde(with = "crate::outcome_symbol")]
     pub kind: Symbol,
     /// Calendar date when the fact becomes effective for project control.
     pub effective_on: Date,
@@ -34,11 +35,34 @@ pub struct ProjectFact {
     /// Disclosure visibility for this fact.
     pub visibility: Visibility,
     /// Shape-ready expression body carried by the fact.
+    #[serde(with = "expr_wire")]
     pub body: Expr,
     /// Reference-only external evidence links.
     pub evidence: Vec<ExternalRef>,
     /// Evidence state declared by the fact.
     pub evidence_state: EvidenceState,
+}
+
+mod expr_wire {
+    use serde::{Deserialize, Deserializer, Serialize, Serializer, de::Error as _};
+    use sim_codec::{DecodeBudget, DecodeLimits};
+    use sim_kernel::{CodecId, Expr};
+
+    pub fn serialize<S>(value: &Expr, serializer: S) -> std::result::Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        sim_codec_json::expr_to_json(value).serialize(serializer)
+    }
+
+    pub fn deserialize<'de, D>(deserializer: D) -> std::result::Result<Expr, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let value = serde_json::Value::deserialize(deserializer)?;
+        let mut budget = DecodeBudget::new(DecodeLimits::default());
+        sim_codec_json::json_to_expr(CodecId(0), &value, &mut budget, 0).map_err(D::Error::custom)
+    }
 }
 
 impl ProjectFact {

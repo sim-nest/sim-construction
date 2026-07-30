@@ -28,6 +28,10 @@
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/late-decision/purpose.md"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/late-decision/recipe.toml"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/late-decision/setup.siml"}
+{"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/loadable-project-control/expected.txt"}
+{"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/loadable-project-control/purpose.md"}
+{"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/loadable-project-control/recipe.toml"}
+{"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/loadable-project-control/setup.siml"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/mixed-obligation-gate/purpose.md"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/mixed-obligation-gate/recipe.toml"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/mixed-obligation-gate/setup.siml"}

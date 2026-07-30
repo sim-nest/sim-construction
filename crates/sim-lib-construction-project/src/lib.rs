@@ -27,6 +27,8 @@ mod collaboration;
 mod commercial;
 mod commissioning;
 mod commissioning_readiness;
+#[macro_use]
+mod citizen;
 mod control_graph;
 mod decision;
 mod design;
@@ -52,6 +54,7 @@ mod lifecycle;
 mod lookahead;
 mod obligation;
 mod observation;
+mod operations;
 mod opportunity;
 mod outcome;
 mod outcome_symbol;
@@ -70,6 +73,7 @@ mod rfi;
 mod risk;
 mod schedule_join;
 mod schedule_status;
+mod shapes;
 mod snapshot;
 mod supplier;
 mod tender;
@@ -96,6 +100,7 @@ pub use change::{
 pub use change_exposure::{ChangeControlSet, ChangeExposureReport, ChangeExposureView};
 pub use change_settlement::ChangeSettlementView;
 pub use charter::{CurrencyCode, PROJECT_CHARTER_KIND, ProjectCharter, ReportingCadence};
+pub use citizen::{construction_citizen_registry, construction_citizen_symbols};
 pub use closeout::*;
 pub use collaboration::{CollaborationCharter, CollaborationReadinessReport};
 pub use commercial::{
@@ -157,6 +162,11 @@ pub use lookahead::{
 };
 pub use obligation::{ObligationPolicy, ProjectObligation};
 pub use observation::ProjectObservation;
+pub use operations::{
+    ConstructionExplanationReport, ConstructionProjectLib, ConstructionStatusReport,
+    construction_constructor_symbols, construction_operation_symbols,
+    construction_project_lib_symbol, install_construction_project_lib,
+};
 pub use opportunity::{OpportunityRecord, OpportunitySource};
 pub use outcome::{
     DisclosureState, DomainQuantity, OutcomeBlocker, OutcomeBoundary, OutcomeControlReport,
@@ -192,6 +202,7 @@ pub use schedule_status::{
     ScheduleControlState, ScheduleExplanationKind, ScheduleImpactExplanation, ScheduleStatusReport,
     explain_schedule_impact,
 };
+pub use shapes::{construction_shape_symbols, construction_type_shape_symbol};
 pub use snapshot::{
     ProjectDelta, ProjectSnapshot, ProjectSnapshotExplanation, SnapshotExplanationKind,
     snapshot_at, snapshot_delta,
@@ -209,42 +220,6 @@ pub static RECIPES: sim_cookbook::EmbeddedDir =
     include!(concat!(env!("OUT_DIR"), "/cookbook_recipes.rs"));
 
 #[cfg(test)]
-mod acceptance_tests;
+mod runtime_tests;
 #[cfg(test)]
-mod change_test_chain;
-#[cfg(test)]
-mod change_tests;
-#[cfg(test)]
-mod control_graph_tests;
-#[cfg(test)]
-mod design_tests;
-#[cfg(test)]
-mod escalation_tests;
-#[cfg(test)]
-mod exposure_tests;
-#[cfg(test)]
-mod fact_book_tests;
-#[cfg(test)]
-mod field_control_tests;
-#[cfg(test)]
-mod handover_tests;
-#[cfg(test)]
-mod lifecycle_tests;
-#[cfg(test)]
-mod obligation_tests;
-#[cfg(test)]
-mod opportunity_tests;
-#[cfg(test)]
-mod outcome_tests;
-#[cfg(test)]
-mod procurement_tests;
-#[cfg(test)]
-mod production_plan_tests;
-#[cfg(test)]
-mod risk_tests;
-#[cfg(test)]
-mod schedule_tests;
-#[cfg(test)]
-mod supplier_tests;
-#[cfg(test)]
-mod tests;
+mod test_suite;

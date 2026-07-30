@@ -420,7 +420,7 @@ impl OutcomeRecord {
         self
     }
 
-    fn validate(&self) -> Result<()> {
+    pub(crate) fn validate(&self) -> Result<()> {
         self.quantity.validate("outcome_record.quantity")?;
         Ok(())
     }

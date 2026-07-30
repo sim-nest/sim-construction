@@ -4,7 +4,7 @@ use sim_ledger::Amount;
 use sim_lib_doc_core::ExternalRef;
 use time::{Date, Month};
 
-use crate::change_test_chain::complete_chain;
+use super::change_test_chain::complete_chain;
 use crate::{
     BaselineId, ChangeAmountComponent, ChangeControlSet, ChangeDirection, ChangeFact, ChangeId,
     ChangeRecord, ChangeScheduleImpact, ChangeStage, ChangeStatus, CommercialAmount,

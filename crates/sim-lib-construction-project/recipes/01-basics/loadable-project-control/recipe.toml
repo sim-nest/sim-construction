@@ -1,0 +1,12 @@
+id = "loadable-project-control"
+title = "Load and exercise construction project control"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 190
+tags = ["construction", "framework", "citizen", "shape-checked", "bootloader", "runnable"]
+requires = ["codec/lisp", "sim-run-core", "sim/construction-project", "construction.project.read", "construction.project.write"]
+harness = "cargo-test"
+package = "sim-lib-construction-project"
+test = "runtime_tests::loadable_lisp_specimen_constructs_appends_snapshots_and_explains"
+expected = "expected.txt"

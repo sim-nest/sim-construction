@@ -16,7 +16,7 @@ name modeled projects, documents, roles, and evidence references only.
 - `sim-lib-construction-project`: construction project identities, charter
   records, append-only fact books, deterministic snapshots, change reports,
   evidence states, commissioning/handover hierarchy, accountable acceptance
-  gates, and readiness summaries.
+  gates, readiness summaries, and a loadable Citizen/Shape operation surface.
 - `sim-site-dalux`: Dalux project-item placement for construction evidence,
   modeled by default and gated for live API-identity use.
 - `sim-site-powerproject`: Powerproject desktop and Project for the web

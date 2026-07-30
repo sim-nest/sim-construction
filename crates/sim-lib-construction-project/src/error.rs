@@ -8,6 +8,8 @@ use crate::{
     UncertaintyKind, UncertaintyState,
 };
 
+mod kernel;
+
 /// Result alias for construction project-control validation.
 pub type Result<T> = std::result::Result<T, ConstructionProjectError>;
 
@@ -643,7 +645,7 @@ pub enum ConstructionProjectError {
     },
     /// The imported schedule plan did not match the accepted baseline plan.
     #[error(
-        "schedule plan mismatch: baseline plan {baseline_plan}, imported revision plan {imported_plan}, actual plan {actual_plan}"
+        "schedule plan mismatch: baseline {baseline_plan}, imported {imported_plan}, actual {actual_plan}"
     )]
     SchedulePlanMismatch {
         /// Baseline plan id.
