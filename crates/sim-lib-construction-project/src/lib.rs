@@ -22,11 +22,14 @@ mod control_graph;
 mod decision;
 mod design;
 mod error;
+mod escalation;
 mod evidence_state;
 mod exception;
+mod exposure;
 mod fact;
 mod field_import;
 mod field_item;
+mod forecast;
 mod gate;
 mod governance;
 mod handoff;
@@ -51,6 +54,7 @@ mod release;
 mod requirement;
 mod review;
 mod rfi;
+mod risk;
 mod schedule_join;
 mod schedule_status;
 mod snapshot;
@@ -80,8 +84,14 @@ pub use control_graph::{
 pub use decision::{DecisionResolution, DecisionState, ProjectDecision};
 pub use design::{DesignBlocker, DesignControlSet, DesignReadinessReport, DesignRevision};
 pub use error::{ConstructionProjectError, Result};
+pub use escalation::{
+    AttentionLevel, EscalationReason, EscalationRecommendation, derive_escalation_queue,
+};
 pub use evidence_state::{EvidenceState, EvidenceValidity};
 pub use exception::{ExceptionDecision, ExceptionScope};
+pub use exposure::{
+    ExposureAnnotation, ExposureBucket, ExposureQueueItem, ExposureReport, derive_exposure,
+};
 pub use fact::{MAX_FACT_BODY_NODES, MAX_FACT_EVIDENCE_REFS, ProjectFact, expr_node_count};
 pub use field_import::{
     EFFECT_LEDGER_BACKEND, FieldItemImport, FieldItemImportOutcome, import_field_item,
@@ -90,6 +100,7 @@ pub use field_item::{
     FieldItem, FieldItemKind, FieldItemReference, FieldItemState, FieldLane, FieldRollupEntry,
     FieldSeverity, safety_first_rollup,
 };
+pub use forecast::{ForecastBasis, ForecastConsequence, ForecastConsequenceKind, ForecastValue};
 pub use gate::{GateDecision, GateDecisionKind, GateReport, GateRequirement, PhaseGate};
 pub use governance::{
     DueDatePolicy, ProjectGovernance, RoleAssignment, Visibility, VisibilityPolicy,
@@ -135,6 +146,10 @@ pub use release::{DesignRelease, DesignReleasePurpose};
 pub use requirement::{Requirement, RequirementLane};
 pub use review::{DesignReview, DesignReviewState};
 pub use rfi::{RfiRecord, RfiState};
+pub use risk::{
+    OpenRating, RatingValue, ResponseState, UncertaintyKind, UncertaintyRecord,
+    UncertaintyResponse, UncertaintyState,
+};
 pub use schedule_join::{
     ScheduleBaseline, ScheduleJoinKind, SchedulePlanRevision, ScheduleTaskJoin, ScheduleTaskJoinSet,
 };
@@ -163,6 +178,10 @@ mod control_graph_tests;
 #[cfg(test)]
 mod design_tests;
 #[cfg(test)]
+mod escalation_tests;
+#[cfg(test)]
+mod exposure_tests;
+#[cfg(test)]
 mod fact_book_tests;
 #[cfg(test)]
 mod field_control_tests;
@@ -178,6 +197,8 @@ mod outcome_tests;
 mod procurement_tests;
 #[cfg(test)]
 mod production_plan_tests;
+#[cfg(test)]
+mod risk_tests;
 #[cfg(test)]
 mod schedule_tests;
 #[cfg(test)]

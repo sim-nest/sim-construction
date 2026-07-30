@@ -3,7 +3,10 @@
 use time::Date;
 
 use crate::OrganizationId;
-use crate::{BaselineId, ControlId, ProjectId, ProjectPhase, RoleId};
+use crate::{
+    BaselineId, ControlId, ForecastConsequenceKind, ProjectId, ProjectPhase, RoleId,
+    UncertaintyKind, UncertaintyState,
+};
 
 /// Result alias for construction project-control validation.
 pub type Result<T> = std::result::Result<T, ConstructionProjectError>;
@@ -441,6 +444,32 @@ pub enum ConstructionProjectError {
     AmountOverflow {
         /// Arithmetic field that overflowed.
         field: &'static str,
+    },
+    /// A risk carried opportunity-only state, or an opportunity carried risk-only state.
+    #[error("uncertainty {control} kind {kind:?} cannot carry state {state:?}")]
+    UncertaintyStateMismatch {
+        /// Uncertainty control.
+        control: ControlId,
+        /// Risk or opportunity kind.
+        kind: UncertaintyKind,
+        /// Rejected lifecycle state.
+        state: UncertaintyState,
+    },
+    /// A forecast lane carried an incompatible typed value.
+    #[error("forecast consequence {consequence} kind {kind:?} has an incompatible value")]
+    ForecastValueMismatch {
+        /// Forecast consequence control.
+        consequence: ControlId,
+        /// Forecast lane expecting a different value.
+        kind: ForecastConsequenceKind,
+    },
+    /// Current-fact, baseline, scenario, hierarchy, or schedule derivation failed closed.
+    #[error("uncertainty derivation for {control} failed: {reason}")]
+    UncertaintyDerivation {
+        /// Control being derived.
+        control: ControlId,
+        /// Stable failure reason.
+        reason: &'static str,
     },
     /// A tender references a supplier that is not a package candidate.
     #[error("tender {tender} references supplier {supplier} that is not a package candidate")]

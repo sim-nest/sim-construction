@@ -16,6 +16,10 @@ and say exactly what changed between two points.
   outside the codebase.
 - Corrections keep the earlier record visible, so reports do not silently rewrite
   what the team knew.
+- Risks and opportunities keep qualitative ratings distinct from quantified
+  statements, while forecast amounts use checked exact arithmetic.
+- Exposure stays separated by scenario and currency, and escalation recommends
+  attention without silently becoming the project-chief's decision.
 - The same record can feed schedule, office, ledger, and handover layers without
   changing their ownership.
 

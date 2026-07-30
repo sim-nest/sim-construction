@@ -188,6 +188,24 @@ claims_specimens = [
 ]
 
 [[feature]]
+id = "feature/sim-construction/risk-opportunity-forecast-escalation"
+title = "Construction risk opportunity forecast escalation"
+summary = "Control current project risks and opportunities through typed open ratings, method-bearing forecast consequences, exact comparable exposure, accepted Gantt joins, control dependencies, and deterministic attention recommendations."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when uncertainty must stay traceable from cause, uncertain event, consequence, owner, response, trigger, due date, affected controls, and evidence through risk realization or opportunity capture. Qualitative and quantified ratings remain distinguishable under open schemes. Forecast time, exact Amount, safety, quality, environment, sustainability, people, place, and customer facts name their method and as-of basis. Exposure uses current facts and accepted baselines, groups only matching risk/opportunity kind, scenario, and currency, excludes parent/child double counting, and annotates correlation. Escalation recommends accountable attention for overdue response, crossed trigger, changed consequence, missing authority, or decision lead time; it never makes the decision."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/risk-to-project-chief-decision",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/risk_tests",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/exposure_tests",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/escalation_tests",
+]
+
+[[feature]]
 id = "feature/sim-construction/work-package-procurement-awards"
 title = "Construction work package procurement supplier award control"
 summary = "Carry a construction work package procurement record from inquiry basis through supplier candidates and comparable tender facts to an accountable award decision while keeping commercial values on sim-ledger Amount and project-charter currency."
@@ -319,6 +337,17 @@ steps = [
   { feature = "feature/sim-construction/gantt-schedule-impact", why = "The schedule-impact row owns construction task joins, baseline revision checks, as-of sequence checks, and Gantt-derived schedule explanations." },
   { feature = "feature/sim-construction/powerproject-schedule-placement", why = "The Powerproject row owns optional modeled or gated external schedule placement." },
   { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/control-graph-meets-gantt", why = "The recipe shows a local baseline plan joined to construction controls with optional modeled Powerproject placement." },
+]
+
+[[route]]
+id = "route/escalate-construction-project-risk-consequence"
+task = "Escalate a construction project risk consequence"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns current accepted facts, stable ids, evidence references, and accountable roles." },
+  { feature = "feature/sim-construction/gantt-schedule-impact", why = "The schedule row owns accepted Gantt baselines, task joins, dependencies, and critical-path consequence evidence." },
+  { feature = "feature/sim-construction/risk-opportunity-forecast-escalation", why = "The uncertainty row owns typed risk/opportunity records, method-bearing forecast consequences, comparable exposure, and attention recommendations without making decisions." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/risk-to-project-chief-decision", why = "The recipe follows one current switchgear risk through critical-path and exact-amount consequence to project-chief attention." },
 ]
 
 [[route]]

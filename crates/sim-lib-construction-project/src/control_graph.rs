@@ -45,6 +45,12 @@ pub enum ControlNodeKind {
     Inspection,
     /// Authority obligation.
     AuthorityObligation,
+    /// Risk uncertainty.
+    Risk,
+    /// Beneficial opportunity uncertainty.
+    Opportunity,
+    /// Method-bearing forecast consequence.
+    ForecastConsequence,
 }
 
 /// Stable construction-control graph node.

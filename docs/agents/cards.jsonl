@@ -31,6 +31,9 @@
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/project-charter/purpose.md"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/project-charter/recipe.toml"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/project-charter/setup.siml"}
+{"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/risk-to-project-chief-decision/purpose.md"}
+{"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/risk-to-project-chief-decision/recipe.toml"}
+{"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/risk-to-project-chief-decision/setup.siml"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/six-week-production-readiness/purpose.md"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/six-week-production-readiness/recipe.toml"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/six-week-production-readiness/setup.siml"}

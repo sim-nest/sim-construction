@@ -1,0 +1,8 @@
+id = "risk-to-project-chief-decision"
+title = "Risk to project-chief decision attention"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 97
+tags = ["construction", "project-control", "risk", "opportunity", "forecast", "escalation"]
+requires = ["construction.project.read", "construction.project.write", "codec/lisp"]

@@ -26,6 +26,7 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 | `feature/sim-construction/gantt-schedule-impact` | `crate/sim-lib-construction-project` | 2 | Join stable construction controls to canonical Gantt task ids and explain baseline-aware Gantt critical path construction consequences: downstream, need-date, float-risk, late-decision, procurement lead-time, and change impact. |
 | `feature/sim-construction/sustainability-reference-outcomes` | `crate/sim-lib-construction-project` | 2 | Trace project-chartered certification, climate, efficiency, reuse, waste, responsible-material, quality, safety, work-environment, property, and city-district targets to source-retained quantities, method and boundary provenance, reviewed evidence, gate blockers, and admissible reference claims. |
 | `feature/sim-construction/production-lookahead-readiness` | `crate/sim-lib-construction-project` | 2 | Derive six-week demand and three-week production commitments from accepted Gantt task joins, work packages, location/system breakdowns, shared requirements, validity windows, accountable exceptions, and separate human commitment facts. |
+| `feature/sim-construction/risk-opportunity-forecast-escalation` | `crate/sim-lib-construction-project` | 4 | Control current project risks and opportunities through typed open ratings, method-bearing forecast consequences, exact comparable exposure, accepted Gantt joins, control dependencies, and deterministic attention recommendations. |
 | `feature/sim-construction/work-package-procurement-awards` | `crate/sim-lib-construction-project` | 2 | Carry a construction work package procurement record from inquiry basis through supplier candidates and comparable tender facts to an accountable award decision while keeping commercial values on sim-ledger Amount and project-charter currency. |
 | `feature/sim-construction/supplier-production-handoff` | `crate/sim-lib-construction-project` | 2 | Derive project-scoped supplier qualification and production handoff readiness from subcontract-chain references, shared qualification obligations, restricted external evidence, accountable award decisions, production design releases, material lead time, production need dates, and explicit responsibility acceptance. |
 | `feature/sim-construction/design-release-authority-control` | `crate/sim-lib-construction-project` | 2 | Trace current design revisions, RFIs, reviews, purpose-specific releases, permits, inspections, and authority obligations into package or task readiness through the shared construction control graph. |
@@ -75,6 +76,9 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 - `crates/sim-lib-construction-project/recipes/01-basics/project-charter/purpose.md`
 - `crates/sim-lib-construction-project/recipes/01-basics/project-charter/recipe.toml`
 - `crates/sim-lib-construction-project/recipes/01-basics/project-charter/setup.siml`
+- `crates/sim-lib-construction-project/recipes/01-basics/risk-to-project-chief-decision/purpose.md`
+- `crates/sim-lib-construction-project/recipes/01-basics/risk-to-project-chief-decision/recipe.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/risk-to-project-chief-decision/setup.siml`
 - `crates/sim-lib-construction-project/recipes/01-basics/six-week-production-readiness/purpose.md`
 - `crates/sim-lib-construction-project/recipes/01-basics/six-week-production-readiness/recipe.toml`
 - `crates/sim-lib-construction-project/recipes/01-basics/six-week-production-readiness/setup.siml`
@@ -4695,6 +4699,834 @@ fn ids(values: &[crate::ProductionConstraint]) -> Vec<&str> {
         .iter()
         .map(|constraint| constraint.requirement.as_str())
         .collect()
+}
+```
+
+### `feature/sim-construction/risk-opportunity-forecast-escalation`
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/risk-to-project-chief-decision` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/risk-to-project-chief-decision/recipe.toml`:
+
+```toml
+id = "risk-to-project-chief-decision"
+title = "Risk to project-chief decision attention"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 97
+tags = ["construction", "project-control", "risk", "opportunity", "forecast", "escalation"]
+requires = ["construction.project.read", "construction.project.write", "codec/lisp"]
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/risk_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/risk_tests.rs`:
+
+```rust
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+use crate::{
+    BaselineId, CommercialAmount, ConstructionProjectError, ControlId, CurrencyCode, ForecastBasis,
+    ForecastConsequence, ForecastConsequenceKind, ForecastValue, OpenRating, ProjectId,
+    RatingValue, ResponseState, RoleId, UncertaintyKind, UncertaintyRecord, UncertaintyResponse,
+    UncertaintyState,
+};
+// conformance: construction risk opportunity ratings realization and capture
+
+use sim_ledger::Amount;
+
+#[test]
+fn risk_and_opportunity_retain_complete_accountable_uncertainty_records() {
+    let risk = uncertainty(UncertaintyKind::Risk);
+    risk.validate().unwrap();
+    assert!(matches!(risk.likelihood.value, RatingValue::Qualitative(_)));
+    assert!(matches!(risk.impact.value, RatingValue::Quantified { .. }));
+
+    let opportunity = uncertainty(UncertaintyKind::Opportunity)
+        .with_state(UncertaintyState::OpportunityCaptured { fact_seq: 4 });
+    opportunity.validate().unwrap();
+    assert_eq!(opportunity.response.authority, Some(role("project-chief")));
+}
+
+#[test]
+fn risk_realization_and_opportunity_capture_are_kind_checked() {
+    uncertainty(UncertaintyKind::Risk)
+        .with_state(UncertaintyState::RiskRealized { fact_seq: 4 })
+        .validate()
+        .unwrap();
+
+    let mismatched = uncertainty(UncertaintyKind::Opportunity)
+        .with_state(UncertaintyState::RiskRealized { fact_seq: 4 });
+    assert!(matches!(
+        mismatched.validate(),
+        Err(ConstructionProjectError::UncertaintyStateMismatch { .. })
+    ));
+}
+
+#[test]
+fn stale_rating_remains_visible_after_a_current_fact_change() {
+    let mut risk = uncertainty(UncertaintyKind::Risk);
+    risk.fact_seq = 5;
+    assert!(risk.has_stale_rating());
+    risk.validate().unwrap();
+}
+
+#[test]
+fn forecast_consequences_preserve_every_typed_lane_and_method_basis() {
+    let uncertainty = control("risk.switchgear");
+    let basis = ForecastBasis::new(baseline(), "discipline forecast", 4, date(20));
+    let kinds_and_values = [
+        (
+            ForecastConsequenceKind::Time,
+            ForecastValue::TimeInterval {
+                start_on: date(24),
+                finish_on: date(28),
+            },
+        ),
+        (
+            ForecastConsequenceKind::Amount,
+            ForecastValue::Amount(
+                CommercialAmount::parse("125000.00", CurrencyCode::new("SEK").unwrap()).unwrap(),
+            ),
+        ),
+        (
+            ForecastConsequenceKind::Safety,
+            ForecastValue::Qualitative("energization overlap".to_owned()),
+        ),
+        (
+            ForecastConsequenceKind::Quality,
+            ForecastValue::Quantified {
+                value: 12,
+                unit: "inspection-points".to_owned(),
+            },
+        ),
+        (
+            ForecastConsequenceKind::Environment,
+            ForecastValue::Quantified {
+                value: 4,
+                unit: "extra-deliveries".to_owned(),
+            },
+        ),
+        (
+            ForecastConsequenceKind::Sustainability,
+            ForecastValue::Quantified {
+                value: 800,
+                unit: "kg-co2e".to_owned(),
+            },
+        ),
+        (
+            ForecastConsequenceKind::People,
+            ForecastValue::Qualitative("night shift pressure".to_owned()),
+        ),
+        (
+            ForecastConsequenceKind::Place,
+            ForecastValue::Qualitative("loading-bay congestion".to_owned()),
+        ),
+        (
+            ForecastConsequenceKind::Customer,
+            ForecastValue::Qualitative("opening confidence reduced".to_owned()),
+        ),
+    ];
+
+    for (index, (kind, value)) in kinds_and_values.into_iter().enumerate() {
+        ForecastConsequence::new(
+            project(),
+            control(&format!("forecast.{}", index + 1)),
+            uncertainty.clone(),
+            4,
+            control("scenario.accepted"),
+            kind,
+            value,
+            basis.clone(),
+        )
+        .affects(control("package.electrical"))
+        .with_evidence(evidence("forecast"))
+        .validate()
+        .unwrap();
+    }
+
+    let wrong = ForecastConsequence::new(
+        project(),
+        control("forecast.wrong"),
+        uncertainty,
+        4,
+        control("scenario.accepted"),
+        ForecastConsequenceKind::Amount,
+        ForecastValue::Qualitative("about a lot".to_owned()),
+        basis,
+    )
+    .affects(control("package.electrical"))
+    .with_evidence(evidence("forecast"));
+    assert!(matches!(
+        wrong.validate(),
+        Err(ConstructionProjectError::ForecastValueMismatch { .. })
+    ));
+    assert_eq!(Amount::parse("125000.00").unwrap().0, 12_500_000);
+}
+
+fn uncertainty(kind: UncertaintyKind) -> UncertaintyRecord {
+    let likelihood = OpenRating::qualitative(
+        "project/risk-matrix",
+        "possible",
+        4,
+        date(20),
+        "facilitated review",
+    );
+    let impact = OpenRating::quantified(
+        "project/impact-score",
+        4,
+        "five-point-scale",
+        4,
+        date(20),
+        "discipline estimate",
+    );
+    let response = UncertaintyResponse::new(
+        "qualify the alternate supplier",
+        "switchgear submittal is rejected",
+        date(28),
+        date(24),
+        5,
+    )
+    .with_authority(role("project-chief"))
+    .trigger_crossed_at(4)
+    .with_state(ResponseState::InProgress);
+    let record = match kind {
+        UncertaintyKind::Risk => UncertaintyRecord::risk(
+            project(),
+            control("risk.switchgear"),
+            4,
+            baseline(),
+            control("scenario.accepted"),
+            "single-source switchgear",
+            "the selected supplier misses approval",
+            "energization and customer opening move",
+            role("package-lead"),
+            response,
+            likelihood,
+            impact,
+        ),
+        UncertaintyKind::Opportunity => UncertaintyRecord::opportunity(
+            project(),
+            control("opportunity.prefabrication"),
+            4,
+            baseline(),
+            control("scenario.accepted"),
+            "repeatable riser geometry",
+            "the supplier accepts off-site assembly",
+            "installation duration and site exposure reduce",
+            role("package-lead"),
+            response,
+            likelihood,
+            impact,
+        ),
+    };
+    record
+        .affects(control("package.electrical"))
+        .with_evidence(evidence("uncertainty"))
+}
+
+fn project() -> ProjectId {
+    ProjectId::new("reference-center").unwrap()
+}
+
+fn baseline() -> BaselineId {
+    BaselineId::new("baseline.control-1").unwrap()
+}
+
+fn role(value: &str) -> RoleId {
+    RoleId::new(value).unwrap()
+}
+
+fn control(value: &str) -> ControlId {
+    ControlId::new(value).unwrap()
+}
+
+fn date(day: u8) -> Date {
+    Date::from_calendar_date(2026, Month::July, day).unwrap()
+}
+
+fn evidence(id: &str) -> ExternalRef {
+    ExternalRef::new(
+        "doc/synthetic",
+        format!("risk/reference-center/{id}"),
+        Some("rev-a".to_owned()),
+        None,
+    )
+}
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/exposure_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/exposure_tests.rs`:
+
+```rust
+// conformance: baseline-aware exact construction uncertainty exposure
+
+use sim_kernel::{Expr, Symbol};
+use sim_ledger::Amount;
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+use crate::{
+    AcceptedBaseline, BaselineId, BaselineKind, CommercialAmount, ControlEdgeKind, ControlGraph,
+    ControlId, ControlNodeKind, CurrencyCode, ExposureAnnotation, ForecastBasis,
+    ForecastConsequence, ForecastConsequenceKind, ForecastValue, OpenRating, ProjectBook,
+    ProjectFact, ProjectId, ResponseState, RoleId, ScheduleBaseline, ScheduleJoinKind,
+    SchedulePlanRevision, ScheduleStatusReport, ScheduleTaskJoin, ScheduleTaskJoinSet,
+    UncertaintyRecord, UncertaintyResponse, derive_exposure,
+};
+
+#[test]
+fn exposure_uses_current_baseline_schedule_dependency_and_comparable_leaf_facts() {
+    let book = fact_book(&[
+        "risk.switchgear",
+        "forecast.amount-parent",
+        "forecast.amount-child",
+        "forecast.amount-eur",
+        "forecast.safety",
+    ]);
+    let snapshot = book.snapshot_at(5).unwrap();
+    let baseline = accepted_baseline();
+    let risk = risk();
+    let parent = amount_consequence("forecast.amount-parent", 2, "100000.00", "SEK")
+        .summarizes(control("forecast.amount-child"));
+    let child = amount_consequence("forecast.amount-child", 3, "60000.00", "SEK")
+        .with_parent(control("forecast.amount-parent"))
+        .correlated_with(control("correlation.switchgear-market"));
+    let euro = amount_consequence("forecast.amount-eur", 4, "2000.00", "EUR");
+    let safety = ForecastConsequence::new(
+        project(),
+        control("forecast.safety"),
+        control("risk.switchgear"),
+        5,
+        control("scenario.accepted"),
+        ForecastConsequenceKind::Safety,
+        ForecastValue::Qualitative("temporary energization overlap".to_owned()),
+        basis(5),
+    )
+    .affects(control("package.electrical"))
+    .with_evidence(evidence("safety"));
+
+    let report = derive_exposure(
+        &snapshot,
+        &[baseline],
+        &[risk],
+        &[parent, child, euro, safety],
+        &joins(),
+        &schedule(),
+        &graph(),
+    )
+    .unwrap();
+
+    assert_eq!(report.queue.len(), 1);
+    assert!(report.queue[0].critical_path);
+    assert_eq!(
+        report.queue[0]
+            .affected_dependents
+            .iter()
+            .map(ControlId::as_str)
+            .collect::<Vec<_>>(),
+        vec!["package.electrical"]
+    );
+    assert_eq!(report.amount_buckets.len(), 2);
+    let sek = report
+        .amount_buckets
+        .iter()
+        .find(|bucket| bucket.currency.as_str() == "SEK")
+        .unwrap();
+    assert_eq!(sek.total.0, 6_000_000);
+    assert_eq!(
+        sek.contributors
+            .iter()
+            .map(ControlId::as_str)
+            .collect::<Vec<_>>(),
+        vec!["forecast.amount-child"]
+    );
+    assert!(sek.annotations.iter().any(|annotation| matches!(
+        annotation,
+        ExposureAnnotation::ParentSummaryExcluded { parent, .. }
+            if parent.as_str() == "forecast.amount-parent"
+    )));
+    assert!(sek.annotations.iter().any(|annotation| matches!(
+        annotation,
+        ExposureAnnotation::Correlated { group, .. }
+            if group.as_str() == "correlation.switchgear-market"
+    )));
+    let eur = report
+        .amount_buckets
+        .iter()
+        .find(|bucket| bucket.currency.as_str() == "EUR")
+        .unwrap();
+    assert_eq!(eur.total.0, 200_000);
+}
+
+#[test]
+fn exposure_amount_overflow_fails_closed() {
+    let book = fact_book(&["risk.switchgear", "forecast.max", "forecast.plus-one"]);
+    let snapshot = book.snapshot_at(3).unwrap();
+    let max = raw_amount_consequence("forecast.max", 2, Amount(i64::MAX));
+    let plus_one = raw_amount_consequence("forecast.plus-one", 3, Amount(1));
+
+    let result = derive_exposure(
+        &snapshot,
+        &[accepted_baseline()],
+        &[risk()],
+        &[max, plus_one],
+        &joins_at(3),
+        &schedule_at(3),
+        &graph(),
+    );
+
+    assert!(matches!(
+        result,
+        Err(crate::ConstructionProjectError::AmountOverflow {
+            field: "forecast.exposure.total"
+        })
+    ));
+}
+
+fn risk() -> UncertaintyRecord {
+    let rating =
+        OpenRating::qualitative("project/risk-matrix", "high", 1, date(20), "project review");
+    UncertaintyRecord::risk(
+        project(),
+        control("risk.switchgear"),
+        1,
+        baseline_id(),
+        control("scenario.accepted"),
+        "single-source design",
+        "switchgear approval is missed",
+        "energization moves",
+        role(),
+        UncertaintyResponse::new(
+            "qualify an alternate",
+            "submittal rejected",
+            date(28),
+            date(24),
+            5,
+        )
+        .with_authority(role())
+        .with_state(ResponseState::InProgress),
+        rating.clone(),
+        rating,
+    )
+    .affects(control("package.electrical"))
+    .with_evidence(evidence("risk"))
+}
+
+fn amount_consequence(
+    id: &str,
+    fact_seq: u64,
+    amount: &str,
+    currency: &str,
+) -> ForecastConsequence {
+    ForecastConsequence::new(
+        project(),
+        control(id),
+        control("risk.switchgear"),
+        fact_seq,
+        control("scenario.accepted"),
+        ForecastConsequenceKind::Amount,
+        ForecastValue::Amount(
+            CommercialAmount::parse(amount, CurrencyCode::new(currency).unwrap()).unwrap(),
+        ),
+        basis(fact_seq),
+    )
+    .affects(control("package.electrical"))
+    .with_evidence(evidence(id))
+}
+
+fn raw_amount_consequence(id: &str, fact_seq: u64, amount: Amount) -> ForecastConsequence {
+    ForecastConsequence::new(
+        project(),
+        control(id),
+        control("risk.switchgear"),
+        fact_seq,
+        control("scenario.accepted"),
+        ForecastConsequenceKind::Amount,
+        ForecastValue::Amount(
+            CommercialAmount::new(amount, CurrencyCode::new("SEK").unwrap()).unwrap(),
+        ),
+        basis(fact_seq),
+    )
+    .affects(control("package.electrical"))
+    .with_evidence(evidence(id))
+}
+
+fn accepted_baseline() -> AcceptedBaseline {
+    AcceptedBaseline::new(
+        baseline_id(),
+        project(),
+        control("baseline.schedule"),
+        BaselineKind::Time,
+        role(),
+        1,
+        date(1),
+    )
+    .with_evidence(evidence("baseline"))
+}
+
+fn joins() -> ScheduleTaskJoinSet {
+    joins_at(5)
+}
+
+fn joins_at(as_of_seq: u64) -> ScheduleTaskJoinSet {
+    ScheduleTaskJoinSet::new(
+        ScheduleBaseline::new(baseline_id(), "plan", "rev-a", 1).unwrap(),
+        SchedulePlanRevision::new("plan", "rev-a", as_of_seq).unwrap(),
+        vec![ScheduleTaskJoin::new(
+            control("package.electrical"),
+            "energization",
+            ScheduleJoinKind::Package,
+        )],
+    )
+    .unwrap()
+}
+
+fn schedule() -> ScheduleStatusReport {
+    schedule_at(5)
+}
+
+fn schedule_at(as_of_seq: u64) -> ScheduleStatusReport {
+    ScheduleStatusReport {
+        baseline: baseline_id(),
+        accepted_revision: "rev-a".to_owned(),
+        as_of_seq,
+        critical_tasks: vec!["energization".to_owned()],
+        explanations: Vec::new(),
+    }
+}
+
+fn graph() -> ControlGraph {
+    let mut graph = ControlGraph::new();
+    graph
+        .add_node(control("risk.switchgear"), ControlNodeKind::Risk)
+        .unwrap();
+    graph
+        .add_node(control("package.electrical"), ControlNodeKind::Package)
+        .unwrap();
+    graph
+        .add_edge(
+            control("risk.switchgear"),
+            control("package.electrical"),
+            ControlEdgeKind::Affects,
+        )
+        .unwrap();
+    graph
+}
+
+fn fact_book(subjects: &[&str]) -> ProjectBook {
+    let mut book = ProjectBook::new(project(), role());
+    for (index, subject) in subjects.iter().enumerate() {
+        let seq = u64::try_from(index + 1).unwrap();
+        book.append(ProjectFact::new(
+            seq,
+            project(),
+            control(subject),
+            Symbol::qualified("construction", "uncertainty"),
+            date(u8::try_from(index + 1).unwrap()),
+            role(),
+            Expr::String((*subject).to_owned()),
+        ))
+        .unwrap();
+    }
+    book
+}
+
+fn basis(as_of_seq: u64) -> ForecastBasis {
+    ForecastBasis::new(
+        baseline_id(),
+        "discipline estimate",
+        as_of_seq,
+        date(u8::try_from(as_of_seq).unwrap()),
+    )
+}
+
+fn project() -> ProjectId {
+    ProjectId::new("reference-center").unwrap()
+}
+
+fn baseline_id() -> BaselineId {
+    BaselineId::new("baseline.schedule").unwrap()
+}
+
+fn role() -> RoleId {
+    RoleId::new("project-chief").unwrap()
+}
+
+fn control(value: &str) -> ControlId {
+    ControlId::new(value).unwrap()
+}
+
+fn date(day: u8) -> Date {
+    Date::from_calendar_date(2026, Month::July, day).unwrap()
+}
+
+fn evidence(id: &str) -> ExternalRef {
+    ExternalRef::new(
+        "doc/synthetic",
+        format!("risk/reference-center/{id}"),
+        Some("rev-a".to_owned()),
+        None,
+    )
+}
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/escalation_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/escalation_tests.rs`:
+
+```rust
+// conformance: deterministic construction uncertainty attention recommendations
+
+use sim_kernel::{Expr, Symbol};
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+use crate::{
+    AttentionLevel, BaselineId, ControlId, ExposureQueueItem, ExposureReport, ForecastBasis,
+    ForecastConsequence, ForecastConsequenceKind, ForecastValue, OpenRating, ProjectBook,
+    ProjectFact, ProjectId, ResponseState, RoleId, UncertaintyKind, UncertaintyRecord,
+    UncertaintyResponse, UncertaintyState, derive_escalation_queue,
+};
+
+#[test]
+fn escalation_rules_recommend_attention_without_making_a_decision() {
+    let mut book = ProjectBook::new(project(), role());
+    book.append(fact(1, "forecast.switchgear", None)).unwrap();
+    book.append(fact(2, "risk.switchgear", None)).unwrap();
+    book.append(fact(3, "forecast.switchgear", Some(1)))
+        .unwrap();
+    let snapshot = book.snapshot_at(3).unwrap();
+
+    let uncertainty = risk();
+    let consequence = ForecastConsequence::new(
+        project(),
+        control("forecast.switchgear"),
+        control("risk.switchgear"),
+        3,
+        control("scenario.accepted"),
+        ForecastConsequenceKind::Safety,
+        ForecastValue::Qualitative("temporary energization overlap".to_owned()),
+        ForecastBasis::new(baseline(), "discipline estimate", 3, date(23)),
+    )
+    .affects(control("package.electrical"))
+    .with_evidence(evidence("forecast"));
+    let exposure = ExposureReport {
+        as_of_seq: 3,
+        schedule_baseline: baseline(),
+        queue: vec![ExposureQueueItem {
+            uncertainty: uncertainty.control.clone(),
+            kind: uncertainty.kind,
+            state: uncertainty.state,
+            baseline: uncertainty.baseline.clone(),
+            stale_rating: false,
+            consequences: vec![consequence.control.clone()],
+            affected_dependents: vec![control("package.electrical")],
+            critical_path: true,
+        }],
+        amount_buckets: Vec::new(),
+    };
+
+    let queue = derive_escalation_queue(
+        &snapshot,
+        &exposure,
+        &[uncertainty],
+        &[consequence],
+        date(30),
+    )
+    .unwrap();
+
+    assert_eq!(queue.len(), 1);
+    let recommendation = &queue[0];
+    assert_eq!(recommendation.attention, AttentionLevel::Immediate);
+    assert_eq!(recommendation.recommended_to, None);
+    let rendered = format!("{:?}", recommendation.reasons);
+    for reason in [
+        "OverdueResponse",
+        "CrossedTrigger",
+        "ChangedConsequence",
+        "MissingAuthority",
+        "DecisionLeadTime",
+        "CriticalPathConsequence",
+    ] {
+        assert!(rendered.contains(reason), "missing reason {reason}");
+    }
+    assert_eq!(
+        recommendation.recommendation,
+        "review current evidence and obtain an accountable decision"
+    );
+}
+
+fn risk() -> UncertaintyRecord {
+    let rating =
+        OpenRating::qualitative("project/risk-matrix", "high", 2, date(22), "project review");
+    UncertaintyRecord::risk(
+        project(),
+        control("risk.switchgear"),
+        2,
+        baseline(),
+        control("scenario.accepted"),
+        "single-source design",
+        "switchgear approval is missed",
+        "energization moves",
+        role(),
+        UncertaintyResponse::new(
+            "qualify an alternate",
+            "submittal rejected",
+            date(25),
+            date(24),
+            5,
+        )
+        .trigger_crossed_at(2)
+        .with_state(ResponseState::InProgress),
+        rating.clone(),
+        rating,
+    )
+    .affects(control("package.electrical"))
+    .with_evidence(evidence("risk"))
+    .with_state(UncertaintyState::Open)
+}
+
+fn fact(seq: u64, subject: &str, supersedes: Option<u64>) -> ProjectFact {
+    let fact = ProjectFact::new(
+        seq,
+        project(),
+        control(subject),
+        Symbol::qualified("construction", "uncertainty"),
+        date(u8::try_from(20 + seq).unwrap()),
+        role(),
+        Expr::String(subject.to_owned()),
+    );
+    match supersedes {
+        Some(prior) => fact.supersedes(prior),
+        None => fact,
+    }
+}
+
+fn project() -> ProjectId {
+    ProjectId::new("reference-center").unwrap()
+}
+
+fn baseline() -> BaselineId {
+    BaselineId::new("baseline.schedule").unwrap()
+}
+
+fn role() -> RoleId {
+    RoleId::new("project-chief").unwrap()
+}
+
+fn control(value: &str) -> ControlId {
+    ControlId::new(value).unwrap()
+}
+
+fn date(day: u8) -> Date {
+    Date::from_calendar_date(2026, Month::July, day).unwrap()
+}
+
+fn evidence(id: &str) -> ExternalRef {
+    ExternalRef::new(
+        "doc/synthetic",
+        format!("risk/reference-center/{id}"),
+        Some("rev-a".to_owned()),
+        None,
+    )
+}
+
+#[test]
+fn opportunity_capture_stays_an_attention_fact_not_a_decision() {
+    let mut opportunity = risk();
+    opportunity.kind = UncertaintyKind::Opportunity;
+    opportunity.state = UncertaintyState::OpportunityCaptured { fact_seq: 2 };
+    opportunity.validate().unwrap();
+}
+
+#[test]
+fn high_attention_queue_order_is_deterministic() {
+    let mut book = ProjectBook::new(project(), role());
+    for (seq, id) in [(1, "risk.b"), (2, "risk.c"), (3, "risk.a")] {
+        book.append(fact(seq, id, None)).unwrap();
+    }
+    let snapshot = book.snapshot_at(3).unwrap();
+    let b = ordered_risk("risk.b", 1, true);
+    let c = ordered_risk("risk.c", 2, false);
+    let a = ordered_risk("risk.a", 3, true);
+    let exposure = ExposureReport {
+        as_of_seq: 3,
+        schedule_baseline: baseline(),
+        queue: [&b, &c, &a]
+            .into_iter()
+            .map(|uncertainty| ExposureQueueItem {
+                uncertainty: uncertainty.control.clone(),
+                kind: uncertainty.kind,
+                state: uncertainty.state,
+                baseline: uncertainty.baseline.clone(),
+                stale_rating: false,
+                consequences: Vec::new(),
+                affected_dependents: Vec::new(),
+                critical_path: false,
+            })
+            .collect(),
+        amount_buckets: Vec::new(),
+    };
+
+    let queue = derive_escalation_queue(&snapshot, &exposure, &[b, c, a], &[], date(10)).unwrap();
+
+    assert_eq!(
+        queue
+            .iter()
+            .map(|item| (item.uncertainty.as_str(), item.attention))
+            .collect::<Vec<_>>(),
+        vec![
+            ("risk.a", AttentionLevel::Immediate),
+            ("risk.b", AttentionLevel::Immediate),
+            ("risk.c", AttentionLevel::High),
+        ]
+    );
+}
+
+fn ordered_risk(id: &str, fact_seq: u64, crossed: bool) -> UncertaintyRecord {
+    let rating = OpenRating::qualitative(
+        "project/risk-matrix",
+        "medium",
+        fact_seq,
+        date(u8::try_from(fact_seq).unwrap()),
+        "project review",
+    );
+    let (due_on, decision_due_on) = if crossed {
+        (date(20), date(19))
+    } else {
+        (date(5), date(4))
+    };
+    let mut response = UncertaintyResponse::new(
+        "review response",
+        "threshold crossed",
+        due_on,
+        decision_due_on,
+        1,
+    )
+    .with_authority(role());
+    if crossed {
+        response = response.trigger_crossed_at(fact_seq);
+    }
+    UncertaintyRecord::risk(
+        project(),
+        control(id),
+        fact_seq,
+        baseline(),
+        control("scenario.accepted"),
+        "current project condition",
+        "uncertain event",
+        "project consequence",
+        role(),
+        response,
+        rating.clone(),
+        rating,
+    )
+    .affects(control("package.electrical"))
+    .with_evidence(evidence(id))
 }
 ```
 
