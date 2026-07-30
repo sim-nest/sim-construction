@@ -1,0 +1,22 @@
+(expr:map
+  [kind construction/project-chief-weekly-pack]
+  [source (expr:map
+    [project-id reference-center]
+    [as-of-sequence 42]
+    [as-of-date "2026-07-30"]
+    [accepted-baseline-ids (schedule-accepted scope-accepted)]
+    [source-control-ids
+      (decision.crane safety.lift schedule.main readiness.zone-a procurement.switchgear)]
+    [generated-at "2026-07-30T06:00:00Z"]
+    [visibility-policy construction-office/cx-capability-filter-v1])]
+  [priority
+    (decisions safety-legal-blockers evidence-exceptions critical-schedule
+      readiness procurement risk-change-economy handover sustainability outcomes)]
+  [status (expr:map
+    [value reported]
+    [explanation
+      "one mandatory procurement control is reported and still requires accountable acceptance"])]
+  [changed-since-meeting (schedule.main procurement.switchgear)]
+  [office-values (Doc Sheet Deck)]
+  [presentation office/suite-scene]
+  [copies-authoritative-project-state false])

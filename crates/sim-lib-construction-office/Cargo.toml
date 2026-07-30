@@ -3,7 +3,7 @@ name = "sim-lib-construction-office"
 version = "0.1.0"
 edition = "2024"
 license = "MPL-2.0"
-description = "Reference-only office evidence composition for SIM construction control."
+description = "Visibility-safe office evidence and role-pack projections for SIM construction control."
 readme = "README.md"
 publish = false
 repository = "https://github.com/sim-nest/sim-construction"
@@ -13,16 +13,19 @@ homepage = "https://github.com/sim-nest/sim-construction"
 sim-cookbook = { version = "0.1.0" }
 sim-kernel = { version = "0.1.0" }
 sim-lib-construction-project = { version = "0.1.0", path = "../sim-lib-construction-project" }
+sim-lib-deck = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "eb617e4fd3c50fc51bcdb6a11ea5a8bbae4d1a48" }
 sim-lib-doc-core = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "eb617e4fd3c50fc51bcdb6a11ea5a8bbae4d1a48" }
+sim-lib-doc-surface = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "eb617e4fd3c50fc51bcdb6a11ea5a8bbae4d1a48" }
 sim-lib-doc-store = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "eb617e4fd3c50fc51bcdb6a11ea5a8bbae4d1a48" }
+sim-lib-sheet = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "eb617e4fd3c50fc51bcdb6a11ea5a8bbae4d1a48" }
 thiserror = "1"
+time = "0.3"
 
 [build-dependencies]
 sim-cookbook = { version = "0.1.0" }
 
 [dev-dependencies]
 sim-kernel = { version = "0.1.0", features = ["test-support"] }
-time = "0.3"
 
 [lints]
 workspace = true

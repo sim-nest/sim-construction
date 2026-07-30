@@ -2,6 +2,23 @@
 
 use sim_lib_construction_project::{ControlId, ProjectId};
 
+/// Error reported while projecting a project snapshot into office values.
+#[derive(Debug, thiserror::Error)]
+pub enum OfficePackError {
+    /// A required construction capability is absent.
+    #[error(transparent)]
+    Capability(#[from] sim_kernel::Error),
+    /// Project snapshot construction failed.
+    #[error(transparent)]
+    Construction(#[from] sim_lib_construction_project::ConstructionProjectError),
+    /// The pack request is inconsistent with the project book.
+    #[error("invalid office pack request: {0}")]
+    InvalidRequest(String),
+    /// An existing office value or suite surface rejected the projection.
+    #[error("office pack projection failed: {0}")]
+    Office(String),
+}
+
 /// Error reported by construction-to-office evidence composition.
 #[derive(Debug, thiserror::Error)]
 pub enum EvidenceBridgeError {

@@ -19,6 +19,7 @@ use crate::{
 // conformance: construction fact evidence composes with office documents.
 
 mod access_tests;
+mod pack_tests;
 
 #[test]
 fn precise_construction_relations_map_to_existing_office_roles() {
@@ -47,6 +48,11 @@ fn construction_office_evidence_recipe_is_embedded() {
         recipes
             .iter()
             .any(|recipe| recipe.id.ends_with("construction-office-evidence"))
+    );
+    assert!(
+        recipes
+            .iter()
+            .any(|recipe| recipe.id.ends_with("project-chief-weekly-pack"))
     );
 }
 

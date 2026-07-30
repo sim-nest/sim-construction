@@ -13,7 +13,7 @@
       "group": "workspace",
       "manifest": "crates/sim-lib-construction-office/Cargo.toml",
       "package": "sim-lib-construction-office",
-      "summary": "Reference-only office evidence composition for construction control."
+      "summary": "Visibility-safe office composition for construction control."
     },
     {
       "crate_name": "sim_lib_construction_project",

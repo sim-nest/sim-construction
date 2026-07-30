@@ -11,7 +11,7 @@
       "id": "cookbook/construction/office-evidence",
       "kind": "cookbook-recipe",
       "owner": "sim-lib-construction-office",
-      "summary": "Reference-only evidence joins between construction facts and office documents."
+      "summary": "Reference-only evidence joins and deterministic visibility-safe role packs over existing office values."
     },
     {
       "id": "cookbook/construction/project",
@@ -114,14 +114,14 @@
           "target": null
         }
       ],
-      "description": "Reference-only office evidence composition for SIM construction control.",
+      "description": "Visibility-safe office evidence and role-pack projections for SIM construction control.",
       "features": [],
       "group": "workspace",
       "manifest": "crates/sim-lib-construction-office/Cargo.toml",
       "name": "sim-lib-construction-office",
       "publish": "false",
       "root": "crates/sim-lib-construction-office",
-      "rustdoc_summary": "Reference-only office evidence composition for construction control.",
+      "rustdoc_summary": "Visibility-safe office composition for construction control.",
       "target_kinds": [
         "custom-build",
         "lib"
@@ -346,10 +346,10 @@
     "generated_by": "cargo run -p xtask -- simdoc",
     "generation_timestamp": "2026-07-23T14:26:39+02:00",
     "generator": "xtask repo-contract v1",
-    "git_commit": "f47ab8b28c2c304a9df6373e75dedd640015108c",
+    "git_commit": "a392cf17bc86a5b2e5faae97a86be63df246abad",
     "repo": "sim-construction",
     "schema": "sim.provenance.v1",
-    "source_commit": "f47ab8b28c2c304a9df6373e75dedd640015108c",
+    "source_commit": "a392cf17bc86a5b2e5faae97a86be63df246abad",
     "source_remote": "https://github.com/sim-nest/sim-construction",
     "validation_commands": [
       "cargo fmt --all --check",
@@ -362,9 +362,9 @@
       "cargo run -p xtask -- validation-matrix --check --repo .",
       "cargo run -p xtask -- crate-catalog --check --repo ."
     ],
-    "workspace_hash": "d83289698a23b795",
+    "workspace_hash": "00131fede401bba8",
     "workspace_hash_algorithm": "fnv1a64",
-    "workspace_hash_input_count": 162,
+    "workspace_hash_input_count": 168,
     "workspace_hash_inputs": [
       "Cargo.toml",
       "crates/sim-codec-mspdi/Cargo.toml",
@@ -379,13 +379,19 @@
       "crates/sim-lib-construction-office/Cargo.toml",
       "crates/sim-lib-construction-office/build.rs",
       "crates/sim-lib-construction-office/recipes/01-basics/construction-office-evidence/recipe.toml",
+      "crates/sim-lib-construction-office/recipes/01-basics/project-chief-weekly-pack/recipe.toml",
       "crates/sim-lib-construction-office/recipes/book.toml",
+      "crates/sim-lib-construction-office/src/cadence.rs",
       "crates/sim-lib-construction-office/src/error.rs",
       "crates/sim-lib-construction-office/src/evidence.rs",
       "crates/sim-lib-construction-office/src/lib.rs",
       "crates/sim-lib-construction-office/src/pointer.rs",
+      "crates/sim-lib-construction-office/src/projection/render.rs",
+      "crates/sim-lib-construction-office/src/projection.rs",
       "crates/sim-lib-construction-office/src/tests/access_tests.rs",
+      "crates/sim-lib-construction-office/src/tests/pack_tests.rs",
       "crates/sim-lib-construction-office/src/tests.rs",
+      "crates/sim-lib-construction-office/src/visibility.rs",
       "crates/sim-lib-construction-project/Cargo.toml",
       "crates/sim-lib-construction-project/build.rs",
       "crates/sim-lib-construction-project/recipes/01-basics/blocked-gate-graph/recipe.toml",
@@ -558,7 +564,7 @@
       "card_id": "cookbook/construction/office-evidence",
       "group": "workspace",
       "package": "sim-lib-construction-office",
-      "recipe_count": 1,
+      "recipe_count": 2,
       "recipes": [
         {
           "card_id": "construction/office-evidence/01-basics/construction-office-evidence",
@@ -567,10 +573,18 @@
           "package": "sim-lib-construction-office",
           "recipe_toml": "crates/sim-lib-construction-office/recipes/01-basics/construction-office-evidence/recipe.toml",
           "title": "Attach office evidence to construction control"
+        },
+        {
+          "card_id": "construction/office-evidence/01-basics/project-chief-weekly-pack",
+          "codec": "lisp",
+          "id": "project-chief-weekly-pack",
+          "package": "sim-lib-construction-office",
+          "recipe_toml": "crates/sim-lib-construction-office/recipes/01-basics/project-chief-weekly-pack/recipe.toml",
+          "title": "Project-chief weekly office pack"
         }
       ],
-      "summary": "Reference-only evidence joins between construction facts and office documents.",
-      "title": "Construction Office Evidence"
+      "summary": "Reference-only evidence joins and deterministic visibility-safe role packs over existing office values.",
+      "title": "Construction Office Projections"
     },
     {
       "book": "construction/project",

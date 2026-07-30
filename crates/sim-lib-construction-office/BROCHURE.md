@@ -15,6 +15,14 @@ reviews, and published deliverables without copying their contents. Project
 visibility stays in force, repeated attachment is harmless, and a rejected or
 superseded fact cannot quietly become accepted because it has an office link.
 
+The same current or historical project snapshot can become a daily, weekly,
+monthly/gate, handover, closeout, or reference-review pack in existing office
+documents. Decisions and non-waivable blockers lead, every status explains
+itself, changed-since-meeting controls stay visible, and a mandatory red item
+cannot disappear behind a green aggregate. Capability filtering happens before
+the pack exists, so restricted facts leave no count, label, link, or
+presentation trace.
+
 ## Where it fits
 
 Use this bridge between construction project control and office document

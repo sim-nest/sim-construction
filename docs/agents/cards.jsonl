@@ -7,6 +7,9 @@
 {"kind":"recipe","path":"crates/sim-lib-construction-office/recipes/01-basics/construction-office-evidence/purpose.md"}
 {"kind":"recipe","path":"crates/sim-lib-construction-office/recipes/01-basics/construction-office-evidence/recipe.toml"}
 {"kind":"recipe","path":"crates/sim-lib-construction-office/recipes/01-basics/construction-office-evidence/setup.siml"}
+{"kind":"recipe","path":"crates/sim-lib-construction-office/recipes/01-basics/project-chief-weekly-pack/purpose.md"}
+{"kind":"recipe","path":"crates/sim-lib-construction-office/recipes/01-basics/project-chief-weekly-pack/recipe.toml"}
+{"kind":"recipe","path":"crates/sim-lib-construction-office/recipes/01-basics/project-chief-weekly-pack/setup.siml"}
 {"kind":"recipe","path":"crates/sim-lib-construction-office/recipes/book.toml"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/blocked-gate-graph/purpose.md"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/blocked-gate-graph/recipe.toml"}

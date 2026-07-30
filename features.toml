@@ -156,6 +156,22 @@ claims_specimens = [
 ]
 
 [[feature]]
+id = "feature/sim-construction/office-role-cadence-packs"
+title = "Construction project chief office status packs"
+summary = "Project current or historical construction snapshots into deterministic, evidence-linked, visibility-safe role-cadence packs on existing office surfaces."
+owner = "crate/sim-lib-construction-office"
+audiences = ["user", "code", "framework"]
+guidance = "Use OfficePackRequest and project_office_pack for daily, weekly, monthly/gate, handover, closeout, or reference-review material. Select authoritative control ids and their cadence sections, pass the exact as-of sequence/date and a deterministic generated-at marker, then review the resulting Doc, Sheet, and Deck through OfficePack::suite_scene. Every pack records project, role, cadence, accepted baselines, source controls, evidence refs, generation marker, visibility policy, changed-since sequence, and an explained aggregate. Decisions and non-waivable safety/legal blockers lead. Unknown, reported, conflicted, rejected, and expired evidence is elevated ahead of horizon detail; mandatory non-accepted controls prevent an accepted aggregate. Facts are filtered by caller Cx capabilities before the snapshot is derived, so restricted supplier, commercial, people, incident, customer, or reference facts cannot affect values, counts, labels, links, or presentation metadata. These are disposable projections of the ProjectBook, not a reporting store or parallel document model."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-office",
+  "anchor/rustdoc/sim-lib-construction-office/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-office/01-basics/project-chief-weekly-pack",
+  "spec-test/sim-construction/crates/sim-lib-construction-office/src/tests",
+]
+
+[[feature]]
 id = "feature/sim-construction/production-field-control"
 title = "Construction production observations incidents quality and field-item control"
 summary = "Control Dalux construction field item incident quality reports alongside local observations, deviations, inspection and test points, defects, and corrective actions with accountable evidence and safety-first rollups."
@@ -612,4 +628,14 @@ steps = [
   { feature = "feature/sim-construction/project-control", why = "The project-control row owns explicit customer intent, bid/no-bid control, and collaboration readiness without a CRM or estimating workflow substrate." },
   { feature = "feature/sim-construction/obligation-evidence-exceptions", why = "The shared requirement graph proves that unstated customer assumptions remain missing until accepted evidence satisfies the requirement." },
   { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/customer-intent-to-collaboration", why = "The recipe traces modeled customer intent through conditional bid control to missing main-contract evidence for a collaboration gate." },
+]
+
+[[route]]
+id = "route/review-construction-project-chief-weekly-pack"
+task = "Review a construction project-chief weekly pack"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns authoritative append-only facts, accepted baselines, current and historical snapshots, deltas, evidence states, and stable control ids." },
+  { feature = "feature/sim-construction/office-role-cadence-packs", why = "The office-pack row filters facts before derivation, applies safety-first cadence ordering, preserves provenance and explained status, produces existing Doc, Sheet, and Deck values, and delegates presentation to the installed office suite surface." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-office/01-basics/project-chief-weekly-pack", why = "The checked recipe shows the exact weekly provenance header, priority order, changed-since controls, non-green mandatory status, existing office values, and suite presentation." },
 ]

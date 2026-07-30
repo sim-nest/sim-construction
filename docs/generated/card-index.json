@@ -11,7 +11,7 @@
       "id": "cookbook/construction/office-evidence",
       "kind": "cookbook-recipe",
       "owner": "sim-lib-construction-office",
-      "summary": "Reference-only evidence joins between construction facts and office documents."
+      "summary": "Reference-only evidence joins and deterministic visibility-safe role packs over existing office values."
     },
     {
       "id": "cookbook/construction/project",
