@@ -1,0 +1,5 @@
+book = "construction/reference-project-control"
+title = "Reference Project Control"
+summary = "The one modeled-first recipe that connects construction control, schedule exchange, vendor placements, persistence, evidence, and office review."
+order = 1000
+chapters = ["reference-project-control"]

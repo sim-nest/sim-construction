@@ -86,6 +86,12 @@
     "crates/sim-site-powerproject/recipes/01-basics/powerproject-placement/purpose.md",
     "crates/sim-site-powerproject/recipes/01-basics/powerproject-placement/recipe.toml",
     "crates/sim-site-powerproject/recipes/01-basics/powerproject-placement/setup.siml",
-    "crates/sim-site-powerproject/recipes/book.toml"
+    "crates/sim-site-powerproject/recipes/book.toml",
+    "recipes/book.toml",
+    "recipes/reference-project-control/expected.siml",
+    "recipes/reference-project-control/main.siml",
+    "recipes/reference-project-control/purpose.md",
+    "recipes/reference-project-control/recipe.toml",
+    "recipes/reference-project-control/setup.siml"
   ]
 }

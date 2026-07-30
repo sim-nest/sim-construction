@@ -21,7 +21,7 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 | `feature/sim-construction/mspdi-schedule-exchange` | `crate/sim-codec-mspdi` | 1 | Round-trip Microsoft Project XML schedules through the portable construction Gantt document model. |
 | `feature/sim-construction/powerproject-schedule-placement` | `crate/sim-site-powerproject` | 1 | Place construction Gantt schedules at Powerproject desktop and Project for the web boundaries. |
 | `feature/sim-construction/dalux-project-items` | `crate/sim-site-dalux` | 2 | Read Dalux project items into local office documents through ledgered site effects, expose URL-free item correlations, and keep writes limited to notes. |
-| `feature/sim-construction/project-control` | `crate/sim-lib-construction-project` | 21 | Load complete construction project control as semantic Citizens, checked Shapes, and capability-minimal operations over append-only books, historical snapshots, lifecycle gates, schedule impact, readiness, exposure, handover, outcomes, and reference admission. |
+| `feature/sim-construction/project-control` | `crate/sim-lib-construction-project` | 22 | Load complete construction project control as semantic Citizens, checked Shapes, and capability-minimal operations over append-only books, historical snapshots, lifecycle gates, schedule impact, readiness, exposure, handover, outcomes, and reference admission. |
 | `feature/sim-construction/table-backed-project-books` | `crate/sim-lib-construction-project` | 1 | Persist one authoritative construction project fact book through a caller-injected Table or Dir, rebuild every historical snapshot from canonical fact paths, and treat verified projections as disposable caches. |
 | `feature/sim-construction/office-evidence-bridge` | `crate/sim-lib-construction-office` | 2 | The office evidence construction bridge attaches project-scoped fact evidence to existing office documents while preserving precise construction meaning, visibility, and acceptance. |
 | `feature/sim-construction/office-role-cadence-packs` | `crate/sim-lib-construction-office` | 2 | Project current or historical construction snapshots into deterministic, evidence-linked, visibility-safe role-cadence packs on existing office surfaces. |
@@ -135,6 +135,12 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 - `crates/sim-site-powerproject/recipes/01-basics/powerproject-placement/recipe.toml`
 - `crates/sim-site-powerproject/recipes/01-basics/powerproject-placement/setup.siml`
 - `crates/sim-site-powerproject/recipes/book.toml`
+- `recipes/book.toml`
+- `recipes/reference-project-control/expected.siml`
+- `recipes/reference-project-control/main.siml`
+- `recipes/reference-project-control/purpose.md`
+- `recipes/reference-project-control/recipe.toml`
+- `recipes/reference-project-control/setup.siml`
 
 ## Worked Examples
 
@@ -707,6 +713,43 @@ harness = "cargo-test"
 package = "sim-lib-construction-project"
 test = "runtime_tests::loadable_lisp_specimen_constructs_appends_snapshots_and_explains"
 expected = "expected.txt"
+```
+
+Specimen `recipe/sim-construction/reference-project-control` is checked by `sh scripts/check-recipes.sh`.
+
+Source `recipes/reference-project-control/recipe.toml`:
+
+```toml
+id = "reference-project-control"
+title = "Modeled reference project control"
+codec = "lisp"
+setup = "setup.siml"
+main = "main.siml"
+purpose = "purpose.md"
+order = 1000
+tags = ["construction", "project-control", "reference", "modeled", "offline", "table", "gantt", "mspdi", "powerproject", "dalux", "office"]
+requires = [
+  "codec/lisp",
+  "sim-run-core",
+  "sim/construction-project",
+  "sim-lib-construction-office",
+  "table/hash",
+  "office/gantt",
+  "office/doc-core",
+  "office/doc-site",
+  "office/doc-surface",
+  "codec/mspdi",
+  "site/powerproject",
+  "site/dalux",
+  "ledger/books",
+  "construction.project.read",
+  "construction.project.write",
+  "construction.reference.publish",
+]
+harness = "cargo-test"
+package = "sim-site-dalux"
+test = "reference_project_control"
+expected = "expected.siml"
 ```
 
 Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/opportunity_tests` is checked by `cargo test`.

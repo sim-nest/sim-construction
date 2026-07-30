@@ -1,0 +1,50 @@
+(expr:map
+  [recipe reference-project-control]
+  [project-id reference-project-control]
+  [runtime (expr:map
+    [loads [
+      codec/lisp
+      table/hash
+      sim/construction-project
+      sim-lib-construction-office
+      office/gantt
+      codec/mspdi
+      site/powerproject
+      site/dalux]]
+    [capabilities [
+      construction.project.read
+      construction.project.write
+      construction.reference.publish]]
+    [table-backend table/hash]
+    [network denied]
+    [clock fixed])]
+  [schedule (expr:map
+    [plan-id plan.reference-control]
+    [revision rev-a]
+    [task-ids [task.design-release task.frame-install task.handover]]
+    [exchange codec/mspdi])]
+  [stable-ids (expr:map
+    [fact fact.schedule.task.frame-install]
+    [evidence evidence.schedule.rev-a]
+    [schedule-task task.frame-install]
+    [powerproject-external receipt.powerproject.rev-a]
+    [dalux-external items/field-item-001]
+    [office-reference office.pack.weekly]
+    [ledger-reference journal/change-001/seq-1])]
+  [placements (expr:map
+    [powerproject (expr:map
+      [site site/powerproject]
+      [mode modeled]
+      [receipt receipt.powerproject.rev-a])]
+    [dalux (expr:map
+      [site site/dalux]
+      [mode modeled]
+      [cassette synthetic-local]
+      [project reference-project-control])]
+    [live (expr:map
+      [enabled false]
+      [configuration host-only]
+      [site-capabilities [net-connect process-spawn credentials]]
+      [powerproject-bridge host-only]
+      [dalux-enable SIM_CONSTRUCTION_LIVE_DALUX]
+      [fixture-values none])])])

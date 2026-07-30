@@ -1,5 +1,5 @@
 {
-  "card_count": 7,
+  "card_count": 8,
   "cards": [
     {
       "id": "browse/catalog",
@@ -18,6 +18,12 @@
       "kind": "cookbook-recipe",
       "owner": "sim-lib-construction-project",
       "summary": "Project charter records, append-only facts, snapshots, lifecycle and handover gates, decisions, commissioning evidence, and readiness."
+    },
+    {
+      "id": "cookbook/construction/reference-project-control",
+      "kind": "cookbook-recipe",
+      "owner": "sim-construction",
+      "summary": "The one modeled-first recipe that connects construction control, schedule exchange, vendor placements, persistence, evidence, and office review."
     },
     {
       "id": "cookbook/office/dalux-site",
@@ -220,7 +226,36 @@
     },
     {
       "crate_name": "sim_site_dalux",
-      "dependencies": [],
+      "dependencies": [
+        {
+          "kind": "dev",
+          "optional": false,
+          "package": "sim-codec-mspdi",
+          "rename": null,
+          "target": null
+        },
+        {
+          "kind": "dev",
+          "optional": false,
+          "package": "sim-lib-construction-office",
+          "rename": null,
+          "target": null
+        },
+        {
+          "kind": "dev",
+          "optional": false,
+          "package": "sim-lib-construction-project",
+          "rename": null,
+          "target": null
+        },
+        {
+          "kind": "dev",
+          "optional": false,
+          "package": "sim-site-powerproject",
+          "rename": null,
+          "target": null
+        }
+      ],
       "description": "Dalux API-identity site placement for SIM construction records.",
       "features": [],
       "group": "workspace",
@@ -231,7 +266,8 @@
       "rustdoc_summary": "Dalux API-identity site adapter for construction project item evidence.",
       "target_kinds": [
         "custom-build",
-        "lib"
+        "lib",
+        "test"
       ],
       "targets": [
         {
@@ -243,6 +279,16 @@
           ],
           "name": "sim_site_dalux",
           "src": "crates/sim-site-dalux/src/lib.rs"
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "test"
+          ],
+          "name": "reference_project_control",
+          "src": "crates/sim-site-dalux/tests/reference_project_control.rs"
         },
         {
           "crate_types": [
@@ -346,10 +392,10 @@
     "generated_by": "cargo run -p xtask -- simdoc",
     "generation_timestamp": "2026-07-23T14:26:39+02:00",
     "generator": "xtask repo-contract v1",
-    "git_commit": "2595901a494b06052a48f2ff33fded9113726fc0",
+    "git_commit": "62336374b5c15afc419c7aed38af7df8ded54553",
     "repo": "sim-construction",
     "schema": "sim.provenance.v1",
-    "source_commit": "2595901a494b06052a48f2ff33fded9113726fc0",
+    "source_commit": "62336374b5c15afc419c7aed38af7df8ded54553",
     "source_remote": "https://github.com/sim-nest/sim-construction",
     "validation_commands": [
       "cargo fmt --all --check",
@@ -362,9 +408,9 @@
       "cargo run -p xtask -- validation-matrix --check --repo .",
       "cargo run -p xtask -- crate-catalog --check --repo ."
     ],
-    "workspace_hash": "4596d43114d016a2",
+    "workspace_hash": "40d79e76e1241bed",
     "workspace_hash_algorithm": "fnv1a64",
-    "workspace_hash_input_count": 168,
+    "workspace_hash_input_count": 171,
     "workspace_hash_inputs": [
       "Cargo.toml",
       "crates/sim-codec-mspdi/Cargo.toml",
@@ -523,6 +569,7 @@
       "crates/sim-site-dalux/src/model.rs",
       "crates/sim-site-dalux/src/modeled.rs",
       "crates/sim-site-dalux/src/tests.rs",
+      "crates/sim-site-dalux/tests/reference_project_control.rs",
       "crates/sim-site-powerproject/Cargo.toml",
       "crates/sim-site-powerproject/build.rs",
       "crates/sim-site-powerproject/recipes/01-basics/powerproject-placement/recipe.toml",
@@ -533,10 +580,12 @@
       "crates/sim-site-powerproject/src/ole.rs",
       "crates/sim-site-powerproject/src/tests.rs",
       "features.toml",
+      "recipes/book.toml",
+      "recipes/reference-project-control/recipe.toml",
       "xtask/Cargo.toml"
     ]
   },
-  "recipe_book_count": 5,
+  "recipe_book_count": 6,
   "recipes": [
     {
       "book": "office/mspdi",
@@ -797,6 +846,26 @@
       ],
       "summary": "Powerproject and Project for the web placements for Gantt plans.",
       "title": "Powerproject Site"
+    },
+    {
+      "book": "construction/reference-project-control",
+      "book_toml": "recipes/book.toml",
+      "card_id": "cookbook/construction/reference-project-control",
+      "group": "",
+      "package": "sim-construction",
+      "recipe_count": 1,
+      "recipes": [
+        {
+          "card_id": "construction/reference-project-control/recipes/reference-project-control",
+          "codec": "lisp",
+          "id": "reference-project-control",
+          "package": "sim-construction",
+          "recipe_toml": "recipes/reference-project-control/recipe.toml",
+          "title": "Modeled reference project control"
+        }
+      ],
+      "summary": "The one modeled-first recipe that connects construction control, schedule exchange, vendor placements, persistence, evidence, and office review.",
+      "title": "Reference Project Control"
     }
   ]
 }

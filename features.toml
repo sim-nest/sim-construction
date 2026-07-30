@@ -114,6 +114,7 @@ claims_specimens = [
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/sustainability-to-reference-evidence",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/field-item-to-corrective-evidence",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/loadable-project-control",
+  "recipe/sim-construction/reference-project-control",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/opportunity_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/fact_book_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/design_tests",
@@ -491,7 +492,18 @@ task = "Control a construction project"
 audiences = ["user", "code", "framework"]
 steps = [
   { feature = "feature/sim-construction/project-control", why = "The project-control row owns the identity, charter, fact book, snapshot, governance, capability, visibility, and evidence readiness vocabulary." },
-  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/project-charter", why = "The project-charter recipe shows a synthetic accepted charter and governance record with reference-only evidence." },
+  { feature = "feature/sim-construction/table-backed-project-books", why = "The persistence row injects the selected Table or Dir backend and keeps the append-only fact stream authoritative." },
+  { feature = "feature/sim-construction/gantt-schedule-impact", why = "The schedule row joins stable controls to the existing Gantt plan and critical-path model." },
+  { feature = "feature/sim-construction/mspdi-schedule-exchange", why = "The exchange row round-trips the portable Gantt plan across the MSPDI boundary." },
+  { feature = "feature/sim-construction/powerproject-schedule-placement", why = "The Powerproject row realizes modeled schedule placement while retaining the explicit live gates." },
+  { feature = "feature/sim-construction/dalux-project-items", why = "The Dalux row realizes modeled field-item placement and preserves URL-free external and effect-ledger references." },
+  { feature = "feature/sim-construction/production-lookahead-readiness", why = "The readiness row derives package and task readiness from accepted facts and schedule joins." },
+  { feature = "feature/sim-construction/change-commercial-exposure", why = "The change row derives exact exposure while retaining reference-only ledger ownership." },
+  { feature = "feature/sim-construction/system-handover-commissioning-acceptance", why = "The handover row derives system and project burn-down from explicit evidence." },
+  { feature = "feature/sim-construction/final-economy-closeout-reference-admission", why = "The closeout row admits only evidence-backed, disclosure-approved reference claims." },
+  { feature = "feature/sim-construction/office-evidence-bridge", why = "The evidence bridge retains stable office references without copying construction truth or document payloads." },
+  { feature = "feature/sim-construction/office-role-cadence-packs", why = "The office-pack row projects the same filtered snapshot into existing Doc, Sheet, Deck, and suite surfaces." },
+  { specimen = "recipe/sim-construction/reference-project-control", why = "The checked primary Lisp recipe composes the public libraries, codecs, Table backend, modeled vendor sites, stable cross-component ids, derived control reports, and office projection offline by default." },
 ]
 
 [[route]]

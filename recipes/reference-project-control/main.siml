@@ -1,0 +1,67 @@
+(expr:map
+  [project-book (quote
+    (construction/book
+      (construction/project-id "reference-project-control")
+      "project-chief"))]
+  [append (quote
+    (construction/append project-book fact.schedule.task.frame-install))]
+  [as-of-snapshot (quote
+    (construction/snapshot-as-of project-book 2))]
+  [changed-since (quote
+    (construction/diff-since project-book 1))]
+  [blocker-explanation (quote
+    (construction/explain snapshot.current "field.item.001"))]
+  [gate-decision (quote
+    (construction/gate-report project-book gate.mobilization))]
+  [package-readiness (quote
+    (construction/readiness project-book readiness.frame-package))]
+  [change-exposure (quote
+    (construction/exposure change.change-001))]
+  [handover-burn-down (quote
+    (construction/handover-burn-down project-book handover.reference-project))]
+  [reference-admission (quote
+    (construction/reference-admission project-book reference.candidate))]
+  [schedule (expr:map
+    [public-library sim-lib-gantt]
+    [public-type GanttPlan]
+    [plan plan.reference-control]
+    [exchange (expr:map
+      [public-library sim-codec-mspdi]
+      [public-type MspdiCodec]
+      [import-operation DocCodec/decode]
+      [export-operation DocCodec/encode]
+      [revision schedule.rev-a])])]
+  [modeled-sites (expr:map
+    [powerproject (expr:map
+      [public-library sim-site-powerproject]
+      [public-operation import-modeled-ole-receipt]
+      [site site/powerproject]
+      [external-id receipt.powerproject.rev-a])]
+    [dalux (expr:map
+      [public-library sim-site-dalux]
+      [public-operation get-project-items-with-receipt]
+      [site site/dalux]
+      [external-id items/field-item-001]
+      [effect-ledger-reference required])])]
+  [office-projection (expr:map
+    [public-library sim-lib-construction-office]
+    [public-operation project-office-pack]
+    [source snapshot.current]
+    [cadence weekly]
+    [reference office.pack.weekly]
+    [surface office/suite-scene])]
+  [stable-joins [
+    (expr:map
+      [fact fact.schedule.task.frame-install]
+      [evidence evidence.schedule.rev-a]
+      [schedule-task task.frame-install]
+      [vendor-external receipt.powerproject.rev-a])
+    (expr:map
+      [fact field.item.001]
+      [vendor-external items/field-item-001]
+      [office-reference office.pack.weekly])
+    (expr:map
+      [fact change.001]
+      [ledger-reference journal/change-001/seq-1]
+      [office-reference office.pack.weekly])]]
+  [result semantic-summary])

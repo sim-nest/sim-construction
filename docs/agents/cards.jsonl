@@ -84,3 +84,9 @@
 {"kind":"recipe","path":"crates/sim-site-powerproject/recipes/01-basics/powerproject-placement/recipe.toml"}
 {"kind":"recipe","path":"crates/sim-site-powerproject/recipes/01-basics/powerproject-placement/setup.siml"}
 {"kind":"recipe","path":"crates/sim-site-powerproject/recipes/book.toml"}
+{"kind":"recipe","path":"recipes/book.toml"}
+{"kind":"recipe","path":"recipes/reference-project-control/expected.siml"}
+{"kind":"recipe","path":"recipes/reference-project-control/main.siml"}
+{"kind":"recipe","path":"recipes/reference-project-control/purpose.md"}
+{"kind":"recipe","path":"recipes/reference-project-control/recipe.toml"}
+{"kind":"recipe","path":"recipes/reference-project-control/setup.siml"}
