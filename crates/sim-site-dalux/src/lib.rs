@@ -17,6 +17,7 @@ use sim_lib_doc_site::register_site;
 use sim_lib_sheet::SHEET_DOC_KIND;
 
 pub mod client;
+mod effect;
 pub mod model;
 pub mod modeled;
 #[cfg(test)]
@@ -24,9 +25,16 @@ mod tests;
 
 pub use client::{
     DALUX_LIVE_ENV, DaluxClient, DaluxClientMode, DaluxCredentialProvider,
-    StaticDaluxCredentialProvider, get_project_items, patch_item_note, redacted_body,
+    StaticDaluxCredentialProvider, redacted_body,
 };
-pub use model::{DaluxItem, item_path, items_doc, patch_external_ref, project_items_path};
+pub use effect::{
+    DaluxEffectReference, DaluxItemReadReceipt, DaluxNotePatchReceipt, get_project_items,
+    get_project_items_with_receipt, patch_item_note, patch_item_note_with_receipt,
+};
+pub use model::{
+    DaluxItem, DaluxItemReference, item_path, item_references, items_doc, patch_external_ref,
+    project_items_path,
+};
 pub use modeled::{ModeledDalux, ModeledPatch, ModeledResponse};
 
 /// Stable site id for Dalux project-item placement.
@@ -49,6 +57,8 @@ pub enum DaluxError {
     Sheet(String),
     /// The shared office site layer rejected an operation.
     Office(String),
+    /// The kernel effect boundary rejected or failed the operation.
+    Effect(String),
 }
 
 impl fmt::Display for DaluxError {
@@ -63,7 +73,14 @@ impl fmt::Display for DaluxError {
             Self::WrongShape(message) => write!(f, "Dalux response shape failed: {message}"),
             Self::Sheet(message) => write!(f, "Dalux sheet projection failed: {message}"),
             Self::Office(message) => write!(f, "Dalux site registration failed: {message}"),
+            Self::Effect(message) => write!(f, "Dalux effect failed: {message}"),
         }
+    }
+}
+
+impl From<sim_kernel::Error> for DaluxError {
+    fn from(error: sim_kernel::Error) -> Self {
+        Self::Effect(error.to_string())
     }
 }
 

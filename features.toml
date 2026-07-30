@@ -75,10 +75,10 @@ claims_specimens = [
 [[feature]]
 id = "feature/sim-construction/dalux-project-items"
 title = "Dalux project-item placement"
-summary = "Read Dalux project items into local office documents for construction evidence and keep note updates narrow."
+summary = "Read Dalux project items into local office documents through ledgered site effects, expose URL-free item correlations, and keep writes limited to notes."
 owner = "crate/sim-site-dalux"
 audiences = ["user", "code", "framework"]
-guidance = "Use this row when construction project control needs modeled Dalux item evidence, a gated API-identity live read, or a narrow item-note update."
+guidance = "Use this row when construction project control needs a modeled Dalux item read, a capability- and live-enable-gated API-identity read, or a narrow item-note update. Modeled and live calls share the site/dalux effect contract; receipts expose the kernel effect reference and a stable effect-ledger reference while URL-free item correlations keep payloads, attachments, credentials, and browser URLs at the site boundary."
 claims_anchors = [
   "anchor/crate/sim-site-dalux",
   "anchor/export/sim-site-dalux/site/dalux",
@@ -92,10 +92,10 @@ claims_specimens = [
 [[feature]]
 id = "feature/sim-construction/project-control"
 title = "Construction project control"
-summary = "Describe construction phase gate and baseline control through as-of snapshot records, project charter identity, opportunity, bid/no-bid, customer-intent, collaboration charter, append-only fact books, lifecycle vocabulary, baselines, gates, actions, decisions, design/RFI/review/release/permit/authority control, deterministic deltas, governance, capabilities, shared obligations, bounded exceptions, graph-composed blockers, readiness with reference-only evidence, and baseline-aware Gantt schedule impact."
+summary = "Describe construction phase gate and baseline control through as-of snapshot records, project charter identity, opportunity, bid/no-bid, customer-intent, collaboration charter, append-only fact books, lifecycle vocabulary, baselines, gates, actions, decisions, field observations/incidents/quality controls, design/RFI/review/release/permit/authority control, deterministic deltas, governance, capabilities, shared obligations, bounded exceptions, graph-composed blockers, readiness with reference-only evidence, and baseline-aware Gantt schedule impact."
 owner = "crate/sim-lib-construction-project"
 audiences = ["user", "code", "framework"]
-guidance = "Use this row when starting a construction project-control record from stable ids, a charter, opportunity intake, customer intent with explicit unknowns, bid/no-bid or conditional-bid control, collaboration charter readiness, an append-only fact book, accepted baselines, accountable actions and decisions, design deliverables, RFIs, reviews, purpose-specific releases, permits, inspections, authority obligations, shared requirements and obligations, evidence states and validity windows, bounded construction exceptions, graph-composed blocker propagation, derived lifecycle gate reports, what-changed reports, organization-role governance, due-date and visibility policy, library-owned capabilities, evidence readiness before planning work depends on it, and control-to-Gantt joins that explain critical path, downstream, float-risk, late-decision, procurement lead-time, and change consequences without copying Gantt validation or placement logic. Customer assumptions remain stated intent only until the shared requirement graph has accepted evidence. BCF/IFC/CAD payloads stay in installed codecs/sites; project control records only external references and decisions."
+guidance = "Use this row when starting a construction project-control record from stable ids, a charter, opportunity intake, customer intent with explicit unknowns, bid/no-bid or conditional-bid control, collaboration charter readiness, an append-only fact book, accepted baselines, accountable actions and decisions, production observations, deviations, incidents, inspection/test points, defects, corrective actions, design deliverables, RFIs, reviews, purpose-specific releases, permits, authority obligations, shared requirements and obligations, evidence states and validity windows, bounded construction exceptions, graph-composed blocker propagation, derived lifecycle gate reports, what-changed reports, organization-role governance, due-date and visibility policy, library-owned capabilities, evidence readiness before planning work depends on it, and control-to-Gantt joins that explain critical path, downstream, float-risk, late-decision, procurement lead-time, and change consequences without copying Gantt validation or placement logic. Customer assumptions and imported external items remain reported facts until accountable acceptance supplies evidence. BCF/IFC/CAD and field-system payloads stay in installed codecs/sites; project control records only minimized external references, effect references, control state, and decisions."
 claims_anchors = [
   "anchor/crate/sim-lib-construction-project",
   "anchor/rustdoc/sim-lib-construction-project/crate-root",
@@ -112,13 +112,31 @@ claims_specimens = [
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/control-graph-meets-gantt",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/six-week-production-readiness",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/sustainability-to-reference-evidence",
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/field-item-to-corrective-evidence",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/opportunity_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/fact_book_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/design_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/procurement_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/production_plan_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/schedule_tests",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/field_control_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/tests",
+]
+
+[[feature]]
+id = "feature/sim-construction/production-field-control"
+title = "Construction production observations incidents quality and field-item control"
+summary = "Control observations, deviations, incidents, inspection and test points, defects, corrective actions, and external field-item references with accountable evidence and safety-first rollups."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when field reality must become traceable project facts. One shared field-control record carries severity, lane, responsible role, due date, affected control ids, state, non-waivable policy, and reference-only evidence. Rollups place imminent safety and work-environment blockers first, then active non-waivable controls without allowing lower severity to hide them. External imports are idempotent, changed source state supersedes the prior fact, and import remains Reported until corrective or inspection evidence is accepted by an accountable role."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/field-item-to-corrective-evidence",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/field_control_tests",
 ]
 
 [[feature]]
@@ -279,6 +297,17 @@ audiences = ["user", "code", "framework"]
 steps = [
   { feature = "feature/sim-construction/dalux-project-items", why = "The Dalux row owns modeled item reads, API-identity live gating, response checks, and narrow note patches." },
   { specimen = "recipe/sim-construction/crates/sim-site-dalux/01-basics/dalux-modeled-items", why = "The modeled recipe shows synthetic Dalux items crossing into a local office document without live service access." },
+]
+
+[[route]]
+id = "route/control-construction-field-item-to-accepted-evidence"
+task = "Control a construction field item to accepted evidence"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns append-only reported facts, stable control ids, accountable roles, evidence states, and reference-only evidence." },
+  { feature = "feature/sim-construction/dalux-project-items", why = "The Dalux placement owns modeled and gated live reads, note-only writes, URL-free item correlations, and effect-ledger receipts." },
+  { feature = "feature/sim-construction/production-field-control", why = "The field-control row owns observation, incident, inspection, defect, corrective-action, import, and safety-first rollup policy." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/field-item-to-corrective-evidence", why = "The modeled recipe follows a source-minimized Dalux item through reported fact import, safety-first blocking, rejected inspection, and accountable corrective evidence." },
 ]
 
 [[route]]

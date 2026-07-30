@@ -20,8 +20,9 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 | `feature/sim-construction/generated-docs` | `crate/xtask` | 0 | Publish generated package, card, recipe, and index facts for construction project-control crates. |
 | `feature/sim-construction/mspdi-schedule-exchange` | `crate/sim-codec-mspdi` | 1 | Round-trip Microsoft Project XML schedules through the portable construction Gantt document model. |
 | `feature/sim-construction/powerproject-schedule-placement` | `crate/sim-site-powerproject` | 1 | Place construction Gantt schedules at Powerproject desktop and Project for the web boundaries. |
-| `feature/sim-construction/dalux-project-items` | `crate/sim-site-dalux` | 2 | Read Dalux project items into local office documents for construction evidence and keep note updates narrow. |
-| `feature/sim-construction/project-control` | `crate/sim-lib-construction-project` | 18 | Describe construction phase gate and baseline control through as-of snapshot records, project charter identity, opportunity, bid/no-bid, customer-intent, collaboration charter, append-only fact books, lifecycle vocabulary, baselines, gates, actions, decisions, design/RFI/review/release/permit/authority control, deterministic deltas, governance, capabilities, shared obligations, bounded exceptions, graph-composed blockers, readiness with reference-only evidence, and baseline-aware Gantt schedule impact. |
+| `feature/sim-construction/dalux-project-items` | `crate/sim-site-dalux` | 2 | Read Dalux project items into local office documents through ledgered site effects, expose URL-free item correlations, and keep writes limited to notes. |
+| `feature/sim-construction/project-control` | `crate/sim-lib-construction-project` | 20 | Describe construction phase gate and baseline control through as-of snapshot records, project charter identity, opportunity, bid/no-bid, customer-intent, collaboration charter, append-only fact books, lifecycle vocabulary, baselines, gates, actions, decisions, field observations/incidents/quality controls, design/RFI/review/release/permit/authority control, deterministic deltas, governance, capabilities, shared obligations, bounded exceptions, graph-composed blockers, readiness with reference-only evidence, and baseline-aware Gantt schedule impact. |
+| `feature/sim-construction/production-field-control` | `crate/sim-lib-construction-project` | 2 | Control observations, deviations, incidents, inspection and test points, defects, corrective actions, and external field-item references with accountable evidence and safety-first rollups. |
 | `feature/sim-construction/gantt-schedule-impact` | `crate/sim-lib-construction-project` | 2 | Join stable construction controls to canonical Gantt task ids and explain baseline-aware Gantt critical path construction consequences: downstream, need-date, float-risk, late-decision, procurement lead-time, and change impact. |
 | `feature/sim-construction/sustainability-reference-outcomes` | `crate/sim-lib-construction-project` | 2 | Trace project-chartered certification, climate, efficiency, reuse, waste, responsible-material, quality, safety, work-environment, property, and city-district targets to source-retained quantities, method and boundary provenance, reviewed evidence, gate blockers, and admissible reference claims. |
 | `feature/sim-construction/production-lookahead-readiness` | `crate/sim-lib-construction-project` | 2 | Derive six-week demand and three-week production commitments from accepted Gantt task joins, work packages, location/system breakdowns, shared requirements, validity windows, accountable exceptions, and separate human commitment facts. |
@@ -59,6 +60,9 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 - `crates/sim-lib-construction-project/recipes/01-basics/design-release-to-production/purpose.md`
 - `crates/sim-lib-construction-project/recipes/01-basics/design-release-to-production/recipe.toml`
 - `crates/sim-lib-construction-project/recipes/01-basics/design-release-to-production/setup.siml`
+- `crates/sim-lib-construction-project/recipes/01-basics/field-item-to-corrective-evidence/purpose.md`
+- `crates/sim-lib-construction-project/recipes/01-basics/field-item-to-corrective-evidence/recipe.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/field-item-to-corrective-evidence/setup.siml`
 - `crates/sim-lib-construction-project/recipes/01-basics/late-decision/purpose.md`
 - `crates/sim-lib-construction-project/recipes/01-basics/late-decision/recipe.toml`
 - `crates/sim-lib-construction-project/recipes/01-basics/late-decision/setup.siml`
@@ -283,15 +287,26 @@ fn modeled_project_items_become_dalux_doc() {
         StaticDaluxCredentialProvider::new("token-1"),
     );
 
-    let doc = get_project_items(&mut cx, &client, "synthetic-project-1").unwrap();
-    let sheet = sim_lib_sheet::doc_to_sheet(&mut cx, &doc).unwrap();
+    let receipt = get_project_items_with_receipt(&mut cx, &client, "synthetic-project-1").unwrap();
+    let sheet = sim_lib_sheet::doc_to_sheet(&mut cx, &receipt.doc).unwrap();
 
     assert_eq!(
-        doc.id.as_str(),
+        receipt.doc.id.as_str(),
         "site/dalux/projects/synthetic-project-1/items"
     );
     assert_eq!(text_at(&sheet, "A2"), "item-1");
     assert_eq!(text_at(&sheet, "B2"), "Door review");
+    assert_eq!(receipt.items.len(), 1);
+    assert_eq!(receipt.items[0].external_ref.backend, DALUX_SITE_ID);
+    assert_eq!(receipt.items[0].external_ref.external_id, "items/item-1");
+    assert_eq!(receipt.items[0].external_ref.web_url, None);
+    assert_eq!(receipt.items[0].state, "open");
+    assert_eq!(receipt.effect.ledger_ref.backend, "effect/ledger");
+    assert_eq!(cx.effect_ledger().records().len(), 1);
+    assert_eq!(
+        cx.effect_ledger().records()[0].effect,
+        receipt.effect.effect
+    );
 }
 
 #[test]
@@ -310,11 +325,60 @@ fn modeled_patch_sends_only_note_field() {
         StaticDaluxCredentialProvider::new("token-1"),
     );
 
-    let external = patch_item_note(&mut cx, &client, "item-1", "Reviewed in SIM").unwrap();
+    let receipt =
+        patch_item_note_with_receipt(&mut cx, &client, "item-1", "Reviewed in SIM").unwrap();
+    let external = receipt.item;
 
     assert_eq!(external.backend, DALUX_SITE_ID);
     assert_eq!(external.external_id, "items/item-1");
     assert_eq!(external.version.as_deref(), Some("2026-07-13T11:00:00Z"));
+    assert_eq!(external.web_url, None);
+    assert_eq!(receipt.effect.ledger_ref.backend, "effect/ledger");
+    assert_eq!(cx.effect_ledger().records().len(), 1);
+}
+
+#[test]
+fn modeled_and_live_reads_share_the_site_effect_contract() {
+    let mut modeled_cx = test_context();
+    let modeled = DaluxClient::modeled(
+        ModeledDalux::with_json(
+            "/projects/synthetic-project-1/items",
+            json!({
+                "items": [{
+                    "id": "item-1",
+                    "status": "open",
+                    "updatedAt": "2026-07-13T10:00:00Z"
+                }]
+            }),
+        ),
+        StaticDaluxCredentialProvider::new("token-1"),
+    );
+    get_project_items_with_receipt(&mut modeled_cx, &modeled, "synthetic-project-1").unwrap();
+    let modeled_record = &modeled_cx.effect_ledger().records()[0];
+    let modeled_effect = modeled_cx
+        .effect_ledger()
+        .effect(&modeled_record.effect)
+        .unwrap();
+
+    let mut live_cx = test_context();
+    let live = DaluxClient::live(
+        "https://example.com/dalux",
+        StaticDaluxCredentialProvider::new("token-1"),
+    );
+    let error =
+        get_project_items_with_receipt(&mut live_cx, &live, "synthetic-project-1").unwrap_err();
+    assert!(error.to_string().contains(NET_CONNECT_CAPABILITY));
+    let live_record = &live_cx.effect_ledger().records()[0];
+    let live_effect = live_cx.effect_ledger().effect(&live_record.effect).unwrap();
+
+    assert_eq!(modeled_effect.kind, live_effect.kind);
+    assert_eq!(modeled_effect.subject, live_effect.subject);
+    assert_eq!(
+        modeled_effect.subject,
+        sim_kernel::Ref::Symbol(site_symbol(DALUX_SITE_ID))
+    );
+    assert!(!modeled_record.aborted);
+    assert!(live_record.aborted);
 }
 
 #[test]
@@ -575,6 +639,21 @@ purpose = "purpose.md"
 order = 95
 tags = ["construction", "sustainability", "certification", "climate", "reuse", "place", "evidence"]
 requires = ["construction.project.read", "construction.reference.publish", "codec/lisp"]
+```
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/field-item-to-corrective-evidence` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/field-item-to-corrective-evidence/recipe.toml`:
+
+```toml
+id = "field-item-to-corrective-evidence"
+title = "Field item to corrective evidence"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 96
+tags = ["construction", "field-control", "dalux", "incident", "inspection", "corrective-evidence", "safety"]
+requires = ["construction.project.read", "construction.project.write", "site/dalux", "codec/lisp"]
 ```
 
 Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/opportunity_tests` is checked by `cargo test`.
@@ -2500,6 +2579,369 @@ fn ids(values: &[ControlId]) -> Vec<&str> {
 }
 ```
 
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/field_control_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/field_control_tests.rs`:
+
+```rust
+// conformance: construction field-control facts
+
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+use crate::{
+    CorrectiveAction, Defect, EFFECT_LEDGER_BACKEND, EvidenceState, FieldItem, FieldItemImport,
+    FieldItemImportOutcome, FieldItemKind, FieldItemReference, FieldItemState, FieldLane,
+    FieldSeverity, IncidentEscalation, InspectionPoint, InspectionResult, ProjectBook,
+    ProjectIncident, ProjectObservation, QualityDeviation, import_field_item, safety_first_rollup,
+};
+
+#[test]
+fn field_control_types_share_accountability_without_payload_copying() {
+    let observation = ProjectObservation::new(
+        item(
+            "observation.deck",
+            FieldItemKind::Observation,
+            FieldLane::Progress,
+        ),
+        day(10),
+        "Deck edge protection incomplete",
+    );
+    observation.validate().unwrap();
+
+    let deviation = QualityDeviation {
+        field_item: item(
+            "deviation.frame",
+            FieldItemKind::Deviation,
+            FieldLane::Quality,
+        ),
+        requirement: control("requirement.frame-tolerance"),
+        description: "Measured frame exceeds accepted tolerance".to_owned(),
+    };
+    deviation.validate().unwrap();
+
+    let inspection = InspectionPoint::new(item(
+        "inspection.frame",
+        FieldItemKind::InspectionPoint,
+        FieldLane::Quality,
+    ));
+    assert!(inspection.blocks_production());
+    inspection.validate().unwrap();
+
+    let defect = Defect {
+        field_item: item("defect.door", FieldItemKind::Defect, FieldLane::Quality),
+        detected_on: day(10),
+    };
+    defect.validate().unwrap();
+
+    let reference =
+        FieldItemReference::new("site/dalux", "items/item-1", Some("rev-2".to_owned())).unwrap();
+    let external = reference.as_external_ref();
+    assert_eq!(external.backend, "site/dalux");
+    assert_eq!(external.external_id, "items/item-1");
+    assert_eq!(external.web_url, None);
+}
+
+#[test]
+fn incident_and_corrective_closure_require_accountable_evidence() {
+    let incident = ProjectIncident::new(
+        item(
+            "incident.access",
+            FieldItemKind::Incident,
+            FieldLane::Safety,
+        )
+        .non_waivable(),
+        day(10),
+    )
+    .with_escalation(IncidentEscalation {
+        escalated_to: role("project-chief"),
+        escalated_on: day(10),
+        reason: "Stop affected access route".to_owned(),
+        evidence: vec![evidence("incident/access/escalation")],
+    });
+    assert!(incident.requires_escalation());
+    incident.validate().unwrap();
+
+    let corrective = CorrectiveAction {
+        field_item: item(
+            "corrective.access",
+            FieldItemKind::CorrectiveAction,
+            FieldLane::Safety,
+        )
+        .with_state(FieldItemState::Closed)
+        .with_evidence_state(EvidenceState::Accepted)
+        .with_evidence(evidence("corrective/access/accepted")),
+        corrects: vec![control("incident.access")],
+        accepted_by: Some(role("safety-lead")),
+    };
+    assert!(corrective.has_accepted_evidence());
+    corrective.validate().unwrap();
+}
+
+#[test]
+fn critical_incident_fails_closed_until_escalated() {
+    let incident = ProjectIncident::new(
+        item("incident.fall", FieldItemKind::Incident, FieldLane::Safety)
+            .with_severity(FieldSeverity::Critical),
+        day(10),
+    );
+    assert!(incident.requires_escalation());
+    assert!(incident.validate().is_err());
+
+    let escalated = incident.with_escalation(IncidentEscalation {
+        escalated_to: role("project-chief"),
+        escalated_on: day(10),
+        reason: "Stop work and secure the opening".to_owned(),
+        evidence: vec![evidence("incident/fall/escalation")],
+    });
+    escalated.validate().unwrap();
+}
+
+#[test]
+fn passed_inspection_needs_accepted_evidence() {
+    let passed = InspectionPoint::new(
+        item(
+            "test.pressure",
+            FieldItemKind::TestPoint,
+            FieldLane::Quality,
+        )
+        .with_state(FieldItemState::Closed)
+        .with_evidence_state(EvidenceState::Accepted)
+        .with_evidence(evidence("test/pressure/accepted")),
+    )
+    .with_result(InspectionResult::Passed, role("quality-lead"));
+
+    assert!(!passed.blocks_production());
+    passed.validate().unwrap();
+}
+
+#[test]
+fn rejected_inspection_remains_a_production_blocker() {
+    let rejected = InspectionPoint::new(
+        item(
+            "inspection.fire-seal",
+            FieldItemKind::InspectionPoint,
+            FieldLane::Quality,
+        )
+        .with_state(FieldItemState::Rejected)
+        .with_evidence_state(EvidenceState::Rejected)
+        .with_evidence(evidence("inspection/fire-seal/rejected")),
+    )
+    .with_result(InspectionResult::Rejected, role("quality-lead"));
+
+    assert!(rejected.blocks_production());
+    rejected.validate().unwrap();
+}
+
+#[test]
+fn open_defect_becomes_overdue_but_closed_defect_does_not() {
+    let defect = Defect {
+        field_item: item("defect.door", FieldItemKind::Defect, FieldLane::Quality)
+            .with_state(FieldItemState::Open),
+        detected_on: day(10),
+    };
+    assert!(defect.is_overdue(day(20)));
+
+    let closed = Defect {
+        field_item: defect
+            .field_item
+            .with_state(FieldItemState::Closed)
+            .with_evidence_state(EvidenceState::Accepted)
+            .with_evidence(evidence("defect/door/accepted")),
+        detected_on: defect.detected_on,
+    };
+    assert!(!closed.is_overdue(day(20)));
+    closed.validate().unwrap();
+}
+
+#[test]
+fn corrective_action_needs_evidence_and_accepting_role() {
+    let field_item = item(
+        "corrective.fire-seal",
+        FieldItemKind::CorrectiveAction,
+        FieldLane::Quality,
+    )
+    .with_state(FieldItemState::Closed)
+    .with_evidence_state(EvidenceState::Accepted)
+    .with_evidence(evidence("corrective/fire-seal/photo"));
+    let missing_authority = CorrectiveAction {
+        field_item: field_item.clone(),
+        corrects: vec![control("inspection.fire-seal")],
+        accepted_by: None,
+    };
+    assert!(!missing_authority.has_accepted_evidence());
+    assert!(missing_authority.validate().is_err());
+
+    let accepted = CorrectiveAction {
+        field_item,
+        corrects: vec![control("inspection.fire-seal")],
+        accepted_by: Some(role("quality-lead")),
+    };
+    assert!(accepted.has_accepted_evidence());
+    accepted.validate().unwrap();
+}
+
+#[test]
+fn rollup_puts_imminent_safety_and_non_waivable_controls_first() {
+    let items = vec![
+        item(
+            "progress.critical",
+            FieldItemKind::Observation,
+            FieldLane::Progress,
+        )
+        .with_state(FieldItemState::Blocked)
+        .with_severity(FieldSeverity::Critical),
+        item(
+            "convenience.non-waivable",
+            FieldItemKind::Deviation,
+            FieldLane::Convenience,
+        )
+        .with_state(FieldItemState::Open)
+        .with_severity(FieldSeverity::Information)
+        .non_waivable(),
+        item(
+            "safety.imminent",
+            FieldItemKind::Incident,
+            FieldLane::Safety,
+        )
+        .with_state(FieldItemState::Blocked)
+        .with_severity(FieldSeverity::Imminent),
+        item(
+            "safety.closed",
+            FieldItemKind::CorrectiveAction,
+            FieldLane::Safety,
+        )
+        .with_state(FieldItemState::Closed)
+        .with_evidence_state(EvidenceState::Accepted)
+        .with_evidence(evidence("safety/closed")),
+        item(
+            "environment.major",
+            FieldItemKind::Incident,
+            FieldLane::Environment,
+        )
+        .with_state(FieldItemState::Open),
+    ];
+
+    let controls = safety_first_rollup(&items, day(20))
+        .into_iter()
+        .map(|row| row.control.to_string())
+        .collect::<Vec<_>>();
+
+    assert_eq!(
+        controls,
+        vec![
+            "safety.imminent",
+            "convenience.non-waivable",
+            "progress.critical",
+            "environment.major",
+            "safety.closed",
+        ]
+    );
+}
+
+#[test]
+fn external_import_is_idempotent_and_changed_source_state_supersedes() {
+    let mut book = ProjectBook::new(
+        crate::ProjectId::new("reference-center").unwrap(),
+        role("project-chief"),
+    );
+    let first = dalux_import("open", "2026-07-10T10:00:00Z");
+
+    assert_eq!(
+        import_field_item(&mut book, 1, day(10), &first).unwrap(),
+        FieldItemImportOutcome::Appended {
+            seq: 1,
+            supersedes: None,
+        }
+    );
+    assert_eq!(
+        import_field_item(&mut book, 2, day(10), &first).unwrap(),
+        FieldItemImportOutcome::Duplicate { existing_seq: 1 }
+    );
+    assert_eq!(book.len(), 1);
+
+    let changed = dalux_import("closed", "2026-07-10T11:00:00Z");
+    assert_eq!(
+        import_field_item(&mut book, 2, day(10), &changed).unwrap(),
+        FieldItemImportOutcome::Appended {
+            seq: 2,
+            supersedes: Some(1),
+        }
+    );
+
+    let current = book.snapshot_at(2).unwrap();
+    let fact = current
+        .current_fact(&control("field.dalux-item-1"))
+        .unwrap();
+    assert_eq!(fact.evidence_state, EvidenceState::Reported);
+    assert_eq!(fact.evidence.len(), 2);
+    assert!(
+        fact.evidence
+            .iter()
+            .all(|reference| reference.web_url.is_none())
+    );
+    let debug = format!("{fact:?}");
+    for excluded in [
+        "attachment",
+        "bearer",
+        "token",
+        "web_url: Some",
+        "Door review",
+    ] {
+        assert!(!debug.contains(excluded), "fact leaked {excluded:?}");
+    }
+}
+
+fn item(id: &str, kind: FieldItemKind, lane: FieldLane) -> FieldItem {
+    FieldItem::new(
+        crate::ProjectId::new("reference-center").unwrap(),
+        control(id),
+        kind,
+        FieldSeverity::Major,
+        lane,
+        role("site-manager"),
+    )
+    .due_on(day(12))
+    .affects(control("package.frame"))
+}
+
+fn dalux_import(state: &str, version: &str) -> FieldItemImport {
+    FieldItemImport::new(
+        item(
+            "field.dalux-item-1",
+            FieldItemKind::ExternalReference,
+            FieldLane::Quality,
+        )
+        .with_state(FieldItemState::Open),
+        FieldItemReference::new("site/dalux", "items/item-1", Some(version.to_owned())).unwrap(),
+        state,
+        ExternalRef::new(
+            EFFECT_LEDGER_BACKEND,
+            format!("dalux/read/{version}"),
+            None,
+            None,
+        ),
+    )
+    .unwrap()
+}
+
+fn control(id: &str) -> crate::ControlId {
+    crate::ControlId::new(id).unwrap()
+}
+
+fn role(id: &str) -> crate::RoleId {
+    crate::RoleId::new(id).unwrap()
+}
+
+fn evidence(id: &str) -> ExternalRef {
+    ExternalRef::new("doc/synthetic", id, Some("accepted".to_owned()), None)
+}
+
+fn day(day: u8) -> Date {
+    Date::from_calendar_date(2026, Month::July, day).unwrap()
+}
+```
+
 Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/tests` is checked by `cargo test`.
 
 Source `crates/sim-lib-construction-project/src/tests.rs`:
@@ -2821,6 +3263,386 @@ fn accepted_charter() -> ProjectCharter {
 
 fn accepted_on() -> Date {
     Date::from_calendar_date(2026, Month::July, 23).unwrap()
+}
+```
+
+### `feature/sim-construction/production-field-control`
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/field-item-to-corrective-evidence` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/field-item-to-corrective-evidence/recipe.toml`:
+
+```toml
+id = "field-item-to-corrective-evidence"
+title = "Field item to corrective evidence"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 96
+tags = ["construction", "field-control", "dalux", "incident", "inspection", "corrective-evidence", "safety"]
+requires = ["construction.project.read", "construction.project.write", "site/dalux", "codec/lisp"]
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/field_control_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/field_control_tests.rs`:
+
+```rust
+// conformance: construction field-control facts
+
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+use crate::{
+    CorrectiveAction, Defect, EFFECT_LEDGER_BACKEND, EvidenceState, FieldItem, FieldItemImport,
+    FieldItemImportOutcome, FieldItemKind, FieldItemReference, FieldItemState, FieldLane,
+    FieldSeverity, IncidentEscalation, InspectionPoint, InspectionResult, ProjectBook,
+    ProjectIncident, ProjectObservation, QualityDeviation, import_field_item, safety_first_rollup,
+};
+
+#[test]
+fn field_control_types_share_accountability_without_payload_copying() {
+    let observation = ProjectObservation::new(
+        item(
+            "observation.deck",
+            FieldItemKind::Observation,
+            FieldLane::Progress,
+        ),
+        day(10),
+        "Deck edge protection incomplete",
+    );
+    observation.validate().unwrap();
+
+    let deviation = QualityDeviation {
+        field_item: item(
+            "deviation.frame",
+            FieldItemKind::Deviation,
+            FieldLane::Quality,
+        ),
+        requirement: control("requirement.frame-tolerance"),
+        description: "Measured frame exceeds accepted tolerance".to_owned(),
+    };
+    deviation.validate().unwrap();
+
+    let inspection = InspectionPoint::new(item(
+        "inspection.frame",
+        FieldItemKind::InspectionPoint,
+        FieldLane::Quality,
+    ));
+    assert!(inspection.blocks_production());
+    inspection.validate().unwrap();
+
+    let defect = Defect {
+        field_item: item("defect.door", FieldItemKind::Defect, FieldLane::Quality),
+        detected_on: day(10),
+    };
+    defect.validate().unwrap();
+
+    let reference =
+        FieldItemReference::new("site/dalux", "items/item-1", Some("rev-2".to_owned())).unwrap();
+    let external = reference.as_external_ref();
+    assert_eq!(external.backend, "site/dalux");
+    assert_eq!(external.external_id, "items/item-1");
+    assert_eq!(external.web_url, None);
+}
+
+#[test]
+fn incident_and_corrective_closure_require_accountable_evidence() {
+    let incident = ProjectIncident::new(
+        item(
+            "incident.access",
+            FieldItemKind::Incident,
+            FieldLane::Safety,
+        )
+        .non_waivable(),
+        day(10),
+    )
+    .with_escalation(IncidentEscalation {
+        escalated_to: role("project-chief"),
+        escalated_on: day(10),
+        reason: "Stop affected access route".to_owned(),
+        evidence: vec![evidence("incident/access/escalation")],
+    });
+    assert!(incident.requires_escalation());
+    incident.validate().unwrap();
+
+    let corrective = CorrectiveAction {
+        field_item: item(
+            "corrective.access",
+            FieldItemKind::CorrectiveAction,
+            FieldLane::Safety,
+        )
+        .with_state(FieldItemState::Closed)
+        .with_evidence_state(EvidenceState::Accepted)
+        .with_evidence(evidence("corrective/access/accepted")),
+        corrects: vec![control("incident.access")],
+        accepted_by: Some(role("safety-lead")),
+    };
+    assert!(corrective.has_accepted_evidence());
+    corrective.validate().unwrap();
+}
+
+#[test]
+fn critical_incident_fails_closed_until_escalated() {
+    let incident = ProjectIncident::new(
+        item("incident.fall", FieldItemKind::Incident, FieldLane::Safety)
+            .with_severity(FieldSeverity::Critical),
+        day(10),
+    );
+    assert!(incident.requires_escalation());
+    assert!(incident.validate().is_err());
+
+    let escalated = incident.with_escalation(IncidentEscalation {
+        escalated_to: role("project-chief"),
+        escalated_on: day(10),
+        reason: "Stop work and secure the opening".to_owned(),
+        evidence: vec![evidence("incident/fall/escalation")],
+    });
+    escalated.validate().unwrap();
+}
+
+#[test]
+fn passed_inspection_needs_accepted_evidence() {
+    let passed = InspectionPoint::new(
+        item(
+            "test.pressure",
+            FieldItemKind::TestPoint,
+            FieldLane::Quality,
+        )
+        .with_state(FieldItemState::Closed)
+        .with_evidence_state(EvidenceState::Accepted)
+        .with_evidence(evidence("test/pressure/accepted")),
+    )
+    .with_result(InspectionResult::Passed, role("quality-lead"));
+
+    assert!(!passed.blocks_production());
+    passed.validate().unwrap();
+}
+
+#[test]
+fn rejected_inspection_remains_a_production_blocker() {
+    let rejected = InspectionPoint::new(
+        item(
+            "inspection.fire-seal",
+            FieldItemKind::InspectionPoint,
+            FieldLane::Quality,
+        )
+        .with_state(FieldItemState::Rejected)
+        .with_evidence_state(EvidenceState::Rejected)
+        .with_evidence(evidence("inspection/fire-seal/rejected")),
+    )
+    .with_result(InspectionResult::Rejected, role("quality-lead"));
+
+    assert!(rejected.blocks_production());
+    rejected.validate().unwrap();
+}
+
+#[test]
+fn open_defect_becomes_overdue_but_closed_defect_does_not() {
+    let defect = Defect {
+        field_item: item("defect.door", FieldItemKind::Defect, FieldLane::Quality)
+            .with_state(FieldItemState::Open),
+        detected_on: day(10),
+    };
+    assert!(defect.is_overdue(day(20)));
+
+    let closed = Defect {
+        field_item: defect
+            .field_item
+            .with_state(FieldItemState::Closed)
+            .with_evidence_state(EvidenceState::Accepted)
+            .with_evidence(evidence("defect/door/accepted")),
+        detected_on: defect.detected_on,
+    };
+    assert!(!closed.is_overdue(day(20)));
+    closed.validate().unwrap();
+}
+
+#[test]
+fn corrective_action_needs_evidence_and_accepting_role() {
+    let field_item = item(
+        "corrective.fire-seal",
+        FieldItemKind::CorrectiveAction,
+        FieldLane::Quality,
+    )
+    .with_state(FieldItemState::Closed)
+    .with_evidence_state(EvidenceState::Accepted)
+    .with_evidence(evidence("corrective/fire-seal/photo"));
+    let missing_authority = CorrectiveAction {
+        field_item: field_item.clone(),
+        corrects: vec![control("inspection.fire-seal")],
+        accepted_by: None,
+    };
+    assert!(!missing_authority.has_accepted_evidence());
+    assert!(missing_authority.validate().is_err());
+
+    let accepted = CorrectiveAction {
+        field_item,
+        corrects: vec![control("inspection.fire-seal")],
+        accepted_by: Some(role("quality-lead")),
+    };
+    assert!(accepted.has_accepted_evidence());
+    accepted.validate().unwrap();
+}
+
+#[test]
+fn rollup_puts_imminent_safety_and_non_waivable_controls_first() {
+    let items = vec![
+        item(
+            "progress.critical",
+            FieldItemKind::Observation,
+            FieldLane::Progress,
+        )
+        .with_state(FieldItemState::Blocked)
+        .with_severity(FieldSeverity::Critical),
+        item(
+            "convenience.non-waivable",
+            FieldItemKind::Deviation,
+            FieldLane::Convenience,
+        )
+        .with_state(FieldItemState::Open)
+        .with_severity(FieldSeverity::Information)
+        .non_waivable(),
+        item(
+            "safety.imminent",
+            FieldItemKind::Incident,
+            FieldLane::Safety,
+        )
+        .with_state(FieldItemState::Blocked)
+        .with_severity(FieldSeverity::Imminent),
+        item(
+            "safety.closed",
+            FieldItemKind::CorrectiveAction,
+            FieldLane::Safety,
+        )
+        .with_state(FieldItemState::Closed)
+        .with_evidence_state(EvidenceState::Accepted)
+        .with_evidence(evidence("safety/closed")),
+        item(
+            "environment.major",
+            FieldItemKind::Incident,
+            FieldLane::Environment,
+        )
+        .with_state(FieldItemState::Open),
+    ];
+
+    let controls = safety_first_rollup(&items, day(20))
+        .into_iter()
+        .map(|row| row.control.to_string())
+        .collect::<Vec<_>>();
+
+    assert_eq!(
+        controls,
+        vec![
+            "safety.imminent",
+            "convenience.non-waivable",
+            "progress.critical",
+            "environment.major",
+            "safety.closed",
+        ]
+    );
+}
+
+#[test]
+fn external_import_is_idempotent_and_changed_source_state_supersedes() {
+    let mut book = ProjectBook::new(
+        crate::ProjectId::new("reference-center").unwrap(),
+        role("project-chief"),
+    );
+    let first = dalux_import("open", "2026-07-10T10:00:00Z");
+
+    assert_eq!(
+        import_field_item(&mut book, 1, day(10), &first).unwrap(),
+        FieldItemImportOutcome::Appended {
+            seq: 1,
+            supersedes: None,
+        }
+    );
+    assert_eq!(
+        import_field_item(&mut book, 2, day(10), &first).unwrap(),
+        FieldItemImportOutcome::Duplicate { existing_seq: 1 }
+    );
+    assert_eq!(book.len(), 1);
+
+    let changed = dalux_import("closed", "2026-07-10T11:00:00Z");
+    assert_eq!(
+        import_field_item(&mut book, 2, day(10), &changed).unwrap(),
+        FieldItemImportOutcome::Appended {
+            seq: 2,
+            supersedes: Some(1),
+        }
+    );
+
+    let current = book.snapshot_at(2).unwrap();
+    let fact = current
+        .current_fact(&control("field.dalux-item-1"))
+        .unwrap();
+    assert_eq!(fact.evidence_state, EvidenceState::Reported);
+    assert_eq!(fact.evidence.len(), 2);
+    assert!(
+        fact.evidence
+            .iter()
+            .all(|reference| reference.web_url.is_none())
+    );
+    let debug = format!("{fact:?}");
+    for excluded in [
+        "attachment",
+        "bearer",
+        "token",
+        "web_url: Some",
+        "Door review",
+    ] {
+        assert!(!debug.contains(excluded), "fact leaked {excluded:?}");
+    }
+}
+
+fn item(id: &str, kind: FieldItemKind, lane: FieldLane) -> FieldItem {
+    FieldItem::new(
+        crate::ProjectId::new("reference-center").unwrap(),
+        control(id),
+        kind,
+        FieldSeverity::Major,
+        lane,
+        role("site-manager"),
+    )
+    .due_on(day(12))
+    .affects(control("package.frame"))
+}
+
+fn dalux_import(state: &str, version: &str) -> FieldItemImport {
+    FieldItemImport::new(
+        item(
+            "field.dalux-item-1",
+            FieldItemKind::ExternalReference,
+            FieldLane::Quality,
+        )
+        .with_state(FieldItemState::Open),
+        FieldItemReference::new("site/dalux", "items/item-1", Some(version.to_owned())).unwrap(),
+        state,
+        ExternalRef::new(
+            EFFECT_LEDGER_BACKEND,
+            format!("dalux/read/{version}"),
+            None,
+            None,
+        ),
+    )
+    .unwrap()
+}
+
+fn control(id: &str) -> crate::ControlId {
+    crate::ControlId::new(id).unwrap()
+}
+
+fn role(id: &str) -> crate::RoleId {
+    crate::RoleId::new(id).unwrap()
+}
+
+fn evidence(id: &str) -> ExternalRef {
+    ExternalRef::new("doc/synthetic", id, Some("accepted".to_owned()), None)
+}
+
+fn day(day: u8) -> Date {
+    Date::from_calendar_date(2026, Month::July, day).unwrap()
 }
 ```
 

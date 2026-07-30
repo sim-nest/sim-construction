@@ -1,0 +1,49 @@
+(expr:map
+  [kind construction/field-item-to-corrective-evidence]
+  [project reference-center]
+  [mode modeled]
+  [placement site/dalux]
+  [site-effect (expr:map
+    [operation read-project-items]
+    [effect-ref effect/ledger/core-sha256-modeled-read]
+    [live-gates [net/connect credentials SIM_CONSTRUCTION_LIVE_DALUX]])]
+  [source-item (expr:map
+    [source site/dalux]
+    [external-id items/item-1]
+    [version "2026-07-30T08:00:00Z"]
+    [source-state open]
+    [payload-retained-by site/dalux]
+    [import-evidence-state Reported])]
+  [field-control (expr:map
+    [control field.item-1]
+    [kind ExternalReference]
+    [severity Critical]
+    [lane Safety]
+    [responsible-role site-manager]
+    [due-on "2026-07-30"]
+    [affected-controls [package.frame inspection.frame]]
+    [state Blocked]
+    [non-waivable true])]
+  [safety-first-rollup [
+    (expr:map [control incident.access] [lane Safety] [severity Imminent] [rank 0])
+    (expr:map [control field.item-1] [non-waivable true] [rank 1])
+    (expr:map [control progress.frame] [lane Progress] [severity Critical] [rank 2])]]
+  [inspection (expr:map
+    [control inspection.frame]
+    [result Rejected]
+    [blocks-production true])]
+  [corrective-action (expr:map
+    [control corrective.frame]
+    [corrects [field.item-1 inspection.frame]]
+    [state Closed]
+    [evidence-state Accepted]
+    [evidence [(expr:map
+      [backend doc/synthetic]
+      [external-id corrective/frame/accepted]
+      [version accepted])]]
+    [accepted-by quality-lead])]
+  [fact-book-boundary (expr:map
+    [stores [source external-id version source-state effect-ref control-fields]]
+    [excludes [vendor-payload attachments token url]]
+    [import-is-accepted-evidence false]
+    [corrective-evidence-accepted true])])

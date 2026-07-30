@@ -25,14 +25,19 @@ mod error;
 mod evidence_state;
 mod exception;
 mod fact;
+mod field_import;
+mod field_item;
 mod gate;
 mod governance;
 mod handoff;
 mod identity;
+mod incident;
+mod inspection;
 mod intent;
 mod lifecycle;
 mod lookahead;
 mod obligation;
+mod observation;
 mod opportunity;
 mod outcome;
 mod outcome_symbol;
@@ -40,6 +45,7 @@ mod permit;
 mod policy;
 mod procurement;
 mod production_plan;
+mod quality;
 mod readiness;
 mod release;
 mod requirement;
@@ -77,6 +83,13 @@ pub use error::{ConstructionProjectError, Result};
 pub use evidence_state::{EvidenceState, EvidenceValidity};
 pub use exception::{ExceptionDecision, ExceptionScope};
 pub use fact::{MAX_FACT_BODY_NODES, MAX_FACT_EVIDENCE_REFS, ProjectFact, expr_node_count};
+pub use field_import::{
+    EFFECT_LEDGER_BACKEND, FieldItemImport, FieldItemImportOutcome, import_field_item,
+};
+pub use field_item::{
+    FieldItem, FieldItemKind, FieldItemReference, FieldItemState, FieldLane, FieldRollupEntry,
+    FieldSeverity, safety_first_rollup,
+};
 pub use gate::{GateDecision, GateDecisionKind, GateReport, GateRequirement, PhaseGate};
 pub use governance::{
     DueDatePolicy, ProjectGovernance, RoleAssignment, Visibility, VisibilityPolicy,
@@ -85,6 +98,8 @@ pub use handoff::{
     HandoffReadinessReport, PackageHandoff, PackageHandoffBlocker, PackageHandoffControlSet,
 };
 pub use identity::{BaselineId, ControlId, OrganizationId, ProjectId, RoleId};
+pub use incident::{IncidentEscalation, ProjectIncident};
+pub use inspection::{InspectionPoint, InspectionResult};
 pub use intent::{
     ConstructionVariant, CustomerIntent, CustomerIntentAcceptance, IntentCoverageReport,
     IntentField,
@@ -96,6 +111,7 @@ pub use lookahead::{
     ProductionReadinessState, ProductionTaskMovement,
 };
 pub use obligation::{ObligationPolicy, ProjectObligation};
+pub use observation::ProjectObservation;
 pub use opportunity::{OpportunityRecord, OpportunitySource};
 pub use outcome::{
     DisclosureState, DomainQuantity, OutcomeBlocker, OutcomeBoundary, OutcomeControlReport,
@@ -113,6 +129,7 @@ pub use procurement::{
     ProcurementControlSet, ProcurementDateReport, ProcurementStatus, TenderEvaluation,
 };
 pub use production_plan::ProductionPlan;
+pub use quality::{CorrectiveAction, Defect, QualityDeviation};
 pub use readiness::{CharterReadiness, evaluate_charter};
 pub use release::{DesignRelease, DesignReleasePurpose};
 pub use requirement::{Requirement, RequirementLane};
@@ -147,6 +164,8 @@ mod control_graph_tests;
 mod design_tests;
 #[cfg(test)]
 mod fact_book_tests;
+#[cfg(test)]
+mod field_control_tests;
 #[cfg(test)]
 mod lifecycle_tests;
 #[cfg(test)]

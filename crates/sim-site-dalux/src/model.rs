@@ -43,6 +43,18 @@ pub struct DaluxItem {
     pub web_url: Option<String>,
 }
 
+/// Source-minimized reference used by project-control importers.
+///
+/// The vendor payload, note, attachment set, credential, and browser URL remain
+/// outside this type.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct DaluxItemReference {
+    /// Stable URL-free Dalux item reference.
+    pub external_ref: ExternalRef,
+    /// Bounded vendor workflow state.
+    pub state: String,
+}
+
 impl DaluxItem {
     /// Decodes one Dalux item from a JSON object.
     pub fn from_json(item: &JsonValue) -> Result<Self, DaluxError> {
@@ -60,6 +72,25 @@ impl DaluxItem {
             web_url: json_text(item, FIELD_WEB_URL).map(ToOwned::to_owned),
         })
     }
+}
+
+/// Extracts URL-free stable item references from a Dalux response.
+pub fn item_references(body: &JsonValue) -> Result<Vec<DaluxItemReference>, DaluxError> {
+    items_from_body(body)?
+        .into_iter()
+        .map(|item| {
+            validate_state(&item.status)?;
+            Ok(DaluxItemReference {
+                external_ref: ExternalRef::new(
+                    DALUX_SITE_ID,
+                    format!("items/{}", item.id),
+                    item.updated_at,
+                    None,
+                ),
+                state: item.status,
+            })
+        })
+        .collect()
 }
 
 /// Builds the Dalux project-item API path.
@@ -144,6 +175,20 @@ fn write_item_row(sheet: &mut Sheet, row: u32, item: &DaluxItem) -> Result<(), D
 
 fn json_text<'a>(value: &'a JsonValue, key: &str) -> Option<&'a str> {
     value.get(key).and_then(JsonValue::as_str)
+}
+
+fn validate_state(state: &str) -> Result<(), DaluxError> {
+    if state.is_empty()
+        || state.len() > 64
+        || !state
+            .bytes()
+            .all(|byte| byte.is_ascii_alphanumeric() || matches!(byte, b'-' | b'_' | b'.' | b':'))
+    {
+        return Err(DaluxError::WrongShape(
+            "Dalux item status is not a bounded state label".to_owned(),
+        ));
+    }
+    Ok(())
 }
 
 fn api_segment(value: &str) -> Result<String, DaluxError> {

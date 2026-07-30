@@ -1,11 +1,10 @@
 //! Dalux API-identity client boundary.
 
-use serde_json::{Value as JsonValue, json};
+use serde_json::Value as JsonValue;
 use sim_kernel::{CapabilityName, Cx};
-use sim_lib_doc_core::{CREDENTIALS_CAPABILITY, Doc, ExternalRef, NET_CONNECT_CAPABILITY};
+use sim_lib_doc_core::{CREDENTIALS_CAPABILITY, NET_CONNECT_CAPABILITY};
 
 use crate::DaluxError;
-use crate::model::{item_path, items_doc, patch_external_ref, project_items_path};
 use crate::modeled::ModeledDalux;
 
 /// Environment variable that must be set to `1` before live Dalux calls run.
@@ -135,30 +134,6 @@ impl<C: DaluxCredentialProvider> DaluxClient<C> {
             }
         }
     }
-}
-
-/// Reads Dalux project items and projects them into a local office document.
-pub fn get_project_items<C: DaluxCredentialProvider>(
-    cx: &mut Cx,
-    client: &DaluxClient<C>,
-    project_id: &str,
-) -> Result<Doc, DaluxError> {
-    let path = project_items_path(project_id)?;
-    let body = client.get_json(cx, &path)?;
-    items_doc(cx, project_id, &body)
-}
-
-/// Patches the note field for one Dalux item and returns an external reference.
-pub fn patch_item_note<C: DaluxCredentialProvider>(
-    cx: &mut Cx,
-    client: &DaluxClient<C>,
-    item_id: &str,
-    note: &str,
-) -> Result<ExternalRef, DaluxError> {
-    let path = item_path(item_id)?;
-    let body = json!({ "note": note });
-    let response = client.patch_json(cx, &path, &body)?;
-    patch_external_ref(item_id, &response)
 }
 
 /// Redacts bearer tokens, long JSON strings, and long bodies from Dalux errors.
