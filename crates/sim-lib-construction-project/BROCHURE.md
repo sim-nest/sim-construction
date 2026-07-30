@@ -23,6 +23,10 @@ and say exactly what changed between two points.
 - One stable change chain reconciles instruction, scope, time, supplier cost,
   customer recovery, authority, execution, and final settlement without
   pretending a document is an approval or a ledger balance is payment.
+- System, area, package, asset-group, and milestone handover rolls explicit
+  commissioning evidence upward while keeping technical, evidence, authority,
+  contractual, occupancy/use, and final completion as separate accountable
+  gates.
 - The same record can feed schedule, office, ledger, and handover layers without
   changing their ownership.
 

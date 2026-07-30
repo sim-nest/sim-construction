@@ -1,0 +1,78 @@
+(expr:map
+  [kind construction/system-to-accepted-handover]
+  [project reference-center]
+  [as-of-date "2026-07-30"]
+  [as-of-seq 18]
+  [hierarchy
+    (expr:map
+      [controls [
+        (expr:map [id milestone.first-use] [kind ContractualMilestone])
+        (expr:map [id area.east] [kind Area])
+        (expr:map [id area.west] [kind Area])
+        (expr:map [id system.ventilation] [kind System])
+        (expr:map [id package.controls] [kind WorkPackage])
+        (expr:map [id assets.air-handling] [kind AssetGroup])]]
+      [member-edges [
+        [area.east milestone.first-use]
+        [area.west milestone.first-use]
+        [system.ventilation area.east]
+        [system.ventilation area.west]
+        [package.controls system.ventilation]
+        [assets.air-handling system.ventilation]]])]
+  [requirements [
+    (expr:map [id handover.sequence] [kind Activity] [target system.ventilation] [owner commissioning-lead] [evidence-kind commissioning/sequence-record])
+    (expr:map [id handover.functional-test] [kind Test] [target system.ventilation] [owner commissioning-lead] [evidence-kind commissioning/test-record])
+    (expr:map [id handover.critical-defect] [kind Defect] [target system.ventilation] [owner package-manager] [critical true] [evidence-kind quality/accepted-closure])
+    (expr:map [id handover.om] [kind OperationsMaintenanceDeliverable] [target system.ventilation] [owner document-controller] [evidence-kind office/external-ref])
+    (expr:map [id handover.as-built] [kind AsBuiltDeliverable] [target system.ventilation] [owner design-lead] [evidence-kind office/external-ref])
+    (expr:map [id handover.training] [kind Training] [target system.ventilation] [owner commissioning-lead] [evidence-kind training/attendance])
+    (expr:map [id handover.certificate] [kind Certification] [target system.ventilation] [owner commissioning-lead] [valid-until "2027-07-30"] [evidence-kind authority/certificate])
+    (expr:map [id handover.authority] [kind AuthorityClosure] [target system.ventilation] [owner authority-lead] [non-waivable true] [evidence-kind authority/closure])
+    (expr:map [id handover.customer] [kind CustomerAcceptance] [target system.ventilation] [owner customer-representative] [evidence-kind customer/acceptance])
+    (expr:map [id handover.remaining-labels] [kind RemainingWork] [target system.ventilation] [owner package-manager] [evidence-kind quality/accepted-closure])]]
+  [current-evidence [
+    (expr:map [requirement handover.sequence] [seq 9] [state Accepted] [external-ref commissioning/sequence-ventilation-v2])
+    (expr:map [requirement handover.functional-test] [seq 11] [supersedes 10] [state Accepted] [external-ref commissioning/retest-ventilation-v2])
+    (expr:map [requirement handover.critical-defect] [seq 12] [state Accepted] [external-ref quality/defect-closure-v1])
+    (expr:map [requirement handover.om] [seq 13] [state Accepted] [external-ref document/om-ventilation-v3])
+    (expr:map [requirement handover.as-built] [seq 14] [state Accepted] [external-ref document/as-built-ventilation-v4])
+    (expr:map [requirement handover.training] [seq 15] [state Accepted] [external-ref training/ventilation-attendance-v1])
+    (expr:map [requirement handover.certificate] [seq 16] [state Accepted] [external-ref authority/ventilation-certificate-v1])
+    (expr:map [requirement handover.authority] [seq 17] [state Accepted] [external-ref authority/ventilation-closure-v1])
+    (expr:map [requirement handover.customer] [seq 18] [state Accepted] [external-ref customer/ventilation-acceptance-v1])]]
+  [accepted-remaining-work
+    (expr:map
+      [exception exception.remaining-labels]
+      [covers [handover.remaining-labels]]
+      [allowed-gates [ContractualAcceptance]]
+      [decided-by customer-representative]
+      [expires-on "2026-08-15"]
+      [external-ref customer/remaining-labels-acceptance-v1])]
+  [rollups [
+    (expr:map [target system.ventilation] [total 10] [accepted 9] [excepted 1] [missing 0] [ready true])
+    (expr:map [target area.east] [total 10] [accepted 9] [excepted 1] [missing 0] [ready true])
+    (expr:map [target area.west] [total 10] [accepted 9] [excepted 1] [missing 0] [ready true])]]
+  [completion-gates [
+    (expr:map [kind TechnicalCompletion] [report-seq 18] [ready true])
+    (expr:map [kind EvidenceCompletion] [report-seq 18] [ready true])
+    (expr:map [kind AuthorityCompletion] [report-seq 18] [ready true])
+    (expr:map [kind ContractualAcceptance] [report-seq 18] [ready true] [excepted 1])
+    (expr:map [kind OccupancyUseReadiness] [report-seq 18] [ready true])
+    (expr:map [kind FinalCompletion] [report-seq 18] [ready false] [missing [handover.remaining-labels]])]]
+  [accountable-acceptance
+    (expr:map
+      [gate ContractualAcceptance]
+      [report-seq 18]
+      [decision-seq 19]
+      [decision Accept]
+      [decided-by customer-representative]
+      [external-ref customer/ventilation-handover-v1])]
+  [ownership-boundary
+    (expr:map
+      [hierarchy common-control-graph]
+      [requirements common-obligation-evidence]
+      [documents reference-only]
+      [document-store false]
+      [issue-tracker false]
+      [commissioning-transport false]
+      [percentage-can-override-blocker false])])

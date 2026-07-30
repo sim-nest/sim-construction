@@ -46,6 +46,9 @@
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/sustainability-to-reference-evidence/purpose.md"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/sustainability-to-reference-evidence/recipe.toml"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/sustainability-to-reference-evidence/setup.siml"}
+{"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/system-to-accepted-handover/purpose.md"}
+{"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/system-to-accepted-handover/recipe.toml"}
+{"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/system-to-accepted-handover/setup.siml"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/what-changed/purpose.md"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/what-changed/recipe.toml"}
 {"kind":"recipe","path":"crates/sim-lib-construction-project/recipes/01-basics/what-changed/setup.siml"}

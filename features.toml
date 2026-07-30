@@ -292,6 +292,23 @@ claims_specimens = [
 ]
 
 [[feature]]
+id = "feature/sim-construction/system-handover-commissioning-acceptance"
+title = "Construction system handover commissioning and acceptance"
+summary = "Roll system, area, work-package, asset-group, and contractual-milestone readiness up from explicit commissioning, inspection/test, defect, O&M, as-built, training, certification, authority, customer-acceptance, and remaining-work evidence."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row to prove a construction system ready for handover without flattening completion meanings. Typed member edges reuse the common construction control graph; leaf requirements reuse ProjectObligation, ProjectBook evidence, validity, supersession, and bounded exceptions. Reports expose missing, reported, evidenced, rejected, expired, conflicted, and excepted counts while blocked mandatory evidence overrides percentage. Technical, evidence, authority, contractual, occupancy/use, and final completion are separate sequence-bound gates with accountable decisions. O&M and as-built artifacts remain ExternalRefs; do not turn this feature into a document store, issue tracker, or commissioning transport."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/system-to-accepted-handover",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/handover_tests",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/acceptance_tests",
+]
+
+[[feature]]
 id = "feature/sim-construction/obligation-evidence-exceptions"
 title = "Construction obligation evidence and exceptions"
 summary = "Evaluate shared construction requirements and project obligations across open lanes with stable evidence states, validity windows, graph-composed dependencies, source references, optional policy, bounded exceptions, and deterministic explanation paths."
@@ -407,6 +424,17 @@ steps = [
   { feature = "feature/sim-construction/project-control", why = "The project-control row owns the accepted fact book and baseline vocabulary the gate reads." },
   { feature = "feature/sim-construction/phase-gates", why = "The lifecycle-gates row owns reproducible reports and accountable approvals." },
   { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/mobilization-gate", why = "The mobilization-gate recipe shows a derived report and matching approval at the same sequence." },
+]
+
+[[route]]
+id = "route/prove-construction-system-ready-for-handover"
+task = "Prove a construction system ready for handover"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns stable ids, append-only facts, accountable roles, and reference-only evidence." },
+  { feature = "feature/sim-construction/obligation-evidence-exceptions", why = "The shared obligation row owns accepted evidence, validity, supersession, dependency blockers, and bounded exceptions." },
+  { feature = "feature/sim-construction/system-handover-commissioning-acceptance", why = "The handover row owns typed hierarchy membership, leaf commissioning rollup, exact burn-down counts, six distinct completion meanings, and sequence-bound acceptance." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/system-to-accepted-handover", why = "The recipe follows a cross-area ventilation system through retest, explicit evidence, accepted remaining work, contractual acceptance, and still-blocked final completion." },
 ]
 
 [[route]]

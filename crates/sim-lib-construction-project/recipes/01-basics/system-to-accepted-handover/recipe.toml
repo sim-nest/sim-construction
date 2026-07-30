@@ -1,0 +1,8 @@
+id = "system-to-accepted-handover"
+title = "System to accepted handover"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 99
+tags = ["construction", "project-control", "handover", "commissioning", "acceptance", "readiness"]
+requires = ["construction.project.read", "construction.project.write", "construction.project.accept", "codec/lisp"]

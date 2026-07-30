@@ -32,6 +32,7 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 | `feature/sim-construction/supplier-production-handoff` | `crate/sim-lib-construction-project` | 2 | Derive project-scoped supplier qualification and production handoff readiness from subcontract-chain references, shared qualification obligations, restricted external evidence, accountable award decisions, production design releases, material lead time, production need dates, and explicit responsibility acceptance. |
 | `feature/sim-construction/design-release-authority-control` | `crate/sim-lib-construction-project` | 2 | Trace current design revisions, RFIs, reviews, purpose-specific releases, permits, inspections, and authority obligations into package or task readiness through the shared construction control graph. |
 | `feature/sim-construction/phase-gates` | `crate/sim-lib-construction-project` | 5 | Derive construction phase gate baseline and obligation readiness from accepted project-control facts while keeping human approval and exceptions as separate accountable decisions. |
+| `feature/sim-construction/system-handover-commissioning-acceptance` | `crate/sim-lib-construction-project` | 3 | Roll system, area, work-package, asset-group, and contractual-milestone readiness up from explicit commissioning, inspection/test, defect, O&M, as-built, training, certification, authority, customer-acceptance, and remaining-work evidence. |
 | `feature/sim-construction/obligation-evidence-exceptions` | `crate/sim-lib-construction-project` | 3 | Evaluate shared construction requirements and project obligations across open lanes with stable evidence states, validity windows, graph-composed dependencies, source references, optional policy, bounded exceptions, and deterministic explanation paths. |
 
 ## Surfaces
@@ -92,6 +93,9 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 - `crates/sim-lib-construction-project/recipes/01-basics/sustainability-to-reference-evidence/purpose.md`
 - `crates/sim-lib-construction-project/recipes/01-basics/sustainability-to-reference-evidence/recipe.toml`
 - `crates/sim-lib-construction-project/recipes/01-basics/sustainability-to-reference-evidence/setup.siml`
+- `crates/sim-lib-construction-project/recipes/01-basics/system-to-accepted-handover/purpose.md`
+- `crates/sim-lib-construction-project/recipes/01-basics/system-to-accepted-handover/recipe.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/system-to-accepted-handover/setup.siml`
 - `crates/sim-lib-construction-project/recipes/01-basics/what-changed/purpose.md`
 - `crates/sim-lib-construction-project/recipes/01-basics/what-changed/recipe.toml`
 - `crates/sim-lib-construction-project/recipes/01-basics/what-changed/setup.siml`
@@ -8014,6 +8018,897 @@ fn evidence_ref(id: &str) -> ExternalRef {
 
 fn today() -> Date {
     Date::from_calendar_date(2026, Month::July, 23).unwrap()
+}
+```
+
+### `feature/sim-construction/system-handover-commissioning-acceptance`
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/system-to-accepted-handover` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/system-to-accepted-handover/recipe.toml`:
+
+```toml
+id = "system-to-accepted-handover"
+title = "System to accepted handover"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 99
+tags = ["construction", "project-control", "handover", "commissioning", "acceptance", "readiness"]
+requires = ["construction.project.read", "construction.project.write", "construction.project.accept", "codec/lisp"]
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/handover_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/handover_tests.rs`:
+
+```rust
+// conformance: handover hierarchy reuses stable construction control graph ids and edges
+
+use crate::{
+    CONSTRUCTION_EXCEPTION_CAPABILITY, CommissioningAssessment, CommissioningBurnDown,
+    CommissioningControlSet, CommissioningRequirement, CommissioningRequirementKind,
+    ConstructionProjectError, ControlEdgeKind, ControlId, EvidenceState, EvidenceValidity,
+    ExceptionDecision, ExceptionScope, HandoverControlKind, HandoverHierarchy, ObligationPolicy,
+    ProjectBook, ProjectFact, ProjectId, ProjectObligation, Requirement, RequirementLane, RoleId,
+};
+use sim_kernel::{Expr, Symbol};
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+#[test]
+fn hierarchy_uses_typed_common_graph_nodes_and_member_edges() {
+    let mut hierarchy = hierarchy();
+    add(
+        &mut hierarchy,
+        "milestone.first-use",
+        HandoverControlKind::ContractualMilestone,
+    );
+    add(&mut hierarchy, "area.east", HandoverControlKind::Area);
+    add(
+        &mut hierarchy,
+        "system.ventilation",
+        HandoverControlKind::System,
+    );
+    add(
+        &mut hierarchy,
+        "package.controls",
+        HandoverControlKind::WorkPackage,
+    );
+    add(
+        &mut hierarchy,
+        "assets.ahu",
+        HandoverControlKind::AssetGroup,
+    );
+
+    hierarchy
+        .add_member(control("area.east"), control("milestone.first-use"))
+        .unwrap();
+    hierarchy
+        .add_member(control("system.ventilation"), control("area.east"))
+        .unwrap();
+    hierarchy
+        .add_member(control("package.controls"), control("system.ventilation"))
+        .unwrap();
+    hierarchy
+        .add_member(control("assets.ahu"), control("system.ventilation"))
+        .unwrap();
+
+    assert_eq!(
+        hierarchy.scope(&control("milestone.first-use")).unwrap(),
+        vec![
+            control("area.east"),
+            control("assets.ahu"),
+            control("milestone.first-use"),
+            control("package.controls"),
+            control("system.ventilation"),
+        ]
+    );
+    assert!(
+        hierarchy
+            .control_graph()
+            .edges
+            .iter()
+            .all(|edge| edge.kind == ControlEdgeKind::MemberOf)
+    );
+}
+
+#[test]
+fn one_system_can_roll_into_multiple_areas_without_a_second_tree() {
+    let mut hierarchy = hierarchy();
+    add(&mut hierarchy, "area.east", HandoverControlKind::Area);
+    add(&mut hierarchy, "area.west", HandoverControlKind::Area);
+    add(
+        &mut hierarchy,
+        "system.fire-alarm",
+        HandoverControlKind::System,
+    );
+
+    hierarchy
+        .add_member(control("system.fire-alarm"), control("area.east"))
+        .unwrap();
+    hierarchy
+        .add_member(control("system.fire-alarm"), control("area.west"))
+        .unwrap();
+
+    assert_eq!(
+        hierarchy.direct_parents(&control("system.fire-alarm")),
+        vec![control("area.east"), control("area.west")]
+    );
+    assert_eq!(
+        hierarchy.leaves(&control("area.east")).unwrap(),
+        vec![control("system.fire-alarm")]
+    );
+}
+
+#[test]
+fn member_cycles_are_rejected_without_mutating_the_hierarchy() {
+    let mut hierarchy = hierarchy();
+    add(
+        &mut hierarchy,
+        "system.primary",
+        HandoverControlKind::System,
+    );
+    add(
+        &mut hierarchy,
+        "system.secondary",
+        HandoverControlKind::System,
+    );
+    hierarchy
+        .add_member(control("system.secondary"), control("system.primary"))
+        .unwrap();
+
+    let result = hierarchy.add_member(control("system.primary"), control("system.secondary"));
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::ControlGraphCycle { .. })
+    ));
+    assert!(
+        hierarchy
+            .direct_parents(&control("system.primary"))
+            .is_empty()
+    );
+}
+
+#[test]
+fn every_commissioning_kind_uses_shared_evidence_requirements() {
+    let mut hierarchy = hierarchy();
+    add(
+        &mut hierarchy,
+        "system.heating",
+        HandoverControlKind::System,
+    );
+    let kinds = [
+        CommissioningRequirementKind::Activity,
+        CommissioningRequirementKind::Inspection,
+        CommissioningRequirementKind::Test,
+        CommissioningRequirementKind::Defect,
+        CommissioningRequirementKind::OperationsMaintenanceDeliverable,
+        CommissioningRequirementKind::AsBuiltDeliverable,
+        CommissioningRequirementKind::Training,
+        CommissioningRequirementKind::Certification,
+        CommissioningRequirementKind::AuthorityClosure,
+        CommissioningRequirementKind::CustomerAcceptance,
+        CommissioningRequirementKind::RemainingWork,
+    ];
+    let controls = kinds.into_iter().enumerate().fold(
+        CommissioningControlSet::new(project()),
+        |controls, (index, kind)| {
+            controls.with_requirement(commissioning_requirement(
+                kind,
+                &format!("requirement.handover-{index}"),
+            ))
+        },
+    );
+
+    controls.validate(&hierarchy).unwrap();
+    assert_eq!(controls.requirements.len(), 11);
+    assert!(controls.requirements.iter().all(|item| {
+        item.obligation.requirement.evidence_required
+            && !item.obligation.requirement.evidence_kinds.is_empty()
+            && !item.obligation.requirement.source_refs.is_empty()
+    }));
+    let authority = controls
+        .requirements
+        .iter()
+        .find(|item| item.kind == CommissioningRequirementKind::AuthorityClosure)
+        .unwrap();
+    assert!(authority.obligation.requirement.non_waivable);
+    assert_eq!(authority.obligation.policy, ObligationPolicy::Mandatory);
+}
+
+#[test]
+fn commissioning_rejects_optional_evidence_and_unknown_targets() {
+    let mut hierarchy = hierarchy();
+    add(
+        &mut hierarchy,
+        "system.heating",
+        HandoverControlKind::System,
+    );
+    let mut missing_evidence = commissioning_requirement(
+        CommissioningRequirementKind::Training,
+        "requirement.training",
+    );
+    missing_evidence
+        .obligation
+        .requirement
+        .evidence_kinds
+        .clear();
+    let result = CommissioningControlSet::new(project())
+        .with_requirement(missing_evidence)
+        .validate(&hierarchy);
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::EmptyCollection(
+            "commissioning_requirement.evidence_kinds"
+        ))
+    ));
+
+    let mut unknown_target = commissioning_requirement(
+        CommissioningRequirementKind::Test,
+        "requirement.unknown-target",
+    );
+    unknown_target.targets = vec![control("system.unknown")];
+    let result = CommissioningControlSet::new(project())
+        .with_requirement(unknown_target)
+        .validate(&hierarchy);
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::ControlGraphMissingEndpoint {
+            edge: "commissioning-target",
+            ..
+        })
+    ));
+}
+
+#[test]
+fn hierarchy_rollups_expose_every_leaf_evidence_state_and_exception() {
+    let mut hierarchy = hierarchy();
+    add(&mut hierarchy, "area.plant", HandoverControlKind::Area);
+    add(
+        &mut hierarchy,
+        "system.heating",
+        HandoverControlKind::System,
+    );
+    hierarchy
+        .add_member(control("system.heating"), control("area.plant"))
+        .unwrap();
+
+    let mut certificate = commissioning_requirement(
+        CommissioningRequirementKind::Certification,
+        "requirement.certificate",
+    );
+    certificate.obligation.evidence_validity =
+        EvidenceValidity::new(None, Some(date(2026, Month::July, 29)));
+    let controls = CommissioningControlSet::new(project())
+        .with_requirement(commissioning_requirement(
+            CommissioningRequirementKind::Activity,
+            "requirement.activity",
+        ))
+        .with_requirement(commissioning_requirement(
+            CommissioningRequirementKind::Training,
+            "requirement.training",
+        ))
+        .with_requirement(commissioning_requirement(
+            CommissioningRequirementKind::Test,
+            "requirement.test",
+        ))
+        .with_requirement(certificate)
+        .with_requirement(commissioning_requirement(
+            CommissioningRequirementKind::OperationsMaintenanceDeliverable,
+            "requirement.om",
+        ))
+        .with_requirement(commissioning_requirement(
+            CommissioningRequirementKind::RemainingWork,
+            "requirement.remaining",
+        ));
+
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(accepted_fact(1, "requirement.activity"))
+        .unwrap();
+    book.append(accepted_fact(2, "requirement.test").with_evidence_state(EvidenceState::Rejected))
+        .unwrap();
+    book.append(accepted_fact(3, "requirement.certificate"))
+        .unwrap();
+    book.append(accepted_fact(4, "requirement.om")).unwrap();
+    book.append(accepted_fact(5, "requirement.om")).unwrap();
+    let assessment = CommissioningAssessment::new(&book, 5, today())
+        .with_exception(remaining_work_exception())
+        .with_capability(CONSTRUCTION_EXCEPTION_CAPABILITY);
+
+    let system = controls
+        .readiness_for(&hierarchy, &control("system.heating"), &assessment)
+        .unwrap();
+    let area = controls
+        .readiness_for(&hierarchy, &control("area.plant"), &assessment)
+        .unwrap();
+
+    assert_eq!(system.burn_down, area.burn_down);
+    assert_eq!(
+        system.burn_down,
+        CommissioningBurnDown {
+            total: 6,
+            accepted: 1,
+            missing: 1,
+            reported: 0,
+            evidenced: 0,
+            rejected: 1,
+            expired: 1,
+            conflicted: 1,
+            excepted: 1,
+        }
+    );
+    assert_eq!(system.completion_percent(), 33);
+    assert_eq!(system.burn_down.open(), 4);
+    assert!(!system.ready);
+    assert_eq!(system.blockers().count(), 4);
+}
+
+#[test]
+fn a_high_percentage_never_overrides_one_missing_mandatory_item() {
+    let mut hierarchy = hierarchy();
+    add(
+        &mut hierarchy,
+        "system.heating",
+        HandoverControlKind::System,
+    );
+    let mut controls = CommissioningControlSet::new(project());
+    let mut book = ProjectBook::new(project(), writer());
+    for index in 0..10 {
+        let id = format!("requirement.accepted-{index}");
+        controls = controls.with_requirement(commissioning_requirement(
+            CommissioningRequirementKind::Activity,
+            &id,
+        ));
+        book.append(accepted_fact(index + 1, &id)).unwrap();
+    }
+    controls = controls.with_requirement(commissioning_requirement(
+        CommissioningRequirementKind::Training,
+        "requirement.missing-training",
+    ));
+    let assessment = CommissioningAssessment::new(&book, 10, today());
+
+    let report = controls
+        .readiness_for(&hierarchy, &control("system.heating"), &assessment)
+        .unwrap();
+
+    assert_eq!(report.completion_percent(), 90);
+    assert_eq!(report.burn_down.missing, 1);
+    assert!(!report.ready);
+    assert_eq!(report.blockers().count(), 1);
+}
+
+fn hierarchy() -> HandoverHierarchy {
+    HandoverHierarchy::new(project())
+}
+
+fn project() -> ProjectId {
+    ProjectId::new("project.handover").unwrap()
+}
+
+fn writer() -> RoleId {
+    RoleId::new("role.project-writer").unwrap()
+}
+
+fn add(hierarchy: &mut HandoverHierarchy, id: &str, kind: HandoverControlKind) {
+    hierarchy.add_control(control(id), kind).unwrap();
+}
+
+fn control(id: &str) -> ControlId {
+    ControlId::new(id).unwrap()
+}
+
+fn commissioning_requirement(
+    kind: CommissioningRequirementKind,
+    id: &str,
+) -> CommissioningRequirement {
+    let requirement = Requirement::new(
+        control(id),
+        RequirementLane::new(Symbol::qualified("construction", "handover")),
+        format!("{kind:?} evidence"),
+        RoleId::new("role.commissioning-lead").unwrap(),
+        RoleId::new("role.customer").unwrap(),
+    )
+    .with_evidence_kind(Symbol::qualified("construction", "commissioning-record"))
+    .with_source_ref(ExternalRef::new(
+        "doc/synthetic",
+        id,
+        Some("v1".to_owned()),
+        None,
+    ));
+    CommissioningRequirement::new(
+        kind,
+        ProjectObligation::mandatory(project(), requirement),
+        control("system.heating"),
+    )
+}
+
+fn accepted_fact(seq: u64, requirement: &str) -> ProjectFact {
+    ProjectFact::new(
+        seq,
+        project(),
+        control(requirement),
+        Symbol::qualified("construction", "commissioning-evidence"),
+        today(),
+        writer(),
+        Expr::Nil,
+    )
+    .with_evidence(external_ref(requirement))
+}
+
+fn remaining_work_exception() -> ExceptionDecision {
+    ExceptionDecision::new(
+        control("exception.remaining-work"),
+        ExceptionScope::new(project()).covers(control("requirement.remaining")),
+        RoleId::new("role.customer").unwrap(),
+        RoleId::new("role.customer").unwrap(),
+        "bounded remaining work accepted for partial handover",
+        date(2026, Month::July, 30),
+        date(2026, Month::August, 30),
+    )
+    .with_evidence(external_ref("remaining-work-acceptance"))
+}
+
+fn external_ref(id: &str) -> ExternalRef {
+    ExternalRef::new("doc/synthetic", id, Some("v1".to_owned()), None)
+}
+
+fn today() -> Date {
+    date(2026, Month::July, 30)
+}
+
+fn date(year: i32, month: Month, day: u8) -> Date {
+    Date::from_calendar_date(year, month, day).unwrap()
+}
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/acceptance_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/acceptance_tests.rs`:
+
+```rust
+// conformance: each construction handover completion meaning is an accountable sequenced gate
+
+use crate::{
+    CONSTRUCTION_EXCEPTION_CAPABILITY, CommissioningAssessment, CommissioningControlSet,
+    CommissioningRequirement, CommissioningRequirementKind, ConstructionProjectError, ControlId,
+    EvidenceState, EvidenceValidity, ExceptionDecision, ExceptionScope, HandoverControlKind,
+    HandoverGate, HandoverGateDecision, HandoverGateDecisionKind, HandoverGateKind,
+    HandoverHierarchy, ProjectBook, ProjectFact, ProjectId, ProjectObligation, Requirement,
+    RequirementLane, RoleId,
+};
+use sim_kernel::{Expr, Symbol};
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+#[test]
+fn six_completion_meanings_keep_separate_reports_and_accountable_sequences() {
+    let mut hierarchy = HandoverHierarchy::new(project());
+    hierarchy
+        .add_control(control("system.heating"), HandoverControlKind::System)
+        .unwrap();
+    let controls = CommissioningControlSet::new(project())
+        .with_requirement(requirement(
+            CommissioningRequirementKind::Activity,
+            "requirement.activity",
+        ))
+        .with_requirement(requirement(
+            CommissioningRequirementKind::OperationsMaintenanceDeliverable,
+            "requirement.om",
+        ))
+        .with_requirement(requirement(
+            CommissioningRequirementKind::Training,
+            "requirement.training",
+        ))
+        .with_requirement(requirement(
+            CommissioningRequirementKind::AuthorityClosure,
+            "requirement.authority",
+        ))
+        .with_requirement(requirement(
+            CommissioningRequirementKind::CustomerAcceptance,
+            "requirement.customer",
+        ))
+        .with_requirement(requirement(
+            CommissioningRequirementKind::RemainingWork,
+            "requirement.remaining",
+        ));
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(accepted_fact(1, "requirement.activity"))
+        .unwrap();
+    book.append(accepted_fact(2, "requirement.authority"))
+        .unwrap();
+    book.append(accepted_fact(3, "requirement.customer"))
+        .unwrap();
+    let assessment = CommissioningAssessment::new(&book, 3, today())
+        .with_exception(remaining_work_exception())
+        .with_capability(CONSTRUCTION_EXCEPTION_CAPABILITY);
+
+    let reports = all_gate_kinds()
+        .into_iter()
+        .map(|kind| {
+            let gate = handover_gate(kind);
+            let report = gate.report(&controls, &hierarchy, &assessment).unwrap();
+            (kind, gate, report)
+        })
+        .collect::<Vec<_>>();
+
+    assert_eq!(
+        reports
+            .iter()
+            .map(|(kind, _, report)| (*kind, report.readiness.ready))
+            .collect::<Vec<_>>(),
+        vec![
+            (HandoverGateKind::TechnicalCompletion, true),
+            (HandoverGateKind::EvidenceCompletion, false),
+            (HandoverGateKind::AuthorityCompletion, true),
+            (HandoverGateKind::ContractualAcceptance, true),
+            (HandoverGateKind::OccupancyUseReadiness, false),
+            (HandoverGateKind::FinalCompletion, false),
+        ]
+    );
+    assert!(reports.iter().all(|(_, _, report)| report.as_of_seq == 3));
+    let (_, contractual_gate, contractual_report) = &reports[3];
+    assert_eq!(contractual_report.readiness.burn_down.excepted, 1);
+    HandoverGateDecision::new(
+        contractual_gate,
+        contractual_report.as_of_seq,
+        4,
+        HandoverGateDecisionKind::Accept,
+        role("role.customer"),
+    )
+    .with_evidence(external_ref("contractual-acceptance"))
+    .validate_against(contractual_gate, contractual_report)
+    .unwrap();
+
+    let (_, final_gate, final_report) = &reports[5];
+    assert_eq!(final_report.readiness.burn_down.excepted, 0);
+    assert_eq!(final_report.readiness.burn_down.missing, 3);
+    let result = HandoverGateDecision::new(
+        final_gate,
+        final_report.as_of_seq,
+        4,
+        HandoverGateDecisionKind::Accept,
+        role("role.customer"),
+    )
+    .with_evidence(external_ref("premature-final-acceptance"))
+    .validate_against(final_gate, final_report);
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::GateReportNotReady { .. })
+    ));
+}
+
+#[test]
+fn partial_system_acceptance_does_not_accept_its_sibling_or_parent_area() {
+    let mut hierarchy = HandoverHierarchy::new(project());
+    add(&mut hierarchy, "area.building", HandoverControlKind::Area);
+    add(
+        &mut hierarchy,
+        "system.heating",
+        HandoverControlKind::System,
+    );
+    add(
+        &mut hierarchy,
+        "system.cooling",
+        HandoverControlKind::System,
+    );
+    hierarchy
+        .add_member(control("system.heating"), control("area.building"))
+        .unwrap();
+    hierarchy
+        .add_member(control("system.cooling"), control("area.building"))
+        .unwrap();
+    let controls = CommissioningControlSet::new(project())
+        .with_requirement(requirement_for(
+            CommissioningRequirementKind::CustomerAcceptance,
+            "requirement.accept-heating",
+            "system.heating",
+        ))
+        .with_requirement(requirement_for(
+            CommissioningRequirementKind::CustomerAcceptance,
+            "requirement.accept-cooling",
+            "system.cooling",
+        ));
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(accepted_fact(1, "requirement.accept-heating"))
+        .unwrap();
+    let assessment = CommissioningAssessment::new(&book, 1, today());
+
+    let heating = gate_for(HandoverGateKind::ContractualAcceptance, "system.heating")
+        .report(&controls, &hierarchy, &assessment)
+        .unwrap();
+    let cooling = gate_for(HandoverGateKind::ContractualAcceptance, "system.cooling")
+        .report(&controls, &hierarchy, &assessment)
+        .unwrap();
+    let area = gate_for(HandoverGateKind::ContractualAcceptance, "area.building")
+        .report(&controls, &hierarchy, &assessment)
+        .unwrap();
+
+    assert!(heating.readiness.ready);
+    assert!(!cooling.readiness.ready);
+    assert!(!area.readiness.ready);
+    assert_eq!(area.readiness.burn_down.accepted, 1);
+    assert_eq!(area.readiness.burn_down.missing, 1);
+}
+
+#[test]
+fn one_cross_area_system_rolls_the_same_leaf_evidence_into_each_area() {
+    let mut hierarchy = HandoverHierarchy::new(project());
+    add(&mut hierarchy, "area.east", HandoverControlKind::Area);
+    add(&mut hierarchy, "area.west", HandoverControlKind::Area);
+    add(
+        &mut hierarchy,
+        "system.fire-alarm",
+        HandoverControlKind::System,
+    );
+    hierarchy
+        .add_member(control("system.fire-alarm"), control("area.east"))
+        .unwrap();
+    hierarchy
+        .add_member(control("system.fire-alarm"), control("area.west"))
+        .unwrap();
+    let controls = CommissioningControlSet::new(project()).with_requirement(requirement_for(
+        CommissioningRequirementKind::Test,
+        "requirement.fire-alarm-test",
+        "system.fire-alarm",
+    ));
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(accepted_fact(1, "requirement.fire-alarm-test"))
+        .unwrap();
+    let assessment = CommissioningAssessment::new(&book, 1, today());
+
+    for area in ["area.east", "area.west"] {
+        let report = gate_for(HandoverGateKind::TechnicalCompletion, area)
+            .report(&controls, &hierarchy, &assessment)
+            .unwrap();
+        assert!(report.readiness.ready);
+        assert_eq!(report.readiness.burn_down.total, 1);
+        assert_eq!(report.readiness.burn_down.accepted, 1);
+    }
+}
+
+#[test]
+fn accepted_retest_supersedes_a_rejected_test_at_a_later_sequence() {
+    let mut hierarchy = HandoverHierarchy::new(project());
+    add(
+        &mut hierarchy,
+        "system.heating",
+        HandoverControlKind::System,
+    );
+    let controls = CommissioningControlSet::new(project()).with_requirement(requirement(
+        CommissioningRequirementKind::Test,
+        "requirement.functional-test",
+    ));
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(
+        accepted_fact(1, "requirement.functional-test")
+            .with_evidence_state(EvidenceState::Rejected),
+    )
+    .unwrap();
+    let gate = handover_gate(HandoverGateKind::TechnicalCompletion);
+    let rejected = gate
+        .report(
+            &controls,
+            &hierarchy,
+            &CommissioningAssessment::new(&book, 1, today()),
+        )
+        .unwrap();
+    assert!(!rejected.readiness.ready);
+    assert_eq!(rejected.readiness.burn_down.rejected, 1);
+
+    book.append(accepted_fact(2, "requirement.functional-test").supersedes(1))
+        .unwrap();
+    let retested = gate
+        .report(
+            &controls,
+            &hierarchy,
+            &CommissioningAssessment::new(&book, 2, today()),
+        )
+        .unwrap();
+    assert!(retested.readiness.ready);
+    assert_eq!(retested.readiness.burn_down.accepted, 1);
+    assert_eq!(retested.readiness.items[0].current_seq, Some(2));
+}
+
+#[test]
+fn expired_certificate_critical_defect_and_absent_training_block_exact_gates() {
+    let mut hierarchy = HandoverHierarchy::new(project());
+    add(
+        &mut hierarchy,
+        "system.heating",
+        HandoverControlKind::System,
+    );
+    let mut certificate = requirement(
+        CommissioningRequirementKind::Certification,
+        "requirement.certificate",
+    );
+    certificate.obligation.evidence_validity =
+        EvidenceValidity::new(None, Some(date(2026, Month::July, 29)));
+    let controls = CommissioningControlSet::new(project())
+        .with_requirement(certificate)
+        .with_requirement(
+            requirement(
+                CommissioningRequirementKind::Defect,
+                "requirement.critical-defect",
+            )
+            .critical(),
+        )
+        .with_requirement(requirement(
+            CommissioningRequirementKind::Training,
+            "requirement.training",
+        ));
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(accepted_fact(1, "requirement.certificate"))
+        .unwrap();
+    let assessment = CommissioningAssessment::new(&book, 1, today());
+
+    let technical = handover_gate(HandoverGateKind::TechnicalCompletion)
+        .report(&controls, &hierarchy, &assessment)
+        .unwrap();
+    let evidence = handover_gate(HandoverGateKind::EvidenceCompletion)
+        .report(&controls, &hierarchy, &assessment)
+        .unwrap();
+    let authority = handover_gate(HandoverGateKind::AuthorityCompletion)
+        .report(&controls, &hierarchy, &assessment)
+        .unwrap();
+    let occupancy = handover_gate(HandoverGateKind::OccupancyUseReadiness)
+        .report(&controls, &hierarchy, &assessment)
+        .unwrap();
+
+    assert!(technical.readiness.blockers().any(|item| item.critical));
+    assert_eq!(evidence.readiness.burn_down.expired, 1);
+    assert_eq!(evidence.readiness.burn_down.missing, 1);
+    assert_eq!(authority.readiness.burn_down.expired, 1);
+    assert!(!occupancy.readiness.ready);
+    assert_eq!(occupancy.readiness.blockers().count(), 3);
+}
+
+#[test]
+fn non_waivable_authority_closure_rejects_an_exception_attempt() {
+    let mut hierarchy = HandoverHierarchy::new(project());
+    add(
+        &mut hierarchy,
+        "system.heating",
+        HandoverControlKind::System,
+    );
+    let controls = CommissioningControlSet::new(project()).with_requirement(requirement(
+        CommissioningRequirementKind::AuthorityClosure,
+        "requirement.authority",
+    ));
+    let book = ProjectBook::new(project(), writer());
+    let exception = ExceptionDecision::new(
+        control("exception.authority"),
+        ExceptionScope::new(project()).covers(control("requirement.authority")),
+        role("role.customer"),
+        role("role.customer"),
+        "attempted authority override",
+        today(),
+        date(2026, Month::August, 30),
+    )
+    .with_evidence(external_ref("authority-exception"));
+    let assessment = CommissioningAssessment::new(&book, 0, today())
+        .with_exception(exception)
+        .with_capability(CONSTRUCTION_EXCEPTION_CAPABILITY);
+
+    let result = handover_gate(HandoverGateKind::AuthorityCompletion).report(
+        &controls,
+        &hierarchy,
+        &assessment,
+    );
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::NonWaivableRequirement { .. })
+    ));
+}
+
+fn all_gate_kinds() -> [HandoverGateKind; 6] {
+    [
+        HandoverGateKind::TechnicalCompletion,
+        HandoverGateKind::EvidenceCompletion,
+        HandoverGateKind::AuthorityCompletion,
+        HandoverGateKind::ContractualAcceptance,
+        HandoverGateKind::OccupancyUseReadiness,
+        HandoverGateKind::FinalCompletion,
+    ]
+}
+
+fn handover_gate(kind: HandoverGateKind) -> HandoverGate {
+    gate_for(kind, "system.heating")
+}
+
+fn gate_for(kind: HandoverGateKind, target: &str) -> HandoverGate {
+    HandoverGate::new(
+        project(),
+        control(&format!("gate.{kind:?}.{target}").to_ascii_lowercase()),
+        control(target),
+        kind,
+        role("role.customer"),
+    )
+}
+
+fn requirement(kind: CommissioningRequirementKind, id: &str) -> CommissioningRequirement {
+    requirement_for(kind, id, "system.heating")
+}
+
+fn requirement_for(
+    kind: CommissioningRequirementKind,
+    id: &str,
+    target: &str,
+) -> CommissioningRequirement {
+    let requirement = Requirement::new(
+        control(id),
+        RequirementLane::new(Symbol::qualified("construction", "handover")),
+        format!("{kind:?} evidence"),
+        role("role.commissioning-lead"),
+        role("role.customer"),
+    )
+    .with_evidence_kind(Symbol::qualified("construction", "commissioning-record"))
+    .with_source_ref(external_ref(id));
+    CommissioningRequirement::new(
+        kind,
+        ProjectObligation::mandatory(project(), requirement),
+        control(target),
+    )
+}
+
+fn accepted_fact(seq: u64, requirement: &str) -> ProjectFact {
+    ProjectFact::new(
+        seq,
+        project(),
+        control(requirement),
+        Symbol::qualified("construction", "commissioning-evidence"),
+        today(),
+        writer(),
+        Expr::Nil,
+    )
+    .with_evidence(external_ref(requirement))
+}
+
+fn remaining_work_exception() -> ExceptionDecision {
+    ExceptionDecision::new(
+        control("exception.remaining-work"),
+        ExceptionScope::new(project()).covers(control("requirement.remaining")),
+        role("role.customer"),
+        role("role.customer"),
+        "bounded remaining work accepted for partial handover",
+        today(),
+        Date::from_calendar_date(2026, Month::August, 30).unwrap(),
+    )
+    .with_evidence(external_ref("remaining-work-acceptance"))
+}
+
+fn project() -> ProjectId {
+    ProjectId::new("project.handover").unwrap()
+}
+
+fn writer() -> RoleId {
+    role("role.project-writer")
+}
+
+fn role(id: &str) -> RoleId {
+    RoleId::new(id).unwrap()
+}
+
+fn control(id: &str) -> ControlId {
+    ControlId::new(id).unwrap()
+}
+
+fn external_ref(id: &str) -> ExternalRef {
+    ExternalRef::new("doc/synthetic", id, Some("v1".to_owned()), None)
+}
+
+fn today() -> Date {
+    date(2026, Month::July, 30)
+}
+
+fn date(year: i32, month: Month, day: u8) -> Date {
+    Date::from_calendar_date(year, month, day).unwrap()
+}
+
+fn add(hierarchy: &mut HandoverHierarchy, id: &str, kind: HandoverControlKind) {
+    hierarchy.add_control(control(id), kind).unwrap();
 }
 ```
 
