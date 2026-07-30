@@ -7,3 +7,11 @@
 #![deny(missing_docs)]
 
 mod evidence;
+
+pub use evidence::{
+    EvidenceRelation, commercial_support_relation, design_source_relation, field_issue_relation,
+    published_deliverable_relation, schedule_basis_relation,
+};
+
+#[cfg(test)]
+mod tests;
