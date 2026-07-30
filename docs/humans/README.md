@@ -22,6 +22,7 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 | `feature/sim-construction/powerproject-schedule-placement` | `crate/sim-site-powerproject` | 1 | Place construction Gantt schedules at Powerproject desktop and Project for the web boundaries. |
 | `feature/sim-construction/dalux-project-items` | `crate/sim-site-dalux` | 2 | Read Dalux project items into local office documents through ledgered site effects, expose URL-free item correlations, and keep writes limited to notes. |
 | `feature/sim-construction/project-control` | `crate/sim-lib-construction-project` | 21 | Load complete construction project control as semantic Citizens, checked Shapes, and capability-minimal operations over append-only books, historical snapshots, lifecycle gates, schedule impact, readiness, exposure, handover, outcomes, and reference admission. |
+| `feature/sim-construction/table-backed-project-books` | `crate/sim-lib-construction-project` | 1 | Persist one authoritative construction project fact book through a caller-injected Table or Dir, rebuild every historical snapshot from canonical fact paths, and treat verified projections as disposable caches. |
 | `feature/sim-construction/production-field-control` | `crate/sim-lib-construction-project` | 2 | Control Dalux construction field item incident quality reports alongside local observations, deviations, inspection and test points, defects, and corrective actions with accountable evidence and safety-first rollups. |
 | `feature/sim-construction/gantt-schedule-impact` | `crate/sim-lib-construction-project` | 2 | Join stable construction controls to canonical Gantt task ids and explain baseline-aware Gantt critical path construction consequences: downstream, need-date, float-risk, late-decision, procurement lead-time, and change impact. |
 | `feature/sim-construction/sustainability-reference-outcomes` | `crate/sim-lib-construction-project` | 2 | Trace project-chartered certification, climate, efficiency, reuse, waste, responsible-material, quality, safety, work-environment, property, and city-district targets to source-retained quantities, method and boundary provenance, reviewed evidence, gate blockers, and admissible reference claims. |
@@ -104,6 +105,9 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 - `crates/sim-lib-construction-project/recipes/01-basics/system-to-accepted-handover/purpose.md`
 - `crates/sim-lib-construction-project/recipes/01-basics/system-to-accepted-handover/recipe.toml`
 - `crates/sim-lib-construction-project/recipes/01-basics/system-to-accepted-handover/setup.siml`
+- `crates/sim-lib-construction-project/recipes/01-basics/table-backed-project-book/purpose.md`
+- `crates/sim-lib-construction-project/recipes/01-basics/table-backed-project-book/recipe.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/table-backed-project-book/setup.siml`
 - `crates/sim-lib-construction-project/recipes/01-basics/what-changed/purpose.md`
 - `crates/sim-lib-construction-project/recipes/01-basics/what-changed/recipe.toml`
 - `crates/sim-lib-construction-project/recipes/01-basics/what-changed/setup.siml`
@@ -3254,6 +3258,11 @@ fn recipes_export_project_charter() {
     assert!(
         cards
             .iter()
+            .any(|card| card.id.ends_with("table-backed-project-book"))
+    );
+    assert!(
+        cards
+            .iter()
             .any(|card| card.id.ends_with("mobilization-gate"))
     );
     assert!(cards.iter().any(|card| card.id.ends_with("late-decision")));
@@ -3303,6 +3312,23 @@ fn accepted_charter() -> ProjectCharter {
 fn accepted_on() -> Date {
     Date::from_calendar_date(2026, Month::July, 23).unwrap()
 }
+```
+
+### `feature/sim-construction/table-backed-project-books`
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/table-backed-project-book` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/table-backed-project-book/recipe.toml`:
+
+```toml
+id = "table-backed-project-book"
+title = "Table-backed construction project book"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 22
+tags = ["construction", "project-control", "table", "dir", "persistence", "snapshot"]
+requires = ["construction.project.read", "construction.project.write", "codec/lisp"]
 ```
 
 ### `feature/sim-construction/production-field-control`

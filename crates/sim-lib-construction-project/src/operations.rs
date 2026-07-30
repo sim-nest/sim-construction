@@ -17,8 +17,8 @@ use execute::*;
 
 use crate::{
     AcceptedBaseline, CommissioningReadinessReport, CommissioningRequirement, ControlId,
-    OutcomeRecord, ProjectBook, ProjectDelta, ProjectFact, ProjectId, ProjectSnapshot, Requirement,
-    ScheduleTaskJoinSet, WorkPackage,
+    OutcomeRecord, ProjectBook, ProjectBookRepository, ProjectDelta, ProjectFact, ProjectId,
+    ProjectSnapshot, Requirement, RoleId, ScheduleTaskJoinSet, WorkPackage,
     change::ChangeRecord,
     shapes::{any_shape, number_shape, semantic_map_shape, string_shape, type_shape},
 };
@@ -70,8 +70,37 @@ pub struct ConstructionExplanationReport {
 }
 
 /// One host-registered library for construction Citizens, Shapes, and operations.
-#[derive(Clone, Copy, Debug, Default)]
-pub struct ConstructionProjectLib;
+#[derive(Clone, Debug, Default)]
+pub struct ConstructionProjectLib {
+    project_books: Option<ProjectBookRepository>,
+}
+
+impl ConstructionProjectLib {
+    /// Builds the loadable construction library without persistent book state.
+    ///
+    /// This preserves the in-memory constructor surface. Use
+    /// [`Self::with_project_book`] when a host wants durable project books.
+    #[must_use]
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    /// Builds the library around one caller-injected project Table or Dir.
+    ///
+    /// The host remains responsible for backend selection and for serializing
+    /// the one authoritative writer. Construction stores no backend kind.
+    pub fn with_project_book(root: Value, project: ProjectId, writer: RoleId) -> Result<Self> {
+        Ok(Self {
+            project_books: Some(ProjectBookRepository::new(root, project, writer)?),
+        })
+    }
+
+    /// Returns the injected project-book repository, when configured.
+    #[must_use]
+    pub fn project_books(&self) -> Option<&ProjectBookRepository> {
+        self.project_books.as_ref()
+    }
+}
 
 impl Lib for ConstructionProjectLib {
     fn manifest(&self) -> LibManifest {
@@ -155,7 +184,7 @@ pub fn install_construction_project_lib(cx: &mut Cx) -> Result<()> {
         .lib(&construction_project_lib_symbol())
         .is_none()
     {
-        cx.load_lib(&ConstructionProjectLib)?;
+        cx.load_lib(&ConstructionProjectLib::new())?;
     }
     Ok(())
 }

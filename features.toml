@@ -125,6 +125,21 @@ claims_specimens = [
 ]
 
 [[feature]]
+id = "feature/sim-construction/table-backed-project-books"
+title = "Table Dir construction project persistence"
+summary = "Persist one authoritative construction project fact book through a caller-injected Table or Dir, rebuild every historical snapshot from canonical fact paths, and treat verified projections as disposable caches."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use ProjectBookRepository or ConstructionProjectLib::with_project_book when construction facts must outlive an in-memory ProjectBook. The host selects and injects the Table/Dir backend; construction never selects filesystem, database, memory, cloud, or transport behavior. The version-neutral layout is projects/<ProjectId>/facts/<seq>, baselines/<id>, policies/<id>, and projections/<name>/<as-of>. Every dynamic segment uses TablePath. One authoritative writer serializes contiguous fact appends because Table has no portable compare-and-swap. Reads require construction.project.read, writes require construction.project.write, exact project-bound paths avoid portfolio enumeration, authoritative loss or corruption fails closed, and projection loss merely triggers a fact-stream rebuild and content-identity check."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/table-backed-project-book",
+]
+
+[[feature]]
 id = "feature/sim-construction/production-field-control"
 title = "Construction production observations incidents quality and field-item control"
 summary = "Control Dalux construction field item incident quality reports alongside local observations, deviations, inspection and test points, defects, and corrective actions with accountable evidence and safety-first rollups."
@@ -356,6 +371,15 @@ audiences = ["user", "code", "framework"]
 steps = [
   { feature = "feature/sim-construction/project-control", why = "The construction row composes Citizen read-constructs, Shape contracts, and standard runtime loading into one thin capability-minimal library over the complete project-control domain." },
   { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/loadable-project-control", why = "The checked Lisp specimen loads the library through the standard bootloader, constructs and appends a fact, queries a historical snapshot, and explains a blocker." },
+]
+
+[[route]]
+id = "route/store-construction-project-book-in-table-dir"
+task = "Store a construction project book in Table Dir"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/table-backed-project-books", why = "The construction row composes feature/sim-foundation/table-dir-core and feature/sim-storage/table-dir-backends: it binds one project and authoritative writer to injected storage, validates every TablePath and fact before append, rebuilds from facts, and verifies disposable projections." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/table-backed-project-book", why = "The checked recipe documents backend injection, the canonical semantic layout, historical rebuild, and harmless projection loss." },
 ]
 
 [[route]]

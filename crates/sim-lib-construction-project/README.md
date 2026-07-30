@@ -25,7 +25,28 @@ admission. Pure validation needs no capability; book reads and writes require
 only their construction capabilities, and reference publication remains
 separate.
 
+For durable books, the host constructs any existing runtime `Table` or `Dir`
+and injects it with `ConstructionProjectLib::with_project_book` or
+`ProjectBookRepository::new`. The library stores ordinary semantic expressions
+under one version-neutral layout:
+
+```text
+projects/<ProjectId>/facts/<seq>
+projects/<ProjectId>/baselines/<id>
+projects/<ProjectId>/policies/<id>
+projects/<ProjectId>/projections/<name>/<as-of>
+```
+
+Every component is validated by `TablePath`. Authoritative facts are contiguous
+and have one externally serialized writer because the portable Table contract
+does not promise compare-and-swap. Reads address only the repository's bound
+project, rebuild from facts, and fail closed on an absent or corrupt fact.
+Projections carry the fact stream's sequence and canonical content identity;
+missing, partial, or stale projections are disposable and are regenerated.
+Backend and construction capability errors remain unchanged.
+
 The `loadable-project-control` Lisp recipe demonstrates standard bootloader
 loading, fact construction and append, a historical snapshot, and blocker
-explanation. Vendor integrations remain independently placed through
+explanation. `table-backed-project-book` demonstrates the injected persistence
+boundary and exact layout. Vendor integrations remain independently placed through
 `EvalFabric`; this crate adds no parser, matcher, loader, or vendor effect path.

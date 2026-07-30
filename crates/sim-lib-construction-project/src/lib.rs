@@ -50,6 +50,7 @@ mod identity;
 mod incident;
 mod inspection;
 mod intent;
+mod layout;
 mod lifecycle;
 mod lookahead;
 mod obligation;
@@ -67,6 +68,7 @@ mod readiness;
 mod reference;
 mod reference_admission;
 mod release;
+mod repository;
 mod requirement;
 mod review;
 mod rfi;
@@ -154,6 +156,7 @@ pub use intent::{
     ConstructionVariant, CustomerIntent, CustomerIntentAcceptance, IntentCoverageReport,
     IntentField,
 };
+pub use layout::ProjectBookLayout;
 pub use lifecycle::{LifecyclePolicy, PhaseOverlap, PhaseTransition, ProjectPhase};
 pub use lookahead::{
     AcceptedTaskWindow, LookaheadWindow, ProductionActivity, ProductionActivityReadiness,
@@ -188,6 +191,7 @@ pub use quality::{CorrectiveAction, Defect, QualityDeviation};
 pub use readiness::{CharterReadiness, evaluate_charter};
 pub use reference::*;
 pub use release::{DesignRelease, DesignReleasePurpose};
+pub use repository::ProjectBookRepository;
 pub use requirement::{Requirement, RequirementLane};
 pub use review::{DesignReview, DesignReviewState};
 pub use rfi::{RfiRecord, RfiState};

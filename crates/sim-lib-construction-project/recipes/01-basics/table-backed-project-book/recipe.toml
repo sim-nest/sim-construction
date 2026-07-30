@@ -1,0 +1,8 @@
+id = "table-backed-project-book"
+title = "Table-backed construction project book"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 22
+tags = ["construction", "project-control", "table", "dir", "persistence", "snapshot"]
+requires = ["construction.project.read", "construction.project.write", "codec/lisp"]

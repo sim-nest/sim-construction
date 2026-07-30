@@ -266,6 +266,11 @@ fn recipes_export_project_charter() {
     assert!(
         cards
             .iter()
+            .any(|card| card.id.ends_with("table-backed-project-book"))
+    );
+    assert!(
+        cards
+            .iter()
             .any(|card| card.id.ends_with("mobilization-gate"))
     );
     assert!(cards.iter().any(|card| card.id.ends_with("late-decision")));

@@ -128,6 +128,10 @@ impl ProjectFact {
                 sequence: self.seq,
             });
         }
+        ProjectId::new(self.project.as_str())?;
+        ControlId::new(self.subject.as_str())?;
+        RoleId::new(self.actor_role.as_str())?;
+        validate_kind(&self.kind)?;
         let nodes = expr_node_count(&self.body);
         if nodes > MAX_FACT_BODY_NODES {
             return Err(ConstructionProjectError::FactBodyTooLarge {
@@ -143,8 +147,61 @@ impl ProjectFact {
                 max: MAX_FACT_EVIDENCE_REFS,
             });
         }
+        for reference in &self.evidence {
+            validate_reference(reference)?;
+        }
         Ok(())
     }
+}
+
+fn validate_kind(kind: &Symbol) -> Result<()> {
+    let name = kind.name.as_ref();
+    let namespace = kind.namespace.as_deref();
+    if name.is_empty()
+        || name.contains('/')
+        || name.chars().any(char::is_control)
+        || namespace.is_some_and(|value| {
+            value.is_empty() || value.contains('/') || value.chars().any(char::is_control)
+        })
+    {
+        return Err(ConstructionProjectError::InvalidSymbol {
+            value: kind.as_qualified_str(),
+            reason: "fact kind must be an unambiguous printable symbol".to_owned(),
+        });
+    }
+    Ok(())
+}
+
+fn validate_reference(reference: &ExternalRef) -> Result<()> {
+    if reference.backend.trim().is_empty() {
+        return Err(ConstructionProjectError::EmptyField(
+            "fact.evidence.backend",
+        ));
+    }
+    if reference.external_id.trim().is_empty() {
+        return Err(ConstructionProjectError::EmptyField(
+            "fact.evidence.external_id",
+        ));
+    }
+    if reference
+        .version
+        .as_deref()
+        .is_some_and(|value| value.trim().is_empty())
+    {
+        return Err(ConstructionProjectError::EmptyField(
+            "fact.evidence.version",
+        ));
+    }
+    if reference
+        .web_url
+        .as_deref()
+        .is_some_and(|value| value.trim().is_empty())
+    {
+        return Err(ConstructionProjectError::EmptyField(
+            "fact.evidence.web_url",
+        ));
+    }
+    Ok(())
 }
 
 /// Counts expression nodes in a fact body.

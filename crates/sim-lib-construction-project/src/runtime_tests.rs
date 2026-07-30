@@ -160,7 +160,7 @@ fn shape_failures_are_actionable_and_capability_errors_remain_typed() {
     );
 
     let mut denied = bare_cx();
-    denied.load_lib(&ConstructionProjectLib).unwrap();
+    denied.load_lib(&ConstructionProjectLib::new()).unwrap();
     let project = boxed(&denied, <ProjectId as ConstructionCitizenSpec>::example());
     let writer = denied.factory().string("project-chief".to_owned()).unwrap();
     let error = denied
@@ -192,7 +192,7 @@ fn shape_failures_are_actionable_and_capability_errors_remain_typed() {
 
 #[test]
 fn manifest_exports_all_constructors_operations_classes_and_shapes() {
-    let manifest = ConstructionProjectLib.manifest();
+    let manifest = ConstructionProjectLib::new().manifest();
     assert_eq!(construction_constructor_symbols().len(), 10);
     assert_eq!(construction_operation_symbols().len(), 12);
     for symbol in construction_constructor_symbols()
@@ -227,7 +227,7 @@ fn loadable_lisp_specimen_constructs_appends_snapshots_and_explains() {
             Box::new(sim_lib_numbers_i64::I64NumbersLib::new())
         })
         .host_verb("construction", "sim/construction-project", || {
-            Box::new(ConstructionProjectLib)
+            Box::new(ConstructionProjectLib::new())
         })
         .with_context(|cx| cx.set_eval_policy(Arc::new(EagerPolicy)))
         .with_capability(construction_project_read_capability())
@@ -301,7 +301,7 @@ fn example_values(cx: &Cx) -> Vec<Value> {
 
 fn runtime_cx() -> Cx {
     let mut cx = bare_cx();
-    cx.load_lib(&ConstructionProjectLib).unwrap();
+    cx.load_lib(&ConstructionProjectLib::new()).unwrap();
     cx.grant(construction_project_read_capability());
     cx.grant(construction_project_write_capability());
     cx
@@ -310,7 +310,7 @@ fn runtime_cx() -> Cx {
 fn codec_cx() -> Cx {
     let mut cx = bare_cx();
     cx.grant(read_construct_capability());
-    cx.load_lib(&ConstructionProjectLib).unwrap();
+    cx.load_lib(&ConstructionProjectLib::new()).unwrap();
     let lisp = sim_codec_lisp::LispCodecLib::new(cx.registry_mut().fresh_codec_id()).unwrap();
     cx.load_lib(&lisp).unwrap();
     let json = sim_codec_json::JsonCodecLib::new(cx.registry_mut().fresh_codec_id());
