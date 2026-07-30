@@ -1,6 +1,105 @@
 (expr:map
   [recipe reference-project-control]
-  [project-id reference-project-control]
+  [project (expr:map
+    [id project.nordhamn-market-renovation]
+    [kind commercial-renovation]
+    [region stockholm-region]
+    [property-id property.nordhamn-17]
+    [address "Fjordglantan 18, 111 28 Nordhamn"]
+    [gross-area-m2 1840]
+    [customer party.north-quay-property]
+    [contractor party.aster-works]
+    [designer party.copperline-design]
+    [project-chief role.project-chief]
+    [reference-authority role.reference-authority])]
+  [parties [
+    (expr:map
+      [id party.north-quay-property]
+      [kind property-owner]
+      [name "North Quay Property Cooperative"])
+    (expr:map
+      [id party.aster-works]
+      [kind main-contractor]
+      [name "Aster Works AB"])
+    (expr:map
+      [id party.copperline-design]
+      [kind design-practice]
+      [name "Copperline Design AB"])
+    (expr:map
+      [id vendor.blue-arc-installations]
+      [kind installation-supplier]
+      [name "Blue Arc Installations AB"])
+    (expr:map
+      [id vendor.pine-grid-controls]
+      [kind controls-supplier]
+      [name "Pine Grid Controls AB"])]]
+  [commercial-frame (expr:map
+    [currency SEK]
+    [target-value 28750000.00]
+    [accepted-contract-value 28100000.00]
+    [change-quoted-value 460000.00]
+    [change-approved-value 275000.00]
+    [retention-value 843000.00])]
+  [documents [
+    (expr:map [id doc.intent-brief-01] [kind customer-brief] [revision A])
+    (expr:map [id doc.contract-01] [kind main-contract] [revision signed-A])
+    (expr:map [id doc.design-fire-03] [kind design-release] [revision C])
+    (expr:map [id doc.permit-01] [kind authority-permit] [revision granted-A])
+    (expr:map [id doc.tender-electrical-02] [kind tender-comparison] [revision B])
+    (expr:map [id doc.supplier-insurance-02] [kind qualification-evidence] [revision renewed-B])
+    (expr:map [id doc.climate-calc-02] [kind outcome-measurement] [revision corrected-B])
+    (expr:map [id doc.change-ventilation-03] [kind partial-approval] [revision C])
+    (expr:map [id doc.handover-04] [kind handover-report] [revision D])
+    (expr:map [id doc.closeout-02] [kind closeout-decision] [revision B])
+    (expr:map [id doc.reference-03] [kind reference-approval] [revision C])]]
+  [measurements [
+    (expr:map
+      [id measure.area-original]
+      [quantity 1860]
+      [unit m2]
+      [state superseded])
+    (expr:map
+      [id measure.area-corrected]
+      [quantity 1840]
+      [unit m2]
+      [supersedes measure.area-original])
+    (expr:map
+      [id measure.embodied-carbon]
+      [quantity 184500]
+      [unit kg-co2e]
+      [boundary A1-A5])
+    (expr:map
+      [id measure.reused-luminaires]
+      [quantity 126]
+      [unit pieces])
+    (expr:map
+      [id measure.handover-defects]
+      [quantity 1]
+      [unit defects]
+      [final-quantity 0])]]
+  [vendor-responses [
+    (expr:map
+      [id response.blue-arc-01]
+      [vendor vendor.blue-arc-installations]
+      [package package.electrical]
+      [lead-time-days 24]
+      [value 3940000.00]
+      [qualification expired])
+    (expr:map
+      [id response.blue-arc-02]
+      [vendor vendor.blue-arc-installations]
+      [package package.electrical]
+      [lead-time-days 24]
+      [value 3940000.00]
+      [qualification renewed]
+      [supersedes response.blue-arc-01])
+    (expr:map
+      [id response.pine-grid-01]
+      [vendor vendor.pine-grid-controls]
+      [package package.controls]
+      [lead-time-days 35]
+      [value 1260000.00]
+      [qualification accepted])]]
   [runtime (expr:map
     [loads [
       codec/lisp
@@ -19,28 +118,74 @@
     [network denied]
     [clock fixed])]
   [schedule (expr:map
-    [plan-id plan.reference-control]
-    [revision rev-a]
-    [task-ids [task.design-release task.frame-install task.handover]]
+    [plan-id plan.nordhamn-renovation]
+    [revision accepted-C]
+    [task-ids [
+      task.intent-gate
+      task.design-release
+      task.electrical-procurement
+      task.frame-install
+      task.commissioning
+      task.handover]]
     [exchange codec/mspdi])]
+  [control-events [
+    (expr:map [seq 1] [control opportunity.renovation] [state accepted])
+    (expr:map [seq 2] [control intent.scope] [state accepted] [value "occupied market hall remains open"])
+    (expr:map [seq 3] [control intent.scope] [state conflicted] [value "market hall closes completely"])
+    (expr:map [seq 4] [control decision.customer-access] [state late] [needed-on 2026-07-08] [decided-on 2026-07-11])
+    (expr:map [seq 5] [control contract.main] [state accepted])
+    (expr:map [seq 6] [control gate.mobilization] [state accepted])
+    (expr:map [seq 7] [control measurement.area] [state accepted] [value 1860])
+    (expr:map [seq 8] [control measurement.area] [state accepted] [value 1840] [supersedes 7])
+    (expr:map [seq 9] [control prerequisite.workplace-introduction] [state missing])
+    (expr:map [seq 10] [control supplier.blue-arc] [state expired])
+    (expr:map [seq 11] [control supplier.blue-arc] [state accepted] [supersedes 10])
+    (expr:map [seq 12] [control design.fire] [state accepted])
+    (expr:map [seq 13] [control permit.fire] [state accepted])
+    (expr:map [seq 14] [control procurement.electrical] [state accepted])
+    (expr:map [seq 15] [control handoff.electrical] [state accepted])
+    (expr:map [seq 16] [control outcome.climate] [state accepted] [value 194500])
+    (expr:map [seq 17] [control outcome.climate] [state accepted] [value 184500] [supersedes 16])
+    (expr:map [seq 18] [control schedule.critical] [state reported] [completion-delta-days 5])
+    (expr:map [seq 19] [control safety.energization] [state reported] [non-waivable true])
+    (expr:map [seq 20] [control exception.delivery-window] [state accepted] [expires-on 2026-07-20])
+    (expr:map [seq 21] [control exception.delivery-window] [state expired] [supersedes 20])
+    (expr:map [seq 22] [control safety.energization] [state accepted] [supersedes 19])
+    (expr:map [seq 23] [control risk.switchgear] [state accepted])
+    (expr:map [seq 24] [control change.ventilation] [state submitted] [value 460000.00])
+    (expr:map [seq 25] [control change.ventilation] [state partially-approved] [value 275000.00] [supersedes 24])
+    (expr:map [seq 26] [control handover.defect.controls] [state reported])
+    (expr:map [seq 27] [control handover.defect.controls] [state accepted] [supersedes 26])
+    (expr:map [seq 28] [control closeout.warranty] [state accepted])
+    (expr:map [seq 29] [control closeout.retention] [state accepted])
+    (expr:map [seq 30] [control closeout.unresolved] [state accepted])
+    (expr:map [seq 31] [control closeout.evidence] [state accepted])
+    (expr:map [seq 32] [control closeout.lesson] [state accepted])
+    (expr:map [seq 33] [control closeout.final] [state accepted])
+    (expr:map [seq 34] [control charter.people] [state accepted])
+    (expr:map [seq 35] [control outcome.people] [state reported] [reference-admissible false])
+    (expr:map [seq 36] [control outcome.people] [state accepted] [supersedes 35])
+    (expr:map [seq 37] [control charter.place] [state accepted])
+    (expr:map [seq 38] [control outcome.place] [state accepted])
+    (expr:map [seq 39] [control lesson.delivery-window] [state accepted])]]
   [stable-ids (expr:map
-    [fact fact.schedule.task.frame-install]
-    [evidence evidence.schedule.rev-a]
+    [fact schedule.critical]
+    [evidence evidence.schedule.accepted-C]
     [schedule-task task.frame-install]
-    [powerproject-external receipt.powerproject.rev-a]
+    [powerproject-external receipt.powerproject.accepted-C]
     [dalux-external items/field-item-001]
     [office-reference office.pack.weekly]
-    [ledger-reference journal/change-001/seq-1])]
+    [ledger-reference journal/change-ventilation/seq-25])]
   [placements (expr:map
     [powerproject (expr:map
       [site site/powerproject]
       [mode modeled]
-      [receipt receipt.powerproject.rev-a])]
+      [receipt receipt.powerproject.accepted-C])]
     [dalux (expr:map
       [site site/dalux]
       [mode modeled]
       [cassette synthetic-local]
-      [project reference-project-control])]
+      [project project.nordhamn-market-renovation])]
     [live (expr:map
       [enabled false]
       [configuration host-only]

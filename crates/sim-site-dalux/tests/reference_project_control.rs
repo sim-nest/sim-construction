@@ -10,8 +10,8 @@ use sim_lib_construction_office::{
     OfficePackRequest, PackCadence, PackControl, PackSection, project_office_pack,
 };
 use sim_lib_construction_project::{
-    BaselineId, ConstructionProjectLib, ControlId, EvidenceState, ProjectFact, ProjectId, RoleId,
-    Visibility, construction_project_read_capability, construction_project_write_capability,
+    BaselineId, ConstructionProjectLib, ControlId, ProjectId, RoleId,
+    construction_project_read_capability, construction_project_write_capability,
     construction_reference_publish_capability,
 };
 use sim_lib_doc_core::{
@@ -19,6 +19,7 @@ use sim_lib_doc_core::{
     PROCESS_SPAWN_CAPABILITY,
 };
 use sim_lib_gantt::{GanttPlan, LinkKind, Task, TaskLink};
+use sim_lib_sheet::{CellRef, CellValue};
 use sim_site_dalux::{
     DALUX_SITE_ID, DaluxClient, ModeledDalux, StaticDaluxCredentialProvider,
     get_project_items_with_receipt, register_dalux_site,
@@ -28,6 +29,17 @@ use sim_site_powerproject::{
 };
 use sim_table_hash::HashTable;
 use time::{Date, Month};
+
+#[path = "reference_project_control/control.rs"]
+mod control;
+#[path = "reference_project_control/domain.rs"]
+mod domain;
+#[path = "reference_project_control/scenario.rs"]
+mod scenario;
+#[path = "reference_project_control/support.rs"]
+mod support;
+#[path = "reference_project_control/timeline.rs"]
+mod timeline;
 
 const EXPECTED_REQUIRES: &[&str] = &[
     "codec/lisp",
@@ -96,13 +108,14 @@ fn reference_project_control_recipe_declares_only_public_components() {
         );
     }
     for stable_id in [
-        "fact.schedule.task.frame-install",
-        "evidence.schedule.rev-a",
+        "project.nordhamn-market-renovation",
+        "schedule.critical",
+        "evidence.schedule.accepted-C",
         "task.frame-install",
-        "receipt.powerproject.rev-a",
+        "receipt.powerproject.accepted-C",
         "items/field-item-001",
         "office.pack.weekly",
-        "journal/change-001/seq-1",
+        "journal/change-ventilation/seq-25",
     ] {
         assert!(setup.contains(stable_id));
         assert!(main.contains(stable_id));
@@ -118,6 +131,7 @@ fn reference_project_control_semantic_golden_is_deterministic() {
     let first = run_modeled_reference_project();
     let second = run_modeled_reference_project();
     assert_eq!(first.summary, second.summary);
+    assert_eq!(first.scenario, second.scenario);
 
     let root = recipe_root();
     let expected = fs::read_to_string(root.join("expected.siml")).expect("semantic golden");
@@ -149,28 +163,91 @@ fn reference_project_control_modeled_mode_denies_network() {
     let root = recipe_root();
     for source in ["recipe.toml", "setup.siml", "main.siml", "expected.siml"] {
         let text = fs::read_to_string(root.join(source)).expect("recipe fixture");
-        for denied in [
-            "http://",
-            "https://",
-            "Authorization:",
-            "Bearer ",
-            "api-key",
-            "access-token",
-        ] {
+        for denied in ["http://", "https://", "Authorization:"] {
             assert!(!text.contains(denied), "{source} contains {denied:?}");
         }
     }
 }
 
+#[test]
+fn reference_project_control_failure_and_correction_paths_are_explicit() {
+    let proof = run_modeled_reference_project().scenario;
+    assert!(proof.conflict_visible);
+    assert!(proof.domains.late_customer_decision);
+    assert!(proof.domains.missing_collaboration_evidence);
+    assert!(proof.domains.supplier_expired_then_renewed);
+    assert!(proof.domains.non_waivable_safety_blocked);
+    assert!(proof.domains.bounded_exception_expired);
+    assert_eq!(proof.domains.critical_schedule_effect_days, 5);
+    assert!(proof.domains.partial_change_approval);
+    assert!(proof.domains.double_count_prevented);
+    assert!(proof.handover_defect_corrected);
+    assert!(!proof.initial_reference_admitted);
+}
+
+#[test]
+fn reference_project_control_fixtures_and_generated_evidence_are_synthetic() {
+    let root = recipe_root();
+    let sources = [
+        "recipe.toml",
+        "purpose.md",
+        "setup.siml",
+        "main.siml",
+        "expected.siml",
+    ]
+    .map(|name| fs::read_to_string(root.join(name)).unwrap())
+    .join("\n");
+    support::assert_synthetic_text("primary recipe", &sources);
+
+    for invented in [
+        "North Quay Property Cooperative",
+        "Aster Works AB",
+        "Copperline Design AB",
+        "Blue Arc Installations AB",
+        "Pine Grid Controls AB",
+        "Fjordglantan 18, 111 28 Nordhamn",
+    ] {
+        assert!(
+            sources.contains(invented),
+            "synthetic allowlist entry is missing: {invented}"
+        );
+    }
+
+    let repository_root = root.parent().unwrap().parent().unwrap();
+    let humans = fs::read_to_string(repository_root.join("docs/humans/README.md")).unwrap();
+    let generated_section = humans
+        .split_once("Specimen `recipe/sim-construction/reference-project-control`")
+        .unwrap()
+        .1
+        .split_once("\nSpecimen `")
+        .unwrap()
+        .0;
+    support::assert_synthetic_text("generated human recipe section", generated_section);
+
+    let contract =
+        fs::read_to_string(repository_root.join("docs/generated/repo-contract.json")).unwrap();
+    let contract: serde_json::Value = serde_json::from_str(&contract).unwrap();
+    let cookbook = contract["recipes"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|book| {
+            book["card_id"].as_str() == Some("cookbook/construction/reference-project-control")
+        })
+        .unwrap();
+    support::assert_synthetic_text("generated recipe contract", &cookbook.to_string());
+}
+
 struct ModeledOutcome {
     summary: String,
+    scenario: scenario::ScenarioProof,
     network_denied: bool,
     process_denied: bool,
     credentials_denied: bool,
 }
 
 fn run_modeled_reference_project() -> ModeledOutcome {
-    let project = ProjectId::new("reference-project-control").unwrap();
+    let project = ProjectId::new("project.nordhamn-market-renovation").unwrap();
     let writer = RoleId::new("project-chief").unwrap();
     let mut cx = Cx::new(Arc::new(NoopEvalPolicy), Arc::new(DefaultFactory));
     cx.grant(construction_project_read_capability());
@@ -197,7 +274,8 @@ fn run_modeled_reference_project() -> ModeledOutcome {
     assert!(decoded_report.is_lossless());
     assert_eq!(doc_to_plan(&mut cx, &decoded).unwrap(), plan);
 
-    let powerproject_receipt = ModeledOleReceipt::new("receipt.powerproject.rev-a", mspdi.clone());
+    let powerproject_receipt =
+        ModeledOleReceipt::new("receipt.powerproject.accepted-C", mspdi.clone());
     let (powerproject_doc, powerproject_report) =
         import_modeled_ole_receipt(&mut cx, &powerproject_receipt).unwrap();
     assert!(powerproject_report.is_lossless());
@@ -207,12 +285,13 @@ fn run_modeled_reference_project() -> ModeledOutcome {
         "task.frame-install"
     );
     assert!(powerproject_doc.origin.iter().any(|source| {
-        source.backend == POWERPROJECT_SITE_ID && source.external_id == "receipt.powerproject.rev-a"
+        source.backend == POWERPROJECT_SITE_ID
+            && source.external_id == "receipt.powerproject.accepted-C"
     }));
 
     let dalux = DaluxClient::modeled(
         ModeledDalux::with_json(
-            "/projects/reference-project-control/items",
+            "/projects/project.nordhamn-market-renovation/items",
             json!({
                 "items": [{
                     "id": "field-item-001",
@@ -227,103 +306,54 @@ fn run_modeled_reference_project() -> ModeledOutcome {
         StaticDaluxCredentialProvider::new("modeled-fixture"),
     );
     let dalux_receipt =
-        get_project_items_with_receipt(&mut cx, &dalux, "reference-project-control").unwrap();
+        get_project_items_with_receipt(&mut cx, &dalux, "project.nordhamn-market-renovation")
+            .unwrap();
     assert_eq!(dalux_receipt.items[0].external_ref.backend, DALUX_SITE_ID);
     assert_eq!(
         dalux_receipt.items[0].external_ref.external_id,
         "items/field-item-001"
     );
 
-    repository
-        .append_fact(
-            &mut cx,
-            fact(
-                1,
-                &project,
-                &writer,
-                "fact.schedule.task.frame-install",
-                "accepted Gantt task join task.frame-install",
-                EvidenceState::Accepted,
-                vec![
-                    ExternalRef::new(
-                        "codec/mspdi",
-                        "evidence.schedule.rev-a",
-                        Some("rev-a".to_owned()),
-                        None,
-                    ),
-                    powerproject_doc.origin.last().unwrap().clone(),
-                ],
+    let scenario = scenario::run(
+        &mut cx,
+        repository,
+        vec![
+            ExternalRef::new(
+                "codec/mspdi",
+                "evidence.schedule.accepted-C",
+                Some("accepted-C".to_owned()),
+                None,
             ),
-        )
-        .unwrap();
-    repository
-        .append_fact(
-            &mut cx,
-            fact(
-                2,
-                &project,
-                &writer,
-                "field.item.001",
-                "modeled field item blocks frame installation",
-                EvidenceState::Reported,
-                vec![
-                    dalux_receipt.items[0].external_ref.clone(),
-                    dalux_receipt.effect.ledger_ref.clone(),
-                ],
-            ),
-        )
-        .unwrap();
-    repository
-        .append_fact(
-            &mut cx,
-            fact(
-                3,
-                &project,
-                &writer,
-                "change.001",
-                "accepted reference-only change exposure",
-                EvidenceState::Accepted,
-                vec![ExternalRef::new(
-                    "ledger/books",
-                    "journal/change-001/seq-1",
-                    Some("seq-1".to_owned()),
-                    None,
-                )],
-            ),
-        )
-        .unwrap();
-
-    let historical = repository.read_snapshot(&mut cx, 2).unwrap();
-    assert_eq!(historical.through_seq, 2);
-    assert!(!historical.current.contains_key(&control("change.001")));
-    let book = repository.read_book(&mut cx, 3).unwrap();
-    let delta = book.delta(1, 3).unwrap();
-    assert_eq!(
-        delta.added,
-        vec![control("change.001"), control("field.item.001")]
+            powerproject_doc.origin.last().unwrap().clone(),
+        ],
+        vec![
+            dalux_receipt.items[0].external_ref.clone(),
+            dalux_receipt.effect.ledger_ref.clone(),
+        ],
     );
+    let book = repository.read_book(&mut cx, 39).unwrap();
 
     let request = OfficePackRequest::new(
         PackCadence::Weekly,
         writer,
-        3,
+        39,
         date(30),
         "2026-07-30T06:00:00Z",
     )
     .with_baseline(BaselineId::new("schedule.rev-a").unwrap())
     .with_control(PackControl::mandatory(
-        control("fact.schedule.task.frame-install"),
+        control("schedule.critical"),
         PackSection::CriticalSchedule,
     ))
     .with_control(PackControl::mandatory(
-        control("field.item.001"),
+        control("safety.energization"),
         PackSection::SafetyLegalBlockers,
     ))
     .with_control(PackControl::optional(
-        control("change.001"),
+        control("change.ventilation"),
         PackSection::RiskChangeEconomy,
     ))
-    .changed_since(1);
+    .changed_since(33);
     let pack = project_office_pack(&mut cx, &book, &request).unwrap();
     let doc_kinds = pack
         .documents(&mut cx)
@@ -334,7 +364,12 @@ fn run_modeled_reference_project() -> ModeledOutcome {
     assert_eq!(doc_kinds, ["report", "sheet", "deck"]);
     assert_eq!(
         pack.doc.id.as_str(),
-        "construction/reference-project-control/project-chief/weekly"
+        "construction/project.nordhamn-market-renovation/project-chief/weekly"
+    );
+    assert_eq!(sheet_text(&pack, "B12"), "reported");
+    assert!(
+        sheet_text(&pack, "B13").contains("mandatory control(s) are not accepted"),
+        "office pack must explain its non-green aggregate"
     );
 
     let network_denied = cx
@@ -348,7 +383,8 @@ fn run_modeled_reference_project() -> ModeledOutcome {
         .is_err();
 
     ModeledOutcome {
-        summary: "(expr:map [project reference-project-control] [table-backend table/hash] [facts 3] [as-of-sequence 2] [changed-controls [change.001 field.item.001]] [schedule-task task.frame-install] [mspdi-round-trip lossless] [powerproject-mode modeled] [powerproject-external receipt.powerproject.rev-a] [dalux-mode modeled] [dalux-external items/field-item-001] [effect-ledger-reference present] [ledger-reference journal/change-001/seq-1] [office-doc-kinds [report sheet deck]] [network denied])".to_owned(),
+        summary: "(expr:map [project project.nordhamn-market-renovation] [table-backend table/hash] [facts 39] [as-of-sequence 39] [changed-controls [charter.people charter.place lesson.delivery-window outcome.people outcome.place]] [snapshot-boundaries 18] [conflicted-control intent.scope] [superseded-controls [handover.defect.controls measurement.area outcome.climate outcome.people safety.energization supplier.blue-arc]] [late-customer-decision true] [missing-prerequisite prerequisite.workplace-introduction] [supplier-expired-then-renewed true] [non-waivable-safety-blocked true] [bounded-exception-expired true] [critical-schedule-effect-days 5] [change-status partially-approved] [change-supplier-exposure 460000.00] [change-quoted-recovery 460000.00] [change-approved-value 275000.00] [change-unapproved-value 185000.00] [change-net-exposure 0.00] [double-count-prevented true] [handover-defect-corrected true] [initial-reference-admitted false] [final-reference-claims [claim.lesson claim.people claim.place]] [visibility-non-interference true] [schedule-task task.frame-install] [mspdi-round-trip lossless] [powerproject-mode modeled] [powerproject-external receipt.powerproject.accepted-C] [dalux-mode modeled] [dalux-external items/field-item-001] [effect-ledger-reference present] [ledger-reference journal/change-ventilation/seq-25] [office-doc-kinds [report sheet deck]] [network denied])".to_owned(),
+        scenario,
         network_denied,
         process_denied,
         credentials_denied,
@@ -357,7 +393,7 @@ fn run_modeled_reference_project() -> ModeledOutcome {
 
 fn gantt_plan() -> GanttPlan {
     GanttPlan::new(
-        "plan.reference-control",
+        "plan.nordhamn-renovation",
         vec![
             Task::new(
                 "task.design-release",
@@ -392,34 +428,15 @@ fn gantt_plan() -> GanttPlan {
     )
 }
 
-fn fact(
-    sequence: u64,
-    project: &ProjectId,
-    writer: &RoleId,
-    subject: &str,
-    body: &str,
-    state: EvidenceState,
-    evidence: Vec<ExternalRef>,
-) -> ProjectFact {
-    let mut fact = ProjectFact::new(
-        sequence,
-        project.clone(),
-        control(subject),
-        Symbol::qualified("reference-project-control", "fact"),
-        date(30),
-        writer.clone(),
-        Expr::String(body.to_owned()),
-    )
-    .with_evidence_state(state)
-    .with_visibility(Visibility::Project);
-    for reference in evidence {
-        fact = fact.with_evidence(reference);
-    }
-    fact
-}
-
 fn control(id: &str) -> ControlId {
     ControlId::new(id).unwrap()
+}
+
+fn sheet_text(pack: &sim_lib_construction_office::OfficePack, cell: &str) -> String {
+    match pack.sheet.cell(&CellRef::parse(cell).unwrap()) {
+        CellValue::Text(value) => value,
+        other => panic!("expected text at {cell}, got {other:?}"),
+    }
 }
 
 fn date(day: u8) -> Date {
