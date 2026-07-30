@@ -142,7 +142,7 @@ claims_specimens = [
 [[feature]]
 id = "feature/sim-construction/office-evidence-bridge"
 title = "Construction to office evidence bridge"
-summary = "Attach project-scoped construction fact evidence to existing office documents while preserving precise construction meaning, visibility, and acceptance."
+summary = "The office evidence construction bridge attaches project-scoped fact evidence to existing office documents while preserving precise construction meaning, visibility, and acceptance."
 owner = "crate/sim-lib-construction-office"
 audiences = ["user", "code", "framework"]
 guidance = "Use EvidenceAttachment and attach_evidence when an existing office document must cite a current construction fact. The fact kind retains the precise construction relation while the office projection uses only SourceDocument, ScheduleReference, ProjectIssue, AccountingSupport, or PublishedTo. Query with evidence_for_documents using a project-bound ProjectEvidenceAccess. Construction project-read and office evidence-read capabilities are required before resolution; attachment separately requires office evidence-write. The office row points only to the immutable construction fact and evidence slot, so the original ExternalRef and EvidenceState remain construction-owned, rejected evidence stays rejected, superseded facts do not resolve as current, and no document payload, credential, vendor response, or second evidence store crosses the bridge."
