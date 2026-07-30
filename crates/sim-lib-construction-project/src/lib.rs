@@ -10,6 +10,7 @@
 #![forbid(unsafe_code)]
 #![deny(missing_docs)]
 
+mod acceptance;
 mod action;
 mod authority;
 mod award;
@@ -24,6 +25,7 @@ mod charter;
 mod collaboration;
 mod commercial;
 mod commissioning;
+mod commissioning_readiness;
 mod control_graph;
 mod decision;
 mod design;
@@ -69,6 +71,10 @@ mod supplier;
 mod tender;
 mod work_package;
 
+pub use acceptance::{
+    HandoverGate, HandoverGateDecision, HandoverGateDecisionKind, HandoverGateKind,
+    HandoverGateReport,
+};
 pub use action::{ActionResolution, ActionState, ProjectAction};
 pub use authority::{
     CONSTRUCTION_EXCEPTION_CAPABILITY, CONSTRUCTION_PROJECT_ACCEPT_CAPABILITY,
@@ -95,9 +101,11 @@ pub use commercial::{
     ReferencedAmountEvidence,
 };
 pub use commissioning::{
-    CommissioningAssessment, CommissioningBurnDown, CommissioningControlSet,
-    CommissioningItemReadiness, CommissioningReadinessReport, CommissioningRequirement,
-    CommissioningRequirementKind,
+    CommissioningControlSet, CommissioningRequirement, CommissioningRequirementKind,
+};
+pub use commissioning_readiness::{
+    CommissioningAssessment, CommissioningBurnDown, CommissioningItemReadiness,
+    CommissioningReadinessReport,
 };
 pub use control_graph::{
     ControlEdge, ControlEdgeKind, ControlExplanationPath, ControlExplanationStep, ControlGraph,
@@ -196,6 +204,8 @@ pub use work_package::{CommercialAmount, SupplierCandidate, WorkPackage};
 pub static RECIPES: sim_cookbook::EmbeddedDir =
     include!(concat!(env!("OUT_DIR"), "/cookbook_recipes.rs"));
 
+#[cfg(test)]
+mod acceptance_tests;
 #[cfg(test)]
 mod change_test_chain;
 #[cfg(test)]
