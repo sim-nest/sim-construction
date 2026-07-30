@@ -23,6 +23,7 @@ mod change_validation;
 mod charter;
 mod collaboration;
 mod commercial;
+mod commissioning;
 mod control_graph;
 mod decision;
 mod design;
@@ -92,6 +93,9 @@ pub use collaboration::{CollaborationCharter, CollaborationReadinessReport};
 pub use commercial::{
     ChangeAmountComponent, CommercialEvidenceSource, CommercialSide, ReferencedAmount,
     ReferencedAmountEvidence,
+};
+pub use commissioning::{
+    CommissioningControlSet, CommissioningRequirement, CommissioningRequirementKind,
 };
 pub use control_graph::{
     ControlEdge, ControlEdgeKind, ControlExplanationPath, ControlExplanationStep, ControlGraph,
