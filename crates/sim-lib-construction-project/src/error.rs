@@ -345,12 +345,6 @@ pub enum ConstructionProjectError {
         /// Rejected exception.
         exception: ControlId,
     },
-    /// An authority commissioning requirement was made waivable or optional.
-    #[error("authority commissioning requirement {requirement} must be mandatory and non-waivable")]
-    NonWaivableCommissioningRequirement {
-        /// Authority closure requirement.
-        requirement: ControlId,
-    },
     /// A design-control record references a revision that is not present.
     #[error("{kind} {control} references missing design revision {revision}")]
     MissingDesignRevision {

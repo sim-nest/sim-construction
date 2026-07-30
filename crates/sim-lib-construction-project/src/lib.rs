@@ -95,7 +95,9 @@ pub use commercial::{
     ReferencedAmountEvidence,
 };
 pub use commissioning::{
-    CommissioningControlSet, CommissioningRequirement, CommissioningRequirementKind,
+    CommissioningAssessment, CommissioningBurnDown, CommissioningControlSet,
+    CommissioningItemReadiness, CommissioningReadinessReport, CommissioningRequirement,
+    CommissioningRequirementKind,
 };
 pub use control_graph::{
     ControlEdge, ControlEdgeKind, ControlExplanationPath, ControlExplanationStep, ControlGraph,
