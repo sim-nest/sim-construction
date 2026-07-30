@@ -16,5 +16,9 @@ sim-lib-doc-core = { version = "0.1.0", git = "https://github.com/sim-nest/sim-o
 sim-lib-doc-store = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "eb617e4fd3c50fc51bcdb6a11ea5a8bbae4d1a48" }
 thiserror = "1"
 
+[dev-dependencies]
+sim-kernel = { version = "0.1.0", features = ["test-support"] }
+time = "0.3"
+
 [lints]
 workspace = true
