@@ -3,9 +3,10 @@
 use crate::{
     CONSTRUCTION_EXCEPTION_CAPABILITY, CommissioningAssessment, CommissioningControlSet,
     CommissioningRequirement, CommissioningRequirementKind, ConstructionProjectError, ControlId,
-    ExceptionDecision, ExceptionScope, HandoverControlKind, HandoverGate, HandoverGateDecision,
-    HandoverGateDecisionKind, HandoverGateKind, HandoverHierarchy, ProjectBook, ProjectFact,
-    ProjectId, ProjectObligation, Requirement, RequirementLane, RoleId,
+    EvidenceState, EvidenceValidity, ExceptionDecision, ExceptionScope, HandoverControlKind,
+    HandoverGate, HandoverGateDecision, HandoverGateDecisionKind, HandoverGateKind,
+    HandoverHierarchy, ProjectBook, ProjectFact, ProjectId, ProjectObligation, Requirement,
+    RequirementLane, RoleId,
 };
 use sim_kernel::{Expr, Symbol};
 use sim_lib_doc_core::ExternalRef;
@@ -108,6 +109,230 @@ fn six_completion_meanings_keep_separate_reports_and_accountable_sequences() {
     ));
 }
 
+#[test]
+fn partial_system_acceptance_does_not_accept_its_sibling_or_parent_area() {
+    let mut hierarchy = HandoverHierarchy::new(project());
+    add(&mut hierarchy, "area.building", HandoverControlKind::Area);
+    add(
+        &mut hierarchy,
+        "system.heating",
+        HandoverControlKind::System,
+    );
+    add(
+        &mut hierarchy,
+        "system.cooling",
+        HandoverControlKind::System,
+    );
+    hierarchy
+        .add_member(control("system.heating"), control("area.building"))
+        .unwrap();
+    hierarchy
+        .add_member(control("system.cooling"), control("area.building"))
+        .unwrap();
+    let controls = CommissioningControlSet::new(project())
+        .with_requirement(requirement_for(
+            CommissioningRequirementKind::CustomerAcceptance,
+            "requirement.accept-heating",
+            "system.heating",
+        ))
+        .with_requirement(requirement_for(
+            CommissioningRequirementKind::CustomerAcceptance,
+            "requirement.accept-cooling",
+            "system.cooling",
+        ));
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(accepted_fact(1, "requirement.accept-heating"))
+        .unwrap();
+    let assessment = CommissioningAssessment::new(&book, 1, today());
+
+    let heating = gate_for(HandoverGateKind::ContractualAcceptance, "system.heating")
+        .report(&controls, &hierarchy, &assessment)
+        .unwrap();
+    let cooling = gate_for(HandoverGateKind::ContractualAcceptance, "system.cooling")
+        .report(&controls, &hierarchy, &assessment)
+        .unwrap();
+    let area = gate_for(HandoverGateKind::ContractualAcceptance, "area.building")
+        .report(&controls, &hierarchy, &assessment)
+        .unwrap();
+
+    assert!(heating.readiness.ready);
+    assert!(!cooling.readiness.ready);
+    assert!(!area.readiness.ready);
+    assert_eq!(area.readiness.burn_down.accepted, 1);
+    assert_eq!(area.readiness.burn_down.missing, 1);
+}
+
+#[test]
+fn one_cross_area_system_rolls_the_same_leaf_evidence_into_each_area() {
+    let mut hierarchy = HandoverHierarchy::new(project());
+    add(&mut hierarchy, "area.east", HandoverControlKind::Area);
+    add(&mut hierarchy, "area.west", HandoverControlKind::Area);
+    add(
+        &mut hierarchy,
+        "system.fire-alarm",
+        HandoverControlKind::System,
+    );
+    hierarchy
+        .add_member(control("system.fire-alarm"), control("area.east"))
+        .unwrap();
+    hierarchy
+        .add_member(control("system.fire-alarm"), control("area.west"))
+        .unwrap();
+    let controls = CommissioningControlSet::new(project()).with_requirement(requirement_for(
+        CommissioningRequirementKind::Test,
+        "requirement.fire-alarm-test",
+        "system.fire-alarm",
+    ));
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(accepted_fact(1, "requirement.fire-alarm-test"))
+        .unwrap();
+    let assessment = CommissioningAssessment::new(&book, 1, today());
+
+    for area in ["area.east", "area.west"] {
+        let report = gate_for(HandoverGateKind::TechnicalCompletion, area)
+            .report(&controls, &hierarchy, &assessment)
+            .unwrap();
+        assert!(report.readiness.ready);
+        assert_eq!(report.readiness.burn_down.total, 1);
+        assert_eq!(report.readiness.burn_down.accepted, 1);
+    }
+}
+
+#[test]
+fn accepted_retest_supersedes_a_rejected_test_at_a_later_sequence() {
+    let mut hierarchy = HandoverHierarchy::new(project());
+    add(
+        &mut hierarchy,
+        "system.heating",
+        HandoverControlKind::System,
+    );
+    let controls = CommissioningControlSet::new(project()).with_requirement(requirement(
+        CommissioningRequirementKind::Test,
+        "requirement.functional-test",
+    ));
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(
+        accepted_fact(1, "requirement.functional-test")
+            .with_evidence_state(EvidenceState::Rejected),
+    )
+    .unwrap();
+    let gate = handover_gate(HandoverGateKind::TechnicalCompletion);
+    let rejected = gate
+        .report(
+            &controls,
+            &hierarchy,
+            &CommissioningAssessment::new(&book, 1, today()),
+        )
+        .unwrap();
+    assert!(!rejected.readiness.ready);
+    assert_eq!(rejected.readiness.burn_down.rejected, 1);
+
+    book.append(accepted_fact(2, "requirement.functional-test").supersedes(1))
+        .unwrap();
+    let retested = gate
+        .report(
+            &controls,
+            &hierarchy,
+            &CommissioningAssessment::new(&book, 2, today()),
+        )
+        .unwrap();
+    assert!(retested.readiness.ready);
+    assert_eq!(retested.readiness.burn_down.accepted, 1);
+    assert_eq!(retested.readiness.items[0].current_seq, Some(2));
+}
+
+#[test]
+fn expired_certificate_critical_defect_and_absent_training_block_exact_gates() {
+    let mut hierarchy = HandoverHierarchy::new(project());
+    add(
+        &mut hierarchy,
+        "system.heating",
+        HandoverControlKind::System,
+    );
+    let mut certificate = requirement(
+        CommissioningRequirementKind::Certification,
+        "requirement.certificate",
+    );
+    certificate.obligation.evidence_validity =
+        EvidenceValidity::new(None, Some(date(2026, Month::July, 29)));
+    let controls = CommissioningControlSet::new(project())
+        .with_requirement(certificate)
+        .with_requirement(
+            requirement(
+                CommissioningRequirementKind::Defect,
+                "requirement.critical-defect",
+            )
+            .critical(),
+        )
+        .with_requirement(requirement(
+            CommissioningRequirementKind::Training,
+            "requirement.training",
+        ));
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(accepted_fact(1, "requirement.certificate"))
+        .unwrap();
+    let assessment = CommissioningAssessment::new(&book, 1, today());
+
+    let technical = handover_gate(HandoverGateKind::TechnicalCompletion)
+        .report(&controls, &hierarchy, &assessment)
+        .unwrap();
+    let evidence = handover_gate(HandoverGateKind::EvidenceCompletion)
+        .report(&controls, &hierarchy, &assessment)
+        .unwrap();
+    let authority = handover_gate(HandoverGateKind::AuthorityCompletion)
+        .report(&controls, &hierarchy, &assessment)
+        .unwrap();
+    let occupancy = handover_gate(HandoverGateKind::OccupancyUseReadiness)
+        .report(&controls, &hierarchy, &assessment)
+        .unwrap();
+
+    assert!(technical.readiness.blockers().any(|item| item.critical));
+    assert_eq!(evidence.readiness.burn_down.expired, 1);
+    assert_eq!(evidence.readiness.burn_down.missing, 1);
+    assert_eq!(authority.readiness.burn_down.expired, 1);
+    assert!(!occupancy.readiness.ready);
+    assert_eq!(occupancy.readiness.blockers().count(), 3);
+}
+
+#[test]
+fn non_waivable_authority_closure_rejects_an_exception_attempt() {
+    let mut hierarchy = HandoverHierarchy::new(project());
+    add(
+        &mut hierarchy,
+        "system.heating",
+        HandoverControlKind::System,
+    );
+    let controls = CommissioningControlSet::new(project()).with_requirement(requirement(
+        CommissioningRequirementKind::AuthorityClosure,
+        "requirement.authority",
+    ));
+    let book = ProjectBook::new(project(), writer());
+    let exception = ExceptionDecision::new(
+        control("exception.authority"),
+        ExceptionScope::new(project()).covers(control("requirement.authority")),
+        role("role.customer"),
+        role("role.customer"),
+        "attempted authority override",
+        today(),
+        date(2026, Month::August, 30),
+    )
+    .with_evidence(external_ref("authority-exception"));
+    let assessment = CommissioningAssessment::new(&book, 0, today())
+        .with_exception(exception)
+        .with_capability(CONSTRUCTION_EXCEPTION_CAPABILITY);
+
+    let result = handover_gate(HandoverGateKind::AuthorityCompletion).report(
+        &controls,
+        &hierarchy,
+        &assessment,
+    );
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::NonWaivableRequirement { .. })
+    ));
+}
+
 fn all_gate_kinds() -> [HandoverGateKind; 6] {
     [
         HandoverGateKind::TechnicalCompletion,
@@ -120,16 +345,28 @@ fn all_gate_kinds() -> [HandoverGateKind; 6] {
 }
 
 fn handover_gate(kind: HandoverGateKind) -> HandoverGate {
+    gate_for(kind, "system.heating")
+}
+
+fn gate_for(kind: HandoverGateKind, target: &str) -> HandoverGate {
     HandoverGate::new(
         project(),
-        control(&format!("gate.{kind:?}").to_ascii_lowercase()),
-        control("system.heating"),
+        control(&format!("gate.{kind:?}.{target}").to_ascii_lowercase()),
+        control(target),
         kind,
         role("role.customer"),
     )
 }
 
 fn requirement(kind: CommissioningRequirementKind, id: &str) -> CommissioningRequirement {
+    requirement_for(kind, id, "system.heating")
+}
+
+fn requirement_for(
+    kind: CommissioningRequirementKind,
+    id: &str,
+    target: &str,
+) -> CommissioningRequirement {
     let requirement = Requirement::new(
         control(id),
         RequirementLane::new(Symbol::qualified("construction", "handover")),
@@ -142,7 +379,7 @@ fn requirement(kind: CommissioningRequirementKind, id: &str) -> CommissioningReq
     CommissioningRequirement::new(
         kind,
         ProjectObligation::mandatory(project(), requirement),
-        control("system.heating"),
+        control(target),
     )
 }
 
@@ -193,5 +430,13 @@ fn external_ref(id: &str) -> ExternalRef {
 }
 
 fn today() -> Date {
-    Date::from_calendar_date(2026, Month::July, 30).unwrap()
+    date(2026, Month::July, 30)
+}
+
+fn date(year: i32, month: Month, day: u8) -> Date {
+    Date::from_calendar_date(year, month, day).unwrap()
+}
+
+fn add(hierarchy: &mut HandoverHierarchy, id: &str, kind: HandoverControlKind) {
+    hierarchy.add_control(control(id), kind).unwrap();
 }
