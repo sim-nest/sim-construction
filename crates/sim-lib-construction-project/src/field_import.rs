@@ -2,6 +2,7 @@
 
 use sim_kernel::{Expr, Symbol};
 use sim_lib_doc_core::ExternalRef;
+use sim_value::build::entry;
 use time::Date;
 
 use crate::{
@@ -156,12 +157,12 @@ fn current_import<'a>(
 fn import_body(imported: &FieldItemImport) -> Expr {
     let item = &imported.field_item;
     Expr::Map(vec![
-        field("source", Expr::String(imported.source.source.clone())),
-        field(
+        entry("source", Expr::String(imported.source.source.clone())),
+        entry(
             "external-id",
             Expr::String(imported.source.external_id.clone()),
         ),
-        field(
+        entry(
             "source-version",
             imported
                 .source
@@ -169,23 +170,23 @@ fn import_body(imported: &FieldItemImport) -> Expr {
                 .clone()
                 .map_or(Expr::Nil, Expr::String),
         ),
-        field("source-state", Expr::String(imported.source_state.clone())),
-        field(
+        entry("source-state", Expr::String(imported.source_state.clone())),
+        entry(
             "severity",
             Expr::Symbol(Symbol::new(severity_label(item.severity))),
         ),
-        field("lane", Expr::Symbol(Symbol::new(lane_label(item.lane)))),
-        field(
+        entry("lane", Expr::Symbol(Symbol::new(lane_label(item.lane)))),
+        entry(
             "responsible-role",
             Expr::String(item.responsible_role.to_string()),
         ),
-        field(
+        entry(
             "due-on",
             item.due_on
                 .map(|date| Expr::String(date.to_string()))
                 .unwrap_or(Expr::Nil),
         ),
-        field(
+        entry(
             "affected-controls",
             Expr::Vector(
                 item.affected_control_ids
@@ -194,13 +195,9 @@ fn import_body(imported: &FieldItemImport) -> Expr {
                     .collect(),
             ),
         ),
-        field("state", Expr::Symbol(Symbol::new(state_label(item.state)))),
-        field("non-waivable", Expr::Bool(item.non_waivable)),
+        entry("state", Expr::Symbol(Symbol::new(state_label(item.state)))),
+        entry("non-waivable", Expr::Bool(item.non_waivable)),
     ])
-}
-
-fn field(name: &str, value: Expr) -> (Expr, Expr) {
-    (Expr::Symbol(Symbol::new(name)), value)
 }
 
 fn validate_source_state(state: &str) -> Result<()> {
