@@ -6,45 +6,10 @@ use sim_ledger::Amount;
 use time::Date;
 
 use crate::{
-    ChangeFact, ChangeId, ChangeRecord, ChangeScheduleImpact, ChangeStage, ChangeStatus,
-    CommercialSide, ConstructionProjectError, ControlId, CurrencyCode, ReferencedAmountEvidence,
-    Result, commercial::checked_total,
+    ChangeFact, ChangeId, ChangeRecord, ChangeScheduleImpact, ChangeSettlementView, ChangeStage,
+    ChangeStatus, CommercialSide, ConstructionProjectError, ControlId, CurrencyCode, Result,
+    change_settlement::settlement_view, commercial::checked_total,
 };
-
-const CLOSEOUT_STAGES: [ChangeStage; 10] = [
-    ChangeStage::ScopeAssessment,
-    ChangeStage::TimeEffect,
-    ChangeStage::SupplierExposure,
-    ChangeStage::CustomerRecovery,
-    ChangeStage::Quotation,
-    ChangeStage::AuthorityDecision,
-    ChangeStage::Forecast,
-    ChangeStage::Execution,
-    ChangeStage::Settlement,
-    ChangeStage::Closure,
-];
-
-/// Final supplier/customer settlement values with reference-only evidence.
-#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
-pub struct ChangeSettlementView {
-    /// Stable change identity.
-    pub change: ChangeId,
-    /// Effective date of the settlement fact.
-    pub settled_on: Date,
-    /// Exact supplier settlement, without any inferred payment state.
-    #[serde(with = "crate::work_package::amount_serde")]
-    pub supplier: Amount,
-    /// Exact customer settlement, without any inferred receipt state.
-    #[serde(with = "crate::work_package::amount_serde")]
-    pub customer: Amount,
-    /// Supplier settlement less customer settlement.
-    #[serde(with = "crate::work_package::amount_serde")]
-    pub net: Amount,
-    /// Whether an accountable closure fact reconciles to these exact values.
-    pub closed: bool,
-    /// Versioned document or ledger references used by the settlement fact.
-    pub references: Vec<ReferencedAmountEvidence>,
-}
 
 /// Current derived view of one stable construction change chain.
 #[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
@@ -266,8 +231,8 @@ impl ChangeControlSet {
         for fact in &self.facts {
             fact.validate(charter_currency)?;
             if !changes.contains_key(&fact.change) {
-                return Err(ConstructionProjectError::ChangeFactDerivation {
-                    fact: fact.control.clone(),
+                return Err(ConstructionProjectError::ChangeDerivation {
+                    change: fact.change.clone(),
                     reason: "fact references a missing change",
                 });
             }
@@ -291,8 +256,8 @@ impl ChangeControlSet {
                 continue;
             };
             let prior = fact_by_id.get(prior_id).ok_or_else(|| {
-                ConstructionProjectError::ChangeFactDerivation {
-                    fact: fact.control.clone(),
+                ConstructionProjectError::ChangeDerivation {
+                    change: fact.change.clone(),
                     reason: "correction references a missing prior fact",
                 }
             })?;
@@ -300,14 +265,14 @@ impl ChangeControlSet {
                 || prior.stage != fact.stage
                 || prior.fact_seq >= fact.fact_seq
             {
-                return Err(ConstructionProjectError::ChangeFactDerivation {
-                    fact: fact.control.clone(),
+                return Err(ConstructionProjectError::ChangeDerivation {
+                    change: fact.change.clone(),
                     reason: "correction must advance the same change and stage",
                 });
             }
             if corrected_by.insert(prior_id, &fact.control).is_some() {
-                return Err(ConstructionProjectError::ChangeFactDerivation {
-                    fact: fact.control.clone(),
+                return Err(ConstructionProjectError::ChangeDerivation {
+                    change: fact.change.clone(),
                     reason: "more than one correction supersedes the same fact",
                 });
             }
@@ -321,8 +286,8 @@ impl ChangeControlSet {
             }
             let stages = current.entry(fact.change.clone()).or_default();
             if let Some(existing) = stages.insert(fact.stage, fact) {
-                return Err(ConstructionProjectError::ChangeFactDerivation {
-                    fact: fact.control.clone(),
+                return Err(ConstructionProjectError::ChangeDerivation {
+                    change: fact.change.clone(),
                     reason: if existing.supersedes.is_some() || fact.supersedes.is_some() {
                         "correction chain leaves more than one current stage fact"
                     } else {
@@ -445,100 +410,6 @@ fn authority_total(facts: &BTreeMap<ChangeStage, &ChangeFact>) -> Result<Amount>
         CommercialSide::Customer,
         "change.approved_customer",
     )
-}
-
-fn settlement_view(
-    change: &ChangeRecord,
-    facts: &BTreeMap<ChangeStage, &ChangeFact>,
-) -> Result<Option<ChangeSettlementView>> {
-    let Some(settlement) = facts.get(&ChangeStage::Settlement) else {
-        if facts.contains_key(&ChangeStage::Closure) {
-            return Err(ConstructionProjectError::ChangeDerivation {
-                change: change.id.clone(),
-                reason: "closure has no current settlement fact",
-            });
-        }
-        return Ok(None);
-    };
-    let supplier = checked_total(
-        &settlement.amount_components,
-        CommercialSide::Supplier,
-        "change.settlement.supplier",
-    )?;
-    let customer = checked_total(
-        &settlement.amount_components,
-        CommercialSide::Customer,
-        "change.settlement.customer",
-    )?;
-    let net = supplier.0.checked_sub(customer.0).map(Amount).ok_or(
-        ConstructionProjectError::AmountOverflow {
-            field: "change.settlement.net",
-        },
-    )?;
-    let closed = if let Some(closure) = facts.get(&ChangeStage::Closure) {
-        validate_closeout_stages(change, facts)?;
-        validate_closure_total(
-            change,
-            closure,
-            CommercialSide::Supplier,
-            supplier,
-            "change.closure.supplier",
-        )?;
-        validate_closure_total(
-            change,
-            closure,
-            CommercialSide::Customer,
-            customer,
-            "change.closure.customer",
-        )?;
-        true
-    } else {
-        false
-    };
-    Ok(Some(ChangeSettlementView {
-        change: change.id.clone(),
-        settled_on: settlement.effective_on,
-        supplier,
-        customer,
-        net,
-        closed,
-        references: settlement.references.clone(),
-    }))
-}
-
-fn validate_closeout_stages(
-    change: &ChangeRecord,
-    facts: &BTreeMap<ChangeStage, &ChangeFact>,
-) -> Result<()> {
-    if CLOSEOUT_STAGES
-        .iter()
-        .any(|required| !facts.contains_key(required))
-    {
-        return Err(ConstructionProjectError::ChangeDerivation {
-            change: change.id.clone(),
-            reason: "closure requires one current fact for every change-chain stage",
-        });
-    }
-    Ok(())
-}
-
-fn validate_closure_total(
-    change: &ChangeRecord,
-    closure: &ChangeFact,
-    side: CommercialSide,
-    settlement: Amount,
-    field: &'static str,
-) -> Result<()> {
-    let closure_total = checked_total(&closure.amount_components, side, field)?;
-    if closure_total != settlement {
-        return Err(ConstructionProjectError::ChangeSettlementMismatch {
-            change: change.id.clone(),
-            side: side.label(),
-            settlement: settlement.to_decimal_string(),
-            closure: closure_total.to_decimal_string(),
-        });
-    }
-    Ok(())
 }
 
 fn affected_scope<'a>(

@@ -1,0 +1,130 @@
+(expr:map
+  [kind construction/instruction-to-final-settlement]
+  [project reference-center]
+  [as-of-date "2026-07-30"]
+  [charter-currency SEK]
+  [change-id change.cooling]
+  [instruction
+    (expr:map
+      [direction CustomerInstruction]
+      [initiated-on "2026-07-02"]
+      [contractual-basis
+        (expr:map
+          [kind instructed-variation]
+          [clause "ABT06-2:3"]
+          [contract-ref contract/reference-center]
+          [source-version signed-rev-a])]
+      [responsible-role project-chief]
+      [notice-due-on "2026-07-05"]
+      [notice-given-on "2026-07-04"]
+      [affected-controls [control.cooling]]
+      [affected-tasks [task.commission]]
+      [affected-packages [package.mechanical]]
+      [evidence [instruction/change-cooling]])]
+  [chain [
+    (expr:map [fact fact.scope] [stage ScopeAssessment] [status Assessing])
+    (expr:map
+      [fact fact.time]
+      [stage TimeEffect]
+      [status Assessing]
+      [schedule-impact
+        (expr:map
+          [baseline baseline.schedule]
+          [as-of-seq 12]
+          [as-of-date "2026-07-08"]
+          [completion-delta-days 12]
+          [critical-path true]
+          [affected-tasks [task.commission]])])
+    (expr:map
+      [fact fact.supplier]
+      [stage SupplierExposure]
+      [status Assessing]
+      [components [
+        (expr:map [id amount.supplier] [side Supplier] [category direct] [amount "70000.00"] [currency SEK])]])
+    (expr:map
+      [fact fact.customer]
+      [stage CustomerRecovery]
+      [status Assessing]
+      [components [
+        (expr:map [id amount.customer] [side Customer] [category direct] [amount "100000.00"] [currency SEK])]])
+    (expr:map
+      [fact fact.quotation]
+      [stage Quotation]
+      [status Submitted]
+      [components [
+        (expr:map [id amount.quoted] [side Customer] [category direct] [amount "100000.00"] [currency SEK])]])
+    (expr:map
+      [fact fact.authority]
+      [stage AuthorityDecision]
+      [status Approved]
+      [decided-by project-chief]
+      [components [
+        (expr:map [id amount.approved] [side Customer] [category direct] [amount "100000.00"] [currency SEK])]
+      [evidence [
+        (expr:map
+          [source Document]
+          [external-id authority/change-cooling]
+          [source-version authority-rev-a]
+          [as-of "2026-07-20"]
+          [evidence-state Accepted])]])
+    (expr:map
+      [fact fact.forecast]
+      [stage Forecast]
+      [status Assessing]
+      [components [
+        (expr:map [id amount.forecast-supplier] [side Supplier] [category direct] [amount "70000.00"] [currency SEK])
+        (expr:map [id amount.forecast-customer] [side Customer] [category direct] [amount "100000.00"] [currency SEK])]])
+    (expr:map [fact fact.execution] [stage Execution] [status Executing])
+    (expr:map
+      [fact fact.settlement]
+      [stage Settlement]
+      [status Settled]
+      [components [
+        (expr:map [id amount.settled-supplier] [side Supplier] [category final] [amount "70000.00"] [currency SEK])
+        (expr:map [id amount.settled-customer] [side Customer] [category final] [amount "100000.00"] [currency SEK])]
+      [evidence [
+        (expr:map
+          [source LedgerBalance]
+          [external-id ledger/change-cooling]
+          [source-version ledger-snapshot-27]
+          [as-of "2026-07-27"]
+          [stated-value "70000.00"]
+          [currency SEK]
+          [evidence-state Evidenced])]])
+    (expr:map
+      [fact fact.closure]
+      [stage Closure]
+      [status Closed]
+      [closed-by project-chief]
+      [components [
+        (expr:map [id amount.closed-supplier] [side Supplier] [category final] [amount "70000.00"] [currency SEK])
+        (expr:map [id amount.closed-customer] [side Customer] [category final] [amount "100000.00"] [currency SEK])]
+      [evidence [
+        (expr:map
+          [source Document]
+          [external-id closure/change-cooling]
+          [source-version closure-rev-a]
+          [as-of "2026-07-29"]
+          [evidence-state Accepted])]])]]
+  [derived-views
+    (expr:map
+      [approved [change.cooling]]
+      [instructed-unpriced []]
+      [submitted []]
+      [disputed []]
+      [supplier-only []]
+      [customer-only []]
+      [time-risk []]
+      [overdue-notice []]
+      [supplier-exposure "70000.00"]
+      [customer-recovery "100000.00"]
+      [net-exposure "-30000.00"]
+      [settlement (expr:map [supplier "70000.00"] [customer "100000.00"] [closed true])])]
+  [ownership-boundary
+    (expr:map
+      [amount-type sim-ledger/Amount]
+      [documents reference-only]
+      [ledger-balance reference-only]
+      [journal-posting false]
+      [payment-inferred false]
+      [document-presence-means-approval false])])

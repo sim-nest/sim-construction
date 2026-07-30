@@ -262,10 +262,10 @@
     "generated_by": "cargo run -p xtask -- simdoc",
     "generation_timestamp": "2026-07-23T14:26:39+02:00",
     "generator": "xtask repo-contract v1",
-    "git_commit": "bc60dcb0111726583a82859110dc6e4d2f970344",
+    "git_commit": "bf953e00900e321b0fe56652f57488b927223f9b",
     "repo": "sim-construction",
     "schema": "sim.provenance.v1",
-    "source_commit": "bc60dcb0111726583a82859110dc6e4d2f970344",
+    "source_commit": "bf953e00900e321b0fe56652f57488b927223f9b",
     "source_remote": "https://github.com/sim-nest/sim-construction",
     "validation_commands": [
       "cargo fmt --all --check",
@@ -278,9 +278,9 @@
       "cargo run -p xtask -- validation-matrix --check --repo .",
       "cargo run -p xtask -- crate-catalog --check --repo ."
     ],
-    "workspace_hash": "966a5ea2aa08613c",
+    "workspace_hash": "9a6ca9d5c0533f92",
     "workspace_hash_algorithm": "fnv1a64",
-    "workspace_hash_input_count": 117,
+    "workspace_hash_input_count": 125,
     "workspace_hash_inputs": [
       "Cargo.toml",
       "crates/sim-codec-mspdi/Cargo.toml",
@@ -299,6 +299,7 @@
       "crates/sim-lib-construction-project/recipes/01-basics/customer-intent-to-collaboration/recipe.toml",
       "crates/sim-lib-construction-project/recipes/01-basics/design-release-to-production/recipe.toml",
       "crates/sim-lib-construction-project/recipes/01-basics/field-item-to-corrective-evidence/recipe.toml",
+      "crates/sim-lib-construction-project/recipes/01-basics/instruction-to-final-settlement/recipe.toml",
       "crates/sim-lib-construction-project/recipes/01-basics/late-decision/recipe.toml",
       "crates/sim-lib-construction-project/recipes/01-basics/mixed-obligation-gate/recipe.toml",
       "crates/sim-lib-construction-project/recipes/01-basics/mobilization-gate/recipe.toml",
@@ -316,8 +317,15 @@
       "crates/sim-lib-construction-project/src/baseline.rs",
       "crates/sim-lib-construction-project/src/bid.rs",
       "crates/sim-lib-construction-project/src/book.rs",
+      "crates/sim-lib-construction-project/src/change.rs",
+      "crates/sim-lib-construction-project/src/change_exposure.rs",
+      "crates/sim-lib-construction-project/src/change_settlement.rs",
+      "crates/sim-lib-construction-project/src/change_test_chain.rs",
+      "crates/sim-lib-construction-project/src/change_tests.rs",
+      "crates/sim-lib-construction-project/src/change_validation.rs",
       "crates/sim-lib-construction-project/src/charter.rs",
       "crates/sim-lib-construction-project/src/collaboration.rs",
+      "crates/sim-lib-construction-project/src/commercial.rs",
       "crates/sim-lib-construction-project/src/control_graph.rs",
       "crates/sim-lib-construction-project/src/control_graph_tests.rs",
       "crates/sim-lib-construction-project/src/decision.rs",
@@ -429,7 +437,7 @@
       "card_id": "cookbook/construction/project",
       "group": "workspace",
       "package": "sim-lib-construction-project",
-      "recipe_count": 15,
+      "recipe_count": 16,
       "recipes": [
         {
           "card_id": "construction/project/01-basics/blocked-gate-graph",
@@ -470,6 +478,14 @@
           "package": "sim-lib-construction-project",
           "recipe_toml": "crates/sim-lib-construction-project/recipes/01-basics/field-item-to-corrective-evidence/recipe.toml",
           "title": "Field item to corrective evidence"
+        },
+        {
+          "card_id": "construction/project/01-basics/instruction-to-final-settlement",
+          "codec": "lisp",
+          "id": "instruction-to-final-settlement",
+          "package": "sim-lib-construction-project",
+          "recipe_toml": "crates/sim-lib-construction-project/recipes/01-basics/instruction-to-final-settlement/recipe.toml",
+          "title": "Instruction to final settlement"
         },
         {
           "card_id": "construction/project/01-basics/late-decision",

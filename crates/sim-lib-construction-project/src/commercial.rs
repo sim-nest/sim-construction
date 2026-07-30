@@ -168,9 +168,9 @@ impl ReferencedAmountEvidence {
             .as_deref()
             .is_none_or(|version| version.trim().is_empty())
         {
-            return Err(ConstructionProjectError::MissingChangeAsOfMarker {
-                reference: self.reference.external_id.clone(),
-            });
+            return Err(ConstructionProjectError::EmptyField(
+                "change.reference.version",
+            ));
         }
         if let Some(value) = &self.stated_value
             && &value.currency != charter_currency

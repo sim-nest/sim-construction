@@ -20,6 +20,9 @@ and say exactly what changed between two points.
   statements, while forecast amounts use checked exact arithmetic.
 - Exposure stays separated by scenario and currency, and escalation recommends
   attention without silently becoming the project-chief's decision.
+- One stable change chain reconciles instruction, scope, time, supplier cost,
+  customer recovery, authority, execution, and final settlement without
+  pretending a document is an approval or a ledger balance is payment.
 - The same record can feed schedule, office, ledger, and handover layers without
   changing their ownership.
 

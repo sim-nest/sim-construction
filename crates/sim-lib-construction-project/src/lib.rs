@@ -18,6 +18,8 @@ mod bid;
 mod book;
 mod change;
 mod change_exposure;
+mod change_settlement;
+mod change_validation;
 mod charter;
 mod collaboration;
 mod commercial;
@@ -82,9 +84,8 @@ pub use change::{
     ChangeDirection, ChangeFact, ChangeRecord, ChangeScheduleImpact, ChangeStage, ChangeStatus,
     ContractualBasis,
 };
-pub use change_exposure::{
-    ChangeControlSet, ChangeExposureReport, ChangeExposureView, ChangeSettlementView,
-};
+pub use change_exposure::{ChangeControlSet, ChangeExposureReport, ChangeExposureView};
+pub use change_settlement::ChangeSettlementView;
 pub use charter::{CurrencyCode, PROJECT_CHARTER_KIND, ProjectCharter, ReportingCadence};
 pub use collaboration::{CollaborationCharter, CollaborationReadinessReport};
 pub use commercial::{
@@ -187,6 +188,8 @@ pub use work_package::{CommercialAmount, SupplierCandidate, WorkPackage};
 pub static RECIPES: sim_cookbook::EmbeddedDir =
     include!(concat!(env!("OUT_DIR"), "/cookbook_recipes.rs"));
 
+#[cfg(test)]
+mod change_test_chain;
 #[cfg(test)]
 mod change_tests;
 #[cfg(test)]

@@ -222,6 +222,25 @@ claims_specimens = [
 ]
 
 [[feature]]
+id = "feature/sim-construction/change-commercial-exposure"
+title = "Construction change chain commercial exposure and settlement control"
+summary = "Carry one stable construction ChangeId from instruction or notice through scope, time, supplier exposure, customer recovery, quotation, authority, forecast, execution, settlement, and closure while deriving exact non-duplicated commercial views."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when a project chief needs one current, correctable change chain with direction, contractual basis, affected controls/tasks/packages, accountable roles and dates, exact sim-ledger Amount components, accepted schedule-impact references, supplier/customer/net exposure, authority status, notice risk, and final settlement reconciliation. Document values and ledger balances are versioned, dated references only: construction never posts journals, infers payment, or treats file existence as approval. Use feature/sim-ledger/ledger-libraries and route/prepare-balanced-ledger when journal truth is required."
+supports = [
+  "feature/sim-construction/gantt-schedule-impact",
+]
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/instruction-to-final-settlement",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/change_tests",
+]
+
+[[feature]]
 id = "feature/sim-construction/supplier-production-handoff"
 title = "Construction supplier qualification and production handoff"
 summary = "Derive project-scoped supplier qualification and production handoff readiness from subcontract-chain references, shared qualification obligations, restricted external evidence, accountable award decisions, production design releases, material lead time, production need dates, and explicit responsibility acceptance."
@@ -436,6 +455,17 @@ steps = [
   { feature = "feature/sim-construction/project-control", why = "The project-control row supplies stable project ids, evidence references, governance roles, design inputs, and the accepted charter currency." },
   { feature = "feature/sim-construction/work-package-procurement-awards", why = "The procurement row owns stable package scope, supplier candidates, tender comparison facts, checked Amount comparisons, award authority, date consequences, and exposed interfaces." },
   { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/work-package-award", why = "The recipe shows one package through inquiry basis, corrected tender evidence, accountable award, and need-date consequence without ledger cloning." },
+]
+
+[[route]]
+id = "route/trace-construction-change-to-final-settlement"
+task = "Trace a construction change to final settlement"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row supplies stable construction identity, accepted facts, accountable roles, corrections, and reference-only evidence." },
+  { feature = "feature/sim-construction/gantt-schedule-impact", why = "The schedule row owns accepted-baseline task joins and critical-path consequence evidence." },
+  { feature = "feature/sim-construction/change-commercial-exposure", why = "The change row owns one stable chain, exact supplier/customer components, authority state, derived exposure, and settlement reconciliation." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/instruction-to-final-settlement", why = "The modeled recipe follows one instruction through every change stage to matching final settlement without inferring journals, payment, or approval." },
 ]
 
 [[route]]

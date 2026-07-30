@@ -6,9 +6,8 @@ use sim_lib_doc_core::ExternalRef;
 use time::Date;
 
 use crate::{
-    BaselineId, ChangeAmountComponent, ChangeId, CommercialSide, ConstructionProjectError,
-    ControlId, CurrencyCode, ProjectId, ReferencedAmountEvidence, Result, RoleId,
-    commercial::validate_components,
+    BaselineId, ChangeAmountComponent, ChangeId, ConstructionProjectError, ControlId, CurrencyCode,
+    ProjectId, ReferencedAmountEvidence, Result, RoleId,
 };
 
 /// Direction and initiating contractual act for a construction change.
@@ -46,7 +45,7 @@ impl ContractualBasis {
         }
     }
 
-    fn validate(&self) -> Result<()> {
+    pub(crate) fn validate(&self) -> Result<()> {
         if self.kind.trim().is_empty() {
             return Err(ConstructionProjectError::EmptyField(
                 "change.contractual_basis.kind",
@@ -282,7 +281,7 @@ impl ChangeScheduleImpact {
         }
     }
 
-    fn validate(&self) -> Result<()> {
+    pub(crate) fn validate(&self) -> Result<()> {
         if self.as_of_seq == 0 {
             return Err(ConstructionProjectError::InvalidSequence {
                 field: "change.schedule_impact.as_of_seq",
@@ -426,136 +425,11 @@ impl ChangeFact {
     }
 
     pub(crate) fn validate(&self, charter_currency: &CurrencyCode) -> Result<()> {
-        if self.fact_seq == 0 {
-            return Err(ConstructionProjectError::InvalidSequence {
-                field: "change.fact_seq",
-                sequence: self.fact_seq,
-            });
-        }
-        if self.note.trim().is_empty() {
-            return Err(ConstructionProjectError::EmptyField("change.fact.note"));
-        }
-        validate_unique_controls("change.affected_controls", &self.affected_controls)?;
-        validate_unique_controls("change.affected_packages", &self.affected_packages)?;
-        validate_tasks(&self.affected_tasks)?;
-        validate_components(&self.amount_components, charter_currency)?;
-        for reference in &self.references {
-            reference.validate(charter_currency)?;
-        }
-        self.validate_stage()
-    }
-
-    fn validate_stage(&self) -> Result<()> {
-        let status_allowed = match self.stage {
-            ChangeStage::ScopeAssessment
-            | ChangeStage::TimeEffect
-            | ChangeStage::SupplierExposure
-            | ChangeStage::CustomerRecovery
-            | ChangeStage::Forecast => matches!(self.status, ChangeStatus::Assessing),
-            ChangeStage::Quotation => matches!(self.status, ChangeStatus::Submitted),
-            ChangeStage::AuthorityDecision => matches!(
-                self.status,
-                ChangeStatus::Approved
-                    | ChangeStatus::PartiallyApproved
-                    | ChangeStatus::Rejected
-                    | ChangeStatus::Disputed
-            ),
-            ChangeStage::Execution => matches!(self.status, ChangeStatus::Executing),
-            ChangeStage::Settlement => {
-                matches!(self.status, ChangeStatus::Settled | ChangeStatus::Disputed)
-            }
-            ChangeStage::Closure => matches!(self.status, ChangeStatus::Closed),
-        };
-        if !status_allowed {
-            return Err(ConstructionProjectError::ChangeFactDerivation {
-                fact: self.control.clone(),
-                reason: "status is incompatible with change stage",
-            });
-        }
-        if self.stage == ChangeStage::ScopeAssessment
-            && self.affected_controls.is_empty()
-            && self.affected_tasks.is_empty()
-            && self.affected_packages.is_empty()
-        {
-            return Err(ConstructionProjectError::EmptyCollection(
-                "change.scope.affected",
-            ));
-        }
-        if self.stage == ChangeStage::TimeEffect && self.schedule_impact.is_none() {
-            return Err(ConstructionProjectError::EmptyField(
-                "change.schedule_impact",
-            ));
-        }
-        if let Some(impact) = &self.schedule_impact {
-            impact.validate()?;
-        }
-        if matches!(
-            self.stage,
-            ChangeStage::SupplierExposure
-                | ChangeStage::CustomerRecovery
-                | ChangeStage::Quotation
-                | ChangeStage::Forecast
-                | ChangeStage::Settlement
-                | ChangeStage::Closure
-        ) && self.amount_components.is_empty()
-        {
-            return Err(ConstructionProjectError::EmptyCollection(
-                "change.amount_components",
-            ));
-        }
-        if self.stage == ChangeStage::SupplierExposure
-            && !self
-                .amount_components
-                .iter()
-                .any(|component| component.side == CommercialSide::Supplier)
-        {
-            return Err(ConstructionProjectError::ChangeFactDerivation {
-                fact: self.control.clone(),
-                reason: "supplier exposure has no supplier amount",
-            });
-        }
-        if matches!(
-            self.stage,
-            ChangeStage::CustomerRecovery | ChangeStage::Quotation
-        ) && !self
-            .amount_components
-            .iter()
-            .any(|component| component.side == CommercialSide::Customer)
-        {
-            return Err(ConstructionProjectError::ChangeFactDerivation {
-                fact: self.control.clone(),
-                reason: "customer commercial fact has no customer amount",
-            });
-        }
-        if self.stage == ChangeStage::AuthorityDecision
-            && matches!(
-                self.status,
-                ChangeStatus::Approved | ChangeStatus::PartiallyApproved
-            )
-            && !self
-                .amount_components
-                .iter()
-                .any(|component| component.side == CommercialSide::Customer)
-        {
-            return Err(ConstructionProjectError::ChangeFactDerivation {
-                fact: self.control.clone(),
-                reason: "approval has no explicit approved customer amount",
-            });
-        }
-        if matches!(
-            self.stage,
-            ChangeStage::AuthorityDecision | ChangeStage::Settlement | ChangeStage::Closure
-        ) && self.references.is_empty()
-        {
-            return Err(ConstructionProjectError::EmptyCollection(
-                "change.fact.references",
-            ));
-        }
-        Ok(())
+        crate::change_validation::validate_change_fact(self, charter_currency)
     }
 }
 
-fn validate_unique_controls(field: &'static str, controls: &[ControlId]) -> Result<()> {
+pub(crate) fn validate_unique_controls(field: &'static str, controls: &[ControlId]) -> Result<()> {
     let mut unique = BTreeSet::new();
     for control in controls {
         if !unique.insert(control) {
@@ -568,7 +442,7 @@ fn validate_unique_controls(field: &'static str, controls: &[ControlId]) -> Resu
     Ok(())
 }
 
-fn validate_tasks(tasks: &[String]) -> Result<()> {
+pub(crate) fn validate_tasks(tasks: &[String]) -> Result<()> {
     let mut unique = BTreeSet::new();
     for task in tasks {
         if task.trim().is_empty() {

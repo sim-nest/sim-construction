@@ -445,25 +445,11 @@ pub enum ConstructionProjectError {
         /// Arithmetic field that overflowed.
         field: &'static str,
     },
-    /// A referenced commercial value had no version or other source as-of marker.
-    #[error("change reference {reference} has no source version as-of marker")]
-    MissingChangeAsOfMarker {
-        /// External source identity lacking a version marker.
-        reference: String,
-    },
     /// A change-chain invariant failed closed.
     #[error("change {change} derivation failed: {reason}")]
     ChangeDerivation {
         /// Stable change identity.
         change: ChangeId,
-        /// Stable invariant failure reason.
-        reason: &'static str,
-    },
-    /// A change stage fact failed validation or derivation.
-    #[error("change fact {fact} derivation failed: {reason}")]
-    ChangeFactDerivation {
-        /// Fact that failed.
-        fact: ControlId,
         /// Stable invariant failure reason.
         reason: &'static str,
     },
