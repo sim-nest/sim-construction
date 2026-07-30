@@ -224,7 +224,7 @@ claims_specimens = [
 [[feature]]
 id = "feature/sim-construction/change-commercial-exposure"
 title = "Construction change chain commercial exposure and settlement control"
-summary = "Carry one stable construction ChangeId from instruction or notice through scope, time, supplier exposure, customer recovery, quotation, authority, forecast, execution, settlement, and closure while deriving exact non-duplicated commercial exposure views with ledger Amount."
+summary = "Construction change commercial exposure ledger references stay versioned and read-only while one stable ChangeId runs from instruction or notice through scope, time, supplier exposure, customer recovery, quotation, authority, forecast, execution, settlement, and closure with exact non-duplicated Amount views."
 owner = "crate/sim-lib-construction-project"
 audiences = ["user", "code", "framework"]
 guidance = "Use this row when a project chief needs one current, correctable change chain with direction, contractual basis, affected controls/tasks/packages, accountable roles and dates, exact sim-ledger Amount components, accepted schedule-impact references, supplier/customer/net exposure, authority status, notice risk, and final settlement reconciliation. Document values and ledger balances are versioned, dated references only: construction never posts journals, infers payment, or treats file existence as approval. Use feature/sim-ledger/ledger-libraries and route/prepare-balanced-ledger when journal truth is required."
