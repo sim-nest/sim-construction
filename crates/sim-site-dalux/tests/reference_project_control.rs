@@ -1,4 +1,8 @@
-use std::{fs, path::Path, sync::Arc};
+use std::{
+    fs,
+    path::{Path, PathBuf},
+    sync::Arc,
+};
 
 use serde_json::json;
 use sim_codec::{Input, Output, decode_with_codec, encode_with_codec};
@@ -443,13 +447,15 @@ fn date(day: u8) -> Date {
     Date::from_calendar_date(2026, Month::July, day).unwrap()
 }
 
-fn recipe_root() -> &'static Path {
-    Path::new(env!("CARGO_MANIFEST_DIR"))
+fn recipe_root() -> PathBuf {
+    let tests_root = fs::canonicalize(Path::new(env!("CARGO_MANIFEST_DIR")).join("tests"))
+        .expect("integration-test source directory");
+    let repository_root = tests_root
         .parent()
         .and_then(Path::parent)
-        .expect("crate lives at repo/crates/name")
-        .join("recipes/reference-project-control")
-        .leak()
+        .and_then(Path::parent)
+        .expect("test source lives at repo/crates/name/tests");
+    repository_root.join("recipes/reference-project-control")
 }
 
 fn codec_context() -> Cx {
