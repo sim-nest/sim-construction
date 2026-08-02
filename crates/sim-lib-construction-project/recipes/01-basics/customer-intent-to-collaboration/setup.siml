@@ -1,0 +1,78 @@
+(expr:map
+  [kind construction/customer-intent-to-collaboration]
+  [project reference-center]
+  [opportunity (expr:map
+    [id opportunity.reference-center]
+    [source Customer]
+    [owner project-chief]
+    [label "Reference center tenant improvement"]
+    [evidence [(expr:map
+      [backend doc/synthetic]
+      [external-id opportunity/reference-center]
+      [version rev-a])]])]
+  [customer-intent (expr:map
+    [id intent.reference-center]
+    [intended-use "tenant reference center"]
+    [scope-boundary "existing shell interior fit-out"]
+    [property-constraints ["existing facade is fixed"]]
+    [tenant-constraints (expr:map
+      [value nil]
+      [unknown-reason "customer has not stated tenant phasing"])]
+    [success-measures ["handover accepted before opening"]]
+    [target-outcomes ["public reference candidate"]]
+    [delivery-form collaboration]
+    [procurement-form two-stage-negotiated]
+    [time-frame "Q3 2026"]
+    [commercial-frame "target price with open book"]
+    [variant Renovation]
+    [assumptions ["work hours are customer-confirmed"]]
+    [exclusions ["loose furniture"]]
+    [evidence [(expr:map
+      [backend doc/synthetic]
+      [external-id intent/reference-center]
+      [version rev-a])]])]
+  [intent-coverage (expr:map
+    [as-of-seq 2]
+    [unknown-fields [tenant-constraints]]
+    [requirements [
+      (expr:map
+        [id requirement.intent.scope]
+        [lane construction-lane/customer]
+        [evidence-state Accepted]
+        [evidence [(expr:map [backend doc/synthetic] [external-id intent/scope] [version rev-a])]])
+      (expr:map
+        [id requirement.intent.tenant-phasing]
+        [lane construction-lane/customer]
+        [evidence-state Missing]
+        [source-refs [(expr:map [backend doc/synthetic] [external-id intent/tenant-source] [version rev-a])]])]]
+    [ready false]
+    [reason "unstated tenant phasing remains missing; the assumption is not accepted as a requirement"])]
+  [bid-decision (expr:map
+    [id bid.reference-center]
+    [decision ConditionalBid]
+    [authority project-chief]
+    [capacity-view ["team available after permit package"]]
+    [risks ["tenant phasing remains open"]]
+    [opportunities ["repeat customer reference value"]]
+    [assumptions ["night work is excluded"]]
+    [valid-until "2026-08-15"]
+    [price-basis [(expr:map [backend doc/synthetic] [external-id bid/price-basis] [version rev-a])]]
+    [schedule-basis [(expr:map [backend doc/synthetic] [external-id bid/schedule-basis] [version rev-a])]]
+    [evidence [(expr:map [backend doc/synthetic] [external-id bid/conditional] [version rev-a])]])]
+  [collaboration-charter (expr:map
+    [id collaboration.reference-center]
+    [objectives ["turn stated customer intent into gate evidence"]]
+    [working-principles ["no unstated customer assumption is accepted"]]
+    [organization ["customer and supplier core team"]]
+    [decision-rights ["project-chief accepts main-contract evidence"]]
+    [meeting-cadence weekly]
+    [investigations ["tenant access survey"]]
+    [target-design-buildability-work ["phased logistics plan"]]
+    [open-book-rules ["shared cost log before target price"]]
+    [escalation [project-chief]]
+    [main-contract-evidence [evidence.main-contract.form]]
+    [readiness (expr:map
+      [as-of-seq 3]
+      [missing-main-contract-evidence [evidence.main-contract.form]]
+      [ready false])])]
+  [mode modeled])

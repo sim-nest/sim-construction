@@ -54,7 +54,7 @@ impl ProjectSnapshotExplanation {
 }
 
 /// Deterministic as-of view of a project book.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct ProjectSnapshot {
     /// Project represented by the snapshot.
     pub project: ProjectId,

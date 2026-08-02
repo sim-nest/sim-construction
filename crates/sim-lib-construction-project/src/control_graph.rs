@@ -31,6 +31,36 @@ pub enum ControlNodeKind {
     Outcome,
     /// Readiness or lifecycle gate.
     Gate,
+    /// Design deliverable revision.
+    DesignRevision,
+    /// Design review.
+    DesignReview,
+    /// Request for information.
+    Rfi,
+    /// Purpose-specific design release.
+    DesignRelease,
+    /// Authority permit.
+    Permit,
+    /// Authority inspection.
+    Inspection,
+    /// Authority obligation.
+    AuthorityObligation,
+    /// Risk uncertainty.
+    Risk,
+    /// Beneficial opportunity uncertainty.
+    Opportunity,
+    /// Method-bearing forecast consequence.
+    ForecastConsequence,
+    /// Commissioning and handover system.
+    HandoverSystem,
+    /// Geographic or functional handover area.
+    HandoverArea,
+    /// Work package participating in handover.
+    HandoverWorkPackage,
+    /// Asset group participating in handover.
+    HandoverAssetGroup,
+    /// Contractual handover milestone.
+    HandoverMilestone,
 }
 
 /// Stable construction-control graph node.
@@ -71,6 +101,8 @@ pub enum ControlEdgeKind {
     HandsOver,
     /// Source produces target.
     Produces,
+    /// Source is a member of the target handover control.
+    MemberOf,
     /// Informational relationship excluded from readiness propagation.
     Informational,
 }
@@ -86,6 +118,7 @@ impl ControlEdgeKind {
             Self::Changes => "changes",
             Self::HandsOver => "hands-over",
             Self::Produces => "produces",
+            Self::MemberOf => "member-of",
             Self::Informational => "informational",
         }
     }

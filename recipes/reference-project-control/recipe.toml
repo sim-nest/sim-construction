@@ -1,0 +1,30 @@
+id = "reference-project-control"
+title = "Modeled reference project control"
+codec = "lisp"
+setup = "setup.siml"
+main = "main.siml"
+purpose = "purpose.md"
+order = 1000
+tags = ["construction", "project-control", "reference", "modeled", "offline", "table", "gantt", "mspdi", "powerproject", "dalux", "office"]
+requires = [
+  "codec/lisp",
+  "sim-run-core",
+  "sim/construction-project",
+  "sim-lib-construction-office",
+  "table/hash",
+  "office/gantt",
+  "office/doc-core",
+  "office/doc-site",
+  "office/doc-surface",
+  "codec/mspdi",
+  "site/powerproject",
+  "site/dalux",
+  "ledger/books",
+  "construction.project.read",
+  "construction.project.write",
+  "construction.reference.publish",
+]
+harness = "cargo-test"
+package = "sim-site-dalux"
+test = "reference_project_control"
+expected = "expected.siml"

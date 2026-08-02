@@ -16,6 +16,19 @@ and say exactly what changed between two points.
   outside the codebase.
 - Corrections keep the earlier record visible, so reports do not silently rewrite
   what the team knew.
+- The same project book can use an injected in-memory or persistent Table/Dir;
+  facts rebuild history while disposable projections can be lost safely.
+- Risks and opportunities keep qualitative ratings distinct from quantified
+  statements, while forecast amounts use checked exact arithmetic.
+- Exposure stays separated by scenario and currency, and escalation recommends
+  attention without silently becoming the project-chief's decision.
+- One stable change chain reconciles instruction, scope, time, supplier cost,
+  customer recovery, authority, execution, and final settlement without
+  pretending a document is an approval or a ledger balance is payment.
+- System, area, package, asset-group, and milestone handover rolls explicit
+  commissioning evidence upward while keeping technical, evidence, authority,
+  contractual, occupancy/use, and final completion as separate accountable
+  gates.
 - The same record can feed schedule, office, ledger, and handover layers without
   changing their ownership.
 
@@ -23,4 +36,5 @@ and say exactly what changed between two points.
 
 This crate is the construction-control layer for project facts. It owns project
 charter, fact, snapshot, and change vocabulary while documents, Gantt schedules,
-ledgers, tables, and runtime loading stay with their existing SIM owners.
+ledgers, Table/Dir backends, and runtime loading stay with their existing SIM
+owners.

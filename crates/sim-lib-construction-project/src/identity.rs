@@ -70,6 +70,11 @@ id_type!(
     "baseline",
     "Stable project baseline identifier for accepted control states."
 );
+id_type!(
+    ChangeId,
+    "change",
+    "Stable identity shared by every fact in one construction change chain."
+);
 
 fn validate_id(kind: &'static str, value: &str) -> Result<()> {
     if value.is_empty() {

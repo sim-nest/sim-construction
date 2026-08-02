@@ -1,0 +1,78 @@
+(expr:map
+  [kind construction/sustainability-to-reference-evidence]
+  [project reference-center]
+  [as-of-date "2026-07-25"]
+  [targets [
+    (expr:map
+      [id climate.a1-a5]
+      [kind Climate]
+      [category construction-outcome/climate]
+      [shape shape/climate]
+      [target (expr:map [source-value "100"] [unit unit/kg-co2e])]
+      [baseline (expr:map [source-value "132"] [unit unit/kg-co2e])]
+      [method method/en15978]
+      [method-version "v1"]
+      [boundary boundary/lifecycle]
+      [boundary-source-scope "A1-A5"]
+      [responsible sustainability-lead]
+      [due-on "2026-07-20"]
+      [source-refs [(expr:map [backend doc/synthetic] [external-id charter/climate] [version rev-a])]]
+      [reference-claim-allowed true])
+    (expr:map
+      [id place.social-value]
+      [kind Place]
+      [category construction-outcome/place]
+      [shape shape/place]
+      [target (expr:map [source-value "accepted"] [unit unit/status])]
+      [method method/place-outcome]
+      [method-version "2026"]
+      [boundary boundary/city-district]
+      [boundary-source-scope "district-public-realm"]
+      [responsible place-lead]
+      [source-refs [(expr:map [backend doc/synthetic] [external-id charter/place] [version rev-a])]]
+      [reference-claim-allowed true])]]
+  [records [
+    (expr:map
+      [id climate.measurement.rev-b]
+      [target climate.a1-a5]
+      [kind Measurement]
+      [quantity (expr:map [source-value "100"] [unit unit/kg-co2e])]
+      [method method/en15978]
+      [method-version "v1"]
+      [boundary boundary/lifecycle]
+      [boundary-source-scope "A1-A5"]
+      [responsible sustainability-lead]
+      [reported-on "2026-07-20"]
+      [evidence-state Accepted]
+      [source-refs [(expr:map [backend doc/synthetic] [external-id calculator/climate-rev-b] [version rev-b])]]
+      [evidence-refs [(expr:map [backend doc/synthetic] [external-id review/climate-acceptance] [version rev-a])]]
+      [disclosure Accepted])
+    (expr:map
+      [id place.measurement.rev-a]
+      [target place.social-value]
+      [kind Measurement]
+      [quantity (expr:map [source-value "accepted"] [unit unit/status])]
+      [method method/place-outcome]
+      [method-version "2026"]
+      [boundary boundary/city-district]
+      [boundary-source-scope "district-public-realm"]
+      [responsible place-lead]
+      [reported-on "2026-07-21"]
+      [evidence-state Accepted]
+      [source-refs [(expr:map [backend doc/synthetic] [external-id outcome/place-rev-a] [version rev-a])]]
+      [disclosure Rejected])]]
+  [derived [
+    (expr:map
+      [target climate.a1-a5]
+      [current-record climate.measurement.rev-b]
+      [covered true]
+      [variance OnTarget]
+      [reference-claim-admissible true])
+    (expr:map
+      [target place.social-value]
+      [current-record place.measurement.rev-a]
+      [covered true]
+      [variance OnTarget]
+      [blockers [DisclosureRejected]]
+      [reference-claim-admissible false])]]
+  [mode modeled])

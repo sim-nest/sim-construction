@@ -1,0 +1,37 @@
+(expr:map
+  [kind construction/control-graph-meets-gantt]
+  [project reference-center]
+  [schedule-baseline (expr:map
+    [baseline baseline.schedule]
+    [plan baseline-plan]
+    [accepted-revision rev-a]
+    [accepted-seq 6])]
+  [imported-plan (expr:map
+    [plan baseline-plan]
+    [revision rev-a]
+    [as-of-seq 9]
+    [source local-gantt-plan])]
+  [joins [
+    (expr:map [control decision.frame-release] [task design-release] [kind decision] [need-on "2026-07-05"])
+    (expr:map [control package.frame] [task frame-fabrication] [kind package])
+    (expr:map [control procurement.frame-award] [task procurement-float] [kind procurement-date] [lead-time-days 12])
+    (expr:map [control change.frame] [task change-review] [kind change])
+    (expr:map [control handover.frame] [task handover] [kind handover-item])]]
+  [local-gantt-plan (expr:map
+    [id baseline-plan]
+    [tasks [
+      (expr:map [id design-release] [start "2026-07-01"] [finish "2026-07-05"])
+      (expr:map [id frame-fabrication] [start "2026-07-10"] [finish "2026-07-20"])
+      (expr:map [id procurement-float] [start "2026-07-10"] [finish "2026-07-11"])
+      (expr:map [id change-review] [start "2026-07-12"] [finish "2026-07-12"])
+      (expr:map [id handover] [start "2026-07-20"] [finish "2026-07-22"])]])
+  [modeled-powerproject-placement (expr:map
+    [site site/powerproject]
+    [mode modeled]
+    [plan baseline-plan]
+    [revision rev-a])]
+  [derived-explanations [
+    critical-path-blocker
+    downstream-controls
+    procurement-lead-time
+    change-impact]])

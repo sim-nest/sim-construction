@@ -3,12 +3,13 @@
 use crate::{
     CONSTRUCTION_EXCEPTION_CAPABILITY, CONSTRUCTION_PROJECT_ACCEPT_CAPABILITY,
     CONSTRUCTION_PROJECT_READ_CAPABILITY, CONSTRUCTION_PROJECT_WRITE_CAPABILITY,
-    CONSTRUCTION_REFERENCE_PUBLISH_CAPABILITY, ConstructionProjectError, ControlId, CurrencyCode,
-    DueDatePolicy, EvidenceState, OrganizationId, ProjectCharter, ProjectGovernance, ProjectId,
-    RECIPES, ReportingCadence, RoleAssignment, RoleId, Visibility, VisibilityPolicy,
-    construction_exception_capability, construction_project_accept_capability,
-    construction_project_read_capability, construction_project_write_capability,
-    construction_reference_publish_capability,
+    CONSTRUCTION_REFERENCE_PUBLISH_CAPABILITY, CONSTRUCTION_SUPPLIER_READ_CAPABILITY,
+    ConstructionProjectError, ControlId, CurrencyCode, DueDatePolicy, EvidenceState,
+    OrganizationId, ProjectCharter, ProjectGovernance, ProjectId, RECIPES, ReportingCadence,
+    RoleAssignment, RoleId, Visibility, VisibilityPolicy, construction_exception_capability,
+    construction_project_accept_capability, construction_project_read_capability,
+    construction_project_write_capability, construction_reference_publish_capability,
+    construction_supplier_read_capability,
 };
 use sim_kernel::Symbol;
 use sim_lib_doc_core::ExternalRef;
@@ -247,6 +248,10 @@ fn capability_constants_build_kernel_capability_names() {
         construction_reference_publish_capability().as_str(),
         CONSTRUCTION_REFERENCE_PUBLISH_CAPABILITY
     );
+    assert_eq!(
+        construction_supplier_read_capability().as_str(),
+        CONSTRUCTION_SUPPLIER_READ_CAPABILITY
+    );
 }
 
 #[test]
@@ -261,6 +266,11 @@ fn recipes_export_project_charter() {
     assert!(
         cards
             .iter()
+            .any(|card| card.id.ends_with("table-backed-project-book"))
+    );
+    assert!(
+        cards
+            .iter()
             .any(|card| card.id.ends_with("mobilization-gate"))
     );
     assert!(cards.iter().any(|card| card.id.ends_with("late-decision")));
@@ -268,6 +278,16 @@ fn recipes_export_project_charter() {
         cards
             .iter()
             .any(|card| card.id.ends_with("mixed-obligation-gate"))
+    );
+    assert!(
+        cards
+            .iter()
+            .any(|card| card.id.ends_with("customer-intent-to-collaboration"))
+    );
+    assert!(
+        cards
+            .iter()
+            .any(|card| card.id.ends_with("supplier-to-production-handoff"))
     );
 }
 

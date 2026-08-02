@@ -1,0 +1,5 @@
+book = "construction/office-evidence"
+title = "Construction Office Projections"
+summary = "Reference-only evidence joins and deterministic visibility-safe role packs over existing office values."
+order = 530
+chapters = ["01-basics"]

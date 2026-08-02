@@ -20,10 +20,24 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 | `feature/sim-construction/generated-docs` | `crate/xtask` | 0 | Publish generated package, card, recipe, and index facts for construction project-control crates. |
 | `feature/sim-construction/mspdi-schedule-exchange` | `crate/sim-codec-mspdi` | 1 | Round-trip Microsoft Project XML schedules through the portable construction Gantt document model. |
 | `feature/sim-construction/powerproject-schedule-placement` | `crate/sim-site-powerproject` | 1 | Place construction Gantt schedules at Powerproject desktop and Project for the web boundaries. |
-| `feature/sim-construction/dalux-project-items` | `crate/sim-site-dalux` | 2 | Read Dalux project items into local office documents for construction evidence and keep note updates narrow. |
-| `feature/sim-construction/project-control` | `crate/sim-lib-construction-project` | 7 | Describe construction phase gate and baseline control through as-of snapshot records, project charter identity, append-only fact books, lifecycle vocabulary, baselines, gates, actions, decisions, deterministic deltas, governance, capabilities, shared obligations, bounded exceptions, graph-composed blockers, and readiness with reference-only evidence. |
+| `feature/sim-construction/dalux-project-items` | `crate/sim-site-dalux` | 2 | Read Dalux project items into local office documents through ledgered site effects, expose URL-free item correlations, and keep writes limited to notes. |
+| `feature/sim-construction/project-control` | `crate/sim-lib-construction-project` | 22 | Load complete construction project control as semantic Citizens, checked Shapes, and capability-minimal operations over append-only books, historical snapshots, lifecycle gates, schedule impact, readiness, exposure, handover, outcomes, and reference admission. |
+| `feature/sim-construction/table-backed-project-books` | `crate/sim-lib-construction-project` | 1 | Persist one authoritative construction project fact book through a caller-injected Table or Dir, rebuild every historical snapshot from canonical fact paths, and treat verified projections as disposable caches. |
+| `feature/sim-construction/office-evidence-bridge` | `crate/sim-lib-construction-office` | 2 | The office evidence construction bridge attaches project-scoped fact evidence to existing office documents while preserving precise construction meaning, visibility, and acceptance. |
+| `feature/sim-construction/office-role-cadence-packs` | `crate/sim-lib-construction-office` | 2 | Project current or historical construction snapshots into deterministic, evidence-linked, visibility-safe role-cadence packs on existing office surfaces. |
+| `feature/sim-construction/production-field-control` | `crate/sim-lib-construction-project` | 2 | Control Dalux construction field item incident quality reports alongside local observations, deviations, inspection and test points, defects, and corrective actions with accountable evidence and safety-first rollups. |
+| `feature/sim-construction/gantt-schedule-impact` | `crate/sim-lib-construction-project` | 2 | Join stable construction controls to canonical Gantt task ids and explain baseline-aware Gantt critical path construction consequences: downstream, need-date, float-risk, late-decision, procurement lead-time, and change impact. |
+| `feature/sim-construction/sustainability-reference-outcomes` | `crate/sim-lib-construction-project` | 2 | Trace project-chartered certification, climate, efficiency, reuse, waste, responsible-material, quality, safety, work-environment, property, and city-district targets to source-retained quantities, method and boundary provenance, reviewed evidence, gate blockers, and admissible reference claims. |
+| `feature/sim-construction/production-lookahead-readiness` | `crate/sim-lib-construction-project` | 2 | Derive six-week demand and three-week production commitments from accepted Gantt task joins, work packages, location/system breakdowns, shared requirements, validity windows, accountable exceptions, and separate human commitment facts. |
+| `feature/sim-construction/risk-opportunity-forecast-escalation` | `crate/sim-lib-construction-project` | 4 | Control current project risks and opportunities through typed open ratings, method-bearing forecast consequences, exact comparable exposure, accepted Gantt joins, control dependencies, and deterministic attention recommendations. |
+| `feature/sim-construction/work-package-procurement-awards` | `crate/sim-lib-construction-project` | 2 | Carry a construction work package procurement record from inquiry basis through supplier candidates and comparable tender facts to an accountable award decision while keeping commercial values on sim-ledger Amount and project-charter currency. |
+| `feature/sim-construction/change-commercial-exposure` | `crate/sim-lib-construction-project` | 2 | Construction change commercial exposure ledger references stay versioned and read-only while one stable ChangeId runs from instruction or notice through scope, time, supplier exposure, customer recovery, quotation, authority, forecast, execution, settlement, and closure with exact non-duplicated Amount views. |
+| `feature/sim-construction/supplier-production-handoff` | `crate/sim-lib-construction-project` | 2 | Derive project-scoped supplier qualification and production handoff readiness from subcontract-chain references, shared qualification obligations, restricted external evidence, accountable award decisions, production design releases, material lead time, production need dates, and explicit responsibility acceptance. |
+| `feature/sim-construction/design-release-authority-control` | `crate/sim-lib-construction-project` | 2 | Trace current design revisions, RFIs, reviews, purpose-specific releases, permits, inspections, and authority obligations into package or task readiness through the shared construction control graph. |
 | `feature/sim-construction/phase-gates` | `crate/sim-lib-construction-project` | 5 | Derive construction phase gate baseline and obligation readiness from accepted project-control facts while keeping human approval and exceptions as separate accountable decisions. |
+| `feature/sim-construction/system-handover-commissioning-acceptance` | `crate/sim-lib-construction-project` | 3 | Roll system, area, work-package, asset-group, and contractual-milestone readiness up from explicit commissioning, inspection/test, defect, O&M, as-built, training, certification, authority, customer-acceptance, and remaining-work evidence. |
 | `feature/sim-construction/obligation-evidence-exceptions` | `crate/sim-lib-construction-project` | 3 | Evaluate shared construction requirements and project obligations across open lanes with stable evidence states, validity windows, graph-composed dependencies, source references, optional policy, bounded exceptions, and deterministic explanation paths. |
+| `feature/sim-construction/final-economy-closeout-reference-admission` | `crate/sim-lib-construction-project` | 4 | Reconcile exact accepted-contract, forecast, final-position, exposure, settlement, guarantee, retention, claim, and ledger Amount facts at one explained cutoff; close warranty/contact, retention-policy, unresolved-work, evidence-disposition, and lesson obligations; and admit only current, consent- and confidentiality-cleared aggregate people/property/city claims through a named authority into an immutable reference manifest. |
 
 ## Surfaces
 
@@ -40,13 +54,43 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 - `crates/sim-codec-mspdi/recipes/01-basics/mspdi-round-trip/recipe.toml`
 - `crates/sim-codec-mspdi/recipes/01-basics/mspdi-round-trip/setup.siml`
 - `crates/sim-codec-mspdi/recipes/book.toml`
+- `crates/sim-lib-construction-office/recipes/01-basics/chapter.toml`
+- `crates/sim-lib-construction-office/recipes/01-basics/construction-office-evidence/purpose.md`
+- `crates/sim-lib-construction-office/recipes/01-basics/construction-office-evidence/recipe.toml`
+- `crates/sim-lib-construction-office/recipes/01-basics/construction-office-evidence/setup.siml`
+- `crates/sim-lib-construction-office/recipes/01-basics/project-chief-weekly-pack/purpose.md`
+- `crates/sim-lib-construction-office/recipes/01-basics/project-chief-weekly-pack/recipe.toml`
+- `crates/sim-lib-construction-office/recipes/01-basics/project-chief-weekly-pack/setup.siml`
+- `crates/sim-lib-construction-office/recipes/book.toml`
 - `crates/sim-lib-construction-project/recipes/01-basics/blocked-gate-graph/purpose.md`
 - `crates/sim-lib-construction-project/recipes/01-basics/blocked-gate-graph/recipe.toml`
 - `crates/sim-lib-construction-project/recipes/01-basics/blocked-gate-graph/setup.siml`
 - `crates/sim-lib-construction-project/recipes/01-basics/chapter.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/closeout-to-reference-admission/purpose.md`
+- `crates/sim-lib-construction-project/recipes/01-basics/closeout-to-reference-admission/recipe.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/closeout-to-reference-admission/setup.siml`
+- `crates/sim-lib-construction-project/recipes/01-basics/control-graph-meets-gantt/purpose.md`
+- `crates/sim-lib-construction-project/recipes/01-basics/control-graph-meets-gantt/recipe.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/control-graph-meets-gantt/setup.siml`
+- `crates/sim-lib-construction-project/recipes/01-basics/customer-intent-to-collaboration/purpose.md`
+- `crates/sim-lib-construction-project/recipes/01-basics/customer-intent-to-collaboration/recipe.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/customer-intent-to-collaboration/setup.siml`
+- `crates/sim-lib-construction-project/recipes/01-basics/design-release-to-production/purpose.md`
+- `crates/sim-lib-construction-project/recipes/01-basics/design-release-to-production/recipe.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/design-release-to-production/setup.siml`
+- `crates/sim-lib-construction-project/recipes/01-basics/field-item-to-corrective-evidence/purpose.md`
+- `crates/sim-lib-construction-project/recipes/01-basics/field-item-to-corrective-evidence/recipe.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/field-item-to-corrective-evidence/setup.siml`
+- `crates/sim-lib-construction-project/recipes/01-basics/instruction-to-final-settlement/purpose.md`
+- `crates/sim-lib-construction-project/recipes/01-basics/instruction-to-final-settlement/recipe.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/instruction-to-final-settlement/setup.siml`
 - `crates/sim-lib-construction-project/recipes/01-basics/late-decision/purpose.md`
 - `crates/sim-lib-construction-project/recipes/01-basics/late-decision/recipe.toml`
 - `crates/sim-lib-construction-project/recipes/01-basics/late-decision/setup.siml`
+- `crates/sim-lib-construction-project/recipes/01-basics/loadable-project-control/expected.txt`
+- `crates/sim-lib-construction-project/recipes/01-basics/loadable-project-control/purpose.md`
+- `crates/sim-lib-construction-project/recipes/01-basics/loadable-project-control/recipe.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/loadable-project-control/setup.siml`
 - `crates/sim-lib-construction-project/recipes/01-basics/mixed-obligation-gate/purpose.md`
 - `crates/sim-lib-construction-project/recipes/01-basics/mixed-obligation-gate/recipe.toml`
 - `crates/sim-lib-construction-project/recipes/01-basics/mixed-obligation-gate/setup.siml`
@@ -56,9 +100,30 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 - `crates/sim-lib-construction-project/recipes/01-basics/project-charter/purpose.md`
 - `crates/sim-lib-construction-project/recipes/01-basics/project-charter/recipe.toml`
 - `crates/sim-lib-construction-project/recipes/01-basics/project-charter/setup.siml`
+- `crates/sim-lib-construction-project/recipes/01-basics/risk-to-project-chief-decision/purpose.md`
+- `crates/sim-lib-construction-project/recipes/01-basics/risk-to-project-chief-decision/recipe.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/risk-to-project-chief-decision/setup.siml`
+- `crates/sim-lib-construction-project/recipes/01-basics/six-week-production-readiness/purpose.md`
+- `crates/sim-lib-construction-project/recipes/01-basics/six-week-production-readiness/recipe.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/six-week-production-readiness/setup.siml`
+- `crates/sim-lib-construction-project/recipes/01-basics/supplier-to-production-handoff/purpose.md`
+- `crates/sim-lib-construction-project/recipes/01-basics/supplier-to-production-handoff/recipe.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/supplier-to-production-handoff/setup.siml`
+- `crates/sim-lib-construction-project/recipes/01-basics/sustainability-to-reference-evidence/purpose.md`
+- `crates/sim-lib-construction-project/recipes/01-basics/sustainability-to-reference-evidence/recipe.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/sustainability-to-reference-evidence/setup.siml`
+- `crates/sim-lib-construction-project/recipes/01-basics/system-to-accepted-handover/purpose.md`
+- `crates/sim-lib-construction-project/recipes/01-basics/system-to-accepted-handover/recipe.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/system-to-accepted-handover/setup.siml`
+- `crates/sim-lib-construction-project/recipes/01-basics/table-backed-project-book/purpose.md`
+- `crates/sim-lib-construction-project/recipes/01-basics/table-backed-project-book/recipe.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/table-backed-project-book/setup.siml`
 - `crates/sim-lib-construction-project/recipes/01-basics/what-changed/purpose.md`
 - `crates/sim-lib-construction-project/recipes/01-basics/what-changed/recipe.toml`
 - `crates/sim-lib-construction-project/recipes/01-basics/what-changed/setup.siml`
+- `crates/sim-lib-construction-project/recipes/01-basics/work-package-award/purpose.md`
+- `crates/sim-lib-construction-project/recipes/01-basics/work-package-award/recipe.toml`
+- `crates/sim-lib-construction-project/recipes/01-basics/work-package-award/setup.siml`
 - `crates/sim-lib-construction-project/recipes/book.toml`
 - `crates/sim-site-dalux/recipes/01-basics/chapter.toml`
 - `crates/sim-site-dalux/recipes/01-basics/dalux-modeled-items/purpose.md`
@@ -70,6 +135,12 @@ This generated lane consumes `docs/generated/sim-index-fragment.sx`. Global inde
 - `crates/sim-site-powerproject/recipes/01-basics/powerproject-placement/recipe.toml`
 - `crates/sim-site-powerproject/recipes/01-basics/powerproject-placement/setup.siml`
 - `crates/sim-site-powerproject/recipes/book.toml`
+- `recipes/book.toml`
+- `recipes/reference-project-control/expected.siml`
+- `recipes/reference-project-control/main.siml`
+- `recipes/reference-project-control/purpose.md`
+- `recipes/reference-project-control/recipe.toml`
+- `recipes/reference-project-control/setup.siml`
 
 ## Worked Examples
 
@@ -256,15 +327,26 @@ fn modeled_project_items_become_dalux_doc() {
         StaticDaluxCredentialProvider::new("token-1"),
     );
 
-    let doc = get_project_items(&mut cx, &client, "synthetic-project-1").unwrap();
-    let sheet = sim_lib_sheet::doc_to_sheet(&mut cx, &doc).unwrap();
+    let receipt = get_project_items_with_receipt(&mut cx, &client, "synthetic-project-1").unwrap();
+    let sheet = sim_lib_sheet::doc_to_sheet(&mut cx, &receipt.doc).unwrap();
 
     assert_eq!(
-        doc.id.as_str(),
+        receipt.doc.id.as_str(),
         "site/dalux/projects/synthetic-project-1/items"
     );
     assert_eq!(text_at(&sheet, "A2"), "item-1");
     assert_eq!(text_at(&sheet, "B2"), "Door review");
+    assert_eq!(receipt.items.len(), 1);
+    assert_eq!(receipt.items[0].external_ref.backend, DALUX_SITE_ID);
+    assert_eq!(receipt.items[0].external_ref.external_id, "items/item-1");
+    assert_eq!(receipt.items[0].external_ref.web_url, None);
+    assert_eq!(receipt.items[0].state, "open");
+    assert_eq!(receipt.effect.ledger_ref.backend, "effect/ledger");
+    assert_eq!(cx.effect_ledger().records().len(), 1);
+    assert_eq!(
+        cx.effect_ledger().records()[0].effect,
+        receipt.effect.effect
+    );
 }
 
 #[test]
@@ -283,11 +365,60 @@ fn modeled_patch_sends_only_note_field() {
         StaticDaluxCredentialProvider::new("token-1"),
     );
 
-    let external = patch_item_note(&mut cx, &client, "item-1", "Reviewed in SIM").unwrap();
+    let receipt =
+        patch_item_note_with_receipt(&mut cx, &client, "item-1", "Reviewed in SIM").unwrap();
+    let external = receipt.item;
 
     assert_eq!(external.backend, DALUX_SITE_ID);
     assert_eq!(external.external_id, "items/item-1");
     assert_eq!(external.version.as_deref(), Some("2026-07-13T11:00:00Z"));
+    assert_eq!(external.web_url, None);
+    assert_eq!(receipt.effect.ledger_ref.backend, "effect/ledger");
+    assert_eq!(cx.effect_ledger().records().len(), 1);
+}
+
+#[test]
+fn modeled_and_live_reads_share_the_site_effect_contract() {
+    let mut modeled_cx = test_context();
+    let modeled = DaluxClient::modeled(
+        ModeledDalux::with_json(
+            "/projects/synthetic-project-1/items",
+            json!({
+                "items": [{
+                    "id": "item-1",
+                    "status": "open",
+                    "updatedAt": "2026-07-13T10:00:00Z"
+                }]
+            }),
+        ),
+        StaticDaluxCredentialProvider::new("token-1"),
+    );
+    get_project_items_with_receipt(&mut modeled_cx, &modeled, "synthetic-project-1").unwrap();
+    let modeled_record = &modeled_cx.effect_ledger().records()[0];
+    let modeled_effect = modeled_cx
+        .effect_ledger()
+        .effect(&modeled_record.effect)
+        .unwrap();
+
+    let mut live_cx = test_context();
+    let live = DaluxClient::live(
+        "https://example.com/dalux",
+        StaticDaluxCredentialProvider::new("token-1"),
+    );
+    let error =
+        get_project_items_with_receipt(&mut live_cx, &live, "synthetic-project-1").unwrap_err();
+    assert!(error.to_string().contains(NET_CONNECT_CAPABILITY));
+    let live_record = &live_cx.effect_ledger().records()[0];
+    let live_effect = live_cx.effect_ledger().effect(&live_record.effect).unwrap();
+
+    assert_eq!(modeled_effect.kind, live_effect.kind);
+    assert_eq!(modeled_effect.subject, live_effect.subject);
+    assert_eq!(
+        modeled_effect.subject,
+        sim_kernel::Ref::Symbol(site_symbol(DALUX_SITE_ID))
+    );
+    assert!(!modeled_record.aborted);
+    assert!(live_record.aborted);
 }
 
 #[test]
@@ -445,6 +576,21 @@ tags = ["construction", "project-control", "decision", "action", "escalation"]
 requires = ["construction.project.read", "construction.project.write", "codec/lisp"]
 ```
 
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/customer-intent-to-collaboration` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/customer-intent-to-collaboration/recipe.toml`:
+
+```toml
+id = "customer-intent-to-collaboration"
+title = "Customer intent to collaboration"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 45
+tags = ["construction", "project-control", "customer-intent", "bid", "collaboration", "gate"]
+requires = ["construction.project.read", "construction.project.write", "construction.project.accept", "codec/lisp"]
+```
+
 Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/what-changed` is checked by `sh scripts/check-recipes.sh`.
 
 Source `crates/sim-lib-construction-project/recipes/01-basics/what-changed/recipe.toml`:
@@ -458,6 +604,456 @@ purpose = "purpose.md"
 order = 20
 tags = ["construction", "project-control", "fact-book", "snapshot"]
 requires = ["construction.project.read", "construction.project.write", "codec/lisp"]
+```
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/design-release-to-production` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/design-release-to-production/recipe.toml`:
+
+```toml
+id = "design-release-to-production"
+title = "Design release to production"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 65
+tags = ["construction", "project-control", "design", "rfi", "release", "permit", "authority"]
+requires = ["construction.project.read", "construction.project.write", "codec/lisp"]
+```
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/work-package-award` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/work-package-award/recipe.toml`:
+
+```toml
+id = "work-package-award"
+title = "Work-package award"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 70
+tags = ["construction", "project-control", "procurement", "work-package", "tender", "award"]
+requires = ["construction.project.read", "construction.project.write", "codec/lisp"]
+```
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/control-graph-meets-gantt` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/control-graph-meets-gantt/recipe.toml`:
+
+```toml
+id = "control-graph-meets-gantt"
+title = "Control graph meets Gantt"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 95
+tags = ["construction", "project-control", "gantt", "critical-path", "powerproject"]
+requires = ["construction.project.read", "construction.project.write", "codec/lisp"]
+```
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/six-week-production-readiness` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/six-week-production-readiness/recipe.toml`:
+
+```toml
+id = "six-week-production-readiness"
+title = "Six-week production readiness"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 95
+tags = ["construction", "project-control", "production", "lookahead", "readiness", "gantt"]
+requires = ["construction.project.read", "construction.project.write", "codec/lisp"]
+```
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/sustainability-to-reference-evidence` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/sustainability-to-reference-evidence/recipe.toml`:
+
+```toml
+id = "sustainability-to-reference-evidence"
+title = "Sustainability to reference evidence"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 95
+tags = ["construction", "sustainability", "certification", "climate", "reuse", "place", "evidence"]
+requires = ["construction.project.read", "construction.reference.publish", "codec/lisp"]
+```
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/field-item-to-corrective-evidence` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/field-item-to-corrective-evidence/recipe.toml`:
+
+```toml
+id = "field-item-to-corrective-evidence"
+title = "Field item to corrective evidence"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 96
+tags = ["construction", "field-control", "dalux", "incident", "inspection", "corrective-evidence", "safety"]
+requires = ["construction.project.read", "construction.project.write", "site/dalux", "codec/lisp"]
+```
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/loadable-project-control` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/loadable-project-control/recipe.toml`:
+
+```toml
+id = "loadable-project-control"
+title = "Load and exercise construction project control"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 190
+tags = ["construction", "framework", "citizen", "shape-checked", "bootloader", "runnable"]
+requires = ["codec/lisp", "sim-run-core", "sim/construction-project", "construction.project.read", "construction.project.write"]
+harness = "cargo-test"
+package = "sim-lib-construction-project"
+test = "runtime_tests::loadable_lisp_specimen_constructs_appends_snapshots_and_explains"
+expected = "expected.txt"
+```
+
+Specimen `recipe/sim-construction/reference-project-control` is checked by `sh scripts/check-recipes.sh`.
+
+Source `recipes/reference-project-control/recipe.toml`:
+
+```toml
+id = "reference-project-control"
+title = "Modeled reference project control"
+codec = "lisp"
+setup = "setup.siml"
+main = "main.siml"
+purpose = "purpose.md"
+order = 1000
+tags = ["construction", "project-control", "reference", "modeled", "offline", "table", "gantt", "mspdi", "powerproject", "dalux", "office"]
+requires = [
+  "codec/lisp",
+  "sim-run-core",
+  "sim/construction-project",
+  "sim-lib-construction-office",
+  "table/hash",
+  "office/gantt",
+  "office/doc-core",
+  "office/doc-site",
+  "office/doc-surface",
+  "codec/mspdi",
+  "site/powerproject",
+  "site/dalux",
+  "ledger/books",
+  "construction.project.read",
+  "construction.project.write",
+  "construction.reference.publish",
+]
+harness = "cargo-test"
+package = "sim-site-dalux"
+test = "reference_project_control"
+expected = "expected.siml"
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/opportunity_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/opportunity_tests.rs`:
+
+```rust
+// conformance: customer intent, bid decisions, and collaboration readiness
+
+use crate::{
+    BidDecision, BidDecisionKind, CollaborationCharter, ConstructionProjectError,
+    ConstructionVariant, ControlId, CustomerIntent, CustomerIntentAcceptance, EvidenceState,
+    IntentField, OpportunityRecord, OpportunitySource, ProjectBook, ProjectFact, ProjectId,
+    ProjectObligation, Requirement, RequirementLane, RoleId,
+};
+use sim_kernel::{Expr, Symbol};
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+#[test]
+fn bid_no_bid_and_conditional_bid_validate_accountable_basis() {
+    let no_bid = bid(BidDecisionKind::NoBid)
+        .with_capacity_view("no design manager available")
+        .with_risk("customer target budget is below market")
+        .with_evidence(evidence_ref("bid/no-bid"));
+    no_bid.validate().unwrap();
+
+    let conditional = bid(BidDecisionKind::ConditionalBid)
+        .with_capacity_view("team available after permit package")
+        .with_risk("tenant phasing remains open")
+        .with_opportunity("repeat customer reference value")
+        .with_assumption("night work is excluded")
+        .valid_until(Date::from_calendar_date(2026, Month::August, 15).unwrap())
+        .with_price_basis(evidence_ref("basis/price"))
+        .with_schedule_basis(evidence_ref("basis/schedule"))
+        .with_evidence(evidence_ref("bid/conditional"));
+    conditional.validate().unwrap();
+
+    let missing_basis = bid(BidDecisionKind::Bid)
+        .with_capacity_view("team assigned")
+        .with_risk("long-lead switchgear")
+        .valid_until(Date::from_calendar_date(2026, Month::August, 15).unwrap())
+        .with_evidence(evidence_ref("bid/bid"));
+    assert_eq!(
+        missing_basis.validate(),
+        Err(ConstructionProjectError::EmptyCollection("bid.price_basis"))
+    );
+}
+
+#[test]
+fn expired_offer_basis_is_reported_without_rewriting_decision() {
+    let decision = bid(BidDecisionKind::Bid)
+        .with_capacity_view("team assigned")
+        .with_risk("long-lead switchgear")
+        .valid_until(Date::from_calendar_date(2026, Month::July, 20).unwrap())
+        .with_price_basis(evidence_ref("basis/price"))
+        .with_schedule_basis(evidence_ref("basis/schedule"))
+        .with_evidence(evidence_ref("bid/bid"));
+
+    let report = decision
+        .offer_basis_report(Date::from_calendar_date(2026, Month::July, 23).unwrap())
+        .unwrap();
+
+    assert!(report.expired);
+    assert!(report.has_price_basis);
+    assert!(report.has_schedule_basis);
+}
+
+#[test]
+fn conflicting_intent_blocks_coverage_through_requirement_graph() {
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(fact(1, "requirement.intent.scope").with_evidence(evidence_ref("scope-a")))
+        .unwrap();
+    book.append(fact(2, "requirement.intent.scope").with_evidence(evidence_ref("scope-b")))
+        .unwrap();
+
+    let report = complete_intent()
+        .coverage_report(
+            [mandatory("requirement.intent.scope", "customer")],
+            &book,
+            2,
+            today(),
+        )
+        .unwrap();
+
+    assert!(!report.ready);
+    assert_eq!(
+        report.requirement_report.explanations[0].evidence_state,
+        EvidenceState::Conflicted
+    );
+    assert!(report.unknown_fields.is_empty());
+}
+
+#[test]
+fn unknown_customer_assumption_does_not_become_accepted_requirement() {
+    let book = ProjectBook::new(project(), writer());
+    let mut intent = complete_intent().with_assumption("customer may keep lobby occupied");
+    intent.tenant_constraints = IntentField::unknown("customer has not stated tenant phasing");
+
+    let report = intent
+        .coverage_report(
+            [mandatory("requirement.intent.tenant-phasing", "customer")],
+            &book,
+            0,
+            today(),
+        )
+        .unwrap();
+
+    assert!(!report.ready);
+    assert_eq!(report.unknown_fields, vec!["tenant_constraints"]);
+    assert_eq!(
+        report.requirement_report.explanations[0].evidence_state,
+        EvidenceState::Missing
+    );
+}
+
+#[test]
+fn late_customer_decision_is_explicit_and_still_authority_checked() {
+    let decision = CustomerIntentAcceptance::new(
+        ControlId::new("intent.reference-center").unwrap(),
+        RoleId::new("project-chief").unwrap(),
+        RoleId::new("project-chief").unwrap(),
+        Date::from_calendar_date(2026, Month::July, 20).unwrap(),
+        Date::from_calendar_date(2026, Month::July, 23).unwrap(),
+    )
+    .with_evidence(evidence_ref("intent/acceptance"));
+
+    decision.validate().unwrap();
+    assert!(decision.is_late());
+}
+
+#[test]
+fn missing_main_contract_evidence_blocks_collaboration_readiness() {
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(fact(1, "requirement.intent.scope").with_evidence(evidence_ref("scope")))
+        .unwrap();
+
+    let charter = collaboration_charter()
+        .with_main_contract_evidence(ControlId::new("evidence.main-contract.form").unwrap())
+        .with_obligation(mandatory("requirement.intent.scope", "customer"));
+
+    let report = charter.readiness_report(&book, 1, today()).unwrap();
+
+    assert!(!report.ready);
+    assert_eq!(
+        report.missing_main_contract_evidence,
+        vec![ControlId::new("evidence.main-contract.form").unwrap()]
+    );
+    assert!(report.requirement_report.ready);
+}
+
+#[test]
+fn synthetic_renovation_and_new_build_intents_share_the_same_control_surface() {
+    let renovation = complete_intent();
+    let mut new_build = complete_intent();
+    new_build.control = ControlId::new("intent.new-build").unwrap();
+    new_build.variant = IntentField::known(ConstructionVariant::NewBuild, evidence_ref("variant"));
+    new_build.property_constraints = IntentField::known(
+        vec!["greenfield plot boundary".to_owned()],
+        evidence_ref("plot"),
+    );
+
+    renovation.validate().unwrap();
+    new_build.validate().unwrap();
+    assert_eq!(
+        renovation.variant.value,
+        Some(ConstructionVariant::Renovation)
+    );
+    assert_eq!(new_build.variant.value, Some(ConstructionVariant::NewBuild));
+}
+
+#[test]
+fn opportunity_record_is_reference_only_project_control() {
+    let opportunity = OpportunityRecord::new(
+        project(),
+        ControlId::new("opportunity.reference-center").unwrap(),
+        OpportunitySource::Customer,
+        RoleId::new("project-chief").unwrap(),
+        "Reference center tenant improvement",
+    )
+    .with_evidence(evidence_ref("opportunity"));
+
+    opportunity.validate().unwrap();
+}
+
+fn complete_intent() -> CustomerIntent {
+    let mut intent = CustomerIntent::new(
+        project(),
+        ControlId::new("intent.reference-center").unwrap(),
+    )
+    .with_assumption("work hours are customer-confirmed")
+    .with_exclusion("loose furniture")
+    .with_evidence(evidence_ref("intent"));
+    intent.intended_use =
+        IntentField::known("tenant reference center".to_owned(), evidence_ref("use"));
+    intent.scope_boundary = IntentField::known(
+        "existing shell interior fit-out".to_owned(),
+        evidence_ref("scope"),
+    );
+    intent.property_constraints = IntentField::known(
+        vec!["existing facade is fixed".to_owned()],
+        evidence_ref("property"),
+    );
+    intent.tenant_constraints = IntentField::known(
+        vec!["occupied upper floors".to_owned()],
+        evidence_ref("tenant"),
+    );
+    intent.success_measures = IntentField::known(
+        vec!["handover accepted before opening".to_owned()],
+        evidence_ref("success"),
+    );
+    intent.target_outcomes = IntentField::known(
+        vec!["public reference candidate".to_owned()],
+        evidence_ref("outcomes"),
+    );
+    intent.delivery_form = IntentField::known("collaboration".to_owned(), evidence_ref("delivery"));
+    intent.procurement_form = IntentField::known(
+        "two-stage negotiated".to_owned(),
+        evidence_ref("procurement"),
+    );
+    intent.time_frame = IntentField::known("Q3 2026".to_owned(), evidence_ref("time"));
+    intent.commercial_frame = IntentField::known(
+        "target price with open book".to_owned(),
+        evidence_ref("commercial"),
+    );
+    intent.variant = IntentField::known(ConstructionVariant::Renovation, evidence_ref("variant"));
+    intent
+}
+
+fn collaboration_charter() -> CollaborationCharter {
+    CollaborationCharter::new(
+        project(),
+        ControlId::new("collaboration.reference-center").unwrap(),
+        "weekly",
+    )
+    .with_objective("turn stated customer intent into gate evidence")
+    .with_working_principle("no unstated customer assumption is accepted")
+    .with_organization("customer and supplier core team")
+    .with_decision_right("project-chief accepts main-contract evidence")
+    .with_investigation("tenant access survey")
+    .with_target_design_buildability_work("phased logistics plan")
+    .with_open_book_rule("shared cost log before target price")
+    .with_escalation_role(RoleId::new("project-chief").unwrap())
+    .with_evidence(evidence_ref("collaboration"))
+}
+
+fn bid(decision: BidDecisionKind) -> BidDecision {
+    BidDecision::new(
+        project(),
+        ControlId::new("bid.reference-center").unwrap(),
+        ControlId::new("intent.reference-center").unwrap(),
+        RoleId::new("project-chief").unwrap(),
+        RoleId::new("project-chief").unwrap(),
+        decision,
+    )
+}
+
+fn mandatory(requirement_id: &str, lane: &str) -> ProjectObligation {
+    ProjectObligation::mandatory(
+        project(),
+        Requirement::new(
+            ControlId::new(requirement_id).unwrap(),
+            RequirementLane::new(Symbol::qualified("construction-lane", lane)),
+            requirement_id,
+            RoleId::new("supplier-lead").unwrap(),
+            RoleId::new("project-chief").unwrap(),
+        )
+        .with_evidence_kind(Symbol::qualified("construction-evidence", "external-ref"))
+        .with_source_ref(evidence_ref("requirement-source")),
+    )
+}
+
+fn fact(seq: u64, subject: &str) -> ProjectFact {
+    ProjectFact::new(
+        seq,
+        project(),
+        ControlId::new(subject).unwrap(),
+        Symbol::qualified("construction", "customer-intent"),
+        today(),
+        writer(),
+        Expr::String(subject.to_owned()),
+    )
+}
+
+fn project() -> ProjectId {
+    ProjectId::new("reference-center").unwrap()
+}
+
+fn writer() -> RoleId {
+    RoleId::new("project-chief").unwrap()
+}
+
+fn evidence_ref(id: &str) -> ExternalRef {
+    ExternalRef::new(
+        "doc/synthetic",
+        format!("opportunity/reference-center/{id}"),
+        Some("rev-a".to_owned()),
+        None,
+    )
+}
+
+fn today() -> Date {
+    Date::from_calendar_date(2026, Month::July, 23).unwrap()
+}
 ```
 
 Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/fact_book_tests` is checked by `cargo test`.
@@ -747,6 +1343,1701 @@ fn accepted_on() -> Date {
 }
 ```
 
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/design_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/design_tests.rs`:
+
+```rust
+// conformance: design release, RFI, permit, and authority readiness control
+
+use crate::{
+    AuthorityObligation, AuthorityObligationState, ConstructionProjectError, ControlId,
+    DesignControlSet, DesignRelease, DesignReleasePurpose, DesignReview, DesignReviewState,
+    DesignRevision, EvidenceState, EvidenceValidity, PermitRecord, PermitState, ProjectId,
+    RfiRecord, RfiState, RoleId,
+};
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+#[test]
+fn accepted_production_release_makes_package_design_ready() {
+    let report = ready_set()
+        .readiness_for(package(), DesignReleasePurpose::Production, today())
+        .unwrap();
+
+    assert!(report.ready);
+    assert_eq!(report.current_revisions, vec![revision_a()]);
+    assert_eq!(report.releases, vec![release("release.prod")]);
+    assert!(report.blockers.is_empty());
+}
+
+#[test]
+fn conflicting_current_revisions_are_rejected() {
+    let result = DesignControlSet::new()
+        .with_revision(accepted_revision("design.a", "A"))
+        .with_revision(accepted_revision("design.b", "B"))
+        .with_release(accepted_release("release.prod", "design.a"))
+        .readiness_for(package(), DesignReleasePurpose::Production, today());
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::ConflictingDesignRevisions { .. })
+    ));
+}
+
+#[test]
+fn answered_but_unaccepted_rfi_blocks_readiness_through_graph_path() {
+    let report = ready_set()
+        .with_rfi(
+            RfiRecord::new(
+                project(),
+                control("rfi.fire-rating"),
+                role("designer"),
+                today(),
+            )
+            .with_state(RfiState::Answered)
+            .with_evidence_state(EvidenceState::Evidenced)
+            .affects(package())
+            .with_external_ref(reference("rfi/fire-rating", "answered")),
+        )
+        .readiness_for(package(), DesignReleasePurpose::Production, today())
+        .unwrap();
+
+    assert!(!report.ready);
+    assert_eq!(report.blockers[0].control.as_str(), "rfi.fire-rating");
+    assert_eq!(
+        report.blockers[0].reason,
+        "RFI is answered but not accepted"
+    );
+    assert_eq!(
+        report.blockers[0].paths[0]
+            .steps
+            .iter()
+            .map(|step| step.control.as_str())
+            .collect::<Vec<_>>(),
+        vec!["rfi.fire-rating", "package.frame"]
+    );
+}
+
+#[test]
+fn release_for_wrong_purpose_blocks_production_readiness() {
+    let report = DesignControlSet::new()
+        .with_revision(accepted_revision("design.a", "A"))
+        .with_release(
+            DesignRelease::new(
+                project(),
+                release("release.procurement"),
+                revision_a(),
+                "A",
+                DesignReleasePurpose::Procurement,
+                role("designer"),
+                role("project-chief"),
+                role("project-chief"),
+                today(),
+            )
+            .with_evidence_state(EvidenceState::Accepted)
+            .affects(package())
+            .with_external_ref(reference("release/procurement", "accepted")),
+        )
+        .readiness_for(package(), DesignReleasePurpose::Production, today())
+        .unwrap();
+
+    assert!(!report.ready);
+    assert_eq!(report.blockers[0].rule, "release-purpose");
+}
+
+#[test]
+fn expired_permit_blocks_authority_readiness() {
+    let report = ready_set()
+        .with_permit(
+            PermitRecord::new(
+                project(),
+                control("permit.fire"),
+                role("authority-lead"),
+                today(),
+            )
+            .with_state(PermitState::Granted)
+            .with_evidence_state(EvidenceState::Accepted)
+            .with_validity(EvidenceValidity::new(
+                None,
+                Some(Date::from_calendar_date(2026, Month::July, 22).unwrap()),
+            ))
+            .affects(package())
+            .with_external_ref(reference("permit/fire", "granted")),
+        )
+        .readiness_for(package(), DesignReleasePurpose::Production, today())
+        .unwrap();
+
+    assert!(!report.ready);
+    assert_eq!(report.blockers[0].evidence_state, EvidenceState::Expired);
+    assert_eq!(report.blockers[0].reason, "permit is expired");
+}
+
+#[test]
+fn authority_hold_blocks_readiness() {
+    let report = ready_set()
+        .with_permit(
+            PermitRecord::new(
+                project(),
+                control("permit.traffic"),
+                role("authority-lead"),
+                today(),
+            )
+            .with_state(PermitState::Hold)
+            .with_evidence_state(EvidenceState::Reported)
+            .affects(package())
+            .with_external_ref(reference("permit/traffic", "hold")),
+        )
+        .readiness_for(package(), DesignReleasePurpose::Production, today())
+        .unwrap();
+
+    assert!(!report.ready);
+    assert_eq!(report.blockers[0].reason, "authority permit is on hold");
+}
+
+#[test]
+fn superseded_drawing_makes_dependent_release_stale_until_revalidated() {
+    let stale = DesignControlSet::new()
+        .with_revision(accepted_revision("design.a", "A"))
+        .with_revision(accepted_revision("design.b", "B").supersedes(revision_a()))
+        .with_release(accepted_release("release.prod", "design.a"))
+        .readiness_for(package(), DesignReleasePurpose::Production, today());
+
+    assert!(matches!(
+        stale,
+        Err(ConstructionProjectError::StaleDesignRelease { .. })
+    ));
+
+    let revalidated = DesignControlSet::new()
+        .with_revision(accepted_revision("design.a", "A"))
+        .with_revision(accepted_revision("design.b", "B").supersedes(revision_a()))
+        .with_release(
+            accepted_release("release.prod", "design.a").revalidated_against(revision_b()),
+        )
+        .readiness_for(package(), DesignReleasePurpose::Production, today())
+        .unwrap();
+
+    assert!(revalidated.ready);
+}
+
+#[test]
+fn non_waivable_production_blocker_is_rejected() {
+    let result = ready_set()
+        .with_authority_obligation(
+            AuthorityObligation::new(
+                project(),
+                control("authority.stop"),
+                role("authority-lead"),
+                today(),
+            )
+            .with_state(AuthorityObligationState::Hold)
+            .with_evidence_state(EvidenceState::Reported)
+            .non_waivable()
+            .affects(package())
+            .with_external_ref(reference("authority/stop", "hold")),
+        )
+        .readiness_for(package(), DesignReleasePurpose::Production, today());
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::NonWaivableProductionBlocker { .. })
+    ));
+}
+
+#[test]
+fn accepted_review_decision_is_part_of_design_control() {
+    let report = ready_set()
+        .with_review(
+            DesignReview::new(
+                project(),
+                control("review.design-a"),
+                revision_a(),
+                role("reviewer"),
+                today(),
+            )
+            .with_state(DesignReviewState::Accepted)
+            .with_evidence_state(EvidenceState::Accepted)
+            .affects(package())
+            .with_external_ref(reference("review/design-a", "accepted")),
+        )
+        .readiness_for(package(), DesignReleasePurpose::Production, today())
+        .unwrap();
+
+    assert!(report.ready);
+}
+
+fn ready_set() -> DesignControlSet {
+    DesignControlSet::new()
+        .with_revision(accepted_revision("design.a", "A"))
+        .with_release(accepted_release("release.prod", "design.a"))
+}
+
+fn accepted_revision(control_id: &str, revision: &str) -> DesignRevision {
+    DesignRevision::new(
+        project(),
+        control(control_id),
+        revision,
+        role("designer"),
+        today(),
+    )
+    .with_evidence_state(EvidenceState::Accepted)
+    .affects(package())
+    .with_external_ref(reference(control_id, revision))
+}
+
+fn accepted_release(control_id: &str, revision_id: &str) -> DesignRelease {
+    DesignRelease::new(
+        project(),
+        release(control_id),
+        control(revision_id),
+        "A",
+        DesignReleasePurpose::Production,
+        role("designer"),
+        role("project-chief"),
+        role("project-chief"),
+        today(),
+    )
+    .with_evidence_state(EvidenceState::Accepted)
+    .affects(package())
+    .with_external_ref(reference(control_id, "accepted"))
+}
+
+fn project() -> ProjectId {
+    ProjectId::new("reference-center").unwrap()
+}
+
+fn package() -> ControlId {
+    control("package.frame")
+}
+
+fn revision_a() -> ControlId {
+    control("design.a")
+}
+
+fn revision_b() -> ControlId {
+    control("design.b")
+}
+
+fn release(id: &str) -> ControlId {
+    control(id)
+}
+
+fn control(id: &str) -> ControlId {
+    ControlId::new(id).unwrap()
+}
+
+fn role(id: &str) -> RoleId {
+    RoleId::new(id).unwrap()
+}
+
+fn today() -> Date {
+    Date::from_calendar_date(2026, Month::July, 23).unwrap()
+}
+
+fn reference(id: &str, version: &str) -> ExternalRef {
+    ExternalRef::new("doc/synthetic", id, Some(version.to_owned()), None)
+}
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/procurement_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/procurement_tests.rs`:
+
+```rust
+// conformance: work-package procurement comparison and award control
+
+use crate::{
+    AwardDecision, AwardDecisionKind, CommercialAmount, ConstructionProjectError, ControlId,
+    CurrencyCode, PackageReadinessReport, ProcurementControlSet, ProcurementStatus,
+    ScopeCompliance, SupplierCandidate, TenderComparison, TenderQualification, WorkPackage,
+};
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+#[test]
+fn stable_package_follows_scope_tenders_award_and_need_date() {
+    let report = ready_procurement()
+        .with_award(
+            AwardDecision::new(
+                control("award.frame"),
+                package(),
+                AwardDecisionKind::Award,
+                role("project-chief"),
+                date(2026, Month::July, 18),
+                "best compliant amount and qualified capacity",
+            )
+            .selects(control("tender.alpha.corrected"))
+            .with_evidence(reference("award/frame", "approved")),
+        )
+        .readiness_for(
+            &work_package(),
+            &currency("SEK"),
+            date(2026, Month::July, 19),
+        )
+        .unwrap();
+
+    assert!(matches!(
+        report.status,
+        ProcurementStatus::Awarded { ref supplier, .. } if supplier == "supplier-alpha"
+    ));
+    assert_eq!(report.comparison.corrected, vec![control("tender.alpha")]);
+    assert_eq!(report.comparison.comparable[0].supplier, "supplier-alpha");
+    assert_eq!(
+        report.comparison.comparable[0]
+            .variance_to_target
+            .to_decimal_string(),
+        "-25000.00"
+    );
+    assert!(report.interfaces.iter().all(|interface| !interface.exposed));
+    assert!(!report.dates.need_date_exposed);
+}
+
+#[test]
+fn incomplete_inquiry_basis_blocks_readiness() {
+    let package = WorkPackage::new(
+        project(),
+        package(),
+        "Frame",
+        role("procurement"),
+        role("project-chief"),
+        date(2026, Month::July, 10),
+        date(2026, Month::July, 20),
+        date(2026, Month::July, 25),
+        amount("100000.00", "SEK"),
+    )
+    .with_supplier(supplier("supplier-alpha"));
+
+    assert!(matches!(
+        package.validate(&currency("SEK")),
+        Err(ConstructionProjectError::EmptyCollection(
+            "work_package.scope_inclusions"
+        ))
+    ));
+}
+
+#[test]
+fn non_comparable_tenders_are_preserved_without_award_authority() {
+    let report = ProcurementControlSet::new()
+        .with_tender(
+            tender("tender.alpha", "supplier-alpha", "90000.00")
+                .with_reservation("excludes fire seal")
+                .with_scope_compliance(ScopeCompliance::Reserved),
+        )
+        .readiness_for(
+            &work_package(),
+            &currency("SEK"),
+            date(2026, Month::July, 12),
+        )
+        .unwrap();
+
+    assert!(matches!(report.status, ProcurementStatus::InquiryReady));
+    assert_eq!(
+        report.comparison.non_comparable,
+        vec![control("tender.alpha")]
+    );
+}
+
+#[test]
+fn mixed_currency_is_rejected_before_comparison() {
+    let result = ProcurementControlSet::new()
+        .with_tender(tender_currency(
+            "tender.alpha",
+            "supplier-alpha",
+            "90000.00",
+            "EUR",
+        ))
+        .readiness_for(
+            &work_package(),
+            &currency("SEK"),
+            date(2026, Month::July, 12),
+        );
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::CurrencyMismatch {
+            field: "tender.commercial_amount",
+            ..
+        })
+    ));
+}
+
+#[test]
+fn unauthorized_award_is_rejected() {
+    let result = ready_procurement()
+        .with_award(
+            AwardDecision::new(
+                control("award.frame"),
+                package(),
+                AwardDecisionKind::Award,
+                role("procurement"),
+                date(2026, Month::July, 18),
+                "wrong authority",
+            )
+            .selects(control("tender.alpha.corrected"))
+            .with_evidence(reference("award/frame", "approved")),
+        )
+        .readiness_for(
+            &work_package(),
+            &currency("SEK"),
+            date(2026, Month::July, 19),
+        );
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::AwardAuthorityMismatch { .. })
+    ));
+}
+
+#[test]
+fn award_after_need_date_is_rejected() {
+    let result = ready_procurement()
+        .with_award(
+            AwardDecision::new(
+                control("award.frame"),
+                package(),
+                AwardDecisionKind::Award,
+                role("project-chief"),
+                date(2026, Month::July, 26),
+                "late award",
+            )
+            .selects(control("tender.alpha.corrected"))
+            .with_evidence(reference("award/frame", "approved")),
+        )
+        .readiness_for(
+            &work_package(),
+            &currency("SEK"),
+            date(2026, Month::July, 26),
+        );
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::AwardAfterNeedDate { .. })
+    ));
+}
+
+#[test]
+fn rejected_supplier_cannot_be_awarded() {
+    let package = work_package().with_supplier(supplier("supplier-rejected").rejected("failed QA"));
+    let result = ProcurementControlSet::new()
+        .with_tender(tender("tender.rejected", "supplier-rejected", "88000.00"))
+        .with_award(
+            AwardDecision::new(
+                control("award.frame"),
+                package.control.clone(),
+                AwardDecisionKind::Award,
+                role("project-chief"),
+                date(2026, Month::July, 18),
+                "not allowed",
+            )
+            .selects(control("tender.rejected"))
+            .with_evidence(reference("award/frame", "approved")),
+        )
+        .readiness_for(&package, &currency("SEK"), date(2026, Month::July, 19));
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::RejectedSupplierAward { .. })
+    ));
+}
+
+#[test]
+fn corrected_tender_evidence_replaces_current_comparison_without_losing_prior_fact() {
+    let comparison = ready_procurement()
+        .compare(&work_package(), &currency("SEK"))
+        .unwrap();
+
+    assert_eq!(comparison.corrected, vec![control("tender.alpha")]);
+    assert_eq!(
+        comparison
+            .comparable
+            .iter()
+            .map(|item| item.tender.as_str())
+            .collect::<Vec<_>>(),
+        vec!["tender.alpha.corrected", "tender.beta"]
+    );
+}
+
+#[test]
+fn award_ready_report_names_overdue_decisions_and_exposed_interfaces() {
+    let report: PackageReadinessReport = ready_procurement()
+        .readiness_for(
+            &work_package(),
+            &currency("SEK"),
+            date(2026, Month::July, 24),
+        )
+        .unwrap();
+
+    assert!(matches!(report.status, ProcurementStatus::AwardReady));
+    assert!(report.dates.award_overdue);
+    assert!(!report.dates.need_date_exposed);
+    assert!(report.interfaces.iter().all(|interface| interface.exposed));
+}
+
+fn ready_procurement() -> ProcurementControlSet {
+    ProcurementControlSet::new()
+        .with_tender(tender("tender.alpha", "supplier-alpha", "100000.00"))
+        .with_tender(
+            tender("tender.alpha.corrected", "supplier-alpha", "95000.00")
+                .supersedes(control("tender.alpha")),
+        )
+        .with_tender(tender("tender.beta", "supplier-beta", "105000.00"))
+}
+
+fn work_package() -> WorkPackage {
+    WorkPackage::new(
+        project(),
+        package(),
+        "Frame work package",
+        role("procurement"),
+        role("project-chief"),
+        date(2026, Month::July, 10),
+        date(2026, Month::July, 20),
+        date(2026, Month::July, 25),
+        amount("120000.00", "SEK"),
+    )
+    .includes("glulam frame supply")
+    .includes("site installation")
+    .excludes("foundation anchors")
+    .requires_design_input(control("design.frame"))
+    .exposes_interface(control("interface.foundation"))
+    .exposes_interface(control("interface.facade"))
+    .with_supplier(supplier("supplier-alpha"))
+    .with_supplier(supplier("supplier-beta"))
+    .with_evidence(reference("inquiry/frame", "basis-a"))
+}
+
+fn tender(id: &str, supplier: &str, value: &str) -> TenderComparison {
+    tender_currency(id, supplier, value, "SEK")
+}
+
+fn tender_currency(id: &str, supplier: &str, value: &str, currency_code: &str) -> TenderComparison {
+    TenderComparison::new(
+        control(id),
+        package(),
+        supplier,
+        amount(value, currency_code),
+    )
+    .with_lead_time_days(21)
+    .with_capacity("capacity reserved for need date")
+    .with_qualification(TenderQualification::Qualified)
+    .with_evidence(reference(id, "evaluation"))
+}
+
+fn supplier(id: &str) -> SupplierCandidate {
+    SupplierCandidate::new(id, "prequalified").with_evidence(reference(id, "candidate"))
+}
+
+fn amount(value: &str, currency_code: &str) -> CommercialAmount {
+    CommercialAmount::parse(value, currency(currency_code)).unwrap()
+}
+
+fn currency(value: &str) -> CurrencyCode {
+    CurrencyCode::new(value).unwrap()
+}
+
+fn project() -> crate::ProjectId {
+    crate::ProjectId::new("reference-center").unwrap()
+}
+
+fn package() -> ControlId {
+    control("package.frame")
+}
+
+fn control(value: &str) -> ControlId {
+    ControlId::new(value).unwrap()
+}
+
+fn role(value: &str) -> crate::RoleId {
+    crate::RoleId::new(value).unwrap()
+}
+
+fn date(year: i32, month: Month, day: u8) -> Date {
+    Date::from_calendar_date(year, month, day).unwrap()
+}
+
+fn reference(id: &str, version: &str) -> ExternalRef {
+    ExternalRef::new("doc/synthetic", id, Some(version.to_owned()), None)
+}
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/production_plan_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/production_plan_tests.rs`:
+
+```rust
+// conformance: six-week construction production readiness derives from shared facts
+
+use crate::{
+    AcceptedTaskWindow, BaselineId, CONSTRUCTION_EXCEPTION_CAPABILITY, ConstructionProjectError,
+    ControlId, EvidenceState, EvidenceValidity, ExceptionDecision, ExceptionScope, LookaheadWindow,
+    ObligationPolicy, ProductionActivity, ProductionCommitment, ProductionPlan,
+    ProductionReadinessState, ProjectBook, ProjectFact, ProjectId, ProjectObligation, Requirement,
+    RequirementLane, RoleId, ScheduleBaseline, ScheduleJoinKind, SchedulePlanRevision,
+    ScheduleTaskJoin, ScheduleTaskJoinSet, Visibility,
+};
+use sim_kernel::{Expr, Symbol};
+use sim_lib_doc_core::ExternalRef;
+use sim_lib_gantt::{GanttPlan, Task};
+use time::{Date, Month};
+
+#[test]
+fn moved_task_is_reclassified_into_three_week_commitment_window() {
+    let snapshot = ready_plan()
+        .with_activity(activity("activity.frame", "task.frame", 8).requires(req("release")))
+        .with_obligation(obligation("release"))
+        .with_accepted_task_window(AcceptedTaskWindow::new(
+            "task.frame",
+            offset_day(35),
+            offset_day(37),
+        ))
+        .derive_readiness(
+            &book(vec![accepted_fact(1, "release")]),
+            &plan(vec![task("task.frame", 8, 10)]),
+            &joins(vec![join("activity.frame", "task.frame")]),
+            day(1),
+        )
+        .unwrap();
+
+    assert_eq!(snapshot.six_week_demand.len(), 1);
+    assert_eq!(snapshot.three_week_commitment.len(), 1);
+    let report = &snapshot.three_week_commitment[0];
+    assert_eq!(report.window, LookaheadWindow::ThreeWeekCommitment);
+    assert_eq!(report.state, ProductionReadinessState::Ready);
+    assert_eq!(
+        report.movement.as_ref().unwrap().accepted_start,
+        offset_day(35)
+    );
+    assert!(report.explanation.contains("after schedule movement"));
+}
+
+#[test]
+fn missing_release_blocks_production_readiness() {
+    let report = single_activity_report(vec![], vec!["release"], None);
+
+    assert_eq!(report.state, ProductionReadinessState::NotReady);
+    assert_eq!(ids(&report.constraints), vec!["release"]);
+    assert_eq!(report.constraints[0].evidence_state, EvidenceState::Missing);
+    assert_eq!(report.constraints[0].owner, role("design-lead"));
+}
+
+#[test]
+fn expired_risk_assessment_is_not_ready_with_sequence_retained() {
+    let report = ready_plan()
+        .with_activity(activity("activity.frame", "task.frame", 8).requires(req("risk")))
+        .with_obligation(
+            obligation("risk").with_evidence_validity(EvidenceValidity::new(None, Some(day(5)))),
+        )
+        .derive_readiness(
+            &book(vec![accepted_fact(11, "risk")]),
+            &plan(vec![task("task.frame", 8, 10)]),
+            &joins(vec![join("activity.frame", "task.frame")]),
+            day(8),
+        )
+        .unwrap()
+        .three_week_commitment
+        .remove(0);
+
+    assert_eq!(report.state, ProductionReadinessState::NotReady);
+    assert_eq!(report.constraints[0].evidence_state, EvidenceState::Expired);
+    assert_eq!(report.constraints[0].current_seq, Some(11));
+}
+
+#[test]
+fn unintroduced_worker_blocks_staffing_readiness() {
+    let report = single_activity_report(
+        vec![accepted_fact(1, "release")],
+        vec!["introduction"],
+        None,
+    );
+
+    assert_eq!(report.state, ProductionReadinessState::NotReady);
+    assert_eq!(ids(&report.constraints), vec!["introduction"]);
+    assert!(report.constraints[0].consequence.contains("cannot start"));
+}
+
+#[test]
+fn material_delay_names_constraint_owner_need_date_and_consequence() {
+    let report = single_activity_report(vec![reported_fact(4, "material")], vec!["material"], None);
+
+    assert_eq!(report.state, ProductionReadinessState::NotReady);
+    let constraint = &report.constraints[0];
+    assert_eq!(constraint.requirement.as_str(), "material");
+    assert_eq!(constraint.owner, role("design-lead"));
+    assert_eq!(constraint.need_on, day(8));
+    assert_eq!(constraint.current_seq, Some(4));
+    assert!(constraint.consequence.contains("activity.frame"));
+}
+
+#[test]
+fn accepted_exception_can_make_waivable_constraint_ready() {
+    let exception = ExceptionDecision::new(
+        control("exception.material"),
+        ExceptionScope::new(project()).covers(req("material")),
+        role("project-chief"),
+        role("project-chief"),
+        "Supplier delay accepted for resequenced work",
+        day(6),
+        day(12),
+    )
+    .with_evidence(reference("exception/material"));
+    let snapshot = ready_plan()
+        .with_activity(activity("activity.frame", "task.frame", 8).requires(req("material")))
+        .with_obligation(obligation("material"))
+        .with_exception(exception)
+        .with_capability(CONSTRUCTION_EXCEPTION_CAPABILITY)
+        .derive_readiness(
+            &book(vec![]),
+            &plan(vec![task("task.frame", 8, 10)]),
+            &joins(vec![join("activity.frame", "task.frame")]),
+            day(8),
+        )
+        .unwrap();
+
+    let report = &snapshot.three_week_commitment[0];
+    assert_eq!(report.state, ProductionReadinessState::Ready);
+    assert_eq!(
+        report.constraints[0].exception.as_ref().unwrap().as_str(),
+        "exception.material"
+    );
+}
+
+#[test]
+fn non_waivable_safety_exception_fails_closed() {
+    let exception = ExceptionDecision::new(
+        control("exception.safety"),
+        ExceptionScope::new(project()).covers(req("safety")),
+        role("project-chief"),
+        role("project-chief"),
+        "Never acceptable",
+        day(6),
+        day(12),
+    )
+    .with_evidence(reference("exception/safety"));
+    let result = ready_plan()
+        .with_activity(activity("activity.frame", "task.frame", 8).requires(req("safety")))
+        .with_obligation(obligation("safety").requirement_non_waivable())
+        .with_exception(exception)
+        .with_capability(CONSTRUCTION_EXCEPTION_CAPABILITY)
+        .derive_readiness(
+            &book(vec![]),
+            &plan(vec![task("task.frame", 8, 10)]),
+            &joins(vec![join("activity.frame", "task.frame")]),
+            day(8),
+        );
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::NonWaivableRequirement { .. })
+            | Err(ConstructionProjectError::NonWaivableProductionBlocker { .. })
+    ));
+}
+
+#[test]
+fn committed_but_not_ready_keeps_commitment_separate_from_computation() {
+    let report = single_activity_report(
+        vec![],
+        vec!["release"],
+        Some(
+            ProductionCommitment::new(
+                control("activity.frame"),
+                role("site-manager"),
+                day(2),
+                19,
+                "Foreman commits to start frame work",
+            )
+            .with_evidence(reference("meeting/week-31")),
+        ),
+    );
+
+    assert_eq!(report.state, ProductionReadinessState::NotReady);
+    assert_eq!(report.commitment.as_ref().unwrap().seq, 19);
+    assert!(report.explanation.contains("with human commitment"));
+}
+
+fn single_activity_report(
+    facts: Vec<ProjectFact>,
+    requirements: Vec<&str>,
+    commitment: Option<ProductionCommitment>,
+) -> crate::ProductionActivityReadiness {
+    let mut activity = activity("activity.frame", "task.frame", 8);
+    let mut readiness = ready_plan();
+    for requirement in requirements {
+        activity = activity.requires(req(requirement));
+        readiness = readiness.with_obligation(obligation(requirement));
+    }
+    readiness = readiness.with_activity(activity);
+    if let Some(commitment) = commitment {
+        readiness = readiness.with_commitment(commitment);
+    }
+    readiness
+        .derive_readiness(
+            &book(facts),
+            &plan(vec![task("task.frame", 8, 10)]),
+            &joins(vec![join("activity.frame", "task.frame")]),
+            day(1),
+        )
+        .unwrap()
+        .three_week_commitment
+        .remove(0)
+}
+
+fn ready_plan() -> ProductionPlan {
+    ProductionPlan::new()
+}
+
+fn obligation(id: &str) -> ProjectObligation {
+    ProjectObligation {
+        project: project(),
+        requirement: requirement(id),
+        policy: ObligationPolicy::Mandatory,
+        evidence_validity: EvidenceValidity::unbounded(),
+    }
+}
+
+trait RequirementTestExt {
+    fn requirement_non_waivable(self) -> Self;
+}
+
+impl RequirementTestExt for ProjectObligation {
+    fn requirement_non_waivable(mut self) -> Self {
+        self.requirement = self.requirement.non_waivable();
+        self
+    }
+}
+
+fn requirement(id: &str) -> Requirement {
+    Requirement::new(
+        req(id),
+        RequirementLane::new(Symbol::qualified("construction-lookahead", id)),
+        format!("{id} requirement"),
+        role("design-lead"),
+        role("project-chief"),
+    )
+    .with_source_ref(reference(id))
+}
+
+fn activity(id: &str, task_id: &str, start_day: u8) -> ProductionActivity {
+    ProductionActivity::new(
+        control(id),
+        task_id,
+        control("package.frame"),
+        "structure",
+        "area-a",
+        "level-02",
+        role("site-manager"),
+        day(start_day),
+        day(start_day + 2),
+        baseline_id("baseline.schedule"),
+    )
+}
+
+fn accepted_fact(seq: u64, subject: &str) -> ProjectFact {
+    fact(seq, subject, EvidenceState::Accepted).with_evidence(reference(subject))
+}
+
+fn reported_fact(seq: u64, subject: &str) -> ProjectFact {
+    fact(seq, subject, EvidenceState::Reported).with_evidence(reference(subject))
+}
+
+fn fact(seq: u64, subject: &str, state: EvidenceState) -> ProjectFact {
+    ProjectFact::new(
+        seq,
+        project(),
+        req(subject),
+        Symbol::qualified("construction-readiness", subject),
+        day(1),
+        role("writer"),
+        Expr::String(subject.to_owned()),
+    )
+    .with_evidence_state(state)
+    .with_visibility(Visibility::Project)
+}
+
+fn book(facts: Vec<ProjectFact>) -> ProjectBook {
+    ProjectBook::from_facts(project(), role("writer"), facts).unwrap()
+}
+
+fn joins(items: Vec<ScheduleTaskJoin>) -> ScheduleTaskJoinSet {
+    ScheduleTaskJoinSet::new(
+        ScheduleBaseline::new(baseline_id("baseline.schedule"), "plan", "rev-a", 1).unwrap(),
+        SchedulePlanRevision::new("plan", "rev-a", 20).unwrap(),
+        items,
+    )
+    .unwrap()
+}
+
+fn join(control_id: &str, task_id: &str) -> ScheduleTaskJoin {
+    ScheduleTaskJoin::new(control(control_id), task_id, ScheduleJoinKind::Package)
+}
+
+fn plan(tasks: Vec<Task>) -> GanttPlan {
+    GanttPlan::new("plan", tasks, vec![])
+}
+
+fn task(id: &str, start_day: u8, finish_day: u8) -> Task {
+    Task::new(id, id, day(start_day), day(finish_day), 0)
+}
+
+fn reference(id: &str) -> ExternalRef {
+    ExternalRef::new("doc/synthetic", id, Some("rev-a".to_owned()), None)
+}
+
+fn project() -> ProjectId {
+    ProjectId::new("reference-center").unwrap()
+}
+
+fn control(id: &str) -> ControlId {
+    ControlId::new(id).unwrap()
+}
+
+fn req(id: &str) -> ControlId {
+    control(id)
+}
+
+fn baseline_id(id: &str) -> BaselineId {
+    BaselineId::new(id).unwrap()
+}
+
+fn role(id: &str) -> RoleId {
+    RoleId::new(id).unwrap()
+}
+
+fn day(day: u8) -> Date {
+    Date::from_calendar_date(2026, Month::July, day).unwrap()
+}
+
+fn offset_day(offset: i64) -> Date {
+    day(1) + time::Duration::days(offset - 1)
+}
+
+fn ids(values: &[crate::ProductionConstraint]) -> Vec<&str> {
+    values
+        .iter()
+        .map(|constraint| constraint.requirement.as_str())
+        .collect()
+}
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/schedule_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/schedule_tests.rs`:
+
+```rust
+// conformance: construction control graph joins canonical sim-lib-gantt facts
+
+use crate::{
+    BaselineId, ConstructionProjectError, ControlEdgeKind, ControlGraph, ControlId,
+    ControlNodeKind, EvidenceState, ScheduleBaseline, ScheduleControlState,
+    ScheduleExplanationKind, ScheduleJoinKind, SchedulePlanRevision, ScheduleTaskJoin,
+    ScheduleTaskJoinSet, explain_schedule_impact,
+};
+use sim_kernel::Cx;
+use sim_lib_gantt::{GanttPlan, LinkKind, Task, TaskLink};
+use std::sync::Arc;
+use time::{Date, Month};
+
+#[test]
+fn dangling_join_fails_closed() {
+    let result = ScheduleTaskJoinSet::new(
+        baseline(),
+        revision("rev-a", 7),
+        vec![join("package.frame", "missing", ScheduleJoinKind::Package)],
+    )
+    .unwrap()
+    .validate_against_plan(&plan());
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::MissingScheduleTask { .. })
+    ));
+}
+
+#[test]
+fn duplicate_joined_task_ids_fail_closed() {
+    let result = ScheduleTaskJoinSet::new(
+        baseline(),
+        revision("rev-a", 7),
+        vec![
+            join(
+                "package.frame",
+                "frame-fabrication",
+                ScheduleJoinKind::Package,
+            ),
+            join(
+                "decision.frame-release",
+                "frame-fabrication",
+                ScheduleJoinKind::Decision,
+            ),
+        ],
+    )
+    .unwrap()
+    .validate_against_plan(&plan());
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::DuplicateScheduleTaskJoin { .. })
+    ));
+}
+
+#[test]
+fn plan_revision_mismatch_does_not_silently_become_baseline() {
+    let result = ScheduleTaskJoinSet::new(
+        baseline(),
+        revision("rev-b", 8),
+        vec![join(
+            "package.frame",
+            "frame-fabrication",
+            ScheduleJoinKind::Package,
+        )],
+    );
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::ScheduleRevisionMismatch { .. })
+    ));
+}
+
+#[test]
+fn critical_blocker_and_downstream_controls_are_explained() {
+    let report = report(
+        date(2026, Month::July, 9),
+        vec![missing("decision.frame-release")],
+    );
+
+    assert_eq!(
+        report.critical_tasks,
+        vec![
+            "design-release".to_owned(),
+            "frame-fabrication".to_owned(),
+            "handover".to_owned(),
+        ]
+    );
+    let critical = report
+        .explanations
+        .iter()
+        .find(|item| item.kind == ScheduleExplanationKind::CriticalBlocker)
+        .unwrap();
+    assert_eq!(critical.control.as_str(), "package.frame");
+    assert_eq!(ids(&critical.blockers), vec!["decision.frame-release"]);
+    assert_eq!(
+        ids(&critical.downstream_controls),
+        vec!["change.frame", "handover.frame"]
+    );
+}
+
+#[test]
+fn non_critical_delayed_task_is_reported_without_critical_blocker() {
+    let report = report(
+        date(2026, Month::July, 25),
+        vec![accepted("decision.frame-release")],
+    );
+
+    let delayed = report
+        .explanations
+        .iter()
+        .find(|item| item.control.as_str() == "decision.lighting")
+        .unwrap();
+    assert_eq!(delayed.kind, ScheduleExplanationKind::NonCriticalDelay);
+    assert!(!delayed.critical);
+}
+
+#[test]
+fn procurement_lead_time_consequence_moves_need_date_before_task_start() {
+    let report = report(
+        date(2026, Month::July, 9),
+        vec![accepted("decision.frame-release")],
+    );
+
+    let procurement = report
+        .explanations
+        .iter()
+        .find(|item| item.kind == ScheduleExplanationKind::ProcurementLeadTime)
+        .unwrap();
+    assert_eq!(procurement.control.as_str(), "procurement.frame-award");
+    assert_eq!(procurement.need_on, date(2026, Month::June, 28));
+}
+
+#[test]
+fn change_impact_names_downstream_controls() {
+    let report = report(
+        date(2026, Month::July, 9),
+        vec![accepted("decision.frame-release")],
+    );
+
+    let change = report
+        .explanations
+        .iter()
+        .find(|item| item.kind == ScheduleExplanationKind::ChangeImpact)
+        .unwrap();
+    assert_eq!(change.control.as_str(), "change.frame");
+    assert_eq!(ids(&change.downstream_controls), vec!["handover.frame"]);
+}
+
+#[test]
+fn stable_order_is_by_need_date_control_task_and_explanation_kind() {
+    let report = report(
+        date(2026, Month::July, 25),
+        vec![missing("decision.frame-release")],
+    );
+
+    assert_eq!(
+        report
+            .explanations
+            .iter()
+            .map(|item| (item.need_on, item.control.as_str(), item.kind))
+            .collect::<Vec<_>>(),
+        vec![
+            (
+                date(2026, Month::June, 28),
+                "procurement.frame-award",
+                ScheduleExplanationKind::ProcurementLeadTime,
+            ),
+            (
+                date(2026, Month::July, 5),
+                "decision.frame-release",
+                ScheduleExplanationKind::LateDecision,
+            ),
+            (
+                date(2026, Month::July, 10),
+                "package.frame",
+                ScheduleExplanationKind::CriticalBlocker,
+            ),
+            (
+                date(2026, Month::July, 12),
+                "change.frame",
+                ScheduleExplanationKind::ChangeImpact,
+            ),
+            (
+                date(2026, Month::July, 15),
+                "decision.lighting",
+                ScheduleExplanationKind::NonCriticalDelay,
+            ),
+            (
+                date(2026, Month::July, 20),
+                "handover.frame",
+                ScheduleExplanationKind::CriticalBlocker,
+            ),
+        ]
+    );
+}
+
+fn report(as_of_date: Date, states: Vec<ScheduleControlState>) -> crate::ScheduleStatusReport {
+    let mut cx = Cx::new(
+        Arc::new(sim_kernel::NoopEvalPolicy),
+        Arc::new(sim_kernel::DefaultFactory),
+    );
+    explain_schedule_impact(&mut cx, &plan(), &joins(), &graph(), &states, as_of_date).unwrap()
+}
+
+fn graph() -> ControlGraph {
+    let mut graph = ControlGraph::new();
+    for (id, kind) in [
+        ("decision.frame-release", ControlNodeKind::Decision),
+        ("package.frame", ControlNodeKind::Package),
+        ("procurement.frame-award", ControlNodeKind::Package),
+        ("change.frame", ControlNodeKind::Change),
+        ("handover.frame", ControlNodeKind::HandoverItem),
+        ("decision.lighting", ControlNodeKind::Decision),
+    ] {
+        graph.add_node(control_id(id), kind).unwrap();
+    }
+    graph
+        .add_edge(
+            control_id("decision.frame-release"),
+            control_id("package.frame"),
+            ControlEdgeKind::Prerequisite,
+        )
+        .unwrap();
+    graph
+        .add_edge(
+            control_id("package.frame"),
+            control_id("change.frame"),
+            ControlEdgeKind::Changes,
+        )
+        .unwrap();
+    graph
+        .add_edge(
+            control_id("change.frame"),
+            control_id("handover.frame"),
+            ControlEdgeKind::HandsOver,
+        )
+        .unwrap();
+    graph
+}
+
+fn joins() -> ScheduleTaskJoinSet {
+    ScheduleTaskJoinSet::new(
+        baseline(),
+        revision("rev-a", 7),
+        vec![
+            join(
+                "decision.frame-release",
+                "design-release",
+                ScheduleJoinKind::Decision,
+            )
+            .needs_on(date(2026, Month::July, 5)),
+            join(
+                "package.frame",
+                "frame-fabrication",
+                ScheduleJoinKind::Package,
+            ),
+            join(
+                "procurement.frame-award",
+                "procurement-float",
+                ScheduleJoinKind::ProcurementDate,
+            )
+            .with_lead_time(12),
+            join("change.frame", "change-review", ScheduleJoinKind::Change),
+            join("handover.frame", "handover", ScheduleJoinKind::HandoverItem),
+            join(
+                "decision.lighting",
+                "lighting-selection",
+                ScheduleJoinKind::Control,
+            ),
+        ],
+    )
+    .unwrap()
+}
+
+fn plan() -> GanttPlan {
+    GanttPlan::new(
+        "baseline-plan",
+        vec![
+            task("design-release", "Design release", 1, 5),
+            task("frame-fabrication", "Frame fabrication", 10, 20),
+            task("procurement-float", "Procurement float", 10, 11),
+            task("change-review", "Change review", 12, 12),
+            task("handover", "Handover", 20, 22),
+            task("lighting-selection", "Lighting selection", 15, 16),
+        ],
+        vec![
+            TaskLink::new(
+                "design-release",
+                "frame-fabrication",
+                LinkKind::FinishStart,
+                0,
+            ),
+            TaskLink::new("frame-fabrication", "handover", LinkKind::FinishStart, 0),
+        ],
+    )
+}
+
+fn baseline() -> ScheduleBaseline {
+    ScheduleBaseline::new(
+        baseline_id("baseline.schedule"),
+        "baseline-plan",
+        "rev-a",
+        6,
+    )
+    .unwrap()
+}
+
+fn revision(revision: &str, as_of_seq: u64) -> SchedulePlanRevision {
+    SchedulePlanRevision::new("baseline-plan", revision, as_of_seq).unwrap()
+}
+
+fn join(control: &str, task: &str, kind: ScheduleJoinKind) -> ScheduleTaskJoin {
+    ScheduleTaskJoin::new(control_id(control), task, kind)
+}
+
+fn accepted(control: &str) -> ScheduleControlState {
+    ScheduleControlState::new(control_id(control), EvidenceState::Accepted).at_sequence(8)
+}
+
+fn missing(control: &str) -> ScheduleControlState {
+    ScheduleControlState::new(control_id(control), EvidenceState::Missing)
+}
+
+fn task(id: &str, name: &str, start_day: u8, finish_day: u8) -> Task {
+    Task::new(
+        id,
+        name,
+        date(2026, Month::July, start_day),
+        date(2026, Month::July, finish_day),
+        0,
+    )
+}
+
+fn date(year: i32, month: Month, day: u8) -> Date {
+    Date::from_calendar_date(year, month, day).unwrap()
+}
+
+fn control_id(id: &str) -> ControlId {
+    ControlId::new(id).unwrap()
+}
+
+fn baseline_id(id: &str) -> BaselineId {
+    BaselineId::new(id).unwrap()
+}
+
+fn ids(values: &[ControlId]) -> Vec<&str> {
+    values.iter().map(ControlId::as_str).collect()
+}
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/field_control_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/field_control_tests.rs`:
+
+```rust
+// conformance: construction field-control facts
+
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+use crate::{
+    CorrectiveAction, Defect, EFFECT_LEDGER_BACKEND, EvidenceState, FieldItem, FieldItemImport,
+    FieldItemImportOutcome, FieldItemKind, FieldItemReference, FieldItemState, FieldLane,
+    FieldSeverity, IncidentEscalation, InspectionPoint, InspectionResult, ProjectBook,
+    ProjectIncident, ProjectObservation, QualityDeviation, import_field_item, safety_first_rollup,
+};
+
+#[test]
+fn field_control_types_share_accountability_without_payload_copying() {
+    let observation = ProjectObservation::new(
+        item(
+            "observation.deck",
+            FieldItemKind::Observation,
+            FieldLane::Progress,
+        ),
+        day(10),
+        "Deck edge protection incomplete",
+    );
+    observation.validate().unwrap();
+
+    let deviation = QualityDeviation {
+        field_item: item(
+            "deviation.frame",
+            FieldItemKind::Deviation,
+            FieldLane::Quality,
+        ),
+        requirement: control("requirement.frame-tolerance"),
+        description: "Measured frame exceeds accepted tolerance".to_owned(),
+    };
+    deviation.validate().unwrap();
+
+    let inspection = InspectionPoint::new(item(
+        "inspection.frame",
+        FieldItemKind::InspectionPoint,
+        FieldLane::Quality,
+    ));
+    assert!(inspection.blocks_production());
+    inspection.validate().unwrap();
+
+    let defect = Defect {
+        field_item: item("defect.door", FieldItemKind::Defect, FieldLane::Quality),
+        detected_on: day(10),
+    };
+    defect.validate().unwrap();
+
+    let reference =
+        FieldItemReference::new("site/dalux", "items/item-1", Some("rev-2".to_owned())).unwrap();
+    let external = reference.as_external_ref();
+    assert_eq!(external.backend, "site/dalux");
+    assert_eq!(external.external_id, "items/item-1");
+    assert_eq!(external.web_url, None);
+}
+
+#[test]
+fn incident_and_corrective_closure_require_accountable_evidence() {
+    let incident = ProjectIncident::new(
+        item(
+            "incident.access",
+            FieldItemKind::Incident,
+            FieldLane::Safety,
+        )
+        .non_waivable(),
+        day(10),
+    )
+    .with_escalation(IncidentEscalation {
+        escalated_to: role("project-chief"),
+        escalated_on: day(10),
+        reason: "Stop affected access route".to_owned(),
+        evidence: vec![evidence("incident/access/escalation")],
+    });
+    assert!(incident.requires_escalation());
+    incident.validate().unwrap();
+
+    let corrective = CorrectiveAction {
+        field_item: item(
+            "corrective.access",
+            FieldItemKind::CorrectiveAction,
+            FieldLane::Safety,
+        )
+        .with_state(FieldItemState::Closed)
+        .with_evidence_state(EvidenceState::Accepted)
+        .with_evidence(evidence("corrective/access/accepted")),
+        corrects: vec![control("incident.access")],
+        accepted_by: Some(role("safety-lead")),
+    };
+    assert!(corrective.has_accepted_evidence());
+    corrective.validate().unwrap();
+}
+
+#[test]
+fn critical_incident_fails_closed_until_escalated() {
+    let incident = ProjectIncident::new(
+        item("incident.fall", FieldItemKind::Incident, FieldLane::Safety)
+            .with_severity(FieldSeverity::Critical),
+        day(10),
+    );
+    assert!(incident.requires_escalation());
+    assert!(incident.validate().is_err());
+
+    let escalated = incident.with_escalation(IncidentEscalation {
+        escalated_to: role("project-chief"),
+        escalated_on: day(10),
+        reason: "Stop work and secure the opening".to_owned(),
+        evidence: vec![evidence("incident/fall/escalation")],
+    });
+    escalated.validate().unwrap();
+}
+
+#[test]
+fn passed_inspection_needs_accepted_evidence() {
+    let passed = InspectionPoint::new(
+        item(
+            "test.pressure",
+            FieldItemKind::TestPoint,
+            FieldLane::Quality,
+        )
+        .with_state(FieldItemState::Closed)
+        .with_evidence_state(EvidenceState::Accepted)
+        .with_evidence(evidence("test/pressure/accepted")),
+    )
+    .with_result(InspectionResult::Passed, role("quality-lead"));
+
+    assert!(!passed.blocks_production());
+    passed.validate().unwrap();
+}
+
+#[test]
+fn rejected_inspection_remains_a_production_blocker() {
+    let rejected = InspectionPoint::new(
+        item(
+            "inspection.fire-seal",
+            FieldItemKind::InspectionPoint,
+            FieldLane::Quality,
+        )
+        .with_state(FieldItemState::Rejected)
+        .with_evidence_state(EvidenceState::Rejected)
+        .with_evidence(evidence("inspection/fire-seal/rejected")),
+    )
+    .with_result(InspectionResult::Rejected, role("quality-lead"));
+
+    assert!(rejected.blocks_production());
+    rejected.validate().unwrap();
+}
+
+#[test]
+fn open_defect_becomes_overdue_but_closed_defect_does_not() {
+    let defect = Defect {
+        field_item: item("defect.door", FieldItemKind::Defect, FieldLane::Quality)
+            .with_state(FieldItemState::Open),
+        detected_on: day(10),
+    };
+    assert!(defect.is_overdue(day(20)));
+
+    let closed = Defect {
+        field_item: defect
+            .field_item
+            .with_state(FieldItemState::Closed)
+            .with_evidence_state(EvidenceState::Accepted)
+            .with_evidence(evidence("defect/door/accepted")),
+        detected_on: defect.detected_on,
+    };
+    assert!(!closed.is_overdue(day(20)));
+    closed.validate().unwrap();
+}
+
+#[test]
+fn corrective_action_needs_evidence_and_accepting_role() {
+    let field_item = item(
+        "corrective.fire-seal",
+        FieldItemKind::CorrectiveAction,
+        FieldLane::Quality,
+    )
+    .with_state(FieldItemState::Closed)
+    .with_evidence_state(EvidenceState::Accepted)
+    .with_evidence(evidence("corrective/fire-seal/photo"));
+    let missing_authority = CorrectiveAction {
+        field_item: field_item.clone(),
+        corrects: vec![control("inspection.fire-seal")],
+        accepted_by: None,
+    };
+    assert!(!missing_authority.has_accepted_evidence());
+    assert!(missing_authority.validate().is_err());
+
+    let accepted = CorrectiveAction {
+        field_item,
+        corrects: vec![control("inspection.fire-seal")],
+        accepted_by: Some(role("quality-lead")),
+    };
+    assert!(accepted.has_accepted_evidence());
+    accepted.validate().unwrap();
+}
+
+#[test]
+fn rollup_puts_imminent_safety_and_non_waivable_controls_first() {
+    let items = vec![
+        item(
+            "progress.critical",
+            FieldItemKind::Observation,
+            FieldLane::Progress,
+        )
+        .with_state(FieldItemState::Blocked)
+        .with_severity(FieldSeverity::Critical),
+        item(
+            "convenience.non-waivable",
+            FieldItemKind::Deviation,
+            FieldLane::Convenience,
+        )
+        .with_state(FieldItemState::Open)
+        .with_severity(FieldSeverity::Information)
+        .non_waivable(),
+        item(
+            "safety.imminent",
+            FieldItemKind::Incident,
+            FieldLane::Safety,
+        )
+        .with_state(FieldItemState::Blocked)
+        .with_severity(FieldSeverity::Imminent),
+        item(
+            "safety.closed",
+            FieldItemKind::CorrectiveAction,
+            FieldLane::Safety,
+        )
+        .with_state(FieldItemState::Closed)
+        .with_evidence_state(EvidenceState::Accepted)
+        .with_evidence(evidence("safety/closed")),
+        item(
+            "environment.major",
+            FieldItemKind::Incident,
+            FieldLane::Environment,
+        )
+        .with_state(FieldItemState::Open),
+    ];
+
+    let controls = safety_first_rollup(&items, day(20))
+        .into_iter()
+        .map(|row| row.control.to_string())
+        .collect::<Vec<_>>();
+
+    assert_eq!(
+        controls,
+        vec![
+            "safety.imminent",
+            "convenience.non-waivable",
+            "progress.critical",
+            "environment.major",
+            "safety.closed",
+        ]
+    );
+}
+
+#[test]
+fn external_import_is_idempotent_and_changed_source_state_supersedes() {
+    let mut book = ProjectBook::new(
+        crate::ProjectId::new("reference-center").unwrap(),
+        role("project-chief"),
+    );
+    let first = dalux_import("open", "2026-07-10T10:00:00Z");
+
+    assert_eq!(
+        import_field_item(&mut book, 1, day(10), &first).unwrap(),
+        FieldItemImportOutcome::Appended {
+            seq: 1,
+            supersedes: None,
+        }
+    );
+    assert_eq!(
+        import_field_item(&mut book, 2, day(10), &first).unwrap(),
+        FieldItemImportOutcome::Duplicate { existing_seq: 1 }
+    );
+    assert_eq!(book.len(), 1);
+
+    let changed = dalux_import("closed", "2026-07-10T11:00:00Z");
+    assert_eq!(
+        import_field_item(&mut book, 2, day(10), &changed).unwrap(),
+        FieldItemImportOutcome::Appended {
+            seq: 2,
+            supersedes: Some(1),
+        }
+    );
+
+    let current = book.snapshot_at(2).unwrap();
+    let fact = current
+        .current_fact(&control("field.dalux-item-1"))
+        .unwrap();
+    assert_eq!(fact.evidence_state, EvidenceState::Reported);
+    assert_eq!(fact.evidence.len(), 2);
+    assert!(
+        fact.evidence
+            .iter()
+            .all(|reference| reference.web_url.is_none())
+    );
+    let debug = format!("{fact:?}");
+    for excluded in [
+        "attachment",
+        "bearer",
+        "token",
+        "web_url: Some",
+        "Door review",
+    ] {
+        assert!(!debug.contains(excluded), "fact leaked {excluded:?}");
+    }
+}
+
+fn item(id: &str, kind: FieldItemKind, lane: FieldLane) -> FieldItem {
+    FieldItem::new(
+        crate::ProjectId::new("reference-center").unwrap(),
+        control(id),
+        kind,
+        FieldSeverity::Major,
+        lane,
+        role("site-manager"),
+    )
+    .due_on(day(12))
+    .affects(control("package.frame"))
+}
+
+fn dalux_import(state: &str, version: &str) -> FieldItemImport {
+    FieldItemImport::new(
+        item(
+            "field.dalux-item-1",
+            FieldItemKind::ExternalReference,
+            FieldLane::Quality,
+        )
+        .with_state(FieldItemState::Open),
+        FieldItemReference::new("site/dalux", "items/item-1", Some(version.to_owned())).unwrap(),
+        state,
+        ExternalRef::new(
+            EFFECT_LEDGER_BACKEND,
+            format!("dalux/read/{version}"),
+            None,
+            None,
+        ),
+    )
+    .unwrap()
+}
+
+fn control(id: &str) -> crate::ControlId {
+    crate::ControlId::new(id).unwrap()
+}
+
+fn role(id: &str) -> crate::RoleId {
+    crate::RoleId::new(id).unwrap()
+}
+
+fn evidence(id: &str) -> ExternalRef {
+    ExternalRef::new("doc/synthetic", id, Some("accepted".to_owned()), None)
+}
+
+fn day(day: u8) -> Date {
+    Date::from_calendar_date(2026, Month::July, day).unwrap()
+}
+```
+
 Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/tests` is checked by `cargo test`.
 
 Source `crates/sim-lib-construction-project/src/tests.rs`:
@@ -757,12 +3048,13 @@ Source `crates/sim-lib-construction-project/src/tests.rs`:
 use crate::{
     CONSTRUCTION_EXCEPTION_CAPABILITY, CONSTRUCTION_PROJECT_ACCEPT_CAPABILITY,
     CONSTRUCTION_PROJECT_READ_CAPABILITY, CONSTRUCTION_PROJECT_WRITE_CAPABILITY,
-    CONSTRUCTION_REFERENCE_PUBLISH_CAPABILITY, ConstructionProjectError, ControlId, CurrencyCode,
-    DueDatePolicy, EvidenceState, OrganizationId, ProjectCharter, ProjectGovernance, ProjectId,
-    RECIPES, ReportingCadence, RoleAssignment, RoleId, Visibility, VisibilityPolicy,
-    construction_exception_capability, construction_project_accept_capability,
-    construction_project_read_capability, construction_project_write_capability,
-    construction_reference_publish_capability,
+    CONSTRUCTION_REFERENCE_PUBLISH_CAPABILITY, CONSTRUCTION_SUPPLIER_READ_CAPABILITY,
+    ConstructionProjectError, ControlId, CurrencyCode, DueDatePolicy, EvidenceState,
+    OrganizationId, ProjectCharter, ProjectGovernance, ProjectId, RECIPES, ReportingCadence,
+    RoleAssignment, RoleId, Visibility, VisibilityPolicy, construction_exception_capability,
+    construction_project_accept_capability, construction_project_read_capability,
+    construction_project_write_capability, construction_reference_publish_capability,
+    construction_supplier_read_capability,
 };
 use sim_kernel::Symbol;
 use sim_lib_doc_core::ExternalRef;
@@ -1001,6 +3293,10 @@ fn capability_constants_build_kernel_capability_names() {
         construction_reference_publish_capability().as_str(),
         CONSTRUCTION_REFERENCE_PUBLISH_CAPABILITY
     );
+    assert_eq!(
+        construction_supplier_read_capability().as_str(),
+        CONSTRUCTION_SUPPLIER_READ_CAPABILITY
+    );
 }
 
 #[test]
@@ -1015,6 +3311,11 @@ fn recipes_export_project_charter() {
     assert!(
         cards
             .iter()
+            .any(|card| card.id.ends_with("table-backed-project-book"))
+    );
+    assert!(
+        cards
+            .iter()
             .any(|card| card.id.ends_with("mobilization-gate"))
     );
     assert!(cards.iter().any(|card| card.id.ends_with("late-decision")));
@@ -1022,6 +3323,16 @@ fn recipes_export_project_charter() {
         cards
             .iter()
             .any(|card| card.id.ends_with("mixed-obligation-gate"))
+    );
+    assert!(
+        cards
+            .iter()
+            .any(|card| card.id.ends_with("customer-intent-to-collaboration"))
+    );
+    assert!(
+        cards
+            .iter()
+            .any(|card| card.id.ends_with("supplier-to-production-handoff"))
     );
 }
 
@@ -1053,6 +3364,4901 @@ fn accepted_charter() -> ProjectCharter {
 
 fn accepted_on() -> Date {
     Date::from_calendar_date(2026, Month::July, 23).unwrap()
+}
+```
+
+### `feature/sim-construction/table-backed-project-books`
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/table-backed-project-book` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/table-backed-project-book/recipe.toml`:
+
+```toml
+id = "table-backed-project-book"
+title = "Table-backed construction project book"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 22
+tags = ["construction", "project-control", "table", "dir", "persistence", "snapshot"]
+requires = ["construction.project.read", "construction.project.write", "codec/lisp"]
+```
+
+### `feature/sim-construction/office-evidence-bridge`
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-office/01-basics/construction-office-evidence` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-office/recipes/01-basics/construction-office-evidence/recipe.toml`:
+
+```toml
+id = "construction-office-evidence"
+title = "Attach office evidence to construction control"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 10
+tags = ["construction", "office", "evidence", "document", "provenance"]
+requires = ["construction.project.read", "office.evidence.read", "office.evidence.write", "codec/lisp"]
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-office/src/tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-office/src/tests.rs`:
+
+```rust
+use std::{path::Path, sync::Arc};
+
+use sim_kernel::{CapabilityName, Cx, DefaultFactory, Error, Expr, NoopEvalPolicy, Symbol};
+use sim_lib_construction_project::{
+    ControlId, EvidenceState, ProjectBook, ProjectFact, ProjectId, RoleId, Visibility,
+    construction_project_read_capability,
+};
+use sim_lib_doc_core::{Doc, DocId, DocKind, ExternalRef, LinkRole};
+use sim_lib_doc_store::{DocStore, evidence};
+use time::{Date, Month};
+
+use crate::{
+    AttachOutcome, EvidenceAttachment, EvidenceBridgeError, ProjectEvidenceAccess, attach_evidence,
+    commercial_support_relation, design_source_relation, evidence_for_documents,
+    field_issue_relation, office_evidence_read_capability, office_evidence_write_capability,
+    published_deliverable_relation, schedule_basis_relation,
+};
+
+// conformance: construction fact evidence composes with office documents.
+
+mod access_tests;
+mod pack_tests;
+
+#[test]
+fn precise_construction_relations_map_to_existing_office_roles() {
+    let mappings = [
+        (design_source_relation(), LinkRole::SourceDocument),
+        (schedule_basis_relation(), LinkRole::ScheduleReference),
+        (field_issue_relation(), LinkRole::ProjectIssue),
+        (commercial_support_relation(), LinkRole::AccountingSupport),
+        (published_deliverable_relation(), LinkRole::PublishedTo),
+    ];
+
+    for (relation, expected) in mappings {
+        assert_eq!(relation.office_role(), expected);
+        assert_eq!(
+            relation.fact_kind().namespace.as_deref(),
+            Some("construction-evidence")
+        );
+    }
+}
+
+#[test]
+fn construction_office_evidence_recipe_is_embedded() {
+    let recipes = sim_cookbook::recipes_from_embedded(crate::RECIPES).unwrap();
+
+    assert!(
+        recipes
+            .iter()
+            .any(|recipe| recipe.id.ends_with("construction-office-evidence"))
+    );
+    assert!(
+        recipes
+            .iter()
+            .any(|recipe| recipe.id.ends_with("project-chief-weekly-pack"))
+    );
+}
+
+#[test]
+fn attach_is_idempotent_and_query_restores_the_precise_fact_relation() {
+    let mut fixture = Fixture::new("project-a");
+    let relation = design_source_relation();
+    let external = external("design/revision-7");
+    fixture.append(fact(
+        1,
+        fixture.project.clone(),
+        "design.wall",
+        &relation,
+        external.clone(),
+        EvidenceState::Accepted,
+        Visibility::Project,
+    ));
+    let document = fixture.save_document("office/design-register");
+    let attachment = attachment(
+        &fixture.project,
+        "design.wall",
+        1,
+        &document,
+        &external,
+        relation.clone(),
+    );
+
+    assert_eq!(
+        fixture.attach(&attachment).unwrap(),
+        AttachOutcome::Attached
+    );
+    assert_eq!(
+        fixture.attach(&attachment).unwrap(),
+        AttachOutcome::Unchanged
+    );
+    assert_eq!(
+        evidence::evidence_for(&fixture.store, &document)
+            .unwrap()
+            .len(),
+        1
+    );
+
+    let links = fixture.query("design.wall", [document]).unwrap();
+    assert_eq!(links.len(), 1);
+    assert_eq!(links[0].relation.fact_kind(), relation.fact_kind());
+    assert_eq!(links[0].external, external);
+    assert!(links[0].is_accepted());
+}
+
+#[test]
+fn missing_document_fails_closed_before_an_office_row_is_written() {
+    let mut fixture = Fixture::new("project-a");
+    let relation = design_source_relation();
+    let external = external("design/revision-7");
+    fixture.append(fact(
+        1,
+        fixture.project.clone(),
+        "design.wall",
+        &relation,
+        external.clone(),
+        EvidenceState::Accepted,
+        Visibility::Project,
+    ));
+    let missing = DocId::new("office/missing");
+    let error = fixture
+        .attach(&attachment(
+            &fixture.project,
+            "design.wall",
+            1,
+            &missing,
+            &external,
+            relation,
+        ))
+        .unwrap_err();
+
+    assert!(matches!(
+        error,
+        EvidenceBridgeError::MissingDocument { document }
+            if document == "office/missing"
+    ));
+    assert!(
+        evidence::evidence_for(&fixture.store, &missing)
+            .unwrap()
+            .is_empty()
+    );
+}
+
+#[test]
+fn superseded_fact_cannot_be_attached_or_resolved_as_current() {
+    let mut fixture = Fixture::new("project-a");
+    let relation = field_issue_relation();
+    let old_external = external("issue/old");
+    fixture.append(fact(
+        1,
+        fixture.project.clone(),
+        "issue.door",
+        &relation,
+        old_external.clone(),
+        EvidenceState::Evidenced,
+        Visibility::Project,
+    ));
+    let document = fixture.save_document("office/issue-register");
+    let old_attachment = attachment(
+        &fixture.project,
+        "issue.door",
+        1,
+        &document,
+        &old_external,
+        relation.clone(),
+    );
+    fixture.attach(&old_attachment).unwrap();
+
+    fixture.append(
+        fact(
+            2,
+            fixture.project.clone(),
+            "issue.door",
+            &relation,
+            external("issue/current"),
+            EvidenceState::Accepted,
+            Visibility::Project,
+        )
+        .supersedes(1),
+    );
+
+    assert!(matches!(
+        fixture.attach(&old_attachment).unwrap_err(),
+        EvidenceBridgeError::StaleFact { sequence: 1 }
+    ));
+    assert!(fixture.query("issue.door", [document]).unwrap().is_empty());
+}
+
+#[test]
+fn rejected_fact_stays_rejected_after_office_resolution() {
+    let mut fixture = Fixture::new("project-a");
+    let relation = commercial_support_relation();
+    let external = external("invoice/rejected-4");
+    fixture.append(fact(
+        1,
+        fixture.project.clone(),
+        "commercial.invoice-4",
+        &relation,
+        external.clone(),
+        EvidenceState::Rejected,
+        Visibility::Project,
+    ));
+    let document = fixture.save_document("office/commercial-review");
+    fixture
+        .attach(&attachment(
+            &fixture.project,
+            "commercial.invoice-4",
+            1,
+            &document,
+            &external,
+            relation,
+        ))
+        .unwrap();
+
+    let links = fixture.query("commercial.invoice-4", [document]).unwrap();
+    assert_eq!(links[0].evidence_state, EvidenceState::Rejected);
+    assert!(!links[0].is_accepted());
+}
+
+#[test]
+fn query_order_is_deterministic_across_document_input_order_and_duplicates() {
+    let mut fixture = Fixture::new("project-a");
+    let document_b = fixture.save_document("office/z-register");
+    let document_a = fixture.save_document("office/a-register");
+    let rows = [
+        (
+            1,
+            "design.wall",
+            design_source_relation(),
+            external("design/1"),
+            document_b.clone(),
+        ),
+        (
+            2,
+            "design.wall",
+            commercial_support_relation(),
+            external("accounting/2"),
+            document_a.clone(),
+        ),
+        (
+            3,
+            "design.wall",
+            schedule_basis_relation(),
+            external("schedule/3"),
+            document_a.clone(),
+        ),
+    ];
+    for (seq, control, relation, external, document) in &rows {
+        fixture.append(fact(
+            *seq,
+            fixture.project.clone(),
+            control,
+            relation,
+            external.clone(),
+            EvidenceState::Accepted,
+            Visibility::Project,
+        ));
+        fixture
+            .attach(&attachment(
+                &fixture.project,
+                control,
+                *seq,
+                document,
+                external,
+                relation.clone(),
+            ))
+            .unwrap();
+    }
+
+    let first = fixture
+        .query(
+            "design.wall",
+            [document_b.clone(), document_a.clone(), document_a.clone()],
+        )
+        .unwrap();
+    let second = fixture
+        .query("design.wall", [document_a, document_b])
+        .unwrap();
+    assert_eq!(first, second);
+    assert_eq!(
+        first.iter().map(|link| link.fact_seq).collect::<Vec<_>>(),
+        vec![1, 2, 3]
+    );
+}
+
+#[test]
+fn relation_and_external_reference_must_come_from_the_fact() {
+    let mut fixture = Fixture::new("project-a");
+    let relation = design_source_relation();
+    let retained = external("design/1");
+    fixture.append(fact(
+        1,
+        fixture.project.clone(),
+        "design.wall",
+        &relation,
+        retained.clone(),
+        EvidenceState::Accepted,
+        Visibility::Project,
+    ));
+    let document = fixture.save_document("office/design");
+
+    let wrong_relation = attachment(
+        &fixture.project,
+        "design.wall",
+        1,
+        &document,
+        &retained,
+        schedule_basis_relation(),
+    );
+    assert!(matches!(
+        fixture.attach(&wrong_relation).unwrap_err(),
+        EvidenceBridgeError::RelationMismatch { sequence: 1, .. }
+    ));
+
+    let unretained = external("design/not-retained");
+    let missing_reference = attachment(
+        &fixture.project,
+        "design.wall",
+        1,
+        &document,
+        &unretained,
+        relation,
+    );
+    assert!(matches!(
+        fixture.attach(&missing_reference).unwrap_err(),
+        EvidenceBridgeError::ReferenceMissing { sequence: 1 }
+    ));
+}
+
+struct Fixture {
+    cx: Cx,
+    store: DocStore,
+    project: ProjectId,
+    book: ProjectBook,
+    access: ProjectEvidenceAccess,
+}
+
+impl Fixture {
+    fn new(project_name: &str) -> Self {
+        let project = project(project_name);
+        Self {
+            cx: authorized_context(),
+            store: DocStore::create(Path::new(":memory:")).unwrap(),
+            book: ProjectBook::new(project.clone(), role()),
+            access: ProjectEvidenceAccess::project(project.clone()),
+            project,
+        }
+    }
+
+    fn append(&mut self, fact: ProjectFact) {
+        self.book.append(fact).unwrap();
+    }
+
+    fn save_document(&mut self, id: &str) -> DocId {
+        save_document(&mut self.cx, &self.store, id)
+    }
+
+    fn attach(
+        &self,
+        attachment: &EvidenceAttachment,
+    ) -> Result<AttachOutcome, EvidenceBridgeError> {
+        attach_evidence(&self.cx, &self.store, &self.book, &self.access, attachment)
+    }
+
+    fn query(
+        &self,
+        control_id: &str,
+        documents: impl IntoIterator<Item = DocId>,
+    ) -> Result<Vec<crate::EvidenceLink>, EvidenceBridgeError> {
+        evidence_for_documents(
+            &self.cx,
+            &self.store,
+            &self.book,
+            &self.access,
+            &control(control_id),
+            documents,
+        )
+    }
+}
+
+fn context() -> Cx {
+    Cx::new(Arc::new(NoopEvalPolicy), Arc::new(DefaultFactory))
+}
+
+fn authorized_context() -> Cx {
+    let mut cx = context();
+    cx.grant(construction_project_read_capability());
+    cx.grant(office_evidence_read_capability());
+    cx.grant(office_evidence_write_capability());
+    cx
+}
+
+fn assert_capability(error: EvidenceBridgeError, expected: CapabilityName) {
+    assert!(matches!(
+        error,
+        EvidenceBridgeError::Capability(Error::CapabilityDenied { capability })
+            if capability == expected
+    ));
+}
+
+fn save_document(cx: &mut Cx, store: &DocStore, id: &str) -> DocId {
+    let id = DocId::new(id);
+    let body = cx
+        .factory()
+        .string("reviewable office projection".to_owned())
+        .unwrap();
+    store
+        .save_doc(&Doc::new(
+            DocKind::new("report"),
+            id.clone(),
+            body,
+            Vec::new(),
+        ))
+        .unwrap();
+    id
+}
+
+fn fact(
+    seq: u64,
+    project: ProjectId,
+    control_id: &str,
+    relation: &crate::EvidenceRelation,
+    external: ExternalRef,
+    state: EvidenceState,
+    visibility: Visibility,
+) -> ProjectFact {
+    ProjectFact::new(
+        seq,
+        project,
+        control(control_id),
+        relation.fact_kind().clone(),
+        Date::from_calendar_date(2026, Month::July, 30).unwrap(),
+        role(),
+        Expr::String("construction evidence relation".to_owned()),
+    )
+    .with_evidence(external)
+    .with_evidence_state(state)
+    .with_visibility(visibility)
+}
+
+fn attachment(
+    project: &ProjectId,
+    control_id: &str,
+    fact_seq: u64,
+    document: &DocId,
+    external: &ExternalRef,
+    relation: crate::EvidenceRelation,
+) -> EvidenceAttachment {
+    EvidenceAttachment::new(
+        project.clone(),
+        control(control_id),
+        fact_seq,
+        document.clone(),
+        external.clone(),
+        relation,
+    )
+}
+
+fn external(id: &str) -> ExternalRef {
+    ExternalRef::new("doc/synthetic", id, Some("revision-a".to_owned()), None)
+}
+
+fn project(id: &str) -> ProjectId {
+    ProjectId::new(id).unwrap()
+}
+
+fn control(id: &str) -> ControlId {
+    ControlId::new(id).unwrap()
+}
+
+fn role() -> RoleId {
+    RoleId::new("project-chief").unwrap()
+}
+
+fn book(project_id: &str) -> ProjectBook {
+    ProjectBook::new(project(project_id), role())
+}
+```
+
+### `feature/sim-construction/office-role-cadence-packs`
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-office/01-basics/project-chief-weekly-pack` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-office/recipes/01-basics/project-chief-weekly-pack/recipe.toml`:
+
+```toml
+id = "project-chief-weekly-pack"
+title = "Project-chief weekly office pack"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 20
+tags = ["construction", "office", "project-chief", "weekly", "status", "visibility", "suite"]
+requires = ["construction.project.read", "codec/lisp"]
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-office/src/tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-office/src/tests.rs`:
+
+```rust
+use std::{path::Path, sync::Arc};
+
+use sim_kernel::{CapabilityName, Cx, DefaultFactory, Error, Expr, NoopEvalPolicy, Symbol};
+use sim_lib_construction_project::{
+    ControlId, EvidenceState, ProjectBook, ProjectFact, ProjectId, RoleId, Visibility,
+    construction_project_read_capability,
+};
+use sim_lib_doc_core::{Doc, DocId, DocKind, ExternalRef, LinkRole};
+use sim_lib_doc_store::{DocStore, evidence};
+use time::{Date, Month};
+
+use crate::{
+    AttachOutcome, EvidenceAttachment, EvidenceBridgeError, ProjectEvidenceAccess, attach_evidence,
+    commercial_support_relation, design_source_relation, evidence_for_documents,
+    field_issue_relation, office_evidence_read_capability, office_evidence_write_capability,
+    published_deliverable_relation, schedule_basis_relation,
+};
+
+// conformance: construction fact evidence composes with office documents.
+
+mod access_tests;
+mod pack_tests;
+
+#[test]
+fn precise_construction_relations_map_to_existing_office_roles() {
+    let mappings = [
+        (design_source_relation(), LinkRole::SourceDocument),
+        (schedule_basis_relation(), LinkRole::ScheduleReference),
+        (field_issue_relation(), LinkRole::ProjectIssue),
+        (commercial_support_relation(), LinkRole::AccountingSupport),
+        (published_deliverable_relation(), LinkRole::PublishedTo),
+    ];
+
+    for (relation, expected) in mappings {
+        assert_eq!(relation.office_role(), expected);
+        assert_eq!(
+            relation.fact_kind().namespace.as_deref(),
+            Some("construction-evidence")
+        );
+    }
+}
+
+#[test]
+fn construction_office_evidence_recipe_is_embedded() {
+    let recipes = sim_cookbook::recipes_from_embedded(crate::RECIPES).unwrap();
+
+    assert!(
+        recipes
+            .iter()
+            .any(|recipe| recipe.id.ends_with("construction-office-evidence"))
+    );
+    assert!(
+        recipes
+            .iter()
+            .any(|recipe| recipe.id.ends_with("project-chief-weekly-pack"))
+    );
+}
+
+#[test]
+fn attach_is_idempotent_and_query_restores_the_precise_fact_relation() {
+    let mut fixture = Fixture::new("project-a");
+    let relation = design_source_relation();
+    let external = external("design/revision-7");
+    fixture.append(fact(
+        1,
+        fixture.project.clone(),
+        "design.wall",
+        &relation,
+        external.clone(),
+        EvidenceState::Accepted,
+        Visibility::Project,
+    ));
+    let document = fixture.save_document("office/design-register");
+    let attachment = attachment(
+        &fixture.project,
+        "design.wall",
+        1,
+        &document,
+        &external,
+        relation.clone(),
+    );
+
+    assert_eq!(
+        fixture.attach(&attachment).unwrap(),
+        AttachOutcome::Attached
+    );
+    assert_eq!(
+        fixture.attach(&attachment).unwrap(),
+        AttachOutcome::Unchanged
+    );
+    assert_eq!(
+        evidence::evidence_for(&fixture.store, &document)
+            .unwrap()
+            .len(),
+        1
+    );
+
+    let links = fixture.query("design.wall", [document]).unwrap();
+    assert_eq!(links.len(), 1);
+    assert_eq!(links[0].relation.fact_kind(), relation.fact_kind());
+    assert_eq!(links[0].external, external);
+    assert!(links[0].is_accepted());
+}
+
+#[test]
+fn missing_document_fails_closed_before_an_office_row_is_written() {
+    let mut fixture = Fixture::new("project-a");
+    let relation = design_source_relation();
+    let external = external("design/revision-7");
+    fixture.append(fact(
+        1,
+        fixture.project.clone(),
+        "design.wall",
+        &relation,
+        external.clone(),
+        EvidenceState::Accepted,
+        Visibility::Project,
+    ));
+    let missing = DocId::new("office/missing");
+    let error = fixture
+        .attach(&attachment(
+            &fixture.project,
+            "design.wall",
+            1,
+            &missing,
+            &external,
+            relation,
+        ))
+        .unwrap_err();
+
+    assert!(matches!(
+        error,
+        EvidenceBridgeError::MissingDocument { document }
+            if document == "office/missing"
+    ));
+    assert!(
+        evidence::evidence_for(&fixture.store, &missing)
+            .unwrap()
+            .is_empty()
+    );
+}
+
+#[test]
+fn superseded_fact_cannot_be_attached_or_resolved_as_current() {
+    let mut fixture = Fixture::new("project-a");
+    let relation = field_issue_relation();
+    let old_external = external("issue/old");
+    fixture.append(fact(
+        1,
+        fixture.project.clone(),
+        "issue.door",
+        &relation,
+        old_external.clone(),
+        EvidenceState::Evidenced,
+        Visibility::Project,
+    ));
+    let document = fixture.save_document("office/issue-register");
+    let old_attachment = attachment(
+        &fixture.project,
+        "issue.door",
+        1,
+        &document,
+        &old_external,
+        relation.clone(),
+    );
+    fixture.attach(&old_attachment).unwrap();
+
+    fixture.append(
+        fact(
+            2,
+            fixture.project.clone(),
+            "issue.door",
+            &relation,
+            external("issue/current"),
+            EvidenceState::Accepted,
+            Visibility::Project,
+        )
+        .supersedes(1),
+    );
+
+    assert!(matches!(
+        fixture.attach(&old_attachment).unwrap_err(),
+        EvidenceBridgeError::StaleFact { sequence: 1 }
+    ));
+    assert!(fixture.query("issue.door", [document]).unwrap().is_empty());
+}
+
+#[test]
+fn rejected_fact_stays_rejected_after_office_resolution() {
+    let mut fixture = Fixture::new("project-a");
+    let relation = commercial_support_relation();
+    let external = external("invoice/rejected-4");
+    fixture.append(fact(
+        1,
+        fixture.project.clone(),
+        "commercial.invoice-4",
+        &relation,
+        external.clone(),
+        EvidenceState::Rejected,
+        Visibility::Project,
+    ));
+    let document = fixture.save_document("office/commercial-review");
+    fixture
+        .attach(&attachment(
+            &fixture.project,
+            "commercial.invoice-4",
+            1,
+            &document,
+            &external,
+            relation,
+        ))
+        .unwrap();
+
+    let links = fixture.query("commercial.invoice-4", [document]).unwrap();
+    assert_eq!(links[0].evidence_state, EvidenceState::Rejected);
+    assert!(!links[0].is_accepted());
+}
+
+#[test]
+fn query_order_is_deterministic_across_document_input_order_and_duplicates() {
+    let mut fixture = Fixture::new("project-a");
+    let document_b = fixture.save_document("office/z-register");
+    let document_a = fixture.save_document("office/a-register");
+    let rows = [
+        (
+            1,
+            "design.wall",
+            design_source_relation(),
+            external("design/1"),
+            document_b.clone(),
+        ),
+        (
+            2,
+            "design.wall",
+            commercial_support_relation(),
+            external("accounting/2"),
+            document_a.clone(),
+        ),
+        (
+            3,
+            "design.wall",
+            schedule_basis_relation(),
+            external("schedule/3"),
+            document_a.clone(),
+        ),
+    ];
+    for (seq, control, relation, external, document) in &rows {
+        fixture.append(fact(
+            *seq,
+            fixture.project.clone(),
+            control,
+            relation,
+            external.clone(),
+            EvidenceState::Accepted,
+            Visibility::Project,
+        ));
+        fixture
+            .attach(&attachment(
+                &fixture.project,
+                control,
+                *seq,
+                document,
+                external,
+                relation.clone(),
+            ))
+            .unwrap();
+    }
+
+    let first = fixture
+        .query(
+            "design.wall",
+            [document_b.clone(), document_a.clone(), document_a.clone()],
+        )
+        .unwrap();
+    let second = fixture
+        .query("design.wall", [document_a, document_b])
+        .unwrap();
+    assert_eq!(first, second);
+    assert_eq!(
+        first.iter().map(|link| link.fact_seq).collect::<Vec<_>>(),
+        vec![1, 2, 3]
+    );
+}
+
+#[test]
+fn relation_and_external_reference_must_come_from_the_fact() {
+    let mut fixture = Fixture::new("project-a");
+    let relation = design_source_relation();
+    let retained = external("design/1");
+    fixture.append(fact(
+        1,
+        fixture.project.clone(),
+        "design.wall",
+        &relation,
+        retained.clone(),
+        EvidenceState::Accepted,
+        Visibility::Project,
+    ));
+    let document = fixture.save_document("office/design");
+
+    let wrong_relation = attachment(
+        &fixture.project,
+        "design.wall",
+        1,
+        &document,
+        &retained,
+        schedule_basis_relation(),
+    );
+    assert!(matches!(
+        fixture.attach(&wrong_relation).unwrap_err(),
+        EvidenceBridgeError::RelationMismatch { sequence: 1, .. }
+    ));
+
+    let unretained = external("design/not-retained");
+    let missing_reference = attachment(
+        &fixture.project,
+        "design.wall",
+        1,
+        &document,
+        &unretained,
+        relation,
+    );
+    assert!(matches!(
+        fixture.attach(&missing_reference).unwrap_err(),
+        EvidenceBridgeError::ReferenceMissing { sequence: 1 }
+    ));
+}
+
+struct Fixture {
+    cx: Cx,
+    store: DocStore,
+    project: ProjectId,
+    book: ProjectBook,
+    access: ProjectEvidenceAccess,
+}
+
+impl Fixture {
+    fn new(project_name: &str) -> Self {
+        let project = project(project_name);
+        Self {
+            cx: authorized_context(),
+            store: DocStore::create(Path::new(":memory:")).unwrap(),
+            book: ProjectBook::new(project.clone(), role()),
+            access: ProjectEvidenceAccess::project(project.clone()),
+            project,
+        }
+    }
+
+    fn append(&mut self, fact: ProjectFact) {
+        self.book.append(fact).unwrap();
+    }
+
+    fn save_document(&mut self, id: &str) -> DocId {
+        save_document(&mut self.cx, &self.store, id)
+    }
+
+    fn attach(
+        &self,
+        attachment: &EvidenceAttachment,
+    ) -> Result<AttachOutcome, EvidenceBridgeError> {
+        attach_evidence(&self.cx, &self.store, &self.book, &self.access, attachment)
+    }
+
+    fn query(
+        &self,
+        control_id: &str,
+        documents: impl IntoIterator<Item = DocId>,
+    ) -> Result<Vec<crate::EvidenceLink>, EvidenceBridgeError> {
+        evidence_for_documents(
+            &self.cx,
+            &self.store,
+            &self.book,
+            &self.access,
+            &control(control_id),
+            documents,
+        )
+    }
+}
+
+fn context() -> Cx {
+    Cx::new(Arc::new(NoopEvalPolicy), Arc::new(DefaultFactory))
+}
+
+fn authorized_context() -> Cx {
+    let mut cx = context();
+    cx.grant(construction_project_read_capability());
+    cx.grant(office_evidence_read_capability());
+    cx.grant(office_evidence_write_capability());
+    cx
+}
+
+fn assert_capability(error: EvidenceBridgeError, expected: CapabilityName) {
+    assert!(matches!(
+        error,
+        EvidenceBridgeError::Capability(Error::CapabilityDenied { capability })
+            if capability == expected
+    ));
+}
+
+fn save_document(cx: &mut Cx, store: &DocStore, id: &str) -> DocId {
+    let id = DocId::new(id);
+    let body = cx
+        .factory()
+        .string("reviewable office projection".to_owned())
+        .unwrap();
+    store
+        .save_doc(&Doc::new(
+            DocKind::new("report"),
+            id.clone(),
+            body,
+            Vec::new(),
+        ))
+        .unwrap();
+    id
+}
+
+fn fact(
+    seq: u64,
+    project: ProjectId,
+    control_id: &str,
+    relation: &crate::EvidenceRelation,
+    external: ExternalRef,
+    state: EvidenceState,
+    visibility: Visibility,
+) -> ProjectFact {
+    ProjectFact::new(
+        seq,
+        project,
+        control(control_id),
+        relation.fact_kind().clone(),
+        Date::from_calendar_date(2026, Month::July, 30).unwrap(),
+        role(),
+        Expr::String("construction evidence relation".to_owned()),
+    )
+    .with_evidence(external)
+    .with_evidence_state(state)
+    .with_visibility(visibility)
+}
+
+fn attachment(
+    project: &ProjectId,
+    control_id: &str,
+    fact_seq: u64,
+    document: &DocId,
+    external: &ExternalRef,
+    relation: crate::EvidenceRelation,
+) -> EvidenceAttachment {
+    EvidenceAttachment::new(
+        project.clone(),
+        control(control_id),
+        fact_seq,
+        document.clone(),
+        external.clone(),
+        relation,
+    )
+}
+
+fn external(id: &str) -> ExternalRef {
+    ExternalRef::new("doc/synthetic", id, Some("revision-a".to_owned()), None)
+}
+
+fn project(id: &str) -> ProjectId {
+    ProjectId::new(id).unwrap()
+}
+
+fn control(id: &str) -> ControlId {
+    ControlId::new(id).unwrap()
+}
+
+fn role() -> RoleId {
+    RoleId::new("project-chief").unwrap()
+}
+
+fn book(project_id: &str) -> ProjectBook {
+    ProjectBook::new(project(project_id), role())
+}
+```
+
+### `feature/sim-construction/production-field-control`
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/field-item-to-corrective-evidence` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/field-item-to-corrective-evidence/recipe.toml`:
+
+```toml
+id = "field-item-to-corrective-evidence"
+title = "Field item to corrective evidence"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 96
+tags = ["construction", "field-control", "dalux", "incident", "inspection", "corrective-evidence", "safety"]
+requires = ["construction.project.read", "construction.project.write", "site/dalux", "codec/lisp"]
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/field_control_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/field_control_tests.rs`:
+
+```rust
+// conformance: construction field-control facts
+
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+use crate::{
+    CorrectiveAction, Defect, EFFECT_LEDGER_BACKEND, EvidenceState, FieldItem, FieldItemImport,
+    FieldItemImportOutcome, FieldItemKind, FieldItemReference, FieldItemState, FieldLane,
+    FieldSeverity, IncidentEscalation, InspectionPoint, InspectionResult, ProjectBook,
+    ProjectIncident, ProjectObservation, QualityDeviation, import_field_item, safety_first_rollup,
+};
+
+#[test]
+fn field_control_types_share_accountability_without_payload_copying() {
+    let observation = ProjectObservation::new(
+        item(
+            "observation.deck",
+            FieldItemKind::Observation,
+            FieldLane::Progress,
+        ),
+        day(10),
+        "Deck edge protection incomplete",
+    );
+    observation.validate().unwrap();
+
+    let deviation = QualityDeviation {
+        field_item: item(
+            "deviation.frame",
+            FieldItemKind::Deviation,
+            FieldLane::Quality,
+        ),
+        requirement: control("requirement.frame-tolerance"),
+        description: "Measured frame exceeds accepted tolerance".to_owned(),
+    };
+    deviation.validate().unwrap();
+
+    let inspection = InspectionPoint::new(item(
+        "inspection.frame",
+        FieldItemKind::InspectionPoint,
+        FieldLane::Quality,
+    ));
+    assert!(inspection.blocks_production());
+    inspection.validate().unwrap();
+
+    let defect = Defect {
+        field_item: item("defect.door", FieldItemKind::Defect, FieldLane::Quality),
+        detected_on: day(10),
+    };
+    defect.validate().unwrap();
+
+    let reference =
+        FieldItemReference::new("site/dalux", "items/item-1", Some("rev-2".to_owned())).unwrap();
+    let external = reference.as_external_ref();
+    assert_eq!(external.backend, "site/dalux");
+    assert_eq!(external.external_id, "items/item-1");
+    assert_eq!(external.web_url, None);
+}
+
+#[test]
+fn incident_and_corrective_closure_require_accountable_evidence() {
+    let incident = ProjectIncident::new(
+        item(
+            "incident.access",
+            FieldItemKind::Incident,
+            FieldLane::Safety,
+        )
+        .non_waivable(),
+        day(10),
+    )
+    .with_escalation(IncidentEscalation {
+        escalated_to: role("project-chief"),
+        escalated_on: day(10),
+        reason: "Stop affected access route".to_owned(),
+        evidence: vec![evidence("incident/access/escalation")],
+    });
+    assert!(incident.requires_escalation());
+    incident.validate().unwrap();
+
+    let corrective = CorrectiveAction {
+        field_item: item(
+            "corrective.access",
+            FieldItemKind::CorrectiveAction,
+            FieldLane::Safety,
+        )
+        .with_state(FieldItemState::Closed)
+        .with_evidence_state(EvidenceState::Accepted)
+        .with_evidence(evidence("corrective/access/accepted")),
+        corrects: vec![control("incident.access")],
+        accepted_by: Some(role("safety-lead")),
+    };
+    assert!(corrective.has_accepted_evidence());
+    corrective.validate().unwrap();
+}
+
+#[test]
+fn critical_incident_fails_closed_until_escalated() {
+    let incident = ProjectIncident::new(
+        item("incident.fall", FieldItemKind::Incident, FieldLane::Safety)
+            .with_severity(FieldSeverity::Critical),
+        day(10),
+    );
+    assert!(incident.requires_escalation());
+    assert!(incident.validate().is_err());
+
+    let escalated = incident.with_escalation(IncidentEscalation {
+        escalated_to: role("project-chief"),
+        escalated_on: day(10),
+        reason: "Stop work and secure the opening".to_owned(),
+        evidence: vec![evidence("incident/fall/escalation")],
+    });
+    escalated.validate().unwrap();
+}
+
+#[test]
+fn passed_inspection_needs_accepted_evidence() {
+    let passed = InspectionPoint::new(
+        item(
+            "test.pressure",
+            FieldItemKind::TestPoint,
+            FieldLane::Quality,
+        )
+        .with_state(FieldItemState::Closed)
+        .with_evidence_state(EvidenceState::Accepted)
+        .with_evidence(evidence("test/pressure/accepted")),
+    )
+    .with_result(InspectionResult::Passed, role("quality-lead"));
+
+    assert!(!passed.blocks_production());
+    passed.validate().unwrap();
+}
+
+#[test]
+fn rejected_inspection_remains_a_production_blocker() {
+    let rejected = InspectionPoint::new(
+        item(
+            "inspection.fire-seal",
+            FieldItemKind::InspectionPoint,
+            FieldLane::Quality,
+        )
+        .with_state(FieldItemState::Rejected)
+        .with_evidence_state(EvidenceState::Rejected)
+        .with_evidence(evidence("inspection/fire-seal/rejected")),
+    )
+    .with_result(InspectionResult::Rejected, role("quality-lead"));
+
+    assert!(rejected.blocks_production());
+    rejected.validate().unwrap();
+}
+
+#[test]
+fn open_defect_becomes_overdue_but_closed_defect_does_not() {
+    let defect = Defect {
+        field_item: item("defect.door", FieldItemKind::Defect, FieldLane::Quality)
+            .with_state(FieldItemState::Open),
+        detected_on: day(10),
+    };
+    assert!(defect.is_overdue(day(20)));
+
+    let closed = Defect {
+        field_item: defect
+            .field_item
+            .with_state(FieldItemState::Closed)
+            .with_evidence_state(EvidenceState::Accepted)
+            .with_evidence(evidence("defect/door/accepted")),
+        detected_on: defect.detected_on,
+    };
+    assert!(!closed.is_overdue(day(20)));
+    closed.validate().unwrap();
+}
+
+#[test]
+fn corrective_action_needs_evidence_and_accepting_role() {
+    let field_item = item(
+        "corrective.fire-seal",
+        FieldItemKind::CorrectiveAction,
+        FieldLane::Quality,
+    )
+    .with_state(FieldItemState::Closed)
+    .with_evidence_state(EvidenceState::Accepted)
+    .with_evidence(evidence("corrective/fire-seal/photo"));
+    let missing_authority = CorrectiveAction {
+        field_item: field_item.clone(),
+        corrects: vec![control("inspection.fire-seal")],
+        accepted_by: None,
+    };
+    assert!(!missing_authority.has_accepted_evidence());
+    assert!(missing_authority.validate().is_err());
+
+    let accepted = CorrectiveAction {
+        field_item,
+        corrects: vec![control("inspection.fire-seal")],
+        accepted_by: Some(role("quality-lead")),
+    };
+    assert!(accepted.has_accepted_evidence());
+    accepted.validate().unwrap();
+}
+
+#[test]
+fn rollup_puts_imminent_safety_and_non_waivable_controls_first() {
+    let items = vec![
+        item(
+            "progress.critical",
+            FieldItemKind::Observation,
+            FieldLane::Progress,
+        )
+        .with_state(FieldItemState::Blocked)
+        .with_severity(FieldSeverity::Critical),
+        item(
+            "convenience.non-waivable",
+            FieldItemKind::Deviation,
+            FieldLane::Convenience,
+        )
+        .with_state(FieldItemState::Open)
+        .with_severity(FieldSeverity::Information)
+        .non_waivable(),
+        item(
+            "safety.imminent",
+            FieldItemKind::Incident,
+            FieldLane::Safety,
+        )
+        .with_state(FieldItemState::Blocked)
+        .with_severity(FieldSeverity::Imminent),
+        item(
+            "safety.closed",
+            FieldItemKind::CorrectiveAction,
+            FieldLane::Safety,
+        )
+        .with_state(FieldItemState::Closed)
+        .with_evidence_state(EvidenceState::Accepted)
+        .with_evidence(evidence("safety/closed")),
+        item(
+            "environment.major",
+            FieldItemKind::Incident,
+            FieldLane::Environment,
+        )
+        .with_state(FieldItemState::Open),
+    ];
+
+    let controls = safety_first_rollup(&items, day(20))
+        .into_iter()
+        .map(|row| row.control.to_string())
+        .collect::<Vec<_>>();
+
+    assert_eq!(
+        controls,
+        vec![
+            "safety.imminent",
+            "convenience.non-waivable",
+            "progress.critical",
+            "environment.major",
+            "safety.closed",
+        ]
+    );
+}
+
+#[test]
+fn external_import_is_idempotent_and_changed_source_state_supersedes() {
+    let mut book = ProjectBook::new(
+        crate::ProjectId::new("reference-center").unwrap(),
+        role("project-chief"),
+    );
+    let first = dalux_import("open", "2026-07-10T10:00:00Z");
+
+    assert_eq!(
+        import_field_item(&mut book, 1, day(10), &first).unwrap(),
+        FieldItemImportOutcome::Appended {
+            seq: 1,
+            supersedes: None,
+        }
+    );
+    assert_eq!(
+        import_field_item(&mut book, 2, day(10), &first).unwrap(),
+        FieldItemImportOutcome::Duplicate { existing_seq: 1 }
+    );
+    assert_eq!(book.len(), 1);
+
+    let changed = dalux_import("closed", "2026-07-10T11:00:00Z");
+    assert_eq!(
+        import_field_item(&mut book, 2, day(10), &changed).unwrap(),
+        FieldItemImportOutcome::Appended {
+            seq: 2,
+            supersedes: Some(1),
+        }
+    );
+
+    let current = book.snapshot_at(2).unwrap();
+    let fact = current
+        .current_fact(&control("field.dalux-item-1"))
+        .unwrap();
+    assert_eq!(fact.evidence_state, EvidenceState::Reported);
+    assert_eq!(fact.evidence.len(), 2);
+    assert!(
+        fact.evidence
+            .iter()
+            .all(|reference| reference.web_url.is_none())
+    );
+    let debug = format!("{fact:?}");
+    for excluded in [
+        "attachment",
+        "bearer",
+        "token",
+        "web_url: Some",
+        "Door review",
+    ] {
+        assert!(!debug.contains(excluded), "fact leaked {excluded:?}");
+    }
+}
+
+fn item(id: &str, kind: FieldItemKind, lane: FieldLane) -> FieldItem {
+    FieldItem::new(
+        crate::ProjectId::new("reference-center").unwrap(),
+        control(id),
+        kind,
+        FieldSeverity::Major,
+        lane,
+        role("site-manager"),
+    )
+    .due_on(day(12))
+    .affects(control("package.frame"))
+}
+
+fn dalux_import(state: &str, version: &str) -> FieldItemImport {
+    FieldItemImport::new(
+        item(
+            "field.dalux-item-1",
+            FieldItemKind::ExternalReference,
+            FieldLane::Quality,
+        )
+        .with_state(FieldItemState::Open),
+        FieldItemReference::new("site/dalux", "items/item-1", Some(version.to_owned())).unwrap(),
+        state,
+        ExternalRef::new(
+            EFFECT_LEDGER_BACKEND,
+            format!("dalux/read/{version}"),
+            None,
+            None,
+        ),
+    )
+    .unwrap()
+}
+
+fn control(id: &str) -> crate::ControlId {
+    crate::ControlId::new(id).unwrap()
+}
+
+fn role(id: &str) -> crate::RoleId {
+    crate::RoleId::new(id).unwrap()
+}
+
+fn evidence(id: &str) -> ExternalRef {
+    ExternalRef::new("doc/synthetic", id, Some("accepted".to_owned()), None)
+}
+
+fn day(day: u8) -> Date {
+    Date::from_calendar_date(2026, Month::July, day).unwrap()
+}
+```
+
+### `feature/sim-construction/gantt-schedule-impact`
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/control-graph-meets-gantt` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/control-graph-meets-gantt/recipe.toml`:
+
+```toml
+id = "control-graph-meets-gantt"
+title = "Control graph meets Gantt"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 95
+tags = ["construction", "project-control", "gantt", "critical-path", "powerproject"]
+requires = ["construction.project.read", "construction.project.write", "codec/lisp"]
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/schedule_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/schedule_tests.rs`:
+
+```rust
+// conformance: construction control graph joins canonical sim-lib-gantt facts
+
+use crate::{
+    BaselineId, ConstructionProjectError, ControlEdgeKind, ControlGraph, ControlId,
+    ControlNodeKind, EvidenceState, ScheduleBaseline, ScheduleControlState,
+    ScheduleExplanationKind, ScheduleJoinKind, SchedulePlanRevision, ScheduleTaskJoin,
+    ScheduleTaskJoinSet, explain_schedule_impact,
+};
+use sim_kernel::Cx;
+use sim_lib_gantt::{GanttPlan, LinkKind, Task, TaskLink};
+use std::sync::Arc;
+use time::{Date, Month};
+
+#[test]
+fn dangling_join_fails_closed() {
+    let result = ScheduleTaskJoinSet::new(
+        baseline(),
+        revision("rev-a", 7),
+        vec![join("package.frame", "missing", ScheduleJoinKind::Package)],
+    )
+    .unwrap()
+    .validate_against_plan(&plan());
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::MissingScheduleTask { .. })
+    ));
+}
+
+#[test]
+fn duplicate_joined_task_ids_fail_closed() {
+    let result = ScheduleTaskJoinSet::new(
+        baseline(),
+        revision("rev-a", 7),
+        vec![
+            join(
+                "package.frame",
+                "frame-fabrication",
+                ScheduleJoinKind::Package,
+            ),
+            join(
+                "decision.frame-release",
+                "frame-fabrication",
+                ScheduleJoinKind::Decision,
+            ),
+        ],
+    )
+    .unwrap()
+    .validate_against_plan(&plan());
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::DuplicateScheduleTaskJoin { .. })
+    ));
+}
+
+#[test]
+fn plan_revision_mismatch_does_not_silently_become_baseline() {
+    let result = ScheduleTaskJoinSet::new(
+        baseline(),
+        revision("rev-b", 8),
+        vec![join(
+            "package.frame",
+            "frame-fabrication",
+            ScheduleJoinKind::Package,
+        )],
+    );
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::ScheduleRevisionMismatch { .. })
+    ));
+}
+
+#[test]
+fn critical_blocker_and_downstream_controls_are_explained() {
+    let report = report(
+        date(2026, Month::July, 9),
+        vec![missing("decision.frame-release")],
+    );
+
+    assert_eq!(
+        report.critical_tasks,
+        vec![
+            "design-release".to_owned(),
+            "frame-fabrication".to_owned(),
+            "handover".to_owned(),
+        ]
+    );
+    let critical = report
+        .explanations
+        .iter()
+        .find(|item| item.kind == ScheduleExplanationKind::CriticalBlocker)
+        .unwrap();
+    assert_eq!(critical.control.as_str(), "package.frame");
+    assert_eq!(ids(&critical.blockers), vec!["decision.frame-release"]);
+    assert_eq!(
+        ids(&critical.downstream_controls),
+        vec!["change.frame", "handover.frame"]
+    );
+}
+
+#[test]
+fn non_critical_delayed_task_is_reported_without_critical_blocker() {
+    let report = report(
+        date(2026, Month::July, 25),
+        vec![accepted("decision.frame-release")],
+    );
+
+    let delayed = report
+        .explanations
+        .iter()
+        .find(|item| item.control.as_str() == "decision.lighting")
+        .unwrap();
+    assert_eq!(delayed.kind, ScheduleExplanationKind::NonCriticalDelay);
+    assert!(!delayed.critical);
+}
+
+#[test]
+fn procurement_lead_time_consequence_moves_need_date_before_task_start() {
+    let report = report(
+        date(2026, Month::July, 9),
+        vec![accepted("decision.frame-release")],
+    );
+
+    let procurement = report
+        .explanations
+        .iter()
+        .find(|item| item.kind == ScheduleExplanationKind::ProcurementLeadTime)
+        .unwrap();
+    assert_eq!(procurement.control.as_str(), "procurement.frame-award");
+    assert_eq!(procurement.need_on, date(2026, Month::June, 28));
+}
+
+#[test]
+fn change_impact_names_downstream_controls() {
+    let report = report(
+        date(2026, Month::July, 9),
+        vec![accepted("decision.frame-release")],
+    );
+
+    let change = report
+        .explanations
+        .iter()
+        .find(|item| item.kind == ScheduleExplanationKind::ChangeImpact)
+        .unwrap();
+    assert_eq!(change.control.as_str(), "change.frame");
+    assert_eq!(ids(&change.downstream_controls), vec!["handover.frame"]);
+}
+
+#[test]
+fn stable_order_is_by_need_date_control_task_and_explanation_kind() {
+    let report = report(
+        date(2026, Month::July, 25),
+        vec![missing("decision.frame-release")],
+    );
+
+    assert_eq!(
+        report
+            .explanations
+            .iter()
+            .map(|item| (item.need_on, item.control.as_str(), item.kind))
+            .collect::<Vec<_>>(),
+        vec![
+            (
+                date(2026, Month::June, 28),
+                "procurement.frame-award",
+                ScheduleExplanationKind::ProcurementLeadTime,
+            ),
+            (
+                date(2026, Month::July, 5),
+                "decision.frame-release",
+                ScheduleExplanationKind::LateDecision,
+            ),
+            (
+                date(2026, Month::July, 10),
+                "package.frame",
+                ScheduleExplanationKind::CriticalBlocker,
+            ),
+            (
+                date(2026, Month::July, 12),
+                "change.frame",
+                ScheduleExplanationKind::ChangeImpact,
+            ),
+            (
+                date(2026, Month::July, 15),
+                "decision.lighting",
+                ScheduleExplanationKind::NonCriticalDelay,
+            ),
+            (
+                date(2026, Month::July, 20),
+                "handover.frame",
+                ScheduleExplanationKind::CriticalBlocker,
+            ),
+        ]
+    );
+}
+
+fn report(as_of_date: Date, states: Vec<ScheduleControlState>) -> crate::ScheduleStatusReport {
+    let mut cx = Cx::new(
+        Arc::new(sim_kernel::NoopEvalPolicy),
+        Arc::new(sim_kernel::DefaultFactory),
+    );
+    explain_schedule_impact(&mut cx, &plan(), &joins(), &graph(), &states, as_of_date).unwrap()
+}
+
+fn graph() -> ControlGraph {
+    let mut graph = ControlGraph::new();
+    for (id, kind) in [
+        ("decision.frame-release", ControlNodeKind::Decision),
+        ("package.frame", ControlNodeKind::Package),
+        ("procurement.frame-award", ControlNodeKind::Package),
+        ("change.frame", ControlNodeKind::Change),
+        ("handover.frame", ControlNodeKind::HandoverItem),
+        ("decision.lighting", ControlNodeKind::Decision),
+    ] {
+        graph.add_node(control_id(id), kind).unwrap();
+    }
+    graph
+        .add_edge(
+            control_id("decision.frame-release"),
+            control_id("package.frame"),
+            ControlEdgeKind::Prerequisite,
+        )
+        .unwrap();
+    graph
+        .add_edge(
+            control_id("package.frame"),
+            control_id("change.frame"),
+            ControlEdgeKind::Changes,
+        )
+        .unwrap();
+    graph
+        .add_edge(
+            control_id("change.frame"),
+            control_id("handover.frame"),
+            ControlEdgeKind::HandsOver,
+        )
+        .unwrap();
+    graph
+}
+
+fn joins() -> ScheduleTaskJoinSet {
+    ScheduleTaskJoinSet::new(
+        baseline(),
+        revision("rev-a", 7),
+        vec![
+            join(
+                "decision.frame-release",
+                "design-release",
+                ScheduleJoinKind::Decision,
+            )
+            .needs_on(date(2026, Month::July, 5)),
+            join(
+                "package.frame",
+                "frame-fabrication",
+                ScheduleJoinKind::Package,
+            ),
+            join(
+                "procurement.frame-award",
+                "procurement-float",
+                ScheduleJoinKind::ProcurementDate,
+            )
+            .with_lead_time(12),
+            join("change.frame", "change-review", ScheduleJoinKind::Change),
+            join("handover.frame", "handover", ScheduleJoinKind::HandoverItem),
+            join(
+                "decision.lighting",
+                "lighting-selection",
+                ScheduleJoinKind::Control,
+            ),
+        ],
+    )
+    .unwrap()
+}
+
+fn plan() -> GanttPlan {
+    GanttPlan::new(
+        "baseline-plan",
+        vec![
+            task("design-release", "Design release", 1, 5),
+            task("frame-fabrication", "Frame fabrication", 10, 20),
+            task("procurement-float", "Procurement float", 10, 11),
+            task("change-review", "Change review", 12, 12),
+            task("handover", "Handover", 20, 22),
+            task("lighting-selection", "Lighting selection", 15, 16),
+        ],
+        vec![
+            TaskLink::new(
+                "design-release",
+                "frame-fabrication",
+                LinkKind::FinishStart,
+                0,
+            ),
+            TaskLink::new("frame-fabrication", "handover", LinkKind::FinishStart, 0),
+        ],
+    )
+}
+
+fn baseline() -> ScheduleBaseline {
+    ScheduleBaseline::new(
+        baseline_id("baseline.schedule"),
+        "baseline-plan",
+        "rev-a",
+        6,
+    )
+    .unwrap()
+}
+
+fn revision(revision: &str, as_of_seq: u64) -> SchedulePlanRevision {
+    SchedulePlanRevision::new("baseline-plan", revision, as_of_seq).unwrap()
+}
+
+fn join(control: &str, task: &str, kind: ScheduleJoinKind) -> ScheduleTaskJoin {
+    ScheduleTaskJoin::new(control_id(control), task, kind)
+}
+
+fn accepted(control: &str) -> ScheduleControlState {
+    ScheduleControlState::new(control_id(control), EvidenceState::Accepted).at_sequence(8)
+}
+
+fn missing(control: &str) -> ScheduleControlState {
+    ScheduleControlState::new(control_id(control), EvidenceState::Missing)
+}
+
+fn task(id: &str, name: &str, start_day: u8, finish_day: u8) -> Task {
+    Task::new(
+        id,
+        name,
+        date(2026, Month::July, start_day),
+        date(2026, Month::July, finish_day),
+        0,
+    )
+}
+
+fn date(year: i32, month: Month, day: u8) -> Date {
+    Date::from_calendar_date(year, month, day).unwrap()
+}
+
+fn control_id(id: &str) -> ControlId {
+    ControlId::new(id).unwrap()
+}
+
+fn baseline_id(id: &str) -> BaselineId {
+    BaselineId::new(id).unwrap()
+}
+
+fn ids(values: &[ControlId]) -> Vec<&str> {
+    values.iter().map(ControlId::as_str).collect()
+}
+```
+
+### `feature/sim-construction/sustainability-reference-outcomes`
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/sustainability-to-reference-evidence` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/sustainability-to-reference-evidence/recipe.toml`:
+
+```toml
+id = "sustainability-to-reference-evidence"
+title = "Sustainability to reference evidence"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 95
+tags = ["construction", "sustainability", "certification", "climate", "reuse", "place", "evidence"]
+requires = ["construction.project.read", "construction.reference.publish", "codec/lisp"]
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/outcome_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/outcome_tests.rs`:
+
+```rust
+// conformance: sustainability, certification, climate, reuse, and place outcomes
+
+use sim_kernel::Symbol;
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+use crate::{
+    ControlId, DisclosureState, DomainQuantity, EvidenceState, EvidenceValidity, OutcomeBlocker,
+    OutcomeBoundary, OutcomeMethod, OutcomeRecord, OutcomeRecordKind, OutcomeRecordSpec,
+    OutcomeTargetKind, OutcomeVariance, ProjectId, RegisteredOutcomeShape, RoleId,
+    SustainabilityTarget, SustainabilityTargetSpec, evaluate_outcomes,
+};
+
+#[test]
+fn mixed_methods_and_boundaries_are_not_compared_or_verified() {
+    let project = project();
+    let target = target("climate.a1-a5")
+        .with_source_ref(ext("charter/climate"))
+        .allow_reference_claim();
+    let record = record(
+        "calc.forecast",
+        "climate.a1-a5",
+        OutcomeRecordKind::Measurement,
+    )
+    .with_evidence_state(EvidenceState::Accepted)
+    .with_source_ref(ext("calculator/result"))
+    .with_disclosure(DisclosureState::Accepted);
+    let mut mismatched = record;
+    mismatched.method.version = "v2".to_owned();
+    mismatched.boundary.source_scope = "A1-A4".to_owned();
+
+    let report = evaluate_outcomes(
+        project,
+        &[target],
+        &[mismatched],
+        date(2026, Month::July, 25),
+    )
+    .unwrap();
+    let target_report = &report.targets[0];
+
+    assert!(!target_report.covered);
+    assert_eq!(
+        target_report.variance,
+        OutcomeVariance::NotComparable {
+            reason: "method".to_owned()
+        }
+    );
+    assert!(
+        target_report
+            .blockers
+            .iter()
+            .any(|blocker| matches!(blocker, OutcomeBlocker::MethodMismatch(_)))
+    );
+    assert!(
+        target_report
+            .blockers
+            .iter()
+            .any(|blocker| matches!(blocker, OutcomeBlocker::BoundaryMismatch(_)))
+    );
+}
+
+#[test]
+fn superseded_calculations_do_not_support_current_claims() {
+    let project = project();
+    let target = target("reuse.steel")
+        .with_source_ref(ext("charter/reuse"))
+        .allow_reference_claim();
+    let stale = record("calc.old", "reuse.steel", OutcomeRecordKind::Measurement)
+        .with_evidence_state(EvidenceState::Accepted)
+        .with_source_ref(ext("calculator/old"))
+        .with_disclosure(DisclosureState::Accepted);
+    let current = record("calc.new", "reuse.steel", OutcomeRecordKind::Measurement)
+        .with_evidence_state(EvidenceState::Accepted)
+        .with_source_ref(ext("calculator/new"))
+        .with_disclosure(DisclosureState::Accepted)
+        .supersedes(id("calc.old"));
+
+    let report = evaluate_outcomes(
+        project,
+        &[target],
+        &[stale, current],
+        date(2026, Month::July, 25),
+    )
+    .unwrap();
+
+    assert_eq!(report.targets[0].current_record, Some(id("calc.new")));
+    assert!(report.targets[0].reference_claim_admissible);
+}
+
+#[test]
+fn expired_certificate_blocks_gate_but_keeps_provenance() {
+    let project = project();
+    let target = target("cert.breeam")
+        .with_source_ref(ext("charter/certification"))
+        .allow_reference_claim();
+    let certificate = record(
+        "certificate.expired",
+        "cert.breeam",
+        OutcomeRecordKind::Certificate,
+    )
+    .with_evidence_state(EvidenceState::Accepted)
+    .with_validity(EvidenceValidity::new(
+        Some(date(2025, Month::January, 1)),
+        Some(date(2026, Month::January, 1)),
+    ))
+    .with_source_ref(ext("scheme/certificate"))
+    .with_disclosure(DisclosureState::Accepted);
+
+    let report = evaluate_outcomes(
+        project,
+        &[target],
+        &[certificate],
+        date(2026, Month::July, 25),
+    )
+    .unwrap();
+
+    assert!(!report.gates_clear);
+    assert!(
+        report.targets[0]
+            .blockers
+            .iter()
+            .any(|blocker| matches!(blocker, OutcomeBlocker::ExpiredEvidence(_)))
+    );
+}
+
+#[test]
+fn reuse_substitution_can_cover_target_without_local_unit_conversion() {
+    let project = project();
+    let mut target = target("reuse.beams")
+        .with_source_ref(ext("charter/reuse-beams"))
+        .allow_reference_claim();
+    target.target = DomainQuantity::new("12", symbol("unit/pieces"));
+    let mut substitution = record(
+        "reuse.substitution",
+        "reuse.beams",
+        OutcomeRecordKind::ReuseSubstitution,
+    )
+    .with_evidence_state(EvidenceState::Accepted)
+    .with_source_ref(ext("materials/substitution"))
+    .with_disclosure(DisclosureState::Accepted);
+    substitution.quantity = DomainQuantity::new("12", symbol("unit/pieces"));
+
+    let report = evaluate_outcomes(
+        project,
+        &[target],
+        &[substitution],
+        date(2026, Month::July, 25),
+    )
+    .unwrap();
+
+    assert!(report.gates_clear);
+    assert_eq!(report.targets[0].variance, OutcomeVariance::OnTarget);
+}
+
+#[test]
+fn missing_source_reference_blocks_reference_claim() {
+    let project = project();
+    let target = target("climate.operational").allow_reference_claim();
+    let record = record(
+        "calc.no-source",
+        "climate.operational",
+        OutcomeRecordKind::Measurement,
+    )
+    .with_evidence_state(EvidenceState::Accepted)
+    .with_disclosure(DisclosureState::Accepted);
+
+    let report =
+        evaluate_outcomes(project, &[target], &[record], date(2026, Month::July, 25)).unwrap();
+
+    assert!(!report.targets[0].reference_claim_admissible);
+    assert!(
+        report.targets[0]
+            .blockers
+            .iter()
+            .any(|blocker| matches!(blocker, OutcomeBlocker::MissingTargetSourceRef(_)))
+    );
+    assert!(
+        report.targets[0]
+            .blockers
+            .iter()
+            .any(|blocker| matches!(blocker, OutcomeBlocker::MissingRecordSourceRef(_)))
+    );
+}
+
+#[test]
+fn disclosure_rejection_prevents_outcome_reference_claim() {
+    let project = project();
+    let target = target("place.social-value")
+        .with_source_ref(ext("charter/place"))
+        .allow_reference_claim();
+    let record = record(
+        "place.measurement",
+        "place.social-value",
+        OutcomeRecordKind::Measurement,
+    )
+    .with_evidence_state(EvidenceState::Accepted)
+    .with_source_ref(ext("outcome/place"))
+    .with_disclosure(DisclosureState::Rejected);
+
+    let report =
+        evaluate_outcomes(project, &[target], &[record], date(2026, Month::July, 25)).unwrap();
+
+    assert!(!report.targets[0].reference_claim_admissible);
+    assert!(
+        report.targets[0]
+            .blockers
+            .iter()
+            .any(|blocker| matches!(blocker, OutcomeBlocker::DisclosureRejected(_)))
+    );
+}
+
+fn target(id_text: &str) -> SustainabilityTarget {
+    SustainabilityTarget::new(SustainabilityTargetSpec {
+        project: project(),
+        id: id(id_text),
+        kind: OutcomeTargetKind::Climate,
+        category: RegisteredOutcomeShape::new(
+            symbol("construction-outcome/climate"),
+            symbol("shape/climate"),
+        ),
+        title: "Climate budget".to_owned(),
+        target: DomainQuantity::new("100", symbol("unit/kg-co2e")),
+        method: method(),
+        boundary: boundary(),
+        responsible: role("sustainability-lead"),
+    })
+}
+
+fn record(id_text: &str, target: &str, kind: OutcomeRecordKind) -> OutcomeRecord {
+    OutcomeRecord::new(OutcomeRecordSpec {
+        project: project(),
+        id: id(id_text),
+        target: id(target),
+        kind,
+        quantity: DomainQuantity::new("100", symbol("unit/kg-co2e")),
+        method: method(),
+        boundary: boundary(),
+        responsible: role("sustainability-lead"),
+        reported_on: date(2026, Month::July, 20),
+    })
+}
+
+fn method() -> OutcomeMethod {
+    OutcomeMethod::new(
+        symbol("method/en15978"),
+        "v1",
+        symbol("shape/en15978"),
+        ext("methods/en15978"),
+    )
+}
+
+fn boundary() -> OutcomeBoundary {
+    OutcomeBoundary::new(symbol("boundary/lifecycle"), "A1-A5", ext("boundary/a1-a5"))
+}
+
+fn project() -> ProjectId {
+    ProjectId::new("reference-center").unwrap()
+}
+
+fn id(value: &str) -> ControlId {
+    ControlId::new(value).unwrap()
+}
+
+fn role(value: &str) -> RoleId {
+    RoleId::new(value).unwrap()
+}
+
+fn symbol(value: &str) -> Symbol {
+    let (namespace, name) = value.split_once('/').unwrap();
+    Symbol::qualified(namespace, name)
+}
+
+fn ext(id: &str) -> ExternalRef {
+    ExternalRef::new("doc/synthetic", id, Some("rev-a".to_owned()), None)
+}
+
+fn date(year: i32, month: Month, day: u8) -> Date {
+    Date::from_calendar_date(year, month, day).unwrap()
+}
+```
+
+### `feature/sim-construction/production-lookahead-readiness`
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/six-week-production-readiness` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/six-week-production-readiness/recipe.toml`:
+
+```toml
+id = "six-week-production-readiness"
+title = "Six-week production readiness"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 95
+tags = ["construction", "project-control", "production", "lookahead", "readiness", "gantt"]
+requires = ["construction.project.read", "construction.project.write", "codec/lisp"]
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/production_plan_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/production_plan_tests.rs`:
+
+```rust
+// conformance: six-week construction production readiness derives from shared facts
+
+use crate::{
+    AcceptedTaskWindow, BaselineId, CONSTRUCTION_EXCEPTION_CAPABILITY, ConstructionProjectError,
+    ControlId, EvidenceState, EvidenceValidity, ExceptionDecision, ExceptionScope, LookaheadWindow,
+    ObligationPolicy, ProductionActivity, ProductionCommitment, ProductionPlan,
+    ProductionReadinessState, ProjectBook, ProjectFact, ProjectId, ProjectObligation, Requirement,
+    RequirementLane, RoleId, ScheduleBaseline, ScheduleJoinKind, SchedulePlanRevision,
+    ScheduleTaskJoin, ScheduleTaskJoinSet, Visibility,
+};
+use sim_kernel::{Expr, Symbol};
+use sim_lib_doc_core::ExternalRef;
+use sim_lib_gantt::{GanttPlan, Task};
+use time::{Date, Month};
+
+#[test]
+fn moved_task_is_reclassified_into_three_week_commitment_window() {
+    let snapshot = ready_plan()
+        .with_activity(activity("activity.frame", "task.frame", 8).requires(req("release")))
+        .with_obligation(obligation("release"))
+        .with_accepted_task_window(AcceptedTaskWindow::new(
+            "task.frame",
+            offset_day(35),
+            offset_day(37),
+        ))
+        .derive_readiness(
+            &book(vec![accepted_fact(1, "release")]),
+            &plan(vec![task("task.frame", 8, 10)]),
+            &joins(vec![join("activity.frame", "task.frame")]),
+            day(1),
+        )
+        .unwrap();
+
+    assert_eq!(snapshot.six_week_demand.len(), 1);
+    assert_eq!(snapshot.three_week_commitment.len(), 1);
+    let report = &snapshot.three_week_commitment[0];
+    assert_eq!(report.window, LookaheadWindow::ThreeWeekCommitment);
+    assert_eq!(report.state, ProductionReadinessState::Ready);
+    assert_eq!(
+        report.movement.as_ref().unwrap().accepted_start,
+        offset_day(35)
+    );
+    assert!(report.explanation.contains("after schedule movement"));
+}
+
+#[test]
+fn missing_release_blocks_production_readiness() {
+    let report = single_activity_report(vec![], vec!["release"], None);
+
+    assert_eq!(report.state, ProductionReadinessState::NotReady);
+    assert_eq!(ids(&report.constraints), vec!["release"]);
+    assert_eq!(report.constraints[0].evidence_state, EvidenceState::Missing);
+    assert_eq!(report.constraints[0].owner, role("design-lead"));
+}
+
+#[test]
+fn expired_risk_assessment_is_not_ready_with_sequence_retained() {
+    let report = ready_plan()
+        .with_activity(activity("activity.frame", "task.frame", 8).requires(req("risk")))
+        .with_obligation(
+            obligation("risk").with_evidence_validity(EvidenceValidity::new(None, Some(day(5)))),
+        )
+        .derive_readiness(
+            &book(vec![accepted_fact(11, "risk")]),
+            &plan(vec![task("task.frame", 8, 10)]),
+            &joins(vec![join("activity.frame", "task.frame")]),
+            day(8),
+        )
+        .unwrap()
+        .three_week_commitment
+        .remove(0);
+
+    assert_eq!(report.state, ProductionReadinessState::NotReady);
+    assert_eq!(report.constraints[0].evidence_state, EvidenceState::Expired);
+    assert_eq!(report.constraints[0].current_seq, Some(11));
+}
+
+#[test]
+fn unintroduced_worker_blocks_staffing_readiness() {
+    let report = single_activity_report(
+        vec![accepted_fact(1, "release")],
+        vec!["introduction"],
+        None,
+    );
+
+    assert_eq!(report.state, ProductionReadinessState::NotReady);
+    assert_eq!(ids(&report.constraints), vec!["introduction"]);
+    assert!(report.constraints[0].consequence.contains("cannot start"));
+}
+
+#[test]
+fn material_delay_names_constraint_owner_need_date_and_consequence() {
+    let report = single_activity_report(vec![reported_fact(4, "material")], vec!["material"], None);
+
+    assert_eq!(report.state, ProductionReadinessState::NotReady);
+    let constraint = &report.constraints[0];
+    assert_eq!(constraint.requirement.as_str(), "material");
+    assert_eq!(constraint.owner, role("design-lead"));
+    assert_eq!(constraint.need_on, day(8));
+    assert_eq!(constraint.current_seq, Some(4));
+    assert!(constraint.consequence.contains("activity.frame"));
+}
+
+#[test]
+fn accepted_exception_can_make_waivable_constraint_ready() {
+    let exception = ExceptionDecision::new(
+        control("exception.material"),
+        ExceptionScope::new(project()).covers(req("material")),
+        role("project-chief"),
+        role("project-chief"),
+        "Supplier delay accepted for resequenced work",
+        day(6),
+        day(12),
+    )
+    .with_evidence(reference("exception/material"));
+    let snapshot = ready_plan()
+        .with_activity(activity("activity.frame", "task.frame", 8).requires(req("material")))
+        .with_obligation(obligation("material"))
+        .with_exception(exception)
+        .with_capability(CONSTRUCTION_EXCEPTION_CAPABILITY)
+        .derive_readiness(
+            &book(vec![]),
+            &plan(vec![task("task.frame", 8, 10)]),
+            &joins(vec![join("activity.frame", "task.frame")]),
+            day(8),
+        )
+        .unwrap();
+
+    let report = &snapshot.three_week_commitment[0];
+    assert_eq!(report.state, ProductionReadinessState::Ready);
+    assert_eq!(
+        report.constraints[0].exception.as_ref().unwrap().as_str(),
+        "exception.material"
+    );
+}
+
+#[test]
+fn non_waivable_safety_exception_fails_closed() {
+    let exception = ExceptionDecision::new(
+        control("exception.safety"),
+        ExceptionScope::new(project()).covers(req("safety")),
+        role("project-chief"),
+        role("project-chief"),
+        "Never acceptable",
+        day(6),
+        day(12),
+    )
+    .with_evidence(reference("exception/safety"));
+    let result = ready_plan()
+        .with_activity(activity("activity.frame", "task.frame", 8).requires(req("safety")))
+        .with_obligation(obligation("safety").requirement_non_waivable())
+        .with_exception(exception)
+        .with_capability(CONSTRUCTION_EXCEPTION_CAPABILITY)
+        .derive_readiness(
+            &book(vec![]),
+            &plan(vec![task("task.frame", 8, 10)]),
+            &joins(vec![join("activity.frame", "task.frame")]),
+            day(8),
+        );
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::NonWaivableRequirement { .. })
+            | Err(ConstructionProjectError::NonWaivableProductionBlocker { .. })
+    ));
+}
+
+#[test]
+fn committed_but_not_ready_keeps_commitment_separate_from_computation() {
+    let report = single_activity_report(
+        vec![],
+        vec!["release"],
+        Some(
+            ProductionCommitment::new(
+                control("activity.frame"),
+                role("site-manager"),
+                day(2),
+                19,
+                "Foreman commits to start frame work",
+            )
+            .with_evidence(reference("meeting/week-31")),
+        ),
+    );
+
+    assert_eq!(report.state, ProductionReadinessState::NotReady);
+    assert_eq!(report.commitment.as_ref().unwrap().seq, 19);
+    assert!(report.explanation.contains("with human commitment"));
+}
+
+fn single_activity_report(
+    facts: Vec<ProjectFact>,
+    requirements: Vec<&str>,
+    commitment: Option<ProductionCommitment>,
+) -> crate::ProductionActivityReadiness {
+    let mut activity = activity("activity.frame", "task.frame", 8);
+    let mut readiness = ready_plan();
+    for requirement in requirements {
+        activity = activity.requires(req(requirement));
+        readiness = readiness.with_obligation(obligation(requirement));
+    }
+    readiness = readiness.with_activity(activity);
+    if let Some(commitment) = commitment {
+        readiness = readiness.with_commitment(commitment);
+    }
+    readiness
+        .derive_readiness(
+            &book(facts),
+            &plan(vec![task("task.frame", 8, 10)]),
+            &joins(vec![join("activity.frame", "task.frame")]),
+            day(1),
+        )
+        .unwrap()
+        .three_week_commitment
+        .remove(0)
+}
+
+fn ready_plan() -> ProductionPlan {
+    ProductionPlan::new()
+}
+
+fn obligation(id: &str) -> ProjectObligation {
+    ProjectObligation {
+        project: project(),
+        requirement: requirement(id),
+        policy: ObligationPolicy::Mandatory,
+        evidence_validity: EvidenceValidity::unbounded(),
+    }
+}
+
+trait RequirementTestExt {
+    fn requirement_non_waivable(self) -> Self;
+}
+
+impl RequirementTestExt for ProjectObligation {
+    fn requirement_non_waivable(mut self) -> Self {
+        self.requirement = self.requirement.non_waivable();
+        self
+    }
+}
+
+fn requirement(id: &str) -> Requirement {
+    Requirement::new(
+        req(id),
+        RequirementLane::new(Symbol::qualified("construction-lookahead", id)),
+        format!("{id} requirement"),
+        role("design-lead"),
+        role("project-chief"),
+    )
+    .with_source_ref(reference(id))
+}
+
+fn activity(id: &str, task_id: &str, start_day: u8) -> ProductionActivity {
+    ProductionActivity::new(
+        control(id),
+        task_id,
+        control("package.frame"),
+        "structure",
+        "area-a",
+        "level-02",
+        role("site-manager"),
+        day(start_day),
+        day(start_day + 2),
+        baseline_id("baseline.schedule"),
+    )
+}
+
+fn accepted_fact(seq: u64, subject: &str) -> ProjectFact {
+    fact(seq, subject, EvidenceState::Accepted).with_evidence(reference(subject))
+}
+
+fn reported_fact(seq: u64, subject: &str) -> ProjectFact {
+    fact(seq, subject, EvidenceState::Reported).with_evidence(reference(subject))
+}
+
+fn fact(seq: u64, subject: &str, state: EvidenceState) -> ProjectFact {
+    ProjectFact::new(
+        seq,
+        project(),
+        req(subject),
+        Symbol::qualified("construction-readiness", subject),
+        day(1),
+        role("writer"),
+        Expr::String(subject.to_owned()),
+    )
+    .with_evidence_state(state)
+    .with_visibility(Visibility::Project)
+}
+
+fn book(facts: Vec<ProjectFact>) -> ProjectBook {
+    ProjectBook::from_facts(project(), role("writer"), facts).unwrap()
+}
+
+fn joins(items: Vec<ScheduleTaskJoin>) -> ScheduleTaskJoinSet {
+    ScheduleTaskJoinSet::new(
+        ScheduleBaseline::new(baseline_id("baseline.schedule"), "plan", "rev-a", 1).unwrap(),
+        SchedulePlanRevision::new("plan", "rev-a", 20).unwrap(),
+        items,
+    )
+    .unwrap()
+}
+
+fn join(control_id: &str, task_id: &str) -> ScheduleTaskJoin {
+    ScheduleTaskJoin::new(control(control_id), task_id, ScheduleJoinKind::Package)
+}
+
+fn plan(tasks: Vec<Task>) -> GanttPlan {
+    GanttPlan::new("plan", tasks, vec![])
+}
+
+fn task(id: &str, start_day: u8, finish_day: u8) -> Task {
+    Task::new(id, id, day(start_day), day(finish_day), 0)
+}
+
+fn reference(id: &str) -> ExternalRef {
+    ExternalRef::new("doc/synthetic", id, Some("rev-a".to_owned()), None)
+}
+
+fn project() -> ProjectId {
+    ProjectId::new("reference-center").unwrap()
+}
+
+fn control(id: &str) -> ControlId {
+    ControlId::new(id).unwrap()
+}
+
+fn req(id: &str) -> ControlId {
+    control(id)
+}
+
+fn baseline_id(id: &str) -> BaselineId {
+    BaselineId::new(id).unwrap()
+}
+
+fn role(id: &str) -> RoleId {
+    RoleId::new(id).unwrap()
+}
+
+fn day(day: u8) -> Date {
+    Date::from_calendar_date(2026, Month::July, day).unwrap()
+}
+
+fn offset_day(offset: i64) -> Date {
+    day(1) + time::Duration::days(offset - 1)
+}
+
+fn ids(values: &[crate::ProductionConstraint]) -> Vec<&str> {
+    values
+        .iter()
+        .map(|constraint| constraint.requirement.as_str())
+        .collect()
+}
+```
+
+### `feature/sim-construction/risk-opportunity-forecast-escalation`
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/risk-to-project-chief-decision` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/risk-to-project-chief-decision/recipe.toml`:
+
+```toml
+id = "risk-to-project-chief-decision"
+title = "Risk to project-chief decision attention"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 97
+tags = ["construction", "project-control", "risk", "opportunity", "forecast", "escalation"]
+requires = ["construction.project.read", "construction.project.write", "codec/lisp"]
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/risk_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/risk_tests.rs`:
+
+```rust
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+use crate::{
+    BaselineId, CommercialAmount, ConstructionProjectError, ControlId, CurrencyCode, ForecastBasis,
+    ForecastConsequence, ForecastConsequenceKind, ForecastValue, OpenRating, ProjectId,
+    RatingValue, ResponseState, RoleId, UncertaintyKind, UncertaintyRecord, UncertaintyResponse,
+    UncertaintyState,
+};
+// conformance: construction risk opportunity ratings realization and capture
+
+use sim_ledger::Amount;
+
+#[test]
+fn risk_and_opportunity_retain_complete_accountable_uncertainty_records() {
+    let risk = uncertainty(UncertaintyKind::Risk);
+    risk.validate().unwrap();
+    assert!(matches!(risk.likelihood.value, RatingValue::Qualitative(_)));
+    assert!(matches!(risk.impact.value, RatingValue::Quantified { .. }));
+
+    let opportunity = uncertainty(UncertaintyKind::Opportunity)
+        .with_state(UncertaintyState::OpportunityCaptured { fact_seq: 4 });
+    opportunity.validate().unwrap();
+    assert_eq!(opportunity.response.authority, Some(role("project-chief")));
+}
+
+#[test]
+fn risk_realization_and_opportunity_capture_are_kind_checked() {
+    uncertainty(UncertaintyKind::Risk)
+        .with_state(UncertaintyState::RiskRealized { fact_seq: 4 })
+        .validate()
+        .unwrap();
+
+    let mismatched = uncertainty(UncertaintyKind::Opportunity)
+        .with_state(UncertaintyState::RiskRealized { fact_seq: 4 });
+    assert!(matches!(
+        mismatched.validate(),
+        Err(ConstructionProjectError::UncertaintyStateMismatch { .. })
+    ));
+}
+
+#[test]
+fn stale_rating_remains_visible_after_a_current_fact_change() {
+    let mut risk = uncertainty(UncertaintyKind::Risk);
+    risk.fact_seq = 5;
+    assert!(risk.has_stale_rating());
+    risk.validate().unwrap();
+}
+
+#[test]
+fn forecast_consequences_preserve_every_typed_lane_and_method_basis() {
+    let uncertainty = control("risk.switchgear");
+    let basis = ForecastBasis::new(baseline(), "discipline forecast", 4, date(20));
+    let kinds_and_values = [
+        (
+            ForecastConsequenceKind::Time,
+            ForecastValue::TimeInterval {
+                start_on: date(24),
+                finish_on: date(28),
+            },
+        ),
+        (
+            ForecastConsequenceKind::Amount,
+            ForecastValue::Amount(
+                CommercialAmount::parse("125000.00", CurrencyCode::new("SEK").unwrap()).unwrap(),
+            ),
+        ),
+        (
+            ForecastConsequenceKind::Safety,
+            ForecastValue::Qualitative("energization overlap".to_owned()),
+        ),
+        (
+            ForecastConsequenceKind::Quality,
+            ForecastValue::Quantified {
+                value: 12,
+                unit: "inspection-points".to_owned(),
+            },
+        ),
+        (
+            ForecastConsequenceKind::Environment,
+            ForecastValue::Quantified {
+                value: 4,
+                unit: "extra-deliveries".to_owned(),
+            },
+        ),
+        (
+            ForecastConsequenceKind::Sustainability,
+            ForecastValue::Quantified {
+                value: 800,
+                unit: "kg-co2e".to_owned(),
+            },
+        ),
+        (
+            ForecastConsequenceKind::People,
+            ForecastValue::Qualitative("night shift pressure".to_owned()),
+        ),
+        (
+            ForecastConsequenceKind::Place,
+            ForecastValue::Qualitative("loading-bay congestion".to_owned()),
+        ),
+        (
+            ForecastConsequenceKind::Customer,
+            ForecastValue::Qualitative("opening confidence reduced".to_owned()),
+        ),
+    ];
+
+    for (index, (kind, value)) in kinds_and_values.into_iter().enumerate() {
+        ForecastConsequence::new(
+            project(),
+            control(&format!("forecast.{}", index + 1)),
+            uncertainty.clone(),
+            4,
+            control("scenario.accepted"),
+            kind,
+            value,
+            basis.clone(),
+        )
+        .affects(control("package.electrical"))
+        .with_evidence(evidence("forecast"))
+        .validate()
+        .unwrap();
+    }
+
+    let wrong = ForecastConsequence::new(
+        project(),
+        control("forecast.wrong"),
+        uncertainty,
+        4,
+        control("scenario.accepted"),
+        ForecastConsequenceKind::Amount,
+        ForecastValue::Qualitative("about a lot".to_owned()),
+        basis,
+    )
+    .affects(control("package.electrical"))
+    .with_evidence(evidence("forecast"));
+    assert!(matches!(
+        wrong.validate(),
+        Err(ConstructionProjectError::ForecastValueMismatch { .. })
+    ));
+    assert_eq!(Amount::parse("125000.00").unwrap().0, 12_500_000);
+}
+
+fn uncertainty(kind: UncertaintyKind) -> UncertaintyRecord {
+    let likelihood = OpenRating::qualitative(
+        "project/risk-matrix",
+        "possible",
+        4,
+        date(20),
+        "facilitated review",
+    );
+    let impact = OpenRating::quantified(
+        "project/impact-score",
+        4,
+        "five-point-scale",
+        4,
+        date(20),
+        "discipline estimate",
+    );
+    let response = UncertaintyResponse::new(
+        "qualify the alternate supplier",
+        "switchgear submittal is rejected",
+        date(28),
+        date(24),
+        5,
+    )
+    .with_authority(role("project-chief"))
+    .trigger_crossed_at(4)
+    .with_state(ResponseState::InProgress);
+    let record = match kind {
+        UncertaintyKind::Risk => UncertaintyRecord::risk(
+            project(),
+            control("risk.switchgear"),
+            4,
+            baseline(),
+            control("scenario.accepted"),
+            "single-source switchgear",
+            "the selected supplier misses approval",
+            "energization and customer opening move",
+            role("package-lead"),
+            response,
+            likelihood,
+            impact,
+        ),
+        UncertaintyKind::Opportunity => UncertaintyRecord::opportunity(
+            project(),
+            control("opportunity.prefabrication"),
+            4,
+            baseline(),
+            control("scenario.accepted"),
+            "repeatable riser geometry",
+            "the supplier accepts off-site assembly",
+            "installation duration and site exposure reduce",
+            role("package-lead"),
+            response,
+            likelihood,
+            impact,
+        ),
+    };
+    record
+        .affects(control("package.electrical"))
+        .with_evidence(evidence("uncertainty"))
+}
+
+fn project() -> ProjectId {
+    ProjectId::new("reference-center").unwrap()
+}
+
+fn baseline() -> BaselineId {
+    BaselineId::new("baseline.control-1").unwrap()
+}
+
+fn role(value: &str) -> RoleId {
+    RoleId::new(value).unwrap()
+}
+
+fn control(value: &str) -> ControlId {
+    ControlId::new(value).unwrap()
+}
+
+fn date(day: u8) -> Date {
+    Date::from_calendar_date(2026, Month::July, day).unwrap()
+}
+
+fn evidence(id: &str) -> ExternalRef {
+    ExternalRef::new(
+        "doc/synthetic",
+        format!("risk/reference-center/{id}"),
+        Some("rev-a".to_owned()),
+        None,
+    )
+}
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/exposure_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/exposure_tests.rs`:
+
+```rust
+// conformance: baseline-aware exact construction uncertainty exposure
+
+use sim_kernel::{Expr, Symbol};
+use sim_ledger::Amount;
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+use crate::{
+    AcceptedBaseline, BaselineId, BaselineKind, CommercialAmount, ControlEdgeKind, ControlGraph,
+    ControlId, ControlNodeKind, CurrencyCode, ExposureAnnotation, ForecastBasis,
+    ForecastConsequence, ForecastConsequenceKind, ForecastValue, OpenRating, ProjectBook,
+    ProjectFact, ProjectId, ResponseState, RoleId, ScheduleBaseline, ScheduleJoinKind,
+    SchedulePlanRevision, ScheduleStatusReport, ScheduleTaskJoin, ScheduleTaskJoinSet,
+    UncertaintyRecord, UncertaintyResponse, derive_exposure,
+};
+
+#[test]
+fn exposure_uses_current_baseline_schedule_dependency_and_comparable_leaf_facts() {
+    let book = fact_book(&[
+        "risk.switchgear",
+        "forecast.amount-parent",
+        "forecast.amount-child",
+        "forecast.amount-eur",
+        "forecast.safety",
+    ]);
+    let snapshot = book.snapshot_at(5).unwrap();
+    let baseline = accepted_baseline();
+    let risk = risk();
+    let parent = amount_consequence("forecast.amount-parent", 2, "100000.00", "SEK")
+        .summarizes(control("forecast.amount-child"));
+    let child = amount_consequence("forecast.amount-child", 3, "60000.00", "SEK")
+        .with_parent(control("forecast.amount-parent"))
+        .correlated_with(control("correlation.switchgear-market"));
+    let euro = amount_consequence("forecast.amount-eur", 4, "2000.00", "EUR");
+    let safety = ForecastConsequence::new(
+        project(),
+        control("forecast.safety"),
+        control("risk.switchgear"),
+        5,
+        control("scenario.accepted"),
+        ForecastConsequenceKind::Safety,
+        ForecastValue::Qualitative("temporary energization overlap".to_owned()),
+        basis(5),
+    )
+    .affects(control("package.electrical"))
+    .with_evidence(evidence("safety"));
+
+    let report = derive_exposure(
+        &snapshot,
+        &[baseline],
+        &[risk],
+        &[parent, child, euro, safety],
+        &joins(),
+        &schedule(),
+        &graph(),
+    )
+    .unwrap();
+
+    assert_eq!(report.queue.len(), 1);
+    assert!(report.queue[0].critical_path);
+    assert_eq!(
+        report.queue[0]
+            .affected_dependents
+            .iter()
+            .map(ControlId::as_str)
+            .collect::<Vec<_>>(),
+        vec!["package.electrical"]
+    );
+    assert_eq!(report.amount_buckets.len(), 2);
+    let sek = report
+        .amount_buckets
+        .iter()
+        .find(|bucket| bucket.currency.as_str() == "SEK")
+        .unwrap();
+    assert_eq!(sek.total.0, 6_000_000);
+    assert_eq!(
+        sek.contributors
+            .iter()
+            .map(ControlId::as_str)
+            .collect::<Vec<_>>(),
+        vec!["forecast.amount-child"]
+    );
+    assert!(sek.annotations.iter().any(|annotation| matches!(
+        annotation,
+        ExposureAnnotation::ParentSummaryExcluded { parent, .. }
+            if parent.as_str() == "forecast.amount-parent"
+    )));
+    assert!(sek.annotations.iter().any(|annotation| matches!(
+        annotation,
+        ExposureAnnotation::Correlated { group, .. }
+            if group.as_str() == "correlation.switchgear-market"
+    )));
+    let eur = report
+        .amount_buckets
+        .iter()
+        .find(|bucket| bucket.currency.as_str() == "EUR")
+        .unwrap();
+    assert_eq!(eur.total.0, 200_000);
+}
+
+#[test]
+fn exposure_amount_overflow_fails_closed() {
+    let book = fact_book(&["risk.switchgear", "forecast.max", "forecast.plus-one"]);
+    let snapshot = book.snapshot_at(3).unwrap();
+    let max = raw_amount_consequence("forecast.max", 2, Amount(i64::MAX));
+    let plus_one = raw_amount_consequence("forecast.plus-one", 3, Amount(1));
+
+    let result = derive_exposure(
+        &snapshot,
+        &[accepted_baseline()],
+        &[risk()],
+        &[max, plus_one],
+        &joins_at(3),
+        &schedule_at(3),
+        &graph(),
+    );
+
+    assert!(matches!(
+        result,
+        Err(crate::ConstructionProjectError::AmountOverflow {
+            field: "forecast.exposure.total"
+        })
+    ));
+}
+
+fn risk() -> UncertaintyRecord {
+    let rating =
+        OpenRating::qualitative("project/risk-matrix", "high", 1, date(20), "project review");
+    UncertaintyRecord::risk(
+        project(),
+        control("risk.switchgear"),
+        1,
+        baseline_id(),
+        control("scenario.accepted"),
+        "single-source design",
+        "switchgear approval is missed",
+        "energization moves",
+        role(),
+        UncertaintyResponse::new(
+            "qualify an alternate",
+            "submittal rejected",
+            date(28),
+            date(24),
+            5,
+        )
+        .with_authority(role())
+        .with_state(ResponseState::InProgress),
+        rating.clone(),
+        rating,
+    )
+    .affects(control("package.electrical"))
+    .with_evidence(evidence("risk"))
+}
+
+fn amount_consequence(
+    id: &str,
+    fact_seq: u64,
+    amount: &str,
+    currency: &str,
+) -> ForecastConsequence {
+    ForecastConsequence::new(
+        project(),
+        control(id),
+        control("risk.switchgear"),
+        fact_seq,
+        control("scenario.accepted"),
+        ForecastConsequenceKind::Amount,
+        ForecastValue::Amount(
+            CommercialAmount::parse(amount, CurrencyCode::new(currency).unwrap()).unwrap(),
+        ),
+        basis(fact_seq),
+    )
+    .affects(control("package.electrical"))
+    .with_evidence(evidence(id))
+}
+
+fn raw_amount_consequence(id: &str, fact_seq: u64, amount: Amount) -> ForecastConsequence {
+    ForecastConsequence::new(
+        project(),
+        control(id),
+        control("risk.switchgear"),
+        fact_seq,
+        control("scenario.accepted"),
+        ForecastConsequenceKind::Amount,
+        ForecastValue::Amount(
+            CommercialAmount::new(amount, CurrencyCode::new("SEK").unwrap()).unwrap(),
+        ),
+        basis(fact_seq),
+    )
+    .affects(control("package.electrical"))
+    .with_evidence(evidence(id))
+}
+
+fn accepted_baseline() -> AcceptedBaseline {
+    AcceptedBaseline::new(
+        baseline_id(),
+        project(),
+        control("baseline.schedule"),
+        BaselineKind::Time,
+        role(),
+        1,
+        date(1),
+    )
+    .with_evidence(evidence("baseline"))
+}
+
+fn joins() -> ScheduleTaskJoinSet {
+    joins_at(5)
+}
+
+fn joins_at(as_of_seq: u64) -> ScheduleTaskJoinSet {
+    ScheduleTaskJoinSet::new(
+        ScheduleBaseline::new(baseline_id(), "plan", "rev-a", 1).unwrap(),
+        SchedulePlanRevision::new("plan", "rev-a", as_of_seq).unwrap(),
+        vec![ScheduleTaskJoin::new(
+            control("package.electrical"),
+            "energization",
+            ScheduleJoinKind::Package,
+        )],
+    )
+    .unwrap()
+}
+
+fn schedule() -> ScheduleStatusReport {
+    schedule_at(5)
+}
+
+fn schedule_at(as_of_seq: u64) -> ScheduleStatusReport {
+    ScheduleStatusReport {
+        baseline: baseline_id(),
+        accepted_revision: "rev-a".to_owned(),
+        as_of_seq,
+        critical_tasks: vec!["energization".to_owned()],
+        explanations: Vec::new(),
+    }
+}
+
+fn graph() -> ControlGraph {
+    let mut graph = ControlGraph::new();
+    graph
+        .add_node(control("risk.switchgear"), ControlNodeKind::Risk)
+        .unwrap();
+    graph
+        .add_node(control("package.electrical"), ControlNodeKind::Package)
+        .unwrap();
+    graph
+        .add_edge(
+            control("risk.switchgear"),
+            control("package.electrical"),
+            ControlEdgeKind::Affects,
+        )
+        .unwrap();
+    graph
+}
+
+fn fact_book(subjects: &[&str]) -> ProjectBook {
+    let mut book = ProjectBook::new(project(), role());
+    for (index, subject) in subjects.iter().enumerate() {
+        let seq = u64::try_from(index + 1).unwrap();
+        book.append(ProjectFact::new(
+            seq,
+            project(),
+            control(subject),
+            Symbol::qualified("construction", "uncertainty"),
+            date(u8::try_from(index + 1).unwrap()),
+            role(),
+            Expr::String((*subject).to_owned()),
+        ))
+        .unwrap();
+    }
+    book
+}
+
+fn basis(as_of_seq: u64) -> ForecastBasis {
+    ForecastBasis::new(
+        baseline_id(),
+        "discipline estimate",
+        as_of_seq,
+        date(u8::try_from(as_of_seq).unwrap()),
+    )
+}
+
+fn project() -> ProjectId {
+    ProjectId::new("reference-center").unwrap()
+}
+
+fn baseline_id() -> BaselineId {
+    BaselineId::new("baseline.schedule").unwrap()
+}
+
+fn role() -> RoleId {
+    RoleId::new("project-chief").unwrap()
+}
+
+fn control(value: &str) -> ControlId {
+    ControlId::new(value).unwrap()
+}
+
+fn date(day: u8) -> Date {
+    Date::from_calendar_date(2026, Month::July, day).unwrap()
+}
+
+fn evidence(id: &str) -> ExternalRef {
+    ExternalRef::new(
+        "doc/synthetic",
+        format!("risk/reference-center/{id}"),
+        Some("rev-a".to_owned()),
+        None,
+    )
+}
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/escalation_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/escalation_tests.rs`:
+
+```rust
+// conformance: deterministic construction uncertainty attention recommendations
+
+use sim_kernel::{Expr, Symbol};
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+use crate::{
+    AttentionLevel, BaselineId, ControlId, ExposureQueueItem, ExposureReport, ForecastBasis,
+    ForecastConsequence, ForecastConsequenceKind, ForecastValue, OpenRating, ProjectBook,
+    ProjectFact, ProjectId, ResponseState, RoleId, UncertaintyKind, UncertaintyRecord,
+    UncertaintyResponse, UncertaintyState, derive_escalation_queue,
+};
+
+#[test]
+fn escalation_rules_recommend_attention_without_making_a_decision() {
+    let mut book = ProjectBook::new(project(), role());
+    book.append(fact(1, "forecast.switchgear", None)).unwrap();
+    book.append(fact(2, "risk.switchgear", None)).unwrap();
+    book.append(fact(3, "forecast.switchgear", Some(1)))
+        .unwrap();
+    let snapshot = book.snapshot_at(3).unwrap();
+
+    let uncertainty = risk();
+    let consequence = ForecastConsequence::new(
+        project(),
+        control("forecast.switchgear"),
+        control("risk.switchgear"),
+        3,
+        control("scenario.accepted"),
+        ForecastConsequenceKind::Safety,
+        ForecastValue::Qualitative("temporary energization overlap".to_owned()),
+        ForecastBasis::new(baseline(), "discipline estimate", 3, date(23)),
+    )
+    .affects(control("package.electrical"))
+    .with_evidence(evidence("forecast"));
+    let exposure = ExposureReport {
+        as_of_seq: 3,
+        schedule_baseline: baseline(),
+        queue: vec![ExposureQueueItem {
+            uncertainty: uncertainty.control.clone(),
+            kind: uncertainty.kind,
+            state: uncertainty.state,
+            baseline: uncertainty.baseline.clone(),
+            stale_rating: false,
+            consequences: vec![consequence.control.clone()],
+            affected_dependents: vec![control("package.electrical")],
+            critical_path: true,
+        }],
+        amount_buckets: Vec::new(),
+    };
+
+    let queue = derive_escalation_queue(
+        &snapshot,
+        &exposure,
+        &[uncertainty],
+        &[consequence],
+        date(30),
+    )
+    .unwrap();
+
+    assert_eq!(queue.len(), 1);
+    let recommendation = &queue[0];
+    assert_eq!(recommendation.attention, AttentionLevel::Immediate);
+    assert_eq!(recommendation.recommended_to, None);
+    let rendered = format!("{:?}", recommendation.reasons);
+    for reason in [
+        "OverdueResponse",
+        "CrossedTrigger",
+        "ChangedConsequence",
+        "MissingAuthority",
+        "DecisionLeadTime",
+        "CriticalPathConsequence",
+    ] {
+        assert!(rendered.contains(reason), "missing reason {reason}");
+    }
+    assert_eq!(
+        recommendation.recommendation,
+        "review current evidence and obtain an accountable decision"
+    );
+}
+
+fn risk() -> UncertaintyRecord {
+    let rating =
+        OpenRating::qualitative("project/risk-matrix", "high", 2, date(22), "project review");
+    UncertaintyRecord::risk(
+        project(),
+        control("risk.switchgear"),
+        2,
+        baseline(),
+        control("scenario.accepted"),
+        "single-source design",
+        "switchgear approval is missed",
+        "energization moves",
+        role(),
+        UncertaintyResponse::new(
+            "qualify an alternate",
+            "submittal rejected",
+            date(25),
+            date(24),
+            5,
+        )
+        .trigger_crossed_at(2)
+        .with_state(ResponseState::InProgress),
+        rating.clone(),
+        rating,
+    )
+    .affects(control("package.electrical"))
+    .with_evidence(evidence("risk"))
+    .with_state(UncertaintyState::Open)
+}
+
+fn fact(seq: u64, subject: &str, supersedes: Option<u64>) -> ProjectFact {
+    let fact = ProjectFact::new(
+        seq,
+        project(),
+        control(subject),
+        Symbol::qualified("construction", "uncertainty"),
+        date(u8::try_from(20 + seq).unwrap()),
+        role(),
+        Expr::String(subject.to_owned()),
+    );
+    match supersedes {
+        Some(prior) => fact.supersedes(prior),
+        None => fact,
+    }
+}
+
+fn project() -> ProjectId {
+    ProjectId::new("reference-center").unwrap()
+}
+
+fn baseline() -> BaselineId {
+    BaselineId::new("baseline.schedule").unwrap()
+}
+
+fn role() -> RoleId {
+    RoleId::new("project-chief").unwrap()
+}
+
+fn control(value: &str) -> ControlId {
+    ControlId::new(value).unwrap()
+}
+
+fn date(day: u8) -> Date {
+    Date::from_calendar_date(2026, Month::July, day).unwrap()
+}
+
+fn evidence(id: &str) -> ExternalRef {
+    ExternalRef::new(
+        "doc/synthetic",
+        format!("risk/reference-center/{id}"),
+        Some("rev-a".to_owned()),
+        None,
+    )
+}
+
+#[test]
+fn opportunity_capture_stays_an_attention_fact_not_a_decision() {
+    let mut opportunity = risk();
+    opportunity.kind = UncertaintyKind::Opportunity;
+    opportunity.state = UncertaintyState::OpportunityCaptured { fact_seq: 2 };
+    opportunity.validate().unwrap();
+}
+
+#[test]
+fn high_attention_queue_order_is_deterministic() {
+    let mut book = ProjectBook::new(project(), role());
+    for (seq, id) in [(1, "risk.b"), (2, "risk.c"), (3, "risk.a")] {
+        book.append(fact(seq, id, None)).unwrap();
+    }
+    let snapshot = book.snapshot_at(3).unwrap();
+    let b = ordered_risk("risk.b", 1, true);
+    let c = ordered_risk("risk.c", 2, false);
+    let a = ordered_risk("risk.a", 3, true);
+    let exposure = ExposureReport {
+        as_of_seq: 3,
+        schedule_baseline: baseline(),
+        queue: [&b, &c, &a]
+            .into_iter()
+            .map(|uncertainty| ExposureQueueItem {
+                uncertainty: uncertainty.control.clone(),
+                kind: uncertainty.kind,
+                state: uncertainty.state,
+                baseline: uncertainty.baseline.clone(),
+                stale_rating: false,
+                consequences: Vec::new(),
+                affected_dependents: Vec::new(),
+                critical_path: false,
+            })
+            .collect(),
+        amount_buckets: Vec::new(),
+    };
+
+    let queue = derive_escalation_queue(&snapshot, &exposure, &[b, c, a], &[], date(10)).unwrap();
+
+    assert_eq!(
+        queue
+            .iter()
+            .map(|item| (item.uncertainty.as_str(), item.attention))
+            .collect::<Vec<_>>(),
+        vec![
+            ("risk.a", AttentionLevel::Immediate),
+            ("risk.b", AttentionLevel::Immediate),
+            ("risk.c", AttentionLevel::High),
+        ]
+    );
+}
+
+fn ordered_risk(id: &str, fact_seq: u64, crossed: bool) -> UncertaintyRecord {
+    let rating = OpenRating::qualitative(
+        "project/risk-matrix",
+        "medium",
+        fact_seq,
+        date(u8::try_from(fact_seq).unwrap()),
+        "project review",
+    );
+    let (due_on, decision_due_on) = if crossed {
+        (date(20), date(19))
+    } else {
+        (date(5), date(4))
+    };
+    let mut response = UncertaintyResponse::new(
+        "review response",
+        "threshold crossed",
+        due_on,
+        decision_due_on,
+        1,
+    )
+    .with_authority(role());
+    if crossed {
+        response = response.trigger_crossed_at(fact_seq);
+    }
+    UncertaintyRecord::risk(
+        project(),
+        control(id),
+        fact_seq,
+        baseline(),
+        control("scenario.accepted"),
+        "current project condition",
+        "uncertain event",
+        "project consequence",
+        role(),
+        response,
+        rating.clone(),
+        rating,
+    )
+    .affects(control("package.electrical"))
+    .with_evidence(evidence(id))
+}
+```
+
+### `feature/sim-construction/work-package-procurement-awards`
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/work-package-award` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/work-package-award/recipe.toml`:
+
+```toml
+id = "work-package-award"
+title = "Work-package award"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 70
+tags = ["construction", "project-control", "procurement", "work-package", "tender", "award"]
+requires = ["construction.project.read", "construction.project.write", "codec/lisp"]
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/procurement_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/procurement_tests.rs`:
+
+```rust
+// conformance: work-package procurement comparison and award control
+
+use crate::{
+    AwardDecision, AwardDecisionKind, CommercialAmount, ConstructionProjectError, ControlId,
+    CurrencyCode, PackageReadinessReport, ProcurementControlSet, ProcurementStatus,
+    ScopeCompliance, SupplierCandidate, TenderComparison, TenderQualification, WorkPackage,
+};
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+#[test]
+fn stable_package_follows_scope_tenders_award_and_need_date() {
+    let report = ready_procurement()
+        .with_award(
+            AwardDecision::new(
+                control("award.frame"),
+                package(),
+                AwardDecisionKind::Award,
+                role("project-chief"),
+                date(2026, Month::July, 18),
+                "best compliant amount and qualified capacity",
+            )
+            .selects(control("tender.alpha.corrected"))
+            .with_evidence(reference("award/frame", "approved")),
+        )
+        .readiness_for(
+            &work_package(),
+            &currency("SEK"),
+            date(2026, Month::July, 19),
+        )
+        .unwrap();
+
+    assert!(matches!(
+        report.status,
+        ProcurementStatus::Awarded { ref supplier, .. } if supplier == "supplier-alpha"
+    ));
+    assert_eq!(report.comparison.corrected, vec![control("tender.alpha")]);
+    assert_eq!(report.comparison.comparable[0].supplier, "supplier-alpha");
+    assert_eq!(
+        report.comparison.comparable[0]
+            .variance_to_target
+            .to_decimal_string(),
+        "-25000.00"
+    );
+    assert!(report.interfaces.iter().all(|interface| !interface.exposed));
+    assert!(!report.dates.need_date_exposed);
+}
+
+#[test]
+fn incomplete_inquiry_basis_blocks_readiness() {
+    let package = WorkPackage::new(
+        project(),
+        package(),
+        "Frame",
+        role("procurement"),
+        role("project-chief"),
+        date(2026, Month::July, 10),
+        date(2026, Month::July, 20),
+        date(2026, Month::July, 25),
+        amount("100000.00", "SEK"),
+    )
+    .with_supplier(supplier("supplier-alpha"));
+
+    assert!(matches!(
+        package.validate(&currency("SEK")),
+        Err(ConstructionProjectError::EmptyCollection(
+            "work_package.scope_inclusions"
+        ))
+    ));
+}
+
+#[test]
+fn non_comparable_tenders_are_preserved_without_award_authority() {
+    let report = ProcurementControlSet::new()
+        .with_tender(
+            tender("tender.alpha", "supplier-alpha", "90000.00")
+                .with_reservation("excludes fire seal")
+                .with_scope_compliance(ScopeCompliance::Reserved),
+        )
+        .readiness_for(
+            &work_package(),
+            &currency("SEK"),
+            date(2026, Month::July, 12),
+        )
+        .unwrap();
+
+    assert!(matches!(report.status, ProcurementStatus::InquiryReady));
+    assert_eq!(
+        report.comparison.non_comparable,
+        vec![control("tender.alpha")]
+    );
+}
+
+#[test]
+fn mixed_currency_is_rejected_before_comparison() {
+    let result = ProcurementControlSet::new()
+        .with_tender(tender_currency(
+            "tender.alpha",
+            "supplier-alpha",
+            "90000.00",
+            "EUR",
+        ))
+        .readiness_for(
+            &work_package(),
+            &currency("SEK"),
+            date(2026, Month::July, 12),
+        );
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::CurrencyMismatch {
+            field: "tender.commercial_amount",
+            ..
+        })
+    ));
+}
+
+#[test]
+fn unauthorized_award_is_rejected() {
+    let result = ready_procurement()
+        .with_award(
+            AwardDecision::new(
+                control("award.frame"),
+                package(),
+                AwardDecisionKind::Award,
+                role("procurement"),
+                date(2026, Month::July, 18),
+                "wrong authority",
+            )
+            .selects(control("tender.alpha.corrected"))
+            .with_evidence(reference("award/frame", "approved")),
+        )
+        .readiness_for(
+            &work_package(),
+            &currency("SEK"),
+            date(2026, Month::July, 19),
+        );
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::AwardAuthorityMismatch { .. })
+    ));
+}
+
+#[test]
+fn award_after_need_date_is_rejected() {
+    let result = ready_procurement()
+        .with_award(
+            AwardDecision::new(
+                control("award.frame"),
+                package(),
+                AwardDecisionKind::Award,
+                role("project-chief"),
+                date(2026, Month::July, 26),
+                "late award",
+            )
+            .selects(control("tender.alpha.corrected"))
+            .with_evidence(reference("award/frame", "approved")),
+        )
+        .readiness_for(
+            &work_package(),
+            &currency("SEK"),
+            date(2026, Month::July, 26),
+        );
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::AwardAfterNeedDate { .. })
+    ));
+}
+
+#[test]
+fn rejected_supplier_cannot_be_awarded() {
+    let package = work_package().with_supplier(supplier("supplier-rejected").rejected("failed QA"));
+    let result = ProcurementControlSet::new()
+        .with_tender(tender("tender.rejected", "supplier-rejected", "88000.00"))
+        .with_award(
+            AwardDecision::new(
+                control("award.frame"),
+                package.control.clone(),
+                AwardDecisionKind::Award,
+                role("project-chief"),
+                date(2026, Month::July, 18),
+                "not allowed",
+            )
+            .selects(control("tender.rejected"))
+            .with_evidence(reference("award/frame", "approved")),
+        )
+        .readiness_for(&package, &currency("SEK"), date(2026, Month::July, 19));
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::RejectedSupplierAward { .. })
+    ));
+}
+
+#[test]
+fn corrected_tender_evidence_replaces_current_comparison_without_losing_prior_fact() {
+    let comparison = ready_procurement()
+        .compare(&work_package(), &currency("SEK"))
+        .unwrap();
+
+    assert_eq!(comparison.corrected, vec![control("tender.alpha")]);
+    assert_eq!(
+        comparison
+            .comparable
+            .iter()
+            .map(|item| item.tender.as_str())
+            .collect::<Vec<_>>(),
+        vec!["tender.alpha.corrected", "tender.beta"]
+    );
+}
+
+#[test]
+fn award_ready_report_names_overdue_decisions_and_exposed_interfaces() {
+    let report: PackageReadinessReport = ready_procurement()
+        .readiness_for(
+            &work_package(),
+            &currency("SEK"),
+            date(2026, Month::July, 24),
+        )
+        .unwrap();
+
+    assert!(matches!(report.status, ProcurementStatus::AwardReady));
+    assert!(report.dates.award_overdue);
+    assert!(!report.dates.need_date_exposed);
+    assert!(report.interfaces.iter().all(|interface| interface.exposed));
+}
+
+fn ready_procurement() -> ProcurementControlSet {
+    ProcurementControlSet::new()
+        .with_tender(tender("tender.alpha", "supplier-alpha", "100000.00"))
+        .with_tender(
+            tender("tender.alpha.corrected", "supplier-alpha", "95000.00")
+                .supersedes(control("tender.alpha")),
+        )
+        .with_tender(tender("tender.beta", "supplier-beta", "105000.00"))
+}
+
+fn work_package() -> WorkPackage {
+    WorkPackage::new(
+        project(),
+        package(),
+        "Frame work package",
+        role("procurement"),
+        role("project-chief"),
+        date(2026, Month::July, 10),
+        date(2026, Month::July, 20),
+        date(2026, Month::July, 25),
+        amount("120000.00", "SEK"),
+    )
+    .includes("glulam frame supply")
+    .includes("site installation")
+    .excludes("foundation anchors")
+    .requires_design_input(control("design.frame"))
+    .exposes_interface(control("interface.foundation"))
+    .exposes_interface(control("interface.facade"))
+    .with_supplier(supplier("supplier-alpha"))
+    .with_supplier(supplier("supplier-beta"))
+    .with_evidence(reference("inquiry/frame", "basis-a"))
+}
+
+fn tender(id: &str, supplier: &str, value: &str) -> TenderComparison {
+    tender_currency(id, supplier, value, "SEK")
+}
+
+fn tender_currency(id: &str, supplier: &str, value: &str, currency_code: &str) -> TenderComparison {
+    TenderComparison::new(
+        control(id),
+        package(),
+        supplier,
+        amount(value, currency_code),
+    )
+    .with_lead_time_days(21)
+    .with_capacity("capacity reserved for need date")
+    .with_qualification(TenderQualification::Qualified)
+    .with_evidence(reference(id, "evaluation"))
+}
+
+fn supplier(id: &str) -> SupplierCandidate {
+    SupplierCandidate::new(id, "prequalified").with_evidence(reference(id, "candidate"))
+}
+
+fn amount(value: &str, currency_code: &str) -> CommercialAmount {
+    CommercialAmount::parse(value, currency(currency_code)).unwrap()
+}
+
+fn currency(value: &str) -> CurrencyCode {
+    CurrencyCode::new(value).unwrap()
+}
+
+fn project() -> crate::ProjectId {
+    crate::ProjectId::new("reference-center").unwrap()
+}
+
+fn package() -> ControlId {
+    control("package.frame")
+}
+
+fn control(value: &str) -> ControlId {
+    ControlId::new(value).unwrap()
+}
+
+fn role(value: &str) -> crate::RoleId {
+    crate::RoleId::new(value).unwrap()
+}
+
+fn date(year: i32, month: Month, day: u8) -> Date {
+    Date::from_calendar_date(year, month, day).unwrap()
+}
+
+fn reference(id: &str, version: &str) -> ExternalRef {
+    ExternalRef::new("doc/synthetic", id, Some(version.to_owned()), None)
+}
+```
+
+### `feature/sim-construction/change-commercial-exposure`
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/instruction-to-final-settlement` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/instruction-to-final-settlement/recipe.toml`:
+
+```toml
+id = "instruction-to-final-settlement"
+title = "Instruction to final settlement"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 98
+tags = ["construction", "project-control", "change", "commercial", "exposure", "settlement"]
+requires = ["construction.project.read", "construction.project.write", "codec/lisp"]
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/change_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/change_tests.rs`:
+
+```rust
+// conformance: one-chain construction change commercial exposure and settlement
+
+use sim_ledger::Amount;
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+use super::change_test_chain::complete_chain;
+use crate::{
+    BaselineId, ChangeAmountComponent, ChangeControlSet, ChangeDirection, ChangeFact, ChangeId,
+    ChangeRecord, ChangeScheduleImpact, ChangeStage, ChangeStatus, CommercialAmount,
+    CommercialEvidenceSource, CommercialSide, ConstructionProjectError, ContractualBasis,
+    ControlId, CurrencyCode, EvidenceState, ProjectId, ReferencedAmount, ReferencedAmountEvidence,
+    RoleId,
+};
+
+#[test]
+fn instruction_without_price_and_supplier_before_customer_notice_remain_exposed() {
+    let set = ChangeControlSet::new()
+        .with_change(change_record())
+        .with_fact(
+            fact(
+                "fact.supplier",
+                1,
+                ChangeStage::SupplierExposure,
+                ChangeStatus::Assessing,
+            )
+            .with_amount(amount(
+                "amount.supplier",
+                CommercialSide::Supplier,
+                "45000.00",
+            )),
+        );
+
+    let report = set.derive(&currency(), date(10)).unwrap();
+    assert_eq!(ids(&report.instructed_unpriced), vec!["change.cooling"]);
+    assert_eq!(ids(&report.supplier_only), vec!["change.cooling"]);
+    assert_eq!(ids(&report.overdue_notice), vec!["change.cooling"]);
+    assert_eq!(report.changes[0].supplier_exposure.0, 4_500_000);
+    assert_eq!(report.changes[0].customer_recovery.0, 0);
+}
+
+#[test]
+fn partial_approval_keeps_quoted_recovery_distinct_from_approved_value() {
+    let set = ChangeControlSet::new()
+        .with_change(change_record().notice_given_on(date(4)))
+        .with_fact(
+            fact(
+                "fact.supplier",
+                1,
+                ChangeStage::SupplierExposure,
+                ChangeStatus::Assessing,
+            )
+            .with_amount(amount(
+                "amount.supplier",
+                CommercialSide::Supplier,
+                "70000.00",
+            )),
+        )
+        .with_fact(
+            fact(
+                "fact.quotation",
+                2,
+                ChangeStage::Quotation,
+                ChangeStatus::Submitted,
+            )
+            .with_amount(amount(
+                "amount.quoted",
+                CommercialSide::Customer,
+                "100000.00",
+            )),
+        )
+        .with_fact(
+            fact(
+                "fact.authority",
+                3,
+                ChangeStage::AuthorityDecision,
+                ChangeStatus::PartiallyApproved,
+            )
+            .with_amount(amount(
+                "amount.approved",
+                CommercialSide::Customer,
+                "60000.00",
+            ))
+            .with_reference(document_reference("approval", Some("60000.00"))),
+        );
+
+    let report = set.derive(&currency(), date(12)).unwrap();
+    let view = &report.changes[0];
+    assert_eq!(ids(&report.approved), vec!["change.cooling"]);
+    assert_eq!(view.customer_recovery.0, 10_000_000);
+    assert_eq!(view.approved_customer.0, 6_000_000);
+    assert_eq!(view.net_exposure.0, -3_000_000);
+}
+
+#[test]
+fn rejected_quotation_is_not_promoted_by_accepted_document_evidence() {
+    let set = ChangeControlSet::new()
+        .with_change(change_record())
+        .with_fact(
+            fact(
+                "fact.quotation",
+                1,
+                ChangeStage::Quotation,
+                ChangeStatus::Submitted,
+            )
+            .with_amount(amount(
+                "amount.quoted",
+                CommercialSide::Customer,
+                "100000.00",
+            )),
+        )
+        .with_fact(
+            fact(
+                "fact.rejection",
+                2,
+                ChangeStage::AuthorityDecision,
+                ChangeStatus::Rejected,
+            )
+            .with_reference(document_reference("rejection", Some("100000.00"))),
+        );
+
+    let report = set.derive(&currency(), date(12)).unwrap();
+    assert!(report.approved.is_empty());
+    assert!(report.submitted.is_empty());
+    assert_eq!(report.changes[0].approved_customer.0, 0);
+    assert_eq!(report.changes[0].status, ChangeStatus::Rejected);
+}
+
+#[test]
+fn correction_replaces_the_prior_stage_fact_without_changing_change_id() {
+    let set = ChangeControlSet::new()
+        .with_change(change_record())
+        .with_fact(
+            fact(
+                "fact.quotation.original",
+                1,
+                ChangeStage::Quotation,
+                ChangeStatus::Submitted,
+            )
+            .with_amount(amount(
+                "amount.original",
+                CommercialSide::Customer,
+                "100000.00",
+            )),
+        )
+        .with_fact(
+            fact(
+                "fact.quotation.corrected",
+                2,
+                ChangeStage::Quotation,
+                ChangeStatus::Submitted,
+            )
+            .supersedes(control("fact.quotation.original"))
+            .with_amount(amount(
+                "amount.corrected",
+                CommercialSide::Customer,
+                "80000.00",
+            )),
+        );
+
+    let report = set.derive(&currency(), date(12)).unwrap();
+    assert_eq!(report.changes[0].customer_recovery.0, 8_000_000);
+    assert_eq!(
+        report.changes[0]
+            .current_facts
+            .iter()
+            .map(ControlId::as_str)
+            .collect::<Vec<_>>(),
+        vec!["fact.quotation.corrected"]
+    );
+}
+
+#[test]
+fn non_zero_baseline_impact_stays_in_the_open_time_risk_view() {
+    let set = ChangeControlSet::new()
+        .with_change(change_record())
+        .with_fact(
+            fact(
+                "fact.time",
+                1,
+                ChangeStage::TimeEffect,
+                ChangeStatus::Assessing,
+            )
+            .affects_task("task.commission")
+            .with_schedule_impact(ChangeScheduleImpact::new(
+                BaselineId::new("baseline.schedule").unwrap(),
+                7,
+                date(8),
+                12,
+                true,
+                vec!["task.commission".to_owned()],
+            )),
+        );
+
+    let report = set.derive(&currency(), date(12)).unwrap();
+    assert_eq!(ids(&report.time_risk), vec!["change.cooling"]);
+    assert_eq!(
+        report.changes[0]
+            .schedule_impact
+            .as_ref()
+            .unwrap()
+            .completion_delta_days,
+        12
+    );
+}
+
+#[test]
+fn settlement_mismatch_fails_closed() {
+    let result = complete_chain("110000.00").derive(&currency(), date(30));
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::ChangeSettlementMismatch {
+            side: "customer",
+            ..
+        })
+    ));
+}
+
+#[test]
+fn checked_component_and_portfolio_arithmetic_reject_overflow() {
+    let set = ChangeControlSet::new()
+        .with_change(change_record())
+        .with_fact(
+            fact(
+                "fact.supplier",
+                1,
+                ChangeStage::SupplierExposure,
+                ChangeStatus::Assessing,
+            )
+            .with_amount(raw_amount(
+                "amount.maximum",
+                CommercialSide::Supplier,
+                Amount(i64::MAX),
+            ))
+            .with_amount(raw_amount(
+                "amount.plus-one",
+                CommercialSide::Supplier,
+                Amount(1),
+            )),
+        );
+
+    assert!(matches!(
+        set.derive(&currency(), date(12)),
+        Err(ConstructionProjectError::AmountOverflow {
+            field: "change.supplier_exposure"
+        })
+    ));
+}
+
+#[test]
+fn final_closure_reconciles_every_stage_without_inferred_payment() {
+    let report = complete_chain("100000.00")
+        .derive(&currency(), date(30))
+        .unwrap();
+    let view = &report.changes[0];
+    let settlement = view.settlement.as_ref().unwrap();
+
+    assert_eq!(view.status, ChangeStatus::Closed);
+    assert!(!view.time_risk);
+    assert!(settlement.closed);
+    assert_eq!(settlement.supplier.0, 7_000_000);
+    assert_eq!(settlement.customer.0, 10_000_000);
+    assert_eq!(settlement.net.0, -3_000_000);
+    assert!(settlement.references.iter().any(|reference| {
+        reference.source == CommercialEvidenceSource::LedgerBalance
+            && reference.as_of == date(27)
+            && reference.reference.version.as_deref() == Some("ledger-snapshot-27")
+    }));
+}
+
+#[test]
+fn duplicate_change_identity_and_parent_child_double_counting_fail_closed() {
+    let duplicate = ChangeControlSet::new()
+        .with_change(change_record())
+        .with_change(change_record());
+    assert!(matches!(
+        duplicate.derive(&currency(), date(12)),
+        Err(ConstructionProjectError::DuplicateId { kind: "change", .. })
+    ));
+
+    let parent = amount("amount.summary", CommercialSide::Supplier, "100000.00");
+    let child = amount("amount.labor", CommercialSide::Supplier, "40000.00")
+        .with_parent(control("amount.summary"));
+    let double_counted = ChangeControlSet::new()
+        .with_change(change_record())
+        .with_fact(
+            fact(
+                "fact.supplier",
+                1,
+                ChangeStage::SupplierExposure,
+                ChangeStatus::Assessing,
+            )
+            .with_amount(parent)
+            .with_amount(child),
+        );
+    assert!(matches!(
+        double_counted.derive(&currency(), date(12)),
+        Err(ConstructionProjectError::ChangeAmountDoubleCount { .. })
+    ));
+}
+
+#[test]
+fn external_values_require_an_as_of_version_and_do_not_grant_authority() {
+    let unversioned = ReferencedAmountEvidence::new(
+        CommercialEvidenceSource::Document,
+        ExternalRef::new("doc/synthetic", "quotation/unversioned", None, None),
+        date(9),
+        EvidenceState::Accepted,
+    );
+    let set = ChangeControlSet::new()
+        .with_change(change_record())
+        .with_fact(
+            fact(
+                "fact.customer",
+                1,
+                ChangeStage::CustomerRecovery,
+                ChangeStatus::Assessing,
+            )
+            .with_amount(amount(
+                "amount.customer",
+                CommercialSide::Customer,
+                "50000.00",
+            ))
+            .with_reference(unversioned),
+        );
+
+    assert!(matches!(
+        set.derive(&currency(), date(12)),
+        Err(ConstructionProjectError::EmptyField(
+            "change.reference.version"
+        ))
+    ));
+}
+
+pub(crate) fn change_record() -> ChangeRecord {
+    ChangeRecord::new(
+        project(),
+        change_id(),
+        ChangeDirection::CustomerInstruction,
+        ContractualBasis::new(
+            "instructed-variation",
+            "ABT06-2:3",
+            ExternalRef::new(
+                "doc/synthetic",
+                "contract/reference-center",
+                Some("signed-rev-a".to_owned()),
+                None,
+            ),
+        ),
+        role(),
+        date(2),
+        Some(date(5)),
+    )
+    .affects_control(control("control.cooling"))
+    .affects_task("task.commission")
+    .affects_package(control("package.mechanical"))
+    .with_evidence(ExternalRef::new(
+        "doc/synthetic",
+        "instruction/change-cooling",
+        Some("instruction-rev-a".to_owned()),
+        None,
+    ))
+}
+
+pub(crate) fn fact(id: &str, seq: u64, stage: ChangeStage, status: ChangeStatus) -> ChangeFact {
+    ChangeFact::new(
+        control(id),
+        change_id(),
+        seq,
+        stage,
+        status,
+        date(u8::try_from(seq + 8).unwrap()),
+        role(),
+        format!("{stage:?} fact"),
+    )
+}
+
+pub(crate) fn amount(id: &str, side: CommercialSide, value: &str) -> ChangeAmountComponent {
+    ChangeAmountComponent::new(
+        control(id),
+        side,
+        "direct",
+        CommercialAmount::parse(value, currency()).unwrap(),
+    )
+}
+
+fn raw_amount(id: &str, side: CommercialSide, value: Amount) -> ChangeAmountComponent {
+    ChangeAmountComponent::new(
+        control(id),
+        side,
+        "direct",
+        CommercialAmount::new(value, currency()).unwrap(),
+    )
+}
+
+pub(crate) fn document_reference(id: &str, value: Option<&str>) -> ReferencedAmountEvidence {
+    let reference = ReferencedAmountEvidence::new(
+        CommercialEvidenceSource::Document,
+        ExternalRef::new(
+            "doc/synthetic",
+            format!("change/{id}"),
+            Some(format!("{id}-rev-a")),
+            None,
+        ),
+        date(20),
+        EvidenceState::Accepted,
+    );
+    value.map_or(reference.clone(), |value| {
+        reference.with_stated_value(ReferencedAmount::new(
+            Amount::parse(value).unwrap(),
+            currency(),
+        ))
+    })
+}
+
+pub(crate) fn ledger_reference(id: &str, value: Option<&str>) -> ReferencedAmountEvidence {
+    let reference = ReferencedAmountEvidence::new(
+        CommercialEvidenceSource::LedgerBalance,
+        ExternalRef::new(
+            "ledger/synthetic",
+            format!("change/{id}"),
+            Some("ledger-snapshot-27".to_owned()),
+            None,
+        ),
+        date(27),
+        EvidenceState::Evidenced,
+    );
+    value.map_or(reference.clone(), |value| {
+        reference.with_stated_value(ReferencedAmount::new(
+            Amount::parse(value).unwrap(),
+            currency(),
+        ))
+    })
+}
+
+fn ids(values: &[ChangeId]) -> Vec<&str> {
+    values.iter().map(ChangeId::as_str).collect()
+}
+
+fn project() -> ProjectId {
+    ProjectId::new("reference-center").unwrap()
+}
+
+fn change_id() -> ChangeId {
+    ChangeId::new("change.cooling").unwrap()
+}
+
+fn role() -> RoleId {
+    RoleId::new("project-chief").unwrap()
+}
+
+pub(crate) fn control(value: &str) -> ControlId {
+    ControlId::new(value).unwrap()
+}
+
+fn currency() -> CurrencyCode {
+    CurrencyCode::new("SEK").unwrap()
+}
+
+pub(crate) fn date(day: u8) -> Date {
+    Date::from_calendar_date(2026, Month::July, day).unwrap()
+}
+```
+
+### `feature/sim-construction/supplier-production-handoff`
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/supplier-to-production-handoff` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/supplier-to-production-handoff/recipe.toml`:
+
+```toml
+id = "supplier-to-production-handoff"
+title = "Supplier to production handoff"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 80
+tags = ["construction", "project-control", "supplier", "qualification", "handoff", "production"]
+requires = ["construction.project.read", "construction.supplier.read", "codec/lisp"]
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/supplier_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/supplier_tests.rs`:
+
+```rust
+// conformance: supplier qualification and production handoff readiness
+
+use crate::{
+    AwardDecision, AwardDecisionKind, CONSTRUCTION_SUPPLIER_READ_CAPABILITY, CommercialAmount,
+    ConstructionProjectError, ControlId, CurrencyCode, DesignControlSet, DesignRelease,
+    DesignReleasePurpose, DesignRevision, EvidenceState, EvidenceValidity, OrganizationId,
+    PackageHandoff, PackageHandoffControlSet, ProcurementControlSet, QualificationEvidence,
+    QualificationRequirement, QualificationStatus, Requirement, RequirementLane, ScopeCompliance,
+    SupplierCandidate, SupplierQualificationArea, SupplierQualificationSet, SupplierReference,
+    TenderComparison, TenderQualification, WorkPackage,
+};
+use sim_kernel::Symbol;
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+#[test]
+fn qualified_supplier_and_accepted_handoff_are_production_ready() {
+    let procurement = awarded_procurement()
+        .readiness_for(&work_package(), &currency("SEK"), day(20))
+        .unwrap();
+    let supplier = qualification_set()
+        .qualification_for(&org("supplier-alpha"), day(20), day(30))
+        .unwrap();
+    let design = design_set()
+        .readiness_for(package(), DesignReleasePurpose::Production, day(20))
+        .unwrap();
+    let report = handoff_set()
+        .readiness_for(
+            &control("handoff.frame"),
+            &procurement,
+            &supplier,
+            &design,
+            day(20),
+        )
+        .unwrap();
+
+    assert_eq!(supplier.status, QualificationStatus::Qualified);
+    assert!(report.ready);
+    assert!(report.blockers.is_empty());
+}
+
+#[test]
+fn excessive_subcontract_depth_is_rejected() {
+    let result = SupplierQualificationSet::new()
+        .with_supplier(
+            SupplierReference::new(
+                project(),
+                org("supplier-tier3"),
+                role("installer"),
+                role("qs"),
+            )
+            .under_parent(org("supplier-tier2"), 3, 2)
+            .with_evidence(reference("supplier/tier3", "chain")),
+        )
+        .with_requirement(requirement(
+            "qual.insurance",
+            SupplierQualificationArea::Insurance,
+        ))
+        .qualification_for(&org("supplier-tier3"), day(20), day(30));
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::SupplierDepthExceeded { .. })
+    ));
+}
+
+#[test]
+fn expired_license_or_insurance_blocks_qualification() {
+    let report = qualification_set()
+        .with_evidence(
+            QualificationEvidence::new(
+                org("supplier-alpha"),
+                control("qual.license"),
+                EvidenceState::Accepted,
+                role("qs"),
+                day(10),
+                "license accepted but expired",
+            )
+            .with_validity(EvidenceValidity::new(None, Some(day(19))))
+            .with_evidence(reference("license/alpha", "expired")),
+        )
+        .qualification_for(&org("supplier-alpha"), day(20), day(30))
+        .unwrap();
+
+    assert_eq!(report.status, QualificationStatus::Conflicted);
+    assert!(
+        report
+            .explanations
+            .iter()
+            .any(|text| text.contains("qual.license"))
+    );
+}
+
+#[test]
+fn missing_workplace_introduction_blocks_qualification() {
+    let report = base_qualification_without_intro()
+        .qualification_for(&org("supplier-alpha"), day(20), day(30))
+        .unwrap();
+
+    assert_eq!(report.status, QualificationStatus::NotQualified);
+    assert!(
+        report
+            .explanations
+            .iter()
+            .any(|text| { text == "requirement qual.workplace-introduction is not accepted" })
+    );
+}
+
+#[test]
+fn supplier_substitution_blocks_handoff() {
+    let procurement = awarded_procurement()
+        .readiness_for(&work_package(), &currency("SEK"), day(20))
+        .unwrap();
+    let supplier = qualification_set()
+        .qualification_for(&org("supplier-alpha"), day(20), day(30))
+        .unwrap();
+    let design = design_set()
+        .readiness_for(package(), DesignReleasePurpose::Production, day(20))
+        .unwrap();
+    let substituted = PackageHandoffControlSet::new().with_handoff(
+        handoff()
+            .with_supplier(org("supplier-beta"))
+            .with_evidence(reference("handoff/frame", "accepted-substitute")),
+    );
+    let report = substituted
+        .readiness_for(
+            &control("handoff.frame"),
+            &procurement,
+            &supplier,
+            &design,
+            day(20),
+        )
+        .unwrap();
+
+    assert!(!report.ready);
+    assert!(
+        report
+            .blockers
+            .iter()
+            .any(|blocker| blocker.rule == "supplier-substitution")
+    );
+}
+
+#[test]
+fn conflicting_qualification_is_reported() {
+    let report = qualification_set()
+        .with_evidence(
+            evidence("qual.insurance", SupplierQualificationArea::Insurance)
+                .with_evidence(reference("insurance/alpha", "second")),
+        )
+        .qualification_for(&org("supplier-alpha"), day(20), day(30))
+        .unwrap();
+
+    assert_eq!(report.status, QualificationStatus::Conflicted);
+}
+
+#[test]
+fn ready_to_award_is_not_ready_to_produce() {
+    let procurement = ProcurementControlSet::new()
+        .with_tender(tender("tender.alpha", "supplier-alpha", "95000.00"))
+        .readiness_for(&work_package(), &currency("SEK"), day(20))
+        .unwrap();
+    let supplier = qualification_set()
+        .qualification_for(&org("supplier-alpha"), day(20), day(30))
+        .unwrap();
+    let design = design_set()
+        .readiness_for(package(), DesignReleasePurpose::Production, day(20))
+        .unwrap();
+    let report = handoff_set()
+        .readiness_for(
+            &control("handoff.frame"),
+            &procurement,
+            &supplier,
+            &design,
+            day(20),
+        )
+        .unwrap();
+
+    assert!(!report.ready);
+    assert!(report.blockers.iter().any(|blocker| {
+        blocker.rule == "award" && blocker.reason == "ready to award is not ready to produce"
+    }));
+}
+
+#[test]
+fn supplier_evidence_requires_supplier_read_capability() {
+    let evidence = evidence("qual.insurance", SupplierQualificationArea::Insurance)
+        .with_evidence(reference("insurance/alpha", "accepted"));
+
+    assert!(matches!(
+        evidence.evidence(&[]),
+        Err(ConstructionProjectError::MissingCapability { capability })
+            if capability == CONSTRUCTION_SUPPLIER_READ_CAPABILITY
+    ));
+    assert_eq!(
+        evidence
+            .evidence(&[CONSTRUCTION_SUPPLIER_READ_CAPABILITY.to_owned()])
+            .unwrap()
+            .len(),
+        1
+    );
+}
+
+fn qualification_set() -> SupplierQualificationSet {
+    base_qualification_without_intro().with_evidence(
+        evidence(
+            "qual.workplace-introduction",
+            SupplierQualificationArea::WorkplaceIntroduction,
+        )
+        .with_evidence(reference("intro/alpha", "accepted")),
+    )
+}
+
+fn base_qualification_without_intro() -> SupplierQualificationSet {
+    [
+        (
+            "qual.economic-standing",
+            SupplierQualificationArea::EconomicStanding,
+        ),
+        (
+            "qual.responsible-business",
+            SupplierQualificationArea::ResponsibleBusinessHumanRights,
+        ),
+        (
+            "qual.collective-arrangement",
+            SupplierQualificationArea::CollectiveArrangements,
+        ),
+        (
+            "qual.license",
+            SupplierQualificationArea::CompetenceLicenses,
+        ),
+        ("qual.insurance", SupplierQualificationArea::Insurance),
+        (
+            "qual.safety-training",
+            SupplierQualificationArea::SafetyTraining,
+        ),
+        (
+            "qual.workplace-introduction",
+            SupplierQualificationArea::WorkplaceIntroduction,
+        ),
+        (
+            "qual.risk-assessment",
+            SupplierQualificationArea::RiskAssessment,
+        ),
+        (
+            "qual.work-preparation",
+            SupplierQualificationArea::WorkPreparation,
+        ),
+        ("qual.equipment", SupplierQualificationArea::Equipment),
+        ("qual.materials", SupplierQualificationArea::Materials),
+        (
+            "qual.quality-environment",
+            SupplierQualificationArea::QualityEnvironment,
+        ),
+        ("qual.staffing", SupplierQualificationArea::Staffing),
+        ("qual.logistics", SupplierQualificationArea::Logistics),
+        (
+            "qual.meeting-participation",
+            SupplierQualificationArea::MeetingParticipation,
+        ),
+    ]
+    .into_iter()
+    .filter(|(id, _)| *id != "qual.workplace-introduction")
+    .fold(
+        SupplierQualificationSet::new()
+            .with_supplier(
+                SupplierReference::new(
+                    project(),
+                    org("supplier-alpha"),
+                    role("installer"),
+                    role("qs"),
+                )
+                .with_validity(EvidenceValidity::new(None, Some(day(31))))
+                .with_evidence(reference("supplier/alpha", "project-ref")),
+            )
+            .with_requirement(requirement(
+                "qual.workplace-introduction",
+                SupplierQualificationArea::WorkplaceIntroduction,
+            )),
+        |set, (id, area)| {
+            set.with_requirement(requirement(id, area))
+                .with_evidence(evidence(id, area).with_evidence(reference(id, "accepted")))
+        },
+    )
+}
+
+fn requirement(id: &str, area: SupplierQualificationArea) -> QualificationRequirement {
+    QualificationRequirement::new(
+        area,
+        crate::ProjectObligation::mandatory(
+            project(),
+            Requirement::new(
+                control(id),
+                RequirementLane::new(Symbol::qualified("construction-supplier", id)),
+                format!("{area:?}"),
+                role("package-owner"),
+                role("qs"),
+            )
+            .with_source_ref(reference(id, "requirement"))
+            .with_evidence_kind(Symbol::qualified("construction-evidence", "external-ref")),
+        ),
+    )
+}
+
+fn evidence(id: &str, _area: SupplierQualificationArea) -> QualificationEvidence {
+    QualificationEvidence::new(
+        org("supplier-alpha"),
+        control(id),
+        EvidenceState::Accepted,
+        role("qs"),
+        day(10),
+        format!("{id} accepted"),
+    )
+    .with_validity(EvidenceValidity::new(None, Some(day(31))))
+}
+
+fn handoff_set() -> PackageHandoffControlSet {
+    PackageHandoffControlSet::new().with_handoff(
+        handoff()
+            .accepts_responsibility(day(20), "supplier accepts production responsibility")
+            .with_evidence(reference("handoff/frame", "accepted")),
+    )
+}
+
+fn handoff() -> PackageHandoff {
+    PackageHandoff::new(
+        control("handoff.frame"),
+        package(),
+        control("award.frame"),
+        org("supplier-alpha"),
+        control("release.prod"),
+        control("material.frame"),
+        5,
+        day(30),
+        role("site-manager"),
+    )
+    .accepts_responsibility(day(20), "supplier accepts production responsibility")
+}
+
+fn awarded_procurement() -> ProcurementControlSet {
+    ProcurementControlSet::new()
+        .with_tender(tender("tender.alpha", "supplier-alpha", "95000.00"))
+        .with_award(
+            AwardDecision::new(
+                control("award.frame"),
+                package(),
+                AwardDecisionKind::Award,
+                role("project-chief"),
+                day(18),
+                "qualified tender accepted",
+            )
+            .selects(control("tender.alpha"))
+            .with_evidence(reference("award/frame", "accepted")),
+        )
+}
+
+fn tender(id: &str, supplier: &str, value: &str) -> TenderComparison {
+    TenderComparison::new(control(id), package(), supplier, amount(value, "SEK"))
+        .with_lead_time_days(5)
+        .with_capacity("reserved")
+        .with_scope_compliance(ScopeCompliance::Compliant)
+        .with_qualification(TenderQualification::Qualified)
+        .with_evidence(reference(id, "evaluation"))
+}
+
+fn work_package() -> WorkPackage {
+    WorkPackage::new(
+        project(),
+        package(),
+        "Frame",
+        role("procurement"),
+        role("project-chief"),
+        day(5),
+        day(15),
+        day(30),
+        amount("100000.00", "SEK"),
+    )
+    .includes("frame supply")
+    .requires_design_input(control("design.frame"))
+    .with_supplier(
+        SupplierCandidate::new("supplier-alpha", "qualified")
+            .with_evidence(reference("supplier/alpha", "candidate")),
+    )
+    .with_supplier(
+        SupplierCandidate::new("supplier-beta", "alternate")
+            .with_evidence(reference("supplier/beta", "candidate")),
+    )
+    .with_evidence(reference("package/frame", "basis"))
+}
+
+fn design_set() -> DesignControlSet {
+    DesignControlSet::new()
+        .with_revision(
+            DesignRevision::new(
+                project(),
+                control("design.frame"),
+                "A",
+                role("designer"),
+                day(10),
+            )
+            .with_evidence_state(EvidenceState::Accepted)
+            .affects(package())
+            .with_external_ref(reference("design/frame", "A")),
+        )
+        .with_release(
+            DesignRelease::new(
+                project(),
+                control("release.prod"),
+                control("design.frame"),
+                "A",
+                DesignReleasePurpose::Production,
+                role("designer"),
+                role("project-chief"),
+                role("project-chief"),
+                day(16),
+            )
+            .with_evidence_state(EvidenceState::Accepted)
+            .affects(package())
+            .with_external_ref(reference("release/prod", "accepted")),
+        )
+}
+
+fn amount(value: &str, currency_code: &str) -> CommercialAmount {
+    CommercialAmount::parse(value, currency(currency_code)).unwrap()
+}
+
+fn currency(value: &str) -> CurrencyCode {
+    CurrencyCode::new(value).unwrap()
+}
+
+fn project() -> crate::ProjectId {
+    crate::ProjectId::new("reference-center").unwrap()
+}
+
+fn package() -> ControlId {
+    control("package.frame")
+}
+
+fn control(value: &str) -> ControlId {
+    ControlId::new(value).unwrap()
+}
+
+fn org(value: &str) -> OrganizationId {
+    OrganizationId::new(value).unwrap()
+}
+
+fn role(value: &str) -> crate::RoleId {
+    crate::RoleId::new(value).unwrap()
+}
+
+fn day(day: u8) -> Date {
+    Date::from_calendar_date(2026, Month::July, day).unwrap()
+}
+
+fn reference(id: &str, version: &str) -> ExternalRef {
+    ExternalRef::new("doc/synthetic", id, Some(version.to_owned()), None)
+}
+```
+
+### `feature/sim-construction/design-release-authority-control`
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/design-release-to-production` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/design-release-to-production/recipe.toml`:
+
+```toml
+id = "design-release-to-production"
+title = "Design release to production"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 65
+tags = ["construction", "project-control", "design", "rfi", "release", "permit", "authority"]
+requires = ["construction.project.read", "construction.project.write", "codec/lisp"]
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/design_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/design_tests.rs`:
+
+```rust
+// conformance: design release, RFI, permit, and authority readiness control
+
+use crate::{
+    AuthorityObligation, AuthorityObligationState, ConstructionProjectError, ControlId,
+    DesignControlSet, DesignRelease, DesignReleasePurpose, DesignReview, DesignReviewState,
+    DesignRevision, EvidenceState, EvidenceValidity, PermitRecord, PermitState, ProjectId,
+    RfiRecord, RfiState, RoleId,
+};
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+#[test]
+fn accepted_production_release_makes_package_design_ready() {
+    let report = ready_set()
+        .readiness_for(package(), DesignReleasePurpose::Production, today())
+        .unwrap();
+
+    assert!(report.ready);
+    assert_eq!(report.current_revisions, vec![revision_a()]);
+    assert_eq!(report.releases, vec![release("release.prod")]);
+    assert!(report.blockers.is_empty());
+}
+
+#[test]
+fn conflicting_current_revisions_are_rejected() {
+    let result = DesignControlSet::new()
+        .with_revision(accepted_revision("design.a", "A"))
+        .with_revision(accepted_revision("design.b", "B"))
+        .with_release(accepted_release("release.prod", "design.a"))
+        .readiness_for(package(), DesignReleasePurpose::Production, today());
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::ConflictingDesignRevisions { .. })
+    ));
+}
+
+#[test]
+fn answered_but_unaccepted_rfi_blocks_readiness_through_graph_path() {
+    let report = ready_set()
+        .with_rfi(
+            RfiRecord::new(
+                project(),
+                control("rfi.fire-rating"),
+                role("designer"),
+                today(),
+            )
+            .with_state(RfiState::Answered)
+            .with_evidence_state(EvidenceState::Evidenced)
+            .affects(package())
+            .with_external_ref(reference("rfi/fire-rating", "answered")),
+        )
+        .readiness_for(package(), DesignReleasePurpose::Production, today())
+        .unwrap();
+
+    assert!(!report.ready);
+    assert_eq!(report.blockers[0].control.as_str(), "rfi.fire-rating");
+    assert_eq!(
+        report.blockers[0].reason,
+        "RFI is answered but not accepted"
+    );
+    assert_eq!(
+        report.blockers[0].paths[0]
+            .steps
+            .iter()
+            .map(|step| step.control.as_str())
+            .collect::<Vec<_>>(),
+        vec!["rfi.fire-rating", "package.frame"]
+    );
+}
+
+#[test]
+fn release_for_wrong_purpose_blocks_production_readiness() {
+    let report = DesignControlSet::new()
+        .with_revision(accepted_revision("design.a", "A"))
+        .with_release(
+            DesignRelease::new(
+                project(),
+                release("release.procurement"),
+                revision_a(),
+                "A",
+                DesignReleasePurpose::Procurement,
+                role("designer"),
+                role("project-chief"),
+                role("project-chief"),
+                today(),
+            )
+            .with_evidence_state(EvidenceState::Accepted)
+            .affects(package())
+            .with_external_ref(reference("release/procurement", "accepted")),
+        )
+        .readiness_for(package(), DesignReleasePurpose::Production, today())
+        .unwrap();
+
+    assert!(!report.ready);
+    assert_eq!(report.blockers[0].rule, "release-purpose");
+}
+
+#[test]
+fn expired_permit_blocks_authority_readiness() {
+    let report = ready_set()
+        .with_permit(
+            PermitRecord::new(
+                project(),
+                control("permit.fire"),
+                role("authority-lead"),
+                today(),
+            )
+            .with_state(PermitState::Granted)
+            .with_evidence_state(EvidenceState::Accepted)
+            .with_validity(EvidenceValidity::new(
+                None,
+                Some(Date::from_calendar_date(2026, Month::July, 22).unwrap()),
+            ))
+            .affects(package())
+            .with_external_ref(reference("permit/fire", "granted")),
+        )
+        .readiness_for(package(), DesignReleasePurpose::Production, today())
+        .unwrap();
+
+    assert!(!report.ready);
+    assert_eq!(report.blockers[0].evidence_state, EvidenceState::Expired);
+    assert_eq!(report.blockers[0].reason, "permit is expired");
+}
+
+#[test]
+fn authority_hold_blocks_readiness() {
+    let report = ready_set()
+        .with_permit(
+            PermitRecord::new(
+                project(),
+                control("permit.traffic"),
+                role("authority-lead"),
+                today(),
+            )
+            .with_state(PermitState::Hold)
+            .with_evidence_state(EvidenceState::Reported)
+            .affects(package())
+            .with_external_ref(reference("permit/traffic", "hold")),
+        )
+        .readiness_for(package(), DesignReleasePurpose::Production, today())
+        .unwrap();
+
+    assert!(!report.ready);
+    assert_eq!(report.blockers[0].reason, "authority permit is on hold");
+}
+
+#[test]
+fn superseded_drawing_makes_dependent_release_stale_until_revalidated() {
+    let stale = DesignControlSet::new()
+        .with_revision(accepted_revision("design.a", "A"))
+        .with_revision(accepted_revision("design.b", "B").supersedes(revision_a()))
+        .with_release(accepted_release("release.prod", "design.a"))
+        .readiness_for(package(), DesignReleasePurpose::Production, today());
+
+    assert!(matches!(
+        stale,
+        Err(ConstructionProjectError::StaleDesignRelease { .. })
+    ));
+
+    let revalidated = DesignControlSet::new()
+        .with_revision(accepted_revision("design.a", "A"))
+        .with_revision(accepted_revision("design.b", "B").supersedes(revision_a()))
+        .with_release(
+            accepted_release("release.prod", "design.a").revalidated_against(revision_b()),
+        )
+        .readiness_for(package(), DesignReleasePurpose::Production, today())
+        .unwrap();
+
+    assert!(revalidated.ready);
+}
+
+#[test]
+fn non_waivable_production_blocker_is_rejected() {
+    let result = ready_set()
+        .with_authority_obligation(
+            AuthorityObligation::new(
+                project(),
+                control("authority.stop"),
+                role("authority-lead"),
+                today(),
+            )
+            .with_state(AuthorityObligationState::Hold)
+            .with_evidence_state(EvidenceState::Reported)
+            .non_waivable()
+            .affects(package())
+            .with_external_ref(reference("authority/stop", "hold")),
+        )
+        .readiness_for(package(), DesignReleasePurpose::Production, today());
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::NonWaivableProductionBlocker { .. })
+    ));
+}
+
+#[test]
+fn accepted_review_decision_is_part_of_design_control() {
+    let report = ready_set()
+        .with_review(
+            DesignReview::new(
+                project(),
+                control("review.design-a"),
+                revision_a(),
+                role("reviewer"),
+                today(),
+            )
+            .with_state(DesignReviewState::Accepted)
+            .with_evidence_state(EvidenceState::Accepted)
+            .affects(package())
+            .with_external_ref(reference("review/design-a", "accepted")),
+        )
+        .readiness_for(package(), DesignReleasePurpose::Production, today())
+        .unwrap();
+
+    assert!(report.ready);
+}
+
+fn ready_set() -> DesignControlSet {
+    DesignControlSet::new()
+        .with_revision(accepted_revision("design.a", "A"))
+        .with_release(accepted_release("release.prod", "design.a"))
+}
+
+fn accepted_revision(control_id: &str, revision: &str) -> DesignRevision {
+    DesignRevision::new(
+        project(),
+        control(control_id),
+        revision,
+        role("designer"),
+        today(),
+    )
+    .with_evidence_state(EvidenceState::Accepted)
+    .affects(package())
+    .with_external_ref(reference(control_id, revision))
+}
+
+fn accepted_release(control_id: &str, revision_id: &str) -> DesignRelease {
+    DesignRelease::new(
+        project(),
+        release(control_id),
+        control(revision_id),
+        "A",
+        DesignReleasePurpose::Production,
+        role("designer"),
+        role("project-chief"),
+        role("project-chief"),
+        today(),
+    )
+    .with_evidence_state(EvidenceState::Accepted)
+    .affects(package())
+    .with_external_ref(reference(control_id, "accepted"))
+}
+
+fn project() -> ProjectId {
+    ProjectId::new("reference-center").unwrap()
+}
+
+fn package() -> ControlId {
+    control("package.frame")
+}
+
+fn revision_a() -> ControlId {
+    control("design.a")
+}
+
+fn revision_b() -> ControlId {
+    control("design.b")
+}
+
+fn release(id: &str) -> ControlId {
+    control(id)
+}
+
+fn control(id: &str) -> ControlId {
+    ControlId::new(id).unwrap()
+}
+
+fn role(id: &str) -> RoleId {
+    RoleId::new(id).unwrap()
+}
+
+fn today() -> Date {
+    Date::from_calendar_date(2026, Month::July, 23).unwrap()
+}
+
+fn reference(id: &str, version: &str) -> ExternalRef {
+    ExternalRef::new("doc/synthetic", id, Some(version.to_owned()), None)
 }
 ```
 
@@ -1921,6 +9127,897 @@ fn today() -> Date {
 }
 ```
 
+### `feature/sim-construction/system-handover-commissioning-acceptance`
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/system-to-accepted-handover` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/system-to-accepted-handover/recipe.toml`:
+
+```toml
+id = "system-to-accepted-handover"
+title = "System to accepted handover"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 99
+tags = ["construction", "project-control", "handover", "commissioning", "acceptance", "readiness"]
+requires = ["construction.project.read", "construction.project.write", "construction.project.accept", "codec/lisp"]
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/handover_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/handover_tests.rs`:
+
+```rust
+// conformance: handover hierarchy reuses stable construction control graph ids and edges
+
+use crate::{
+    CONSTRUCTION_EXCEPTION_CAPABILITY, CommissioningAssessment, CommissioningBurnDown,
+    CommissioningControlSet, CommissioningRequirement, CommissioningRequirementKind,
+    ConstructionProjectError, ControlEdgeKind, ControlId, EvidenceState, EvidenceValidity,
+    ExceptionDecision, ExceptionScope, HandoverControlKind, HandoverHierarchy, ObligationPolicy,
+    ProjectBook, ProjectFact, ProjectId, ProjectObligation, Requirement, RequirementLane, RoleId,
+};
+use sim_kernel::{Expr, Symbol};
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+#[test]
+fn hierarchy_uses_typed_common_graph_nodes_and_member_edges() {
+    let mut hierarchy = hierarchy();
+    add(
+        &mut hierarchy,
+        "milestone.first-use",
+        HandoverControlKind::ContractualMilestone,
+    );
+    add(&mut hierarchy, "area.east", HandoverControlKind::Area);
+    add(
+        &mut hierarchy,
+        "system.ventilation",
+        HandoverControlKind::System,
+    );
+    add(
+        &mut hierarchy,
+        "package.controls",
+        HandoverControlKind::WorkPackage,
+    );
+    add(
+        &mut hierarchy,
+        "assets.ahu",
+        HandoverControlKind::AssetGroup,
+    );
+
+    hierarchy
+        .add_member(control("area.east"), control("milestone.first-use"))
+        .unwrap();
+    hierarchy
+        .add_member(control("system.ventilation"), control("area.east"))
+        .unwrap();
+    hierarchy
+        .add_member(control("package.controls"), control("system.ventilation"))
+        .unwrap();
+    hierarchy
+        .add_member(control("assets.ahu"), control("system.ventilation"))
+        .unwrap();
+
+    assert_eq!(
+        hierarchy.scope(&control("milestone.first-use")).unwrap(),
+        vec![
+            control("area.east"),
+            control("assets.ahu"),
+            control("milestone.first-use"),
+            control("package.controls"),
+            control("system.ventilation"),
+        ]
+    );
+    assert!(
+        hierarchy
+            .control_graph()
+            .edges
+            .iter()
+            .all(|edge| edge.kind == ControlEdgeKind::MemberOf)
+    );
+}
+
+#[test]
+fn one_system_can_roll_into_multiple_areas_without_a_second_tree() {
+    let mut hierarchy = hierarchy();
+    add(&mut hierarchy, "area.east", HandoverControlKind::Area);
+    add(&mut hierarchy, "area.west", HandoverControlKind::Area);
+    add(
+        &mut hierarchy,
+        "system.fire-alarm",
+        HandoverControlKind::System,
+    );
+
+    hierarchy
+        .add_member(control("system.fire-alarm"), control("area.east"))
+        .unwrap();
+    hierarchy
+        .add_member(control("system.fire-alarm"), control("area.west"))
+        .unwrap();
+
+    assert_eq!(
+        hierarchy.direct_parents(&control("system.fire-alarm")),
+        vec![control("area.east"), control("area.west")]
+    );
+    assert_eq!(
+        hierarchy.leaves(&control("area.east")).unwrap(),
+        vec![control("system.fire-alarm")]
+    );
+}
+
+#[test]
+fn member_cycles_are_rejected_without_mutating_the_hierarchy() {
+    let mut hierarchy = hierarchy();
+    add(
+        &mut hierarchy,
+        "system.primary",
+        HandoverControlKind::System,
+    );
+    add(
+        &mut hierarchy,
+        "system.secondary",
+        HandoverControlKind::System,
+    );
+    hierarchy
+        .add_member(control("system.secondary"), control("system.primary"))
+        .unwrap();
+
+    let result = hierarchy.add_member(control("system.primary"), control("system.secondary"));
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::ControlGraphCycle { .. })
+    ));
+    assert!(
+        hierarchy
+            .direct_parents(&control("system.primary"))
+            .is_empty()
+    );
+}
+
+#[test]
+fn every_commissioning_kind_uses_shared_evidence_requirements() {
+    let mut hierarchy = hierarchy();
+    add(
+        &mut hierarchy,
+        "system.heating",
+        HandoverControlKind::System,
+    );
+    let kinds = [
+        CommissioningRequirementKind::Activity,
+        CommissioningRequirementKind::Inspection,
+        CommissioningRequirementKind::Test,
+        CommissioningRequirementKind::Defect,
+        CommissioningRequirementKind::OperationsMaintenanceDeliverable,
+        CommissioningRequirementKind::AsBuiltDeliverable,
+        CommissioningRequirementKind::Training,
+        CommissioningRequirementKind::Certification,
+        CommissioningRequirementKind::AuthorityClosure,
+        CommissioningRequirementKind::CustomerAcceptance,
+        CommissioningRequirementKind::RemainingWork,
+    ];
+    let controls = kinds.into_iter().enumerate().fold(
+        CommissioningControlSet::new(project()),
+        |controls, (index, kind)| {
+            controls.with_requirement(commissioning_requirement(
+                kind,
+                &format!("requirement.handover-{index}"),
+            ))
+        },
+    );
+
+    controls.validate(&hierarchy).unwrap();
+    assert_eq!(controls.requirements.len(), 11);
+    assert!(controls.requirements.iter().all(|item| {
+        item.obligation.requirement.evidence_required
+            && !item.obligation.requirement.evidence_kinds.is_empty()
+            && !item.obligation.requirement.source_refs.is_empty()
+    }));
+    let authority = controls
+        .requirements
+        .iter()
+        .find(|item| item.kind == CommissioningRequirementKind::AuthorityClosure)
+        .unwrap();
+    assert!(authority.obligation.requirement.non_waivable);
+    assert_eq!(authority.obligation.policy, ObligationPolicy::Mandatory);
+}
+
+#[test]
+fn commissioning_rejects_optional_evidence_and_unknown_targets() {
+    let mut hierarchy = hierarchy();
+    add(
+        &mut hierarchy,
+        "system.heating",
+        HandoverControlKind::System,
+    );
+    let mut missing_evidence = commissioning_requirement(
+        CommissioningRequirementKind::Training,
+        "requirement.training",
+    );
+    missing_evidence
+        .obligation
+        .requirement
+        .evidence_kinds
+        .clear();
+    let result = CommissioningControlSet::new(project())
+        .with_requirement(missing_evidence)
+        .validate(&hierarchy);
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::EmptyCollection(
+            "commissioning_requirement.evidence_kinds"
+        ))
+    ));
+
+    let mut unknown_target = commissioning_requirement(
+        CommissioningRequirementKind::Test,
+        "requirement.unknown-target",
+    );
+    unknown_target.targets = vec![control("system.unknown")];
+    let result = CommissioningControlSet::new(project())
+        .with_requirement(unknown_target)
+        .validate(&hierarchy);
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::ControlGraphMissingEndpoint {
+            edge: "commissioning-target",
+            ..
+        })
+    ));
+}
+
+#[test]
+fn hierarchy_rollups_expose_every_leaf_evidence_state_and_exception() {
+    let mut hierarchy = hierarchy();
+    add(&mut hierarchy, "area.plant", HandoverControlKind::Area);
+    add(
+        &mut hierarchy,
+        "system.heating",
+        HandoverControlKind::System,
+    );
+    hierarchy
+        .add_member(control("system.heating"), control("area.plant"))
+        .unwrap();
+
+    let mut certificate = commissioning_requirement(
+        CommissioningRequirementKind::Certification,
+        "requirement.certificate",
+    );
+    certificate.obligation.evidence_validity =
+        EvidenceValidity::new(None, Some(date(2026, Month::July, 29)));
+    let controls = CommissioningControlSet::new(project())
+        .with_requirement(commissioning_requirement(
+            CommissioningRequirementKind::Activity,
+            "requirement.activity",
+        ))
+        .with_requirement(commissioning_requirement(
+            CommissioningRequirementKind::Training,
+            "requirement.training",
+        ))
+        .with_requirement(commissioning_requirement(
+            CommissioningRequirementKind::Test,
+            "requirement.test",
+        ))
+        .with_requirement(certificate)
+        .with_requirement(commissioning_requirement(
+            CommissioningRequirementKind::OperationsMaintenanceDeliverable,
+            "requirement.om",
+        ))
+        .with_requirement(commissioning_requirement(
+            CommissioningRequirementKind::RemainingWork,
+            "requirement.remaining",
+        ));
+
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(accepted_fact(1, "requirement.activity"))
+        .unwrap();
+    book.append(accepted_fact(2, "requirement.test").with_evidence_state(EvidenceState::Rejected))
+        .unwrap();
+    book.append(accepted_fact(3, "requirement.certificate"))
+        .unwrap();
+    book.append(accepted_fact(4, "requirement.om")).unwrap();
+    book.append(accepted_fact(5, "requirement.om")).unwrap();
+    let assessment = CommissioningAssessment::new(&book, 5, today())
+        .with_exception(remaining_work_exception())
+        .with_capability(CONSTRUCTION_EXCEPTION_CAPABILITY);
+
+    let system = controls
+        .readiness_for(&hierarchy, &control("system.heating"), &assessment)
+        .unwrap();
+    let area = controls
+        .readiness_for(&hierarchy, &control("area.plant"), &assessment)
+        .unwrap();
+
+    assert_eq!(system.burn_down, area.burn_down);
+    assert_eq!(
+        system.burn_down,
+        CommissioningBurnDown {
+            total: 6,
+            accepted: 1,
+            missing: 1,
+            reported: 0,
+            evidenced: 0,
+            rejected: 1,
+            expired: 1,
+            conflicted: 1,
+            excepted: 1,
+        }
+    );
+    assert_eq!(system.completion_percent(), 33);
+    assert_eq!(system.burn_down.open(), 4);
+    assert!(!system.ready);
+    assert_eq!(system.blockers().count(), 4);
+}
+
+#[test]
+fn a_high_percentage_never_overrides_one_missing_mandatory_item() {
+    let mut hierarchy = hierarchy();
+    add(
+        &mut hierarchy,
+        "system.heating",
+        HandoverControlKind::System,
+    );
+    let mut controls = CommissioningControlSet::new(project());
+    let mut book = ProjectBook::new(project(), writer());
+    for index in 0..10 {
+        let id = format!("requirement.accepted-{index}");
+        controls = controls.with_requirement(commissioning_requirement(
+            CommissioningRequirementKind::Activity,
+            &id,
+        ));
+        book.append(accepted_fact(index + 1, &id)).unwrap();
+    }
+    controls = controls.with_requirement(commissioning_requirement(
+        CommissioningRequirementKind::Training,
+        "requirement.missing-training",
+    ));
+    let assessment = CommissioningAssessment::new(&book, 10, today());
+
+    let report = controls
+        .readiness_for(&hierarchy, &control("system.heating"), &assessment)
+        .unwrap();
+
+    assert_eq!(report.completion_percent(), 90);
+    assert_eq!(report.burn_down.missing, 1);
+    assert!(!report.ready);
+    assert_eq!(report.blockers().count(), 1);
+}
+
+fn hierarchy() -> HandoverHierarchy {
+    HandoverHierarchy::new(project())
+}
+
+fn project() -> ProjectId {
+    ProjectId::new("project.handover").unwrap()
+}
+
+fn writer() -> RoleId {
+    RoleId::new("role.project-writer").unwrap()
+}
+
+fn add(hierarchy: &mut HandoverHierarchy, id: &str, kind: HandoverControlKind) {
+    hierarchy.add_control(control(id), kind).unwrap();
+}
+
+fn control(id: &str) -> ControlId {
+    ControlId::new(id).unwrap()
+}
+
+fn commissioning_requirement(
+    kind: CommissioningRequirementKind,
+    id: &str,
+) -> CommissioningRequirement {
+    let requirement = Requirement::new(
+        control(id),
+        RequirementLane::new(Symbol::qualified("construction", "handover")),
+        format!("{kind:?} evidence"),
+        RoleId::new("role.commissioning-lead").unwrap(),
+        RoleId::new("role.customer").unwrap(),
+    )
+    .with_evidence_kind(Symbol::qualified("construction", "commissioning-record"))
+    .with_source_ref(ExternalRef::new(
+        "doc/synthetic",
+        id,
+        Some("v1".to_owned()),
+        None,
+    ));
+    CommissioningRequirement::new(
+        kind,
+        ProjectObligation::mandatory(project(), requirement),
+        control("system.heating"),
+    )
+}
+
+fn accepted_fact(seq: u64, requirement: &str) -> ProjectFact {
+    ProjectFact::new(
+        seq,
+        project(),
+        control(requirement),
+        Symbol::qualified("construction", "commissioning-evidence"),
+        today(),
+        writer(),
+        Expr::Nil,
+    )
+    .with_evidence(external_ref(requirement))
+}
+
+fn remaining_work_exception() -> ExceptionDecision {
+    ExceptionDecision::new(
+        control("exception.remaining-work"),
+        ExceptionScope::new(project()).covers(control("requirement.remaining")),
+        RoleId::new("role.customer").unwrap(),
+        RoleId::new("role.customer").unwrap(),
+        "bounded remaining work accepted for partial handover",
+        date(2026, Month::July, 30),
+        date(2026, Month::August, 30),
+    )
+    .with_evidence(external_ref("remaining-work-acceptance"))
+}
+
+fn external_ref(id: &str) -> ExternalRef {
+    ExternalRef::new("doc/synthetic", id, Some("v1".to_owned()), None)
+}
+
+fn today() -> Date {
+    date(2026, Month::July, 30)
+}
+
+fn date(year: i32, month: Month, day: u8) -> Date {
+    Date::from_calendar_date(year, month, day).unwrap()
+}
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/src/acceptance_tests` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/src/acceptance_tests.rs`:
+
+```rust
+// conformance: each construction handover completion meaning is an accountable sequenced gate
+
+use crate::{
+    CONSTRUCTION_EXCEPTION_CAPABILITY, CommissioningAssessment, CommissioningControlSet,
+    CommissioningRequirement, CommissioningRequirementKind, ConstructionProjectError, ControlId,
+    EvidenceState, EvidenceValidity, ExceptionDecision, ExceptionScope, HandoverControlKind,
+    HandoverGate, HandoverGateDecision, HandoverGateDecisionKind, HandoverGateKind,
+    HandoverHierarchy, ProjectBook, ProjectFact, ProjectId, ProjectObligation, Requirement,
+    RequirementLane, RoleId,
+};
+use sim_kernel::{Expr, Symbol};
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+#[test]
+fn six_completion_meanings_keep_separate_reports_and_accountable_sequences() {
+    let mut hierarchy = HandoverHierarchy::new(project());
+    hierarchy
+        .add_control(control("system.heating"), HandoverControlKind::System)
+        .unwrap();
+    let controls = CommissioningControlSet::new(project())
+        .with_requirement(requirement(
+            CommissioningRequirementKind::Activity,
+            "requirement.activity",
+        ))
+        .with_requirement(requirement(
+            CommissioningRequirementKind::OperationsMaintenanceDeliverable,
+            "requirement.om",
+        ))
+        .with_requirement(requirement(
+            CommissioningRequirementKind::Training,
+            "requirement.training",
+        ))
+        .with_requirement(requirement(
+            CommissioningRequirementKind::AuthorityClosure,
+            "requirement.authority",
+        ))
+        .with_requirement(requirement(
+            CommissioningRequirementKind::CustomerAcceptance,
+            "requirement.customer",
+        ))
+        .with_requirement(requirement(
+            CommissioningRequirementKind::RemainingWork,
+            "requirement.remaining",
+        ));
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(accepted_fact(1, "requirement.activity"))
+        .unwrap();
+    book.append(accepted_fact(2, "requirement.authority"))
+        .unwrap();
+    book.append(accepted_fact(3, "requirement.customer"))
+        .unwrap();
+    let assessment = CommissioningAssessment::new(&book, 3, today())
+        .with_exception(remaining_work_exception())
+        .with_capability(CONSTRUCTION_EXCEPTION_CAPABILITY);
+
+    let reports = all_gate_kinds()
+        .into_iter()
+        .map(|kind| {
+            let gate = handover_gate(kind);
+            let report = gate.report(&controls, &hierarchy, &assessment).unwrap();
+            (kind, gate, report)
+        })
+        .collect::<Vec<_>>();
+
+    assert_eq!(
+        reports
+            .iter()
+            .map(|(kind, _, report)| (*kind, report.readiness.ready))
+            .collect::<Vec<_>>(),
+        vec![
+            (HandoverGateKind::TechnicalCompletion, true),
+            (HandoverGateKind::EvidenceCompletion, false),
+            (HandoverGateKind::AuthorityCompletion, true),
+            (HandoverGateKind::ContractualAcceptance, true),
+            (HandoverGateKind::OccupancyUseReadiness, false),
+            (HandoverGateKind::FinalCompletion, false),
+        ]
+    );
+    assert!(reports.iter().all(|(_, _, report)| report.as_of_seq == 3));
+    let (_, contractual_gate, contractual_report) = &reports[3];
+    assert_eq!(contractual_report.readiness.burn_down.excepted, 1);
+    HandoverGateDecision::new(
+        contractual_gate,
+        contractual_report.as_of_seq,
+        4,
+        HandoverGateDecisionKind::Accept,
+        role("role.customer"),
+    )
+    .with_evidence(external_ref("contractual-acceptance"))
+    .validate_against(contractual_gate, contractual_report)
+    .unwrap();
+
+    let (_, final_gate, final_report) = &reports[5];
+    assert_eq!(final_report.readiness.burn_down.excepted, 0);
+    assert_eq!(final_report.readiness.burn_down.missing, 3);
+    let result = HandoverGateDecision::new(
+        final_gate,
+        final_report.as_of_seq,
+        4,
+        HandoverGateDecisionKind::Accept,
+        role("role.customer"),
+    )
+    .with_evidence(external_ref("premature-final-acceptance"))
+    .validate_against(final_gate, final_report);
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::GateReportNotReady { .. })
+    ));
+}
+
+#[test]
+fn partial_system_acceptance_does_not_accept_its_sibling_or_parent_area() {
+    let mut hierarchy = HandoverHierarchy::new(project());
+    add(&mut hierarchy, "area.building", HandoverControlKind::Area);
+    add(
+        &mut hierarchy,
+        "system.heating",
+        HandoverControlKind::System,
+    );
+    add(
+        &mut hierarchy,
+        "system.cooling",
+        HandoverControlKind::System,
+    );
+    hierarchy
+        .add_member(control("system.heating"), control("area.building"))
+        .unwrap();
+    hierarchy
+        .add_member(control("system.cooling"), control("area.building"))
+        .unwrap();
+    let controls = CommissioningControlSet::new(project())
+        .with_requirement(requirement_for(
+            CommissioningRequirementKind::CustomerAcceptance,
+            "requirement.accept-heating",
+            "system.heating",
+        ))
+        .with_requirement(requirement_for(
+            CommissioningRequirementKind::CustomerAcceptance,
+            "requirement.accept-cooling",
+            "system.cooling",
+        ));
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(accepted_fact(1, "requirement.accept-heating"))
+        .unwrap();
+    let assessment = CommissioningAssessment::new(&book, 1, today());
+
+    let heating = gate_for(HandoverGateKind::ContractualAcceptance, "system.heating")
+        .report(&controls, &hierarchy, &assessment)
+        .unwrap();
+    let cooling = gate_for(HandoverGateKind::ContractualAcceptance, "system.cooling")
+        .report(&controls, &hierarchy, &assessment)
+        .unwrap();
+    let area = gate_for(HandoverGateKind::ContractualAcceptance, "area.building")
+        .report(&controls, &hierarchy, &assessment)
+        .unwrap();
+
+    assert!(heating.readiness.ready);
+    assert!(!cooling.readiness.ready);
+    assert!(!area.readiness.ready);
+    assert_eq!(area.readiness.burn_down.accepted, 1);
+    assert_eq!(area.readiness.burn_down.missing, 1);
+}
+
+#[test]
+fn one_cross_area_system_rolls_the_same_leaf_evidence_into_each_area() {
+    let mut hierarchy = HandoverHierarchy::new(project());
+    add(&mut hierarchy, "area.east", HandoverControlKind::Area);
+    add(&mut hierarchy, "area.west", HandoverControlKind::Area);
+    add(
+        &mut hierarchy,
+        "system.fire-alarm",
+        HandoverControlKind::System,
+    );
+    hierarchy
+        .add_member(control("system.fire-alarm"), control("area.east"))
+        .unwrap();
+    hierarchy
+        .add_member(control("system.fire-alarm"), control("area.west"))
+        .unwrap();
+    let controls = CommissioningControlSet::new(project()).with_requirement(requirement_for(
+        CommissioningRequirementKind::Test,
+        "requirement.fire-alarm-test",
+        "system.fire-alarm",
+    ));
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(accepted_fact(1, "requirement.fire-alarm-test"))
+        .unwrap();
+    let assessment = CommissioningAssessment::new(&book, 1, today());
+
+    for area in ["area.east", "area.west"] {
+        let report = gate_for(HandoverGateKind::TechnicalCompletion, area)
+            .report(&controls, &hierarchy, &assessment)
+            .unwrap();
+        assert!(report.readiness.ready);
+        assert_eq!(report.readiness.burn_down.total, 1);
+        assert_eq!(report.readiness.burn_down.accepted, 1);
+    }
+}
+
+#[test]
+fn accepted_retest_supersedes_a_rejected_test_at_a_later_sequence() {
+    let mut hierarchy = HandoverHierarchy::new(project());
+    add(
+        &mut hierarchy,
+        "system.heating",
+        HandoverControlKind::System,
+    );
+    let controls = CommissioningControlSet::new(project()).with_requirement(requirement(
+        CommissioningRequirementKind::Test,
+        "requirement.functional-test",
+    ));
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(
+        accepted_fact(1, "requirement.functional-test")
+            .with_evidence_state(EvidenceState::Rejected),
+    )
+    .unwrap();
+    let gate = handover_gate(HandoverGateKind::TechnicalCompletion);
+    let rejected = gate
+        .report(
+            &controls,
+            &hierarchy,
+            &CommissioningAssessment::new(&book, 1, today()),
+        )
+        .unwrap();
+    assert!(!rejected.readiness.ready);
+    assert_eq!(rejected.readiness.burn_down.rejected, 1);
+
+    book.append(accepted_fact(2, "requirement.functional-test").supersedes(1))
+        .unwrap();
+    let retested = gate
+        .report(
+            &controls,
+            &hierarchy,
+            &CommissioningAssessment::new(&book, 2, today()),
+        )
+        .unwrap();
+    assert!(retested.readiness.ready);
+    assert_eq!(retested.readiness.burn_down.accepted, 1);
+    assert_eq!(retested.readiness.items[0].current_seq, Some(2));
+}
+
+#[test]
+fn expired_certificate_critical_defect_and_absent_training_block_exact_gates() {
+    let mut hierarchy = HandoverHierarchy::new(project());
+    add(
+        &mut hierarchy,
+        "system.heating",
+        HandoverControlKind::System,
+    );
+    let mut certificate = requirement(
+        CommissioningRequirementKind::Certification,
+        "requirement.certificate",
+    );
+    certificate.obligation.evidence_validity =
+        EvidenceValidity::new(None, Some(date(2026, Month::July, 29)));
+    let controls = CommissioningControlSet::new(project())
+        .with_requirement(certificate)
+        .with_requirement(
+            requirement(
+                CommissioningRequirementKind::Defect,
+                "requirement.critical-defect",
+            )
+            .critical(),
+        )
+        .with_requirement(requirement(
+            CommissioningRequirementKind::Training,
+            "requirement.training",
+        ));
+    let mut book = ProjectBook::new(project(), writer());
+    book.append(accepted_fact(1, "requirement.certificate"))
+        .unwrap();
+    let assessment = CommissioningAssessment::new(&book, 1, today());
+
+    let technical = handover_gate(HandoverGateKind::TechnicalCompletion)
+        .report(&controls, &hierarchy, &assessment)
+        .unwrap();
+    let evidence = handover_gate(HandoverGateKind::EvidenceCompletion)
+        .report(&controls, &hierarchy, &assessment)
+        .unwrap();
+    let authority = handover_gate(HandoverGateKind::AuthorityCompletion)
+        .report(&controls, &hierarchy, &assessment)
+        .unwrap();
+    let occupancy = handover_gate(HandoverGateKind::OccupancyUseReadiness)
+        .report(&controls, &hierarchy, &assessment)
+        .unwrap();
+
+    assert!(technical.readiness.blockers().any(|item| item.critical));
+    assert_eq!(evidence.readiness.burn_down.expired, 1);
+    assert_eq!(evidence.readiness.burn_down.missing, 1);
+    assert_eq!(authority.readiness.burn_down.expired, 1);
+    assert!(!occupancy.readiness.ready);
+    assert_eq!(occupancy.readiness.blockers().count(), 3);
+}
+
+#[test]
+fn non_waivable_authority_closure_rejects_an_exception_attempt() {
+    let mut hierarchy = HandoverHierarchy::new(project());
+    add(
+        &mut hierarchy,
+        "system.heating",
+        HandoverControlKind::System,
+    );
+    let controls = CommissioningControlSet::new(project()).with_requirement(requirement(
+        CommissioningRequirementKind::AuthorityClosure,
+        "requirement.authority",
+    ));
+    let book = ProjectBook::new(project(), writer());
+    let exception = ExceptionDecision::new(
+        control("exception.authority"),
+        ExceptionScope::new(project()).covers(control("requirement.authority")),
+        role("role.customer"),
+        role("role.customer"),
+        "attempted authority override",
+        today(),
+        date(2026, Month::August, 30),
+    )
+    .with_evidence(external_ref("authority-exception"));
+    let assessment = CommissioningAssessment::new(&book, 0, today())
+        .with_exception(exception)
+        .with_capability(CONSTRUCTION_EXCEPTION_CAPABILITY);
+
+    let result = handover_gate(HandoverGateKind::AuthorityCompletion).report(
+        &controls,
+        &hierarchy,
+        &assessment,
+    );
+
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::NonWaivableRequirement { .. })
+    ));
+}
+
+fn all_gate_kinds() -> [HandoverGateKind; 6] {
+    [
+        HandoverGateKind::TechnicalCompletion,
+        HandoverGateKind::EvidenceCompletion,
+        HandoverGateKind::AuthorityCompletion,
+        HandoverGateKind::ContractualAcceptance,
+        HandoverGateKind::OccupancyUseReadiness,
+        HandoverGateKind::FinalCompletion,
+    ]
+}
+
+fn handover_gate(kind: HandoverGateKind) -> HandoverGate {
+    gate_for(kind, "system.heating")
+}
+
+fn gate_for(kind: HandoverGateKind, target: &str) -> HandoverGate {
+    HandoverGate::new(
+        project(),
+        control(&format!("gate.{kind:?}.{target}").to_ascii_lowercase()),
+        control(target),
+        kind,
+        role("role.customer"),
+    )
+}
+
+fn requirement(kind: CommissioningRequirementKind, id: &str) -> CommissioningRequirement {
+    requirement_for(kind, id, "system.heating")
+}
+
+fn requirement_for(
+    kind: CommissioningRequirementKind,
+    id: &str,
+    target: &str,
+) -> CommissioningRequirement {
+    let requirement = Requirement::new(
+        control(id),
+        RequirementLane::new(Symbol::qualified("construction", "handover")),
+        format!("{kind:?} evidence"),
+        role("role.commissioning-lead"),
+        role("role.customer"),
+    )
+    .with_evidence_kind(Symbol::qualified("construction", "commissioning-record"))
+    .with_source_ref(external_ref(id));
+    CommissioningRequirement::new(
+        kind,
+        ProjectObligation::mandatory(project(), requirement),
+        control(target),
+    )
+}
+
+fn accepted_fact(seq: u64, requirement: &str) -> ProjectFact {
+    ProjectFact::new(
+        seq,
+        project(),
+        control(requirement),
+        Symbol::qualified("construction", "commissioning-evidence"),
+        today(),
+        writer(),
+        Expr::Nil,
+    )
+    .with_evidence(external_ref(requirement))
+}
+
+fn remaining_work_exception() -> ExceptionDecision {
+    ExceptionDecision::new(
+        control("exception.remaining-work"),
+        ExceptionScope::new(project()).covers(control("requirement.remaining")),
+        role("role.customer"),
+        role("role.customer"),
+        "bounded remaining work accepted for partial handover",
+        today(),
+        Date::from_calendar_date(2026, Month::August, 30).unwrap(),
+    )
+    .with_evidence(external_ref("remaining-work-acceptance"))
+}
+
+fn project() -> ProjectId {
+    ProjectId::new("project.handover").unwrap()
+}
+
+fn writer() -> RoleId {
+    role("role.project-writer")
+}
+
+fn role(id: &str) -> RoleId {
+    RoleId::new(id).unwrap()
+}
+
+fn control(id: &str) -> ControlId {
+    ControlId::new(id).unwrap()
+}
+
+fn external_ref(id: &str) -> ExternalRef {
+    ExternalRef::new("doc/synthetic", id, Some("v1".to_owned()), None)
+}
+
+fn today() -> Date {
+    date(2026, Month::July, 30)
+}
+
+fn date(year: i32, month: Month, day: u8) -> Date {
+    Date::from_calendar_date(year, month, day).unwrap()
+}
+
+fn add(hierarchy: &mut HandoverHierarchy, id: &str, kind: HandoverControlKind) {
+    hierarchy.add_control(control(id), kind).unwrap();
+}
+```
+
 ### `feature/sim-construction/obligation-evidence-exceptions`
 
 Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/mixed-obligation-gate` is checked by `sh scripts/check-recipes.sh`.
@@ -2441,5 +10538,962 @@ fn evidence_ref(id: &str) -> ExternalRef {
 
 fn today() -> Date {
     Date::from_calendar_date(2026, Month::July, 23).unwrap()
+}
+```
+
+### `feature/sim-construction/final-economy-closeout-reference-admission`
+
+Specimen `recipe/sim-construction/crates/sim-lib-construction-project/01-basics/closeout-to-reference-admission` is checked by `sh scripts/check-recipes.sh`.
+
+Source `crates/sim-lib-construction-project/recipes/01-basics/closeout-to-reference-admission/recipe.toml`:
+
+```toml
+id = "closeout-to-reference-admission"
+title = "Closeout to reference admission"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 99
+tags = ["construction", "final-economy", "closeout", "learning", "people", "place", "reference"]
+requires = ["construction.project.read", "construction.project.write", "construction.project.accept", "construction.reference.publish", "codec/lisp"]
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/tests/final_economy` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/tests/final_economy.rs`:
+
+```rust
+// conformance: construction final economy uses exact Amount facts and explicit reconciliation
+
+use sim_ledger::Amount;
+use sim_lib_construction_project::{
+    CommercialEvidenceSource, ControlId, CurrencyCode, EvidenceState, FinalEconomyAmountFact,
+    FinalEconomyBasis, FinalEconomyBlocker, FinalEconomyControl, FinalEconomyFactKind,
+    FinalEconomyReconciliation, ProjectId,
+};
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+#[test]
+fn unsettled_exposure_stays_visible_and_blocks_closeout() {
+    let control = base_control().with_fact(amount_fact(
+        "economy.claim",
+        FinalEconomyFactKind::Claim,
+        "125000.00",
+        5,
+        CommercialEvidenceSource::Document,
+    ));
+
+    let report = control.derive().unwrap();
+
+    assert!(!report.ready);
+    assert_eq!(report.unsettled_exposure, vec![id("economy.claim")]);
+    assert!(
+        report
+            .blockers
+            .contains(&FinalEconomyBlocker::UnsettledExposure(id("economy.claim")))
+    );
+}
+
+#[test]
+fn ledger_mismatch_fails_exact_reconciliation() {
+    let mut control = base_control();
+    control
+        .facts
+        .retain(|fact| fact.kind != FinalEconomyFactKind::LedgerBalance);
+    control.facts.push(amount_fact(
+        "economy.ledger",
+        FinalEconomyFactKind::LedgerBalance,
+        "899999.99",
+        4,
+        CommercialEvidenceSource::LedgerBalance,
+    ));
+
+    let report = control.derive().unwrap();
+
+    assert!(!report.ledger_reconciled);
+    assert!(report.blockers.iter().any(|blocker| matches!(
+        blocker,
+        FinalEconomyBlocker::LedgerMismatch { final_position, ledger_balance }
+            if *final_position == amount("900000.00")
+                && *ledger_balance == amount("899999.99")
+    )));
+}
+
+#[test]
+fn accepted_settlement_and_ledger_evidence_produce_ready_exact_totals() {
+    let control = base_control()
+        .with_fact(amount_fact(
+            "economy.change",
+            FinalEconomyFactKind::OpenChange,
+            "25000.00",
+            5,
+            CommercialEvidenceSource::Document,
+        ))
+        .with_fact(
+            amount_fact(
+                "economy.customer-settlement",
+                FinalEconomyFactKind::CustomerSettlement,
+                "25000.00",
+                6,
+                CommercialEvidenceSource::LedgerBalance,
+            )
+            .settles(id("economy.change")),
+        )
+        .with_fact(
+            amount_fact(
+                "economy.guarantee",
+                FinalEconomyFactKind::Guarantee,
+                "5000.00",
+                7,
+                CommercialEvidenceSource::Document,
+            )
+            .supersedes(id("economy.guarantee.open")),
+        )
+        .with_fact(amount_fact(
+            "economy.guarantee.open",
+            FinalEconomyFactKind::Guarantee,
+            "5000.00",
+            6,
+            CommercialEvidenceSource::Document,
+        ))
+        .with_fact(
+            amount_fact(
+                "economy.supplier-settlement",
+                FinalEconomyFactKind::SupplierSettlement,
+                "5000.00",
+                8,
+                CommercialEvidenceSource::LedgerBalance,
+            )
+            .settles(id("economy.guarantee")),
+        );
+
+    let report = control.derive().unwrap();
+
+    assert!(report.ready);
+    assert!(report.ledger_reconciled);
+    assert!(report.unsettled_exposure.is_empty());
+    assert_eq!(
+        report.total(FinalEconomyFactKind::AcceptedContract),
+        Some(amount("1000000.00"))
+    );
+    assert_eq!(
+        report.total(FinalEconomyFactKind::CustomerSettlement),
+        Some(amount("25000.00"))
+    );
+}
+
+fn base_control() -> FinalEconomyControl {
+    FinalEconomyControl::new(
+        project(),
+        currency(),
+        FinalEconomyBasis::new(
+            20,
+            date(30),
+            "accepted project facts through sequence 20 at the July cutoff",
+        ),
+        FinalEconomyReconciliation::new(
+            id("economy.final-position"),
+            id("economy.ledger"),
+            "final position matches the versioned ledger balance at one cutoff",
+        ),
+    )
+    .with_fact(amount_fact(
+        "economy.contract",
+        FinalEconomyFactKind::AcceptedContract,
+        "1000000.00",
+        1,
+        CommercialEvidenceSource::Document,
+    ))
+    .with_fact(amount_fact(
+        "economy.forecast",
+        FinalEconomyFactKind::CurrentForecast,
+        "900000.00",
+        2,
+        CommercialEvidenceSource::Document,
+    ))
+    .with_fact(amount_fact(
+        "economy.final-position",
+        FinalEconomyFactKind::FinalPosition,
+        "900000.00",
+        3,
+        CommercialEvidenceSource::Document,
+    ))
+    .with_fact(amount_fact(
+        "economy.ledger",
+        FinalEconomyFactKind::LedgerBalance,
+        "900000.00",
+        4,
+        CommercialEvidenceSource::LedgerBalance,
+    ))
+}
+
+fn amount_fact(
+    id_text: &str,
+    kind: FinalEconomyFactKind,
+    value: &str,
+    sequence: u64,
+    source: CommercialEvidenceSource,
+) -> FinalEconomyAmountFact {
+    FinalEconomyAmountFact::new(
+        project(),
+        id(id_text),
+        kind,
+        amount(value),
+        currency(),
+        date(u8::try_from(sequence + 5).unwrap()),
+        sequence,
+        source,
+        ExternalRef::new(
+            match source {
+                CommercialEvidenceSource::Document => "doc/synthetic",
+                CommercialEvidenceSource::LedgerBalance => "ledger/synthetic",
+            },
+            id_text,
+            Some(format!("snapshot-{sequence}")),
+            None,
+        ),
+    )
+    .with_evidence_state(EvidenceState::Accepted)
+}
+
+fn project() -> ProjectId {
+    ProjectId::new("reference-center").unwrap()
+}
+
+fn id(value: &str) -> ControlId {
+    ControlId::new(value).unwrap()
+}
+
+fn currency() -> CurrencyCode {
+    CurrencyCode::new("SEK").unwrap()
+}
+
+fn amount(value: &str) -> Amount {
+    Amount::parse(value).unwrap()
+}
+
+fn date(day: u8) -> Date {
+    Date::from_calendar_date(2026, Month::July, day).unwrap()
+}
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/tests/closeout` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/tests/closeout.rs`:
+
+```rust
+// conformance: construction closeout keeps typed obligations and accountable closure
+
+use sim_kernel::{Expr, Symbol};
+use sim_ledger::Amount;
+use sim_lib_construction_project::{
+    CloseoutControlSet, CloseoutDecision, CloseoutObligation, CloseoutObligationKind,
+    CommercialEvidenceSource, ConstructionProjectError, ControlId, CurrencyCode, EvidenceState,
+    FinalEconomyAmountFact, FinalEconomyBasis, FinalEconomyControl, FinalEconomyFactKind,
+    FinalEconomyReconciliation, ProjectBook, ProjectFact, ProjectId, ProjectObligation,
+    Requirement, RequirementLane, RoleId,
+};
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+#[test]
+fn unresolved_obligation_blocks_accountable_closure() {
+    let controls = closeout_controls();
+    let mut book = closeout_book();
+    book.append(
+        evidence_fact(3, "closeout.unresolved-work").with_evidence_state(EvidenceState::Rejected),
+    )
+    .unwrap();
+    append_fact(&mut book, 4, "closeout.evidence-disposition");
+    append_fact(&mut book, 5, "closeout.lesson");
+    let economy = ready_economy().derive().unwrap();
+
+    let report = controls.report(&book, &economy, 5, date(30)).unwrap();
+
+    assert!(!report.ready);
+    assert_eq!(
+        report
+            .items
+            .iter()
+            .find(|item| item.kind == CloseoutObligationKind::UnresolvedWork)
+            .unwrap()
+            .evidence_state,
+        EvidenceState::Rejected
+    );
+    let result = CloseoutDecision::new(id("closeout.final"), 5, 6, role("project-director"))
+        .with_evidence(ext("closeout/decision"))
+        .close(&controls, &report);
+    assert!(matches!(
+        result,
+        Err(ConstructionProjectError::GateReportNotReady { .. })
+    ));
+}
+
+#[test]
+fn ready_obligations_create_immutable_accountable_closeout() {
+    let controls = closeout_controls();
+    let mut book = closeout_book();
+    append_fact(&mut book, 3, "closeout.unresolved-work");
+    append_fact(&mut book, 4, "closeout.evidence-disposition");
+    append_fact(&mut book, 5, "closeout.lesson");
+    let economy = ready_economy().derive().unwrap();
+    let report = controls.report(&book, &economy, 5, date(30)).unwrap();
+
+    let closure = CloseoutDecision::new(id("closeout.final"), 5, 6, role("project-director"))
+        .with_evidence(ext("closeout/decision"))
+        .close(&controls, &report)
+        .unwrap();
+
+    assert!(report.ready);
+    assert_eq!(closure.project(), &project());
+    assert_eq!(closure.report_seq(), 5);
+    assert_eq!(closure.decision_seq(), 6);
+    assert_eq!(closure.decided_by(), &role("project-director"));
+}
+
+fn closeout_controls() -> CloseoutControlSet {
+    [
+        (
+            CloseoutObligationKind::WarrantyContactHandoff,
+            "closeout.warranty-contact",
+        ),
+        (
+            CloseoutObligationKind::RetentionPolicy,
+            "closeout.retention-policy",
+        ),
+        (
+            CloseoutObligationKind::UnresolvedWork,
+            "closeout.unresolved-work",
+        ),
+        (
+            CloseoutObligationKind::EvidenceDisposition,
+            "closeout.evidence-disposition",
+        ),
+        (CloseoutObligationKind::Lesson, "closeout.lesson"),
+    ]
+    .into_iter()
+    .fold(
+        CloseoutControlSet::new(project(), id("closeout.final"), role("project-director")),
+        |controls, (kind, requirement)| {
+            controls.with_obligation(CloseoutObligation::new(
+                kind,
+                ProjectObligation::mandatory(
+                    project(),
+                    Requirement::new(
+                        id(requirement),
+                        RequirementLane::new(Symbol::qualified("construction", "closeout")),
+                        format!("{kind:?}"),
+                        role("project-chief"),
+                        role("project-director"),
+                    )
+                    .with_evidence_kind(Symbol::qualified("construction", "closeout-evidence"))
+                    .with_source_ref(ext(&format!("policy/{requirement}"))),
+                ),
+            ))
+        },
+    )
+}
+
+fn closeout_book() -> ProjectBook {
+    let mut book = ProjectBook::new(project(), role("project-chief"));
+    append_fact(&mut book, 1, "closeout.warranty-contact");
+    append_fact(&mut book, 2, "closeout.retention-policy");
+    book
+}
+
+fn append_fact(book: &mut ProjectBook, sequence: u64, subject: &str) {
+    book.append(evidence_fact(sequence, subject)).unwrap();
+}
+
+fn evidence_fact(sequence: u64, subject: &str) -> ProjectFact {
+    ProjectFact::new(
+        sequence,
+        project(),
+        id(subject),
+        Symbol::qualified("construction", "closeout-evidence"),
+        date(u8::try_from(sequence + 20).unwrap()),
+        role("project-chief"),
+        Expr::String(format!("{subject} accepted")),
+    )
+    .with_evidence(ext(&format!("evidence/{subject}")))
+}
+
+fn ready_economy() -> FinalEconomyControl {
+    let basis = FinalEconomyBasis::new(5, date(30), "accepted closeout cutoff");
+    let reconciliation = FinalEconomyReconciliation::new(
+        id("economy.final"),
+        id("economy.ledger"),
+        "final position and ledger evidence share the cutoff",
+    );
+    [
+        (
+            "economy.contract",
+            FinalEconomyFactKind::AcceptedContract,
+            CommercialEvidenceSource::Document,
+        ),
+        (
+            "economy.forecast",
+            FinalEconomyFactKind::CurrentForecast,
+            CommercialEvidenceSource::Document,
+        ),
+        (
+            "economy.final",
+            FinalEconomyFactKind::FinalPosition,
+            CommercialEvidenceSource::Document,
+        ),
+        (
+            "economy.ledger",
+            FinalEconomyFactKind::LedgerBalance,
+            CommercialEvidenceSource::LedgerBalance,
+        ),
+    ]
+    .into_iter()
+    .enumerate()
+    .fold(
+        FinalEconomyControl::new(project(), currency(), basis, reconciliation),
+        |control, (index, (fact_id, kind, source))| {
+            control.with_fact(
+                FinalEconomyAmountFact::new(
+                    project(),
+                    id(fact_id),
+                    kind,
+                    Amount::parse("1000000.00").unwrap(),
+                    currency(),
+                    date(25),
+                    u64::try_from(index + 1).unwrap(),
+                    source,
+                    ext(fact_id),
+                )
+                .with_evidence_state(EvidenceState::Accepted),
+            )
+        },
+    )
+}
+
+fn project() -> ProjectId {
+    ProjectId::new("reference-center").unwrap()
+}
+
+fn id(value: &str) -> ControlId {
+    ControlId::new(value).unwrap()
+}
+
+fn role(value: &str) -> RoleId {
+    RoleId::new(value).unwrap()
+}
+
+fn currency() -> CurrencyCode {
+    CurrencyCode::new("SEK").unwrap()
+}
+
+fn ext(value: &str) -> ExternalRef {
+    ExternalRef::new("doc/synthetic", value, Some("rev-a".to_owned()), None)
+}
+
+fn date(day: u8) -> Date {
+    Date::from_calendar_date(2026, Month::July, day).unwrap()
+}
+```
+
+Specimen `spec-test/sim-construction/crates/sim-lib-construction-project/tests/reference_admission` is checked by `cargo test`.
+
+Source `crates/sim-lib-construction-project/tests/reference_admission.rs`:
+
+```rust
+// conformance: evidence-backed reference claims require current facts, clearance, and authority
+
+use sim_kernel::{Expr, Symbol};
+use sim_ledger::Amount;
+use sim_lib_construction_project::{
+    AccountableCloseout, CloseoutControlSet, CloseoutDecision, CloseoutObligation,
+    CloseoutObligationKind, CommercialEvidenceSource, ControlId, CurrencyCode, DisclosureClearance,
+    DisclosureCondition, EvidenceState, FinalEconomyAmountFact, FinalEconomyBasis,
+    FinalEconomyControl, FinalEconomyFactKind, FinalEconomyReconciliation, OutcomeControlReport,
+    OutcomeTargetReport, OutcomeVariance, ProjectBook, ProjectFact, ProjectId, ProjectObligation,
+    ReferenceAdmissionBlocker, ReferenceApproval, ReferenceClaim, ReferenceClaimKind,
+    ReferenceDecisionKind, ReferencePackAdmission, Requirement, RequirementLane, RoleId,
+    Visibility,
+};
+use sim_lib_doc_core::ExternalRef;
+use time::{Date, Month};
+
+#[test]
+fn rejected_lesson_evidence_is_not_admitted() {
+    let mut fixture = fixture();
+    fixture
+        .book
+        .append(source_fact(7, "charter.lesson"))
+        .unwrap();
+    fixture
+        .book
+        .append(source_fact(8, "lesson.evidence").with_evidence_state(EvidenceState::Rejected))
+        .unwrap();
+    let claim = claim(
+        "claim.lesson",
+        ReferenceClaimKind::Lesson,
+        7,
+        8,
+        Visibility::ReferenceCandidate,
+    );
+
+    let report = admission(claim, 8)
+        .evaluate(&fixture.book, &fixture.closeout, &[])
+        .unwrap();
+
+    assert!(report.manifest.is_none());
+    assert!(report.claims[0].blockers.iter().any(|blocker| matches!(
+        blocker,
+        ReferenceAdmissionBlocker::SourceFactNotAccepted {
+            sequence: 8,
+            state: EvidenceState::Rejected
+        }
+    )));
+}
+
+#[test]
+fn outcome_shortfall_blocks_people_or_place_achievement_claim() {
+    let fixture = fixture_with_sources(Visibility::ReferenceCandidate);
+    let claim = claim(
+        "claim.people",
+        ReferenceClaimKind::PeopleDevelopment,
+        7,
+        8,
+        Visibility::ReferenceCandidate,
+    )
+    .asserts_outcome(id("outcome.people"));
+    let shortfall = outcome_report(
+        id("outcome.people"),
+        OutcomeVariance::ReportedDifferent {
+            target: quantity("10"),
+            current: quantity("8"),
+        },
+    );
+
+    let report = admission(claim, 8)
+        .evaluate(&fixture.book, &fixture.closeout, &[shortfall])
+        .unwrap();
+
+    assert!(report.manifest.is_none());
+    assert!(
+        report.claims[0]
+            .blockers
+            .contains(&ReferenceAdmissionBlocker::OutcomeShortfall(id(
+                "outcome.people"
+            )))
+    );
+}
+
+#[test]
+fn confidential_source_requires_named_clearance() {
+    let fixture = fixture_with_sources(Visibility::Restricted(Symbol::qualified(
+        "construction",
+        "confidential",
+    )));
+    let claim = claim(
+        "claim.property",
+        ReferenceClaimKind::PropertyOutcome,
+        7,
+        8,
+        Visibility::ReferenceCandidate,
+    );
+
+    let report = admission(claim, 8)
+        .evaluate(&fixture.book, &fixture.closeout, &[])
+        .unwrap();
+
+    assert!(report.manifest.is_none());
+    assert!(
+        report.claims[0]
+            .blockers
+            .contains(&ReferenceAdmissionBlocker::ConfidentialityUnsatisfied)
+    );
+}
+
+#[test]
+fn withdrawn_consent_blocks_people_claim() {
+    let fixture = fixture_with_sources(Visibility::ReferenceCandidate);
+    let claim = claim(
+        "claim.people",
+        ReferenceClaimKind::PeopleDevelopment,
+        7,
+        8,
+        Visibility::ReferenceCandidate,
+    )
+    .requires_consent();
+    let clearance = DisclosureClearance::new(id("claim.people"))
+        .with_consent(DisclosureCondition::Withdrawn(ext("consent/withdrawn")));
+
+    let report = admission(claim, 8)
+        .with_clearance(clearance)
+        .evaluate(&fixture.book, &fixture.closeout, &[])
+        .unwrap();
+
+    assert!(report.manifest.is_none());
+    assert!(
+        report.claims[0]
+            .blockers
+            .contains(&ReferenceAdmissionBlocker::ConsentWithdrawn)
+    );
+}
+
+#[test]
+fn misleading_superseded_claim_cannot_use_stale_fact_sequence() {
+    let mut fixture = fixture_with_sources(Visibility::ReferenceCandidate);
+    fixture
+        .book
+        .append(source_fact(9, "outcome.synthetic").supersedes(8))
+        .unwrap();
+    let claim = claim(
+        "claim.lesson",
+        ReferenceClaimKind::Lesson,
+        7,
+        8,
+        Visibility::ReferenceCandidate,
+    );
+
+    let report = admission(claim, 9)
+        .evaluate(&fixture.book, &fixture.closeout, &[])
+        .unwrap();
+
+    assert!(report.manifest.is_none());
+    assert!(
+        report.claims[0]
+            .blockers
+            .contains(&ReferenceAdmissionBlocker::SourceFactNotCurrent {
+                sequence: 8,
+                current: Some(9),
+            })
+    );
+}
+
+#[test]
+fn admitted_synthetic_people_property_and_city_claims_create_only_an_immutable_manifest() {
+    let mut fixture = fixture_with_sources(Visibility::ReferenceCandidate);
+    fixture
+        .book
+        .append(source_fact(9, "charter.property"))
+        .unwrap();
+    fixture
+        .book
+        .append(source_fact(10, "outcome.property"))
+        .unwrap();
+    fixture
+        .book
+        .append(
+            source_fact(11, "charter.city").with_visibility(Visibility::Restricted(
+                Symbol::qualified("construction", "customer-confidential"),
+            )),
+        )
+        .unwrap();
+    fixture
+        .book
+        .append(source_fact(12, "outcome.city"))
+        .unwrap();
+
+    let people = claim(
+        "claim.people",
+        ReferenceClaimKind::PeopleDevelopment,
+        7,
+        8,
+        Visibility::ReferenceCandidate,
+    )
+    .requires_consent()
+    .asserts_outcome(id("outcome.people"));
+    let property = claim(
+        "claim.property",
+        ReferenceClaimKind::PropertyOutcome,
+        9,
+        10,
+        Visibility::ReferenceCandidate,
+    )
+    .asserts_outcome(id("outcome.property"));
+    let city = claim(
+        "claim.city",
+        ReferenceClaimKind::CityDistrictOutcome,
+        11,
+        12,
+        Visibility::ReferenceCandidate,
+    )
+    .requires_confidentiality_clearance()
+    .asserts_outcome(id("outcome.city"));
+    let pack = ReferencePackAdmission::new(project(), 12, date(30), role("reference-authority"))
+        .with_claim(people)
+        .with_claim(property)
+        .with_claim(city)
+        .with_clearance(
+            DisclosureClearance::new(id("claim.people"))
+                .with_consent(DisclosureCondition::Satisfied(ext("consent/current"))),
+        )
+        .with_clearance(
+            DisclosureClearance::new(id("claim.city")).with_confidentiality(
+                DisclosureCondition::Satisfied(ext("confidentiality/approved")),
+            ),
+        )
+        .with_approval(approval("claim.people", 12, 13))
+        .with_approval(approval("claim.property", 12, 14))
+        .with_approval(approval("claim.city", 12, 15));
+    let outcomes = [
+        outcome_report(id("outcome.people"), OutcomeVariance::OnTarget),
+        outcome_report(id("outcome.property"), OutcomeVariance::OnTarget),
+        outcome_report(id("outcome.city"), OutcomeVariance::OnTarget),
+    ];
+
+    let report = pack
+        .evaluate(&fixture.book, &fixture.closeout, &outcomes)
+        .unwrap();
+    let manifest = report.manifest.unwrap();
+
+    assert!(report.claims.iter().all(|claim| claim.admitted));
+    assert_eq!(manifest.project(), &project());
+    assert_eq!(manifest.closeout_decision().as_str(), "closeout.final");
+    assert_eq!(manifest.claims().len(), 3);
+    assert_eq!(manifest.claims()[0].claim_id().as_str(), "claim.city");
+    assert_eq!(manifest.claims()[0].source_fact_sequences(), &[11, 12]);
+    assert_eq!(
+        manifest.claims()[0].approving_decision().as_str(),
+        "decision.claim.city"
+    );
+    assert_eq!(manifest.claims()[0].external_refs().len(), 1);
+}
+
+struct Fixture {
+    book: ProjectBook,
+    closeout: AccountableCloseout,
+}
+
+fn fixture_with_sources(visibility: Visibility) -> Fixture {
+    let mut fixture = fixture();
+    fixture
+        .book
+        .append(source_fact(7, "charter.synthetic"))
+        .unwrap();
+    fixture
+        .book
+        .append(source_fact(8, "outcome.synthetic").with_visibility(visibility))
+        .unwrap();
+    fixture
+}
+
+fn fixture() -> Fixture {
+    let controls = closeout_controls();
+    let mut book = ProjectBook::new(project(), role("project-chief"));
+    for (index, subject) in [
+        "closeout.warranty",
+        "closeout.retention",
+        "closeout.unresolved",
+        "closeout.evidence",
+        "closeout.lesson",
+    ]
+    .into_iter()
+    .enumerate()
+    {
+        book.append(source_fact(u64::try_from(index + 1).unwrap(), subject))
+            .unwrap();
+    }
+    let economy = ready_economy().derive().unwrap();
+    let report = controls.report(&book, &economy, 5, date(30)).unwrap();
+    let closeout = CloseoutDecision::new(id("closeout.final"), 5, 6, role("project-director"))
+        .with_evidence(ext("closeout/decision"))
+        .close(&controls, &report)
+        .unwrap();
+    Fixture { book, closeout }
+}
+
+fn closeout_controls() -> CloseoutControlSet {
+    [
+        CloseoutObligationKind::WarrantyContactHandoff,
+        CloseoutObligationKind::RetentionPolicy,
+        CloseoutObligationKind::UnresolvedWork,
+        CloseoutObligationKind::EvidenceDisposition,
+        CloseoutObligationKind::Lesson,
+    ]
+    .into_iter()
+    .enumerate()
+    .fold(
+        CloseoutControlSet::new(project(), id("closeout.final"), role("project-director")),
+        |controls, (index, kind)| {
+            let requirement = [
+                "closeout.warranty",
+                "closeout.retention",
+                "closeout.unresolved",
+                "closeout.evidence",
+                "closeout.lesson",
+            ][index];
+            controls.with_obligation(CloseoutObligation::new(
+                kind,
+                ProjectObligation::mandatory(
+                    project(),
+                    Requirement::new(
+                        id(requirement),
+                        RequirementLane::new(Symbol::qualified("construction", "closeout")),
+                        format!("{kind:?}"),
+                        role("project-chief"),
+                        role("project-director"),
+                    )
+                    .with_evidence_kind(Symbol::qualified("construction", "closeout-evidence"))
+                    .with_source_ref(ext(&format!("policy/{requirement}"))),
+                ),
+            ))
+        },
+    )
+}
+
+fn ready_economy() -> FinalEconomyControl {
+    let basis = FinalEconomyBasis::new(5, date(30), "accepted closeout cutoff");
+    let reconciliation = FinalEconomyReconciliation::new(
+        id("economy.final"),
+        id("economy.ledger"),
+        "final position matches ledger evidence",
+    );
+    [
+        (
+            "economy.contract",
+            FinalEconomyFactKind::AcceptedContract,
+            CommercialEvidenceSource::Document,
+        ),
+        (
+            "economy.forecast",
+            FinalEconomyFactKind::CurrentForecast,
+            CommercialEvidenceSource::Document,
+        ),
+        (
+            "economy.final",
+            FinalEconomyFactKind::FinalPosition,
+            CommercialEvidenceSource::Document,
+        ),
+        (
+            "economy.ledger",
+            FinalEconomyFactKind::LedgerBalance,
+            CommercialEvidenceSource::LedgerBalance,
+        ),
+    ]
+    .into_iter()
+    .enumerate()
+    .fold(
+        FinalEconomyControl::new(project(), currency(), basis, reconciliation),
+        |control, (index, (fact_id, kind, source))| {
+            control.with_fact(
+                FinalEconomyAmountFact::new(
+                    project(),
+                    id(fact_id),
+                    kind,
+                    Amount::parse("1000000.00").unwrap(),
+                    currency(),
+                    date(25),
+                    u64::try_from(index + 1).unwrap(),
+                    source,
+                    ext(fact_id),
+                )
+                .with_evidence_state(EvidenceState::Accepted),
+            )
+        },
+    )
+}
+
+fn source_fact(sequence: u64, subject: &str) -> ProjectFact {
+    ProjectFact::new(
+        sequence,
+        project(),
+        id(subject),
+        Symbol::qualified("construction", "reference-evidence"),
+        date(25),
+        role("project-chief"),
+        Expr::String(format!("accepted aggregate fact {subject}")),
+    )
+    .with_evidence(ext(&format!("evidence/{subject}")))
+}
+
+fn claim(
+    claim_id: &str,
+    kind: ReferenceClaimKind,
+    charter_seq: u64,
+    outcome_seq: u64,
+    visibility: Visibility,
+) -> ReferenceClaim {
+    ReferenceClaim::new(
+        project(),
+        id(claim_id),
+        kind,
+        format!("synthetic aggregate {kind:?} claim"),
+        charter_seq,
+        visibility,
+    )
+    .with_source_fact(outcome_seq)
+    .with_external_ref(ext(&format!("reference/{claim_id}")))
+}
+
+fn admission(claim: ReferenceClaim, as_of_seq: u64) -> ReferencePackAdmission {
+    let claim_id = claim.id.clone();
+    ReferencePackAdmission::new(project(), as_of_seq, date(30), role("reference-authority"))
+        .with_claim(claim)
+        .with_approval(
+            ReferenceApproval::new(
+                claim_id.clone(),
+                id(&format!("decision.{claim_id}")),
+                as_of_seq,
+                as_of_seq + 1,
+                ReferenceDecisionKind::Approve,
+                role("reference-authority"),
+            )
+            .with_evidence(ext("approval/reference")),
+        )
+}
+
+fn approval(claim_id: &str, report_seq: u64, decision_seq: u64) -> ReferenceApproval {
+    ReferenceApproval::new(
+        id(claim_id),
+        id(&format!("decision.{claim_id}")),
+        report_seq,
+        decision_seq,
+        ReferenceDecisionKind::Approve,
+        role("reference-authority"),
+    )
+    .with_evidence(ext(&format!("approval/{claim_id}")))
+}
+
+fn outcome_report(target: ControlId, variance: OutcomeVariance) -> OutcomeControlReport {
+    OutcomeControlReport {
+        project: project(),
+        as_of: date(30),
+        targets: vec![OutcomeTargetReport {
+            target,
+            current_record: Some(id("outcome.record")),
+            forecasts: Vec::new(),
+            covered: true,
+            variance,
+            blockers: Vec::new(),
+            reference_claim_admissible: true,
+        }],
+        gates_clear: true,
+    }
+}
+
+fn quantity(value: &str) -> sim_lib_construction_project::DomainQuantity {
+    sim_lib_construction_project::DomainQuantity::new(value, Symbol::qualified("unit", "aggregate"))
+}
+
+fn project() -> ProjectId {
+    ProjectId::new("reference-center").unwrap()
+}
+
+fn id(value: &str) -> ControlId {
+    ControlId::new(value).unwrap()
+}
+
+fn role(value: &str) -> RoleId {
+    RoleId::new(value).unwrap()
+}
+
+fn currency() -> CurrencyCode {
+    CurrencyCode::new("SEK").unwrap()
+}
+
+fn ext(value: &str) -> ExternalRef {
+    ExternalRef::new("doc/synthetic", value, Some("rev-a".to_owned()), None)
+}
+
+fn date(day: u8) -> Date {
+    Date::from_calendar_date(2026, Month::July, day).unwrap()
 }
 ```

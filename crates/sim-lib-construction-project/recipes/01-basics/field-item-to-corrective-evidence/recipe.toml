@@ -1,0 +1,8 @@
+id = "field-item-to-corrective-evidence"
+title = "Field item to corrective evidence"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 96
+tags = ["construction", "field-control", "dalux", "incident", "inspection", "corrective-evidence", "safety"]
+requires = ["construction.project.read", "construction.project.write", "site/dalux", "codec/lisp"]

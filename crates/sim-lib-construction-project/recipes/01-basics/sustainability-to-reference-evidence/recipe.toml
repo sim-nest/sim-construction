@@ -1,0 +1,8 @@
+id = "sustainability-to-reference-evidence"
+title = "Sustainability to reference evidence"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 95
+tags = ["construction", "sustainability", "certification", "climate", "reuse", "place", "evidence"]
+requires = ["construction.project.read", "construction.reference.publish", "codec/lisp"]

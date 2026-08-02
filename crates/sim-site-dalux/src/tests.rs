@@ -125,15 +125,26 @@ fn modeled_project_items_become_dalux_doc() {
         StaticDaluxCredentialProvider::new("token-1"),
     );
 
-    let doc = get_project_items(&mut cx, &client, "synthetic-project-1").unwrap();
-    let sheet = sim_lib_sheet::doc_to_sheet(&mut cx, &doc).unwrap();
+    let receipt = get_project_items_with_receipt(&mut cx, &client, "synthetic-project-1").unwrap();
+    let sheet = sim_lib_sheet::doc_to_sheet(&mut cx, &receipt.doc).unwrap();
 
     assert_eq!(
-        doc.id.as_str(),
+        receipt.doc.id.as_str(),
         "site/dalux/projects/synthetic-project-1/items"
     );
     assert_eq!(text_at(&sheet, "A2"), "item-1");
     assert_eq!(text_at(&sheet, "B2"), "Door review");
+    assert_eq!(receipt.items.len(), 1);
+    assert_eq!(receipt.items[0].external_ref.backend, DALUX_SITE_ID);
+    assert_eq!(receipt.items[0].external_ref.external_id, "items/item-1");
+    assert_eq!(receipt.items[0].external_ref.web_url, None);
+    assert_eq!(receipt.items[0].state, "open");
+    assert_eq!(receipt.effect.ledger_ref.backend, "effect/ledger");
+    assert_eq!(cx.effect_ledger().records().len(), 1);
+    assert_eq!(
+        cx.effect_ledger().records()[0].effect,
+        receipt.effect.effect
+    );
 }
 
 #[test]
@@ -152,11 +163,60 @@ fn modeled_patch_sends_only_note_field() {
         StaticDaluxCredentialProvider::new("token-1"),
     );
 
-    let external = patch_item_note(&mut cx, &client, "item-1", "Reviewed in SIM").unwrap();
+    let receipt =
+        patch_item_note_with_receipt(&mut cx, &client, "item-1", "Reviewed in SIM").unwrap();
+    let external = receipt.item;
 
     assert_eq!(external.backend, DALUX_SITE_ID);
     assert_eq!(external.external_id, "items/item-1");
     assert_eq!(external.version.as_deref(), Some("2026-07-13T11:00:00Z"));
+    assert_eq!(external.web_url, None);
+    assert_eq!(receipt.effect.ledger_ref.backend, "effect/ledger");
+    assert_eq!(cx.effect_ledger().records().len(), 1);
+}
+
+#[test]
+fn modeled_and_live_reads_share_the_site_effect_contract() {
+    let mut modeled_cx = test_context();
+    let modeled = DaluxClient::modeled(
+        ModeledDalux::with_json(
+            "/projects/synthetic-project-1/items",
+            json!({
+                "items": [{
+                    "id": "item-1",
+                    "status": "open",
+                    "updatedAt": "2026-07-13T10:00:00Z"
+                }]
+            }),
+        ),
+        StaticDaluxCredentialProvider::new("token-1"),
+    );
+    get_project_items_with_receipt(&mut modeled_cx, &modeled, "synthetic-project-1").unwrap();
+    let modeled_record = &modeled_cx.effect_ledger().records()[0];
+    let modeled_effect = modeled_cx
+        .effect_ledger()
+        .effect(&modeled_record.effect)
+        .unwrap();
+
+    let mut live_cx = test_context();
+    let live = DaluxClient::live(
+        "https://example.com/dalux",
+        StaticDaluxCredentialProvider::new("token-1"),
+    );
+    let error =
+        get_project_items_with_receipt(&mut live_cx, &live, "synthetic-project-1").unwrap_err();
+    assert!(error.to_string().contains(NET_CONNECT_CAPABILITY));
+    let live_record = &live_cx.effect_ledger().records()[0];
+    let live_effect = live_cx.effect_ledger().effect(&live_record.effect).unwrap();
+
+    assert_eq!(modeled_effect.kind, live_effect.kind);
+    assert_eq!(modeled_effect.subject, live_effect.subject);
+    assert_eq!(
+        modeled_effect.subject,
+        sim_kernel::Ref::Symbol(site_symbol(DALUX_SITE_ID))
+    );
+    assert!(!modeled_record.aborted);
+    assert!(live_record.aborted);
 }
 
 #[test]

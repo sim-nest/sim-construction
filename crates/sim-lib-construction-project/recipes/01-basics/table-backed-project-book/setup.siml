@@ -1,0 +1,33 @@
+(expr:map
+  [kind construction/table-backed-project-book]
+  [project reference-center]
+  [authoritative-writer project-chief]
+  [backend (expr:map
+    [selection host-injected]
+    [examples [table/hash table/fs]]
+    [construction-selects-backend false])]
+  [layout (expr:map
+    [facts "projects/reference-center/facts/<seq>"]
+    [baselines "projects/reference-center/baselines/<id>"]
+    [policies "projects/reference-center/policies/<id>"]
+    [projections "projects/reference-center/projections/<name>/<as-of>"]
+    [path-validation table-path])]
+  [write (expr:map
+    [sequence contiguous]
+    [shape checked]
+    [references checked]
+    [capability construction.project.write]
+    [writers 1])]
+  [read (expr:map
+    [capability construction.project.read]
+    [as-of 1]
+    [source authoritative-facts]
+    [projection-cache disposable]
+    [cache-identity core/sha256-datum-v1])]
+  [facts [(expr:map
+    [seq 1]
+    [subject decision.fixture]
+    [kind construction/fact]
+    [body "accept synthetic fixture scope"]
+    [evidence "doc/synthetic:fixture/rev-1"])]])
+  [result historical-rebuild])

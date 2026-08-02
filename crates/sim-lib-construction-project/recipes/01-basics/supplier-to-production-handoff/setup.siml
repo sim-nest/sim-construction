@@ -1,0 +1,93 @@
+(expr:map
+  [kind construction/supplier-to-production-handoff]
+  [project reference-center]
+  [as-of-date "2026-07-20"]
+  [restricted-evidence-capability construction.supplier.read]
+  [supplier
+    (expr:map
+      [organization supplier-alpha]
+      [role installer]
+      [parent-supplier none]
+      [subcontract-depth 0]
+      [max-accepted-depth 0]
+      [decision-authority qs]
+      [valid-until "2026-07-31"]
+      [evidence [supplier/alpha/project-ref]])]
+  [qualification-requirements [
+    economic-standing
+    responsible-business-human-rights
+    collective-arrangements
+    competence-licenses
+    insurance
+    safety-training
+    workplace-introduction
+    risk-assessment
+    work-preparation
+    equipment
+    materials
+    quality-environment
+    staffing
+    logistics
+    meeting-participation]]
+  [qualification-evidence
+    (expr:map
+      [state Qualified]
+      [accepted-by qs]
+      [valid-until "2026-07-31"]
+      [restricted-refs [
+        economic-standing/alpha
+        responsible-business/alpha
+        collective-arrangement/alpha
+        license/alpha
+        insurance/alpha
+        safety-training/alpha
+        intro/alpha
+        risk-assessment/alpha
+        work-preparation/alpha
+        equipment/alpha
+        materials/alpha
+        quality-environment/alpha
+        staffing/alpha
+        logistics/alpha
+        meeting-participation/alpha]])]
+  [award
+    (expr:map
+      [id award.frame]
+      [package package.frame]
+      [supplier supplier-alpha]
+      [selected-tender tender.alpha]
+      [decided-by project-chief]
+      [decided-on "2026-07-18"])]
+  [released-design
+    (expr:map
+      [id release.prod]
+      [design-revision design.frame]
+      [purpose production]
+      [released-by project-chief]
+      [evidence-state Accepted])]
+  [handoff
+    (expr:map
+      [id handoff.frame]
+      [package package.frame]
+      [award award.frame]
+      [supplier supplier-alpha]
+      [released-design release.prod]
+      [material material.frame]
+      [lead-time-days 5]
+      [production-need-on "2026-07-30"]
+      [accepted-by site-manager]
+      [accepted-on "2026-07-20"]
+      [responsibility-acceptance "supplier accepts production responsibility"]
+      [evidence [handoff/frame/accepted]])]
+  [readiness
+    (expr:map
+      [qualified true]
+      [handoff-ready true]
+      [not-ready-if-only-awarded true]
+      [explanation-paths [
+        award.frame
+        supplier-alpha/qualification
+        release.prod
+        material.frame
+        handoff.frame]])]
+  [payload-boundary restricted-reference-only])

@@ -1,0 +1,108 @@
+(expr:map
+  [project-book (quote
+    (construction/book
+      (construction/project-id "project.nordhamn-market-renovation")
+      "project-chief"))]
+  [append (quote
+    (construction/append project-book opportunity.renovation))]
+  [as-of-snapshot (quote
+    (construction/snapshot-as-of project-book 39))]
+  [changed-since (quote
+    (construction/diff-since project-book 33))]
+  [blocker-explanation (quote
+    (construction/explain snapshot.current "safety.energization"))]
+  [gate-decision (quote
+    (construction/gate-report project-book gate.mobilization))]
+  [package-readiness (quote
+    (construction/readiness project-book readiness.frame-package))]
+  [change-exposure (quote
+    (construction/exposure change.change-001))]
+  [handover-burn-down (quote
+    (construction/handover-burn-down project-book handover.reference-project))]
+  [reference-admission (quote
+    (construction/reference-admission project-book reference.nordhamn))]
+  [project-control-lanes [
+    (expr:map
+      [lane opportunity-bid]
+      [controls [opportunity.renovation intent.scope bid.conditional]])
+    (expr:map
+      [lane collaboration-contract-mobilization]
+      [controls [collaboration.charter contract.main gate.mobilization]])
+    (expr:map
+      [lane design-permit]
+      [controls [design.fire permit.fire decision.customer-access]])
+    (expr:map
+      [lane procurement-supplier-handoff]
+      [controls [procurement.electrical supplier.blue-arc handoff.electrical]])
+    (expr:map
+      [lane sustainability]
+      [controls [outcome.climate measurement.area]])
+    (expr:map
+      [lane gantt-lookahead]
+      [controls [schedule.critical prerequisite.workplace-introduction]])
+    (expr:map
+      [lane field-safety]
+      [controls [field.item.001 safety.energization exception.delivery-window]])
+    (expr:map
+      [lane risk-change-economy]
+      [controls [risk.switchgear change.ventilation economy.final]])
+    (expr:map
+      [lane handover-closeout]
+      [controls [handover.defect.controls closeout.final]])
+    (expr:map
+      [lane people-place-reference]
+      [controls [outcome.people outcome.place lesson.delivery-window reference.nordhamn]])]]
+  [proof-points [
+    (expr:map [before 2] [after 3] [result conflict-visible])
+    (expr:map [before 7] [after 8] [result correction-superseded])
+    (expr:map [before 10] [after 11] [result supplier-evidence-renewed])
+    (expr:map [before 16] [after 17] [result measurement-corrected])
+    (expr:map [before 19] [after 22] [result safety-blocker-cleared])
+    (expr:map [before 20] [after 21] [result bounded-exception-expired])
+    (expr:map [before 24] [after 25] [result partial-approval-recorded])
+    (expr:map [before 26] [after 27] [result handover-defect-corrected])
+    (expr:map [before 35] [after 36] [result reference-source-admissible])]]
+  [schedule (expr:map
+    [public-library sim-lib-gantt]
+    [public-type GanttPlan]
+    [plan plan.nordhamn-renovation]
+    [exchange (expr:map
+      [public-library sim-codec-mspdi]
+      [public-type MspdiCodec]
+      [import-operation DocCodec/decode]
+      [export-operation DocCodec/encode]
+      [revision schedule.accepted-C])])]
+  [modeled-sites (expr:map
+    [powerproject (expr:map
+      [public-library sim-site-powerproject]
+      [public-operation import-modeled-ole-receipt]
+      [site site/powerproject]
+      [external-id receipt.powerproject.accepted-C])]
+    [dalux (expr:map
+      [public-library sim-site-dalux]
+      [public-operation get-project-items-with-receipt]
+      [site site/dalux]
+      [external-id items/field-item-001]
+      [effect-ledger-reference required])])]
+  [office-projection (expr:map
+    [public-library sim-lib-construction-office]
+    [public-operation project-office-pack]
+    [source snapshot.current]
+    [cadence weekly]
+    [reference office.pack.weekly]
+    [surface office/suite-scene])]
+  [stable-joins [
+    (expr:map
+      [fact schedule.critical]
+      [evidence evidence.schedule.accepted-C]
+      [schedule-task task.frame-install]
+      [vendor-external receipt.powerproject.accepted-C])
+    (expr:map
+      [fact field.item.001]
+      [vendor-external items/field-item-001]
+      [office-reference office.pack.weekly])
+    (expr:map
+      [fact change.ventilation]
+      [ledger-reference journal/change-ventilation/seq-25]
+      [office-reference office.pack.weekly])]]
+  [result semantic-summary])

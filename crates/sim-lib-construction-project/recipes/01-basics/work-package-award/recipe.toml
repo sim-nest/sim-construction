@@ -1,0 +1,8 @@
+id = "work-package-award"
+title = "Work-package award"
+codec = "lisp"
+setup = "setup.siml"
+purpose = "purpose.md"
+order = 70
+tags = ["construction", "project-control", "procurement", "work-package", "tender", "award"]
+requires = ["construction.project.read", "construction.project.write", "codec/lisp"]

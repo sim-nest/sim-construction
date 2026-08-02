@@ -12,6 +12,8 @@ pub const CONSTRUCTION_PROJECT_ACCEPT_CAPABILITY: &str = "construction.project.a
 pub const CONSTRUCTION_EXCEPTION_CAPABILITY: &str = "construction.exception";
 /// Capability required to publish construction reference candidates.
 pub const CONSTRUCTION_REFERENCE_PUBLISH_CAPABILITY: &str = "construction.reference.publish";
+/// Capability required to read restricted supplier qualification evidence.
+pub const CONSTRUCTION_SUPPLIER_READ_CAPABILITY: &str = "construction.supplier.read";
 
 /// Builds the project-read capability name.
 #[must_use]
@@ -41,4 +43,10 @@ pub fn construction_exception_capability() -> CapabilityName {
 #[must_use]
 pub fn construction_reference_publish_capability() -> CapabilityName {
     CapabilityName::new(CONSTRUCTION_REFERENCE_PUBLISH_CAPABILITY)
+}
+
+/// Builds the supplier-read capability name.
+#[must_use]
+pub fn construction_supplier_read_capability() -> CapabilityName {
+    CapabilityName::new(CONSTRUCTION_SUPPLIER_READ_CAPABILITY)
 }

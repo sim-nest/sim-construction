@@ -2,7 +2,13 @@
 
 use time::Date;
 
-use crate::{ControlId, ProjectId, ProjectPhase, RoleId};
+use crate::OrganizationId;
+use crate::{
+    BaselineId, ChangeId, ControlId, ForecastConsequenceKind, ProjectId, ProjectPhase, RoleId,
+    UncertaintyKind, UncertaintyState,
+};
+
+mod kernel;
 
 /// Result alias for construction project-control validation.
 pub type Result<T> = std::result::Result<T, ConstructionProjectError>;
@@ -341,6 +347,64 @@ pub enum ConstructionProjectError {
         /// Rejected exception.
         exception: ControlId,
     },
+    /// A design-control record references a revision that is not present.
+    #[error("{kind} {control} references missing design revision {revision}")]
+    MissingDesignRevision {
+        /// Referencing record kind.
+        kind: &'static str,
+        /// Referencing control.
+        control: ControlId,
+        /// Missing revision control.
+        revision: ControlId,
+    },
+    /// More than one current revision exists for an affected control.
+    #[error("affected control {affected} has conflicting current design revisions {revisions:?}")]
+    ConflictingDesignRevisions {
+        /// Affected package, task, or control.
+        affected: ControlId,
+        /// Current revision controls.
+        revisions: Vec<ControlId>,
+    },
+    /// A design release used the wrong purpose for the requested readiness.
+    #[error("release {release} purpose {actual} does not satisfy required purpose {required}")]
+    DesignReleasePurposeMismatch {
+        /// Release control.
+        release: ControlId,
+        /// Required purpose.
+        required: String,
+        /// Actual purpose.
+        actual: String,
+    },
+    /// A release points at a superseded design revision and has not been revalidated.
+    #[error(
+        "release {release} for revision {revision} is stale after superseding revision {superseding}"
+    )]
+    StaleDesignRelease {
+        /// Stale release control.
+        release: ControlId,
+        /// Released revision.
+        revision: ControlId,
+        /// Superseding revision.
+        superseding: ControlId,
+    },
+    /// A release decision was made by a role that lacks matching authority.
+    #[error("release {release} by {actual} does not match authority {expected}")]
+    DesignReleaseAuthorityMismatch {
+        /// Release control.
+        release: ControlId,
+        /// Authorized release role.
+        expected: RoleId,
+        /// Actual decision role.
+        actual: RoleId,
+    },
+    /// A non-waivable production blocker was still active.
+    #[error("production blocker {blocker} is non-waivable for {target}")]
+    NonWaivableProductionBlocker {
+        /// Blocked control.
+        target: ControlId,
+        /// Non-waivable blocker.
+        blocker: ControlId,
+    },
     /// A control-graph edge named an endpoint that is not present as a node.
     #[error("control graph edge {edge} references missing {endpoint_role} endpoint {endpoint}")]
     ControlGraphMissingEndpoint {
@@ -360,6 +424,262 @@ pub enum ConstructionProjectError {
         from: ControlId,
         /// Target control.
         target: ControlId,
+    },
+    /// A commercial amount used a currency different from the project charter.
+    #[error("{field} currency {actual} does not match project charter currency {expected}")]
+    CurrencyMismatch {
+        /// Field carrying the rejected currency.
+        field: &'static str,
+        /// Expected project currency.
+        expected: String,
+        /// Actual currency.
+        actual: String,
+    },
+    /// A commercial amount was zero or negative.
+    #[error("{field} amount must be positive")]
+    NonPositiveAmount {
+        /// Field carrying the rejected amount.
+        field: &'static str,
+    },
+    /// Checked commercial amount arithmetic overflowed.
+    #[error("{field} amount arithmetic overflowed")]
+    AmountOverflow {
+        /// Arithmetic field that overflowed.
+        field: &'static str,
+    },
+    /// A change-chain invariant failed closed.
+    #[error("change {change} derivation failed: {reason}")]
+    ChangeDerivation {
+        /// Stable change identity.
+        change: ChangeId,
+        /// Stable invariant failure reason.
+        reason: &'static str,
+    },
+    /// A commercial fact included both a summarized parent and its child.
+    #[error("change amount double counts parent {parent} and child {child}")]
+    ChangeAmountDoubleCount {
+        /// Summary component.
+        parent: ControlId,
+        /// Component already included by the summary.
+        child: ControlId,
+    },
+    /// A closure total did not match the final settlement total.
+    #[error(
+        "change {change} {side} closure total {closure} does not match settlement total {settlement}"
+    )]
+    ChangeSettlementMismatch {
+        /// Stable change identity.
+        change: ChangeId,
+        /// Supplier or customer lane.
+        side: &'static str,
+        /// Exact settlement total.
+        settlement: String,
+        /// Exact closure total.
+        closure: String,
+    },
+    /// A risk carried opportunity-only state, or an opportunity carried risk-only state.
+    #[error("uncertainty {control} kind {kind:?} cannot carry state {state:?}")]
+    UncertaintyStateMismatch {
+        /// Uncertainty control.
+        control: ControlId,
+        /// Risk or opportunity kind.
+        kind: UncertaintyKind,
+        /// Rejected lifecycle state.
+        state: UncertaintyState,
+    },
+    /// A forecast lane carried an incompatible typed value.
+    #[error("forecast consequence {consequence} kind {kind:?} has an incompatible value")]
+    ForecastValueMismatch {
+        /// Forecast consequence control.
+        consequence: ControlId,
+        /// Forecast lane expecting a different value.
+        kind: ForecastConsequenceKind,
+    },
+    /// Current-fact, baseline, scenario, hierarchy, or schedule derivation failed closed.
+    #[error("uncertainty derivation for {control} failed: {reason}")]
+    UncertaintyDerivation {
+        /// Control being derived.
+        control: ControlId,
+        /// Stable failure reason.
+        reason: &'static str,
+    },
+    /// A tender references a supplier that is not a package candidate.
+    #[error("tender {tender} references supplier {supplier} that is not a package candidate")]
+    UnknownTenderSupplier {
+        /// Tender control.
+        tender: ControlId,
+        /// Unknown supplier.
+        supplier: String,
+    },
+    /// A tender references a different work package.
+    #[error("tender {tender} package {actual} does not match work package {expected}")]
+    TenderPackageMismatch {
+        /// Expected work package.
+        expected: ControlId,
+        /// Actual work package.
+        actual: ControlId,
+        /// Tender control.
+        tender: ControlId,
+    },
+    /// A tender cannot be compared for an award decision.
+    #[error("tender {tender} is not comparable: {reason}")]
+    NonComparableTender {
+        /// Tender control.
+        tender: ControlId,
+        /// Reason the tender is not comparable.
+        reason: &'static str,
+    },
+    /// A tender supersession points at a missing tender.
+    #[error("tender {tender} corrects missing tender {supersedes}")]
+    MissingSupersededTender {
+        /// Correcting tender.
+        tender: ControlId,
+        /// Missing tender.
+        supersedes: ControlId,
+    },
+    /// A tender supersession points at a tender for a different supplier.
+    #[error("tender {tender} corrects tender {supersedes} from a different supplier")]
+    TenderSupersessionSupplierMismatch {
+        /// Correcting tender.
+        tender: ControlId,
+        /// Superseded tender.
+        supersedes: ControlId,
+    },
+    /// An award was made by a role that lacks package award authority.
+    #[error("award {award} by {actual} does not match authority {expected}")]
+    AwardAuthorityMismatch {
+        /// Award control.
+        award: ControlId,
+        /// Authorized role.
+        expected: RoleId,
+        /// Actual decision role.
+        actual: RoleId,
+    },
+    /// An award selected a supplier that is not accepted for award.
+    #[error("award {award} selected supplier {supplier} that is not awardable")]
+    RejectedSupplierAward {
+        /// Award control.
+        award: ControlId,
+        /// Rejected supplier.
+        supplier: String,
+    },
+    /// An award references a missing tender.
+    #[error("award {award} references missing tender {tender}")]
+    MissingAwardTender {
+        /// Award control.
+        award: ControlId,
+        /// Missing tender.
+        tender: ControlId,
+    },
+    /// An award selected a tender that was not comparable.
+    #[error("award {award} selected non-comparable tender {tender}")]
+    AwardTenderNotComparable {
+        /// Award control.
+        award: ControlId,
+        /// Non-comparable tender.
+        tender: ControlId,
+    },
+    /// An award decision was made after the package need date.
+    #[error("award {award} decided on {decided_on} after need date {need_date}")]
+    AwardAfterNeedDate {
+        /// Award control.
+        award: ControlId,
+        /// Decision date.
+        decided_on: Date,
+        /// Package need date.
+        need_date: Date,
+    },
+    /// A supplier exceeds the accepted subcontract depth.
+    #[error(
+        "supplier {supplier} subcontract depth {depth} exceeds accepted depth {max_accepted_depth}"
+    )]
+    SupplierDepthExceeded {
+        /// Supplier organization.
+        supplier: OrganizationId,
+        /// Actual subcontract depth.
+        depth: u8,
+        /// Accepted subcontract depth.
+        max_accepted_depth: u8,
+    },
+    /// A supplier qualification record references a missing supplier.
+    #[error("supplier qualification references missing supplier {supplier}")]
+    UnknownSupplier {
+        /// Supplier organization.
+        supplier: OrganizationId,
+    },
+    /// A qualification decision references a missing requirement.
+    #[error("qualification decision references missing requirement {requirement}")]
+    UnknownQualificationRequirement {
+        /// Missing requirement.
+        requirement: ControlId,
+    },
+    /// A qualification decision was made by a role without supplier authority.
+    #[error("supplier {supplier} qualification by {actual} does not match authority {expected}")]
+    QualificationAuthorityMismatch {
+        /// Supplier organization.
+        supplier: OrganizationId,
+        /// Authorized role.
+        expected: RoleId,
+        /// Actual role.
+        actual: RoleId,
+    },
+    /// A package handoff record was not present.
+    #[error("package handoff {handoff} is missing")]
+    MissingPackageHandoff {
+        /// Missing handoff control.
+        handoff: ControlId,
+    },
+    /// Handoff package did not match its derived report inputs.
+    #[error("handoff {handoff} does not match report package {expected}")]
+    HandoffPackageMismatch {
+        /// Handoff control.
+        handoff: ControlId,
+        /// Expected package.
+        expected: ControlId,
+    },
+    /// The canonical Gantt plan rejected the imported schedule.
+    #[error("schedule plan validation failed: {reason}")]
+    SchedulePlan {
+        /// Schedule validation reason.
+        reason: String,
+    },
+    /// The imported schedule plan did not match the accepted baseline plan.
+    #[error(
+        "schedule plan mismatch: baseline {baseline_plan}, imported {imported_plan}, actual {actual_plan}"
+    )]
+    SchedulePlanMismatch {
+        /// Baseline plan id.
+        baseline_plan: String,
+        /// Imported revision plan id.
+        imported_plan: String,
+        /// Actual Gantt plan id.
+        actual_plan: String,
+    },
+    /// The imported schedule revision is not the accepted baseline revision.
+    #[error(
+        "schedule baseline {baseline} accepts revision {accepted_revision}, not imported revision {imported_revision}"
+    )]
+    ScheduleRevisionMismatch {
+        /// Accepted schedule baseline.
+        baseline: BaselineId,
+        /// Accepted revision.
+        accepted_revision: String,
+        /// Imported revision.
+        imported_revision: String,
+    },
+    /// A control joined a task id that does not exist in the Gantt plan.
+    #[error("schedule join {control} references missing task id {task_id}")]
+    MissingScheduleTask {
+        /// Construction control id.
+        control: ControlId,
+        /// Missing Gantt task id.
+        task_id: String,
+    },
+    /// More than one construction control joined the same Gantt task id.
+    #[error("duplicate schedule join task id {task_id}")]
+    DuplicateScheduleTaskJoin {
+        /// Duplicate Gantt task id.
+        task_id: String,
     },
     /// A non-informational control-graph cycle would make readiness recursive.
     #[error("control graph has a prohibited readiness cycle: {cycle:?}")]

@@ -75,10 +75,10 @@ claims_specimens = [
 [[feature]]
 id = "feature/sim-construction/dalux-project-items"
 title = "Dalux project-item placement"
-summary = "Read Dalux project items into local office documents for construction evidence and keep note updates narrow."
+summary = "Read Dalux project items into local office documents through ledgered site effects, expose URL-free item correlations, and keep writes limited to notes."
 owner = "crate/sim-site-dalux"
 audiences = ["user", "code", "framework"]
-guidance = "Use this row when construction project control needs modeled Dalux item evidence, a gated API-identity live read, or a narrow item-note update."
+guidance = "Use this row when construction project control needs a modeled Dalux item read, a capability- and live-enable-gated API-identity read, or a narrow item-note update. Modeled and live calls share the site/dalux effect contract; receipts expose the kernel effect reference and a stable effect-ledger reference while URL-free item correlations keep payloads, attachments, credentials, and browser URLs at the site boundary."
 claims_anchors = [
   "anchor/crate/sim-site-dalux",
   "anchor/export/sim-site-dalux/site/dalux",
@@ -92,10 +92,10 @@ claims_specimens = [
 [[feature]]
 id = "feature/sim-construction/project-control"
 title = "Construction project control"
-summary = "Describe construction phase gate and baseline control through as-of snapshot records, project charter identity, append-only fact books, lifecycle vocabulary, baselines, gates, actions, decisions, deterministic deltas, governance, capabilities, shared obligations, bounded exceptions, graph-composed blockers, and readiness with reference-only evidence."
+summary = "Load complete construction project control as semantic Citizens, checked Shapes, and capability-minimal operations over append-only books, historical snapshots, lifecycle gates, schedule impact, readiness, exposure, handover, outcomes, and reference admission."
 owner = "crate/sim-lib-construction-project"
 audiences = ["user", "code", "framework"]
-guidance = "Use this row when starting a construction project-control record from stable ids, a charter, an append-only fact book, accepted baselines, accountable actions and decisions, shared requirements and obligations, evidence states and validity windows, bounded construction exceptions, graph-composed blocker propagation, derived lifecycle gate reports, what-changed reports, organization-role governance, due-date and visibility policy, library-owned capabilities, and evidence readiness before planning work depends on it."
+guidance = "Load sim/construction-project through the standard runtime loader when expressions need to construct, append, snapshot, validate, status, explain, diff, gate, schedule-impact, readiness, exposure, handover, or reference-admission values. Durable ids, facts, baselines, requirements, packages, joins, changes, handover items, outcomes, snapshots, and reports are Citizen read-constructs with semantic codec round trips; their open symbols and metadata remain extensible. Registered Shapes own keyword sets, reference and policy validation, result contracts, output-position behavior, and actionable diagnostics, so do not add a construction parser or matcher. Read and write operations require only construction.project.read or construction.project.write; pure validation needs neither, reference admission separately requires construction.reference.publish, and live vendor behavior remains placed through EvalFabric. Customer assumptions and imported external items remain reported until accountable acceptance supplies evidence. BCF/IFC/CAD and field-system payloads stay in installed codecs/sites; project control records only minimized external references, effect references, control state, and decisions. Use the checked primary reference-project-control specimen for the complete composed proof: its entirely invented renovation runs twice from uncertain intent through conflicts, missing and expired evidence, bounded exceptions, corrections, closeout, privacy-safe office projection, and an admitted immutable reference manifest."
 claims_anchors = [
   "anchor/crate/sim-lib-construction-project",
   "anchor/rustdoc/sim-lib-construction-project/crate-root",
@@ -105,9 +105,220 @@ claims_specimens = [
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/mixed-obligation-gate",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/blocked-gate-graph",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/late-decision",
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/customer-intent-to-collaboration",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/what-changed",
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/design-release-to-production",
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/work-package-award",
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/control-graph-meets-gantt",
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/six-week-production-readiness",
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/sustainability-to-reference-evidence",
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/field-item-to-corrective-evidence",
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/loadable-project-control",
+  "recipe/sim-construction/reference-project-control",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/opportunity_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/fact_book_tests",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/design_tests",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/procurement_tests",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/production_plan_tests",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/schedule_tests",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/field_control_tests",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/tests",
+]
+
+[[feature]]
+id = "feature/sim-construction/table-backed-project-books"
+title = "Table Dir construction project persistence"
+summary = "Persist one authoritative construction project fact book through a caller-injected Table or Dir, rebuild every historical snapshot from canonical fact paths, and treat verified projections as disposable caches."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use ProjectBookRepository or ConstructionProjectLib::with_project_book when construction facts must outlive an in-memory ProjectBook. The host selects and injects the Table/Dir backend; construction never selects filesystem, database, memory, cloud, or transport behavior. The version-neutral layout is projects/<ProjectId>/facts/<seq>, baselines/<id>, policies/<id>, and projections/<name>/<as-of>. Every dynamic segment uses TablePath. One authoritative writer serializes contiguous fact appends because Table has no portable compare-and-swap. Reads require construction.project.read, writes require construction.project.write, exact project-bound paths avoid portfolio enumeration, authoritative loss or corruption fails closed, and projection loss merely triggers a fact-stream rebuild and content-identity check."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/table-backed-project-book",
+]
+
+[[feature]]
+id = "feature/sim-construction/office-evidence-bridge"
+title = "Construction to office evidence bridge"
+summary = "The office evidence construction bridge attaches project-scoped fact evidence to existing office documents while preserving precise construction meaning, visibility, and acceptance."
+owner = "crate/sim-lib-construction-office"
+audiences = ["user", "code", "framework"]
+guidance = "Use EvidenceAttachment and attach_evidence when an existing office document must cite a current construction fact. The fact kind retains the precise construction relation while the office projection uses only SourceDocument, ScheduleReference, ProjectIssue, AccountingSupport, or PublishedTo. Query with evidence_for_documents using a project-bound ProjectEvidenceAccess. Construction project-read and office evidence-read capabilities are required before resolution; attachment separately requires office evidence-write. The office row points only to the immutable construction fact and evidence slot, so the original ExternalRef and EvidenceState remain construction-owned, rejected evidence stays rejected, superseded facts do not resolve as current, and no document payload, credential, vendor response, or second evidence store crosses the bridge."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-office",
+  "anchor/rustdoc/sim-lib-construction-office/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-office/01-basics/construction-office-evidence",
+  "spec-test/sim-construction/crates/sim-lib-construction-office/src/tests",
+]
+
+[[feature]]
+id = "feature/sim-construction/office-role-cadence-packs"
+title = "Construction project chief office status packs"
+summary = "Project current or historical construction snapshots into deterministic, evidence-linked, visibility-safe role-cadence packs on existing office surfaces."
+owner = "crate/sim-lib-construction-office"
+audiences = ["user", "code", "framework"]
+guidance = "Use OfficePackRequest and project_office_pack for daily, weekly, monthly/gate, handover, closeout, or reference-review material. Select authoritative control ids and their cadence sections, pass the exact as-of sequence/date and a deterministic generated-at marker, then review the resulting Doc, Sheet, and Deck through OfficePack::suite_scene. Every pack records project, role, cadence, accepted baselines, source controls, evidence refs, generation marker, visibility policy, changed-since sequence, and an explained aggregate. Decisions and non-waivable safety/legal blockers lead. Unknown, reported, conflicted, rejected, and expired evidence is elevated ahead of horizon detail; mandatory non-accepted controls prevent an accepted aggregate. Facts are filtered by caller Cx capabilities before the snapshot is derived, so restricted supplier, commercial, people, incident, customer, or reference facts cannot affect values, counts, labels, links, or presentation metadata. These are disposable projections of the ProjectBook, not a reporting store or parallel document model."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-office",
+  "anchor/rustdoc/sim-lib-construction-office/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-office/01-basics/project-chief-weekly-pack",
+  "spec-test/sim-construction/crates/sim-lib-construction-office/src/tests",
+]
+
+[[feature]]
+id = "feature/sim-construction/production-field-control"
+title = "Construction production observations incidents quality and field-item control"
+summary = "Control Dalux construction field item incident quality reports alongside local observations, deviations, inspection and test points, defects, and corrective actions with accountable evidence and safety-first rollups."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when field reality must become traceable project facts. One shared field-control record carries severity, lane, responsible role, due date, affected control ids, state, non-waivable policy, and reference-only evidence. Rollups place imminent safety and work-environment blockers first, then active non-waivable controls without allowing lower severity to hide them. External imports are idempotent, changed source state supersedes the prior fact, and import remains Reported until corrective or inspection evidence is accepted by an accountable role."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/field-item-to-corrective-evidence",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/field_control_tests",
+]
+
+[[feature]]
+id = "feature/sim-construction/gantt-schedule-impact"
+title = "Gantt critical path construction schedule impact"
+summary = "Join stable construction controls to canonical Gantt task ids and explain baseline-aware Gantt critical path construction consequences: downstream, need-date, float-risk, late-decision, procurement lead-time, and change impact."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when construction project control needs schedule impact analysis from an accepted Gantt baseline. The construction crate owns only stable control-to-task joins, baseline revision checks, as-of sequence checks, and explanations; sim-lib-gantt owns plan validation, task dependency semantics, local snapshots, and critical-path calculation, while Powerproject placement remains in the site crate."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/control-graph-meets-gantt",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/schedule_tests",
+]
+
+[[feature]]
+id = "feature/sim-construction/sustainability-reference-outcomes"
+title = "Construction sustainability certification climate reuse outcomes"
+summary = "Trace project-chartered certification, climate, efficiency, reuse, waste, responsible-material, quality, safety, work-environment, property, and city-district targets to source-retained quantities, method and boundary provenance, reviewed evidence, gate blockers, and admissible reference claims."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when a construction project needs sustainability or place outcomes controlled from charter to evidence without a second ESG database, unit-conversion framework, calculator, certification engine, or material-system implementation. Certification schemes, calculation methods, material systems, and outcome categories remain open symbols with registered Shapes; specialist calculators own calculations, while SIM derives coverage, variance, overdue evidence, expired certificates, superseded records, reuse substitutions, and disclosure-safe reference admissibility."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/sustainability-to-reference-evidence",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/outcome_tests",
+]
+
+[[feature]]
+id = "feature/sim-construction/production-lookahead-readiness"
+title = "Construction lookahead production readiness"
+summary = "Derive six-week demand and three-week production commitments from accepted Gantt task joins, work packages, location/system breakdowns, shared requirements, validity windows, accountable exceptions, and separate human commitment facts."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when a project chief needs near-term executable work: production activities remain joined to canonical Gantt tasks, work packages, system, area, location, responsible role, planned interval, and accepted baseline; released design, permits, award/handoff, work preparation, risk assessment, method, material, equipment, staffing, competence, introduction, logistics, inspection plan, and predecessor work are shared requirements rather than planning booleans; commitment facts stay distinct from computed ready/not-ready/unknown results so weekly reliability can distinguish late evidence from bad commitments."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/six-week-production-readiness",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/production_plan_tests",
+]
+
+[[feature]]
+id = "feature/sim-construction/risk-opportunity-forecast-escalation"
+title = "Construction risk opportunity forecast escalation"
+summary = "Control current project risks and opportunities through typed open ratings, method-bearing forecast consequences, exact comparable exposure, accepted Gantt joins, control dependencies, and deterministic attention recommendations."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when uncertainty must stay traceable from cause, uncertain event, consequence, owner, response, trigger, due date, affected controls, and evidence through risk realization or opportunity capture. Qualitative and quantified ratings remain distinguishable under open schemes. Forecast time, exact Amount, safety, quality, environment, sustainability, people, place, and customer facts name their method and as-of basis. Exposure uses current facts and accepted baselines, groups only matching risk/opportunity kind, scenario, and currency, excludes parent/child double counting, and annotates correlation. Escalation recommends accountable attention for overdue response, crossed trigger, changed consequence, missing authority, or decision lead time; it never makes the decision."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/risk-to-project-chief-decision",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/risk_tests",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/exposure_tests",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/escalation_tests",
+]
+
+[[feature]]
+id = "feature/sim-construction/work-package-procurement-awards"
+title = "Construction work package procurement supplier award control"
+summary = "Carry a construction work package procurement record from inquiry basis through supplier candidates and comparable tender facts to an accountable award decision while keeping commercial values on sim-ledger Amount and project-charter currency."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when a construction project needs stable package scope, inclusions, exclusions, interfaces, design inputs, inquiry and award dates, supplier candidates, tender comparison facts, corrected tender evidence, accountable award authority, overdue decision consequences, and exposed package interfaces. Keep invoices, payments, journals, taxes, and cost codes out of this layer; commercial values are exact Amount comparisons under the project charter currency only."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/work-package-award",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/procurement_tests",
+]
+
+[[feature]]
+id = "feature/sim-construction/change-commercial-exposure"
+title = "Construction change chain commercial exposure and settlement control"
+summary = "Construction change commercial exposure ledger references stay versioned and read-only while one stable ChangeId runs from instruction or notice through scope, time, supplier exposure, customer recovery, quotation, authority, forecast, execution, settlement, and closure with exact non-duplicated Amount views."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when a project chief needs one current, correctable change chain with direction, contractual basis, affected controls/tasks/packages, accountable roles and dates, exact sim-ledger Amount components, accepted schedule-impact references, supplier/customer/net exposure, authority status, notice risk, and final settlement reconciliation. Document values and ledger balances are versioned, dated references only: construction never posts journals, infers payment, or treats file existence as approval. Use feature/sim-ledger/ledger-libraries and route/prepare-balanced-ledger when journal truth is required."
+supports = [
+  "feature/sim-construction/gantt-schedule-impact",
+]
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/instruction-to-final-settlement",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/change_tests",
+]
+
+[[feature]]
+id = "feature/sim-construction/supplier-production-handoff"
+title = "Construction supplier qualification and production handoff"
+summary = "Derive project-scoped supplier qualification and production handoff readiness from subcontract-chain references, shared qualification obligations, restricted external evidence, accountable award decisions, production design releases, material lead time, production need dates, and explicit responsibility acceptance."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when a construction work package must prove that an awarded supplier is actually ready for production handoff. Keep suppliers as stable organization references and restricted evidence refs; do not use this crate as a vendor master, credential store, identity provider, bank-detail system, or compliance web client. A signed contract or award alone is not production readiness."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/supplier-to-production-handoff",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/supplier_tests",
+]
+
+[[feature]]
+id = "feature/sim-construction/design-release-authority-control"
+title = "Construction design release and authority control"
+summary = "Trace current design revisions, RFIs, reviews, purpose-specific releases, permits, inspections, and authority obligations into package or task readiness through the shared construction control graph."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when a construction package must prove a named design revision is current, reviewed, RFI-resolved, released for procurement/production/handover or an open purpose, and free of current permit, inspection, and authority blockers. Store only ExternalRef evidence and accountable decisions; leave BCF, IFC, CAD, and office payload handling to installed codecs and sites."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/design-release-to-production",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/design_tests",
 ]
 
 [[feature]]
@@ -130,6 +341,23 @@ claims_specimens = [
 ]
 
 [[feature]]
+id = "feature/sim-construction/system-handover-commissioning-acceptance"
+title = "Construction handover commissioning acceptance control"
+summary = "Roll system, area, work-package, asset-group, and contractual-milestone readiness up from explicit commissioning, inspection/test, defect, O&M, as-built, training, certification, authority, customer-acceptance, and remaining-work evidence."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row to prove a construction system ready for handover without flattening completion meanings. Typed member edges reuse the common construction control graph; leaf requirements reuse ProjectObligation, ProjectBook evidence, validity, supersession, and bounded exceptions. Reports expose missing, reported, evidenced, rejected, expired, conflicted, and excepted counts while blocked mandatory evidence overrides percentage. Technical, evidence, authority, contractual, occupancy/use, and final completion are separate sequence-bound gates with accountable decisions. O&M and as-built artifacts remain ExternalRefs; do not turn this feature into a document store, issue tracker, or commissioning transport."
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/system-to-accepted-handover",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/handover_tests",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/src/acceptance_tests",
+]
+
+[[feature]]
 id = "feature/sim-construction/obligation-evidence-exceptions"
 title = "Construction obligation evidence and exceptions"
 summary = "Evaluate shared construction requirements and project obligations across open lanes with stable evidence states, validity windows, graph-composed dependencies, source references, optional policy, bounded exceptions, and deterministic explanation paths."
@@ -144,6 +372,57 @@ claims_specimens = [
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/mixed-obligation-gate",
   "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/blocked-gate-graph",
   "spec-test/sim-construction/crates/sim-lib-construction-project/src/obligation_tests",
+]
+
+[[feature]]
+id = "feature/sim-construction/final-economy-closeout-reference-admission"
+title = "Construction final economy learning reference evidence closeout people place admission"
+summary = "Reconcile exact accepted-contract, forecast, final-position, exposure, settlement, guarantee, retention, claim, and ledger Amount facts at one explained cutoff; close warranty/contact, retention-policy, unresolved-work, evidence-disposition, and lesson obligations; and admit only current, consent- and confidentiality-cleared aggregate people/property/city claims through a named authority into an immutable reference manifest."
+owner = "crate/sim-lib-construction-project"
+audiences = ["user", "code", "framework"]
+guidance = "Use this row when a construction project is ready to move from final economy and accountable closeout to a candidate reference manifest. sim-ledger remains the Amount and accounting owner, office and ledger evidence stays as versioned ExternalRefs, people evidence is aggregate and source-minimal, and outcome achievement reuses the chartered sustainability/place report. The admission result contains claim ids, source fact sequences, external refs, as-of date, visibility, closeout decision, and approving decisions only; it does not copy artifacts, keep performance dossiers, publish marketing, post journals, or create content, HR, or accounting systems."
+supports = [
+  "feature/sim-construction/change-commercial-exposure",
+  "feature/sim-construction/system-handover-commissioning-acceptance",
+  "feature/sim-construction/sustainability-reference-outcomes",
+]
+claims_anchors = [
+  "anchor/crate/sim-lib-construction-project",
+  "anchor/rustdoc/sim-lib-construction-project/crate-root",
+]
+claims_specimens = [
+  "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/closeout-to-reference-admission",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/tests/final_economy",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/tests/closeout",
+  "spec-test/sim-construction/crates/sim-lib-construction-project/tests/reference_admission",
+]
+
+[[route]]
+id = "route/load-construction-project-control"
+task = "Load construction project control"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The construction row composes Citizen read-constructs, Shape contracts, and standard runtime loading into one thin capability-minimal library over the complete project-control domain." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/loadable-project-control", why = "The checked Lisp specimen loads the library through the standard bootloader, constructs and appends a fact, queries a historical snapshot, and explains a blocker." },
+]
+
+[[route]]
+id = "route/store-construction-project-book-in-table-dir"
+task = "Store a construction project book in Table Dir"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/table-backed-project-books", why = "The construction row composes feature/sim-foundation/table-dir-core and feature/sim-storage/table-dir-backends: it binds one project and authoritative writer to injected storage, validates every TablePath and fact before append, rebuilds from facts, and verifies disposable projections." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/table-backed-project-book", why = "The checked recipe documents backend injection, the canonical semantic layout, historical rebuild, and harmless projection loss." },
+]
+
+[[route]]
+id = "route/attach-office-evidence-to-construction-control"
+task = "Attach office evidence to construction control"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns the immutable fact sequence, precise construction relation, visibility, original ExternalRef, and EvidenceState." },
+  { feature = "feature/sim-construction/office-evidence-bridge", why = "The bridge composes feature/sim-office/document-codecs and feature/sim-office/document-surfaces through the existing Doc, ExternalRef, Evidence, LinkRole, attach, and evidence_for contracts; it maps the precise construction relation without copying payloads or acceptance." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-office/01-basics/construction-office-evidence", why = "The checked recipe shows a project-scoped design-source fact attached and resolved through an office design register." },
 ]
 
 [[route]]
@@ -175,12 +454,77 @@ steps = [
 ]
 
 [[route]]
+id = "route/control-construction-field-item-to-accepted-evidence"
+task = "Control a construction field item to accepted evidence"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns append-only reported facts, stable control ids, accountable roles, evidence states, and reference-only evidence." },
+  { feature = "feature/sim-construction/dalux-project-items", why = "The Dalux placement owns modeled and gated live reads, note-only writes, URL-free item correlations, and effect-ledger receipts." },
+  { feature = "feature/sim-construction/production-field-control", why = "The field-control row owns observation, incident, inspection, defect, corrective-action, import, and safety-first rollup policy." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/field-item-to-corrective-evidence", why = "The modeled recipe follows a source-minimized Dalux item through reported fact import, safety-first blocking, rejected inspection, and accountable corrective evidence." },
+]
+
+[[route]]
+id = "route/explain-construction-schedule-impact"
+task = "Explain construction schedule impact"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns stable control ids, accepted baselines, and control graph blockers." },
+  { feature = "feature/sim-construction/gantt-schedule-impact", why = "The schedule-impact row owns construction task joins, baseline revision checks, as-of sequence checks, and Gantt-derived schedule explanations." },
+  { feature = "feature/sim-construction/powerproject-schedule-placement", why = "The Powerproject row owns optional modeled or gated external schedule placement." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/control-graph-meets-gantt", why = "The recipe shows a local baseline plan joined to construction controls with optional modeled Powerproject placement." },
+]
+
+[[route]]
+id = "route/escalate-construction-project-risk-consequence"
+task = "Escalate a construction project risk consequence"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns current accepted facts, stable ids, evidence references, and accountable roles." },
+  { feature = "feature/sim-construction/gantt-schedule-impact", why = "The schedule row owns accepted Gantt baselines, task joins, dependencies, and critical-path consequence evidence." },
+  { feature = "feature/sim-construction/risk-opportunity-forecast-escalation", why = "The uncertainty row owns typed risk/opportunity records, method-bearing forecast consequences, comparable exposure, and attention recommendations without making decisions." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/risk-to-project-chief-decision", why = "The recipe follows one current switchgear risk through critical-path and exact-amount consequence to project-chief attention." },
+]
+
+[[route]]
 id = "route/control-construction-project"
 task = "Control a construction project"
 audiences = ["user", "code", "framework"]
 steps = [
   { feature = "feature/sim-construction/project-control", why = "The project-control row owns the identity, charter, fact book, snapshot, governance, capability, visibility, and evidence readiness vocabulary." },
-  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/project-charter", why = "The project-charter recipe shows a synthetic accepted charter and governance record with reference-only evidence." },
+  { feature = "feature/sim-construction/table-backed-project-books", why = "The persistence row injects the selected Table or Dir backend and keeps the append-only fact stream authoritative." },
+  { feature = "feature/sim-construction/gantt-schedule-impact", why = "The schedule row joins stable controls to the existing Gantt plan and critical-path model." },
+  { feature = "feature/sim-construction/mspdi-schedule-exchange", why = "The exchange row round-trips the portable Gantt plan across the MSPDI boundary." },
+  { feature = "feature/sim-construction/powerproject-schedule-placement", why = "The Powerproject row realizes modeled schedule placement while retaining the explicit live gates." },
+  { feature = "feature/sim-construction/dalux-project-items", why = "The Dalux row realizes modeled field-item placement and preserves URL-free external and effect-ledger references." },
+  { feature = "feature/sim-construction/production-lookahead-readiness", why = "The readiness row derives package and task readiness from accepted facts and schedule joins." },
+  { feature = "feature/sim-construction/change-commercial-exposure", why = "The change row derives exact exposure while retaining reference-only ledger ownership." },
+  { feature = "feature/sim-construction/system-handover-commissioning-acceptance", why = "The handover row derives system and project burn-down from explicit evidence." },
+  { feature = "feature/sim-construction/final-economy-closeout-reference-admission", why = "The closeout row admits only evidence-backed, disclosure-approved reference claims." },
+  { feature = "feature/sim-construction/office-evidence-bridge", why = "The evidence bridge retains stable office references without copying construction truth or document payloads." },
+  { feature = "feature/sim-construction/office-role-cadence-packs", why = "The office-pack row projects the same filtered snapshot into existing Doc, Sheet, Deck, and suite surfaces." },
+  { specimen = "recipe/sim-construction/reference-project-control", why = "The checked primary Lisp recipe runs one entirely invented renovation twice through conflict, failure, bounded exception, correction, closeout, visibility-safe office review, and final reference admission while composing the public libraries, codecs, injected Table backend, and modeled vendor sites offline by default." },
+]
+
+[[route]]
+id = "route/trace-construction-sustainability-target-to-reference-evidence"
+task = "Trace a construction sustainability target to reference evidence"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row supplies charter identity, shared obligations, evidence states, and reference-only evidence." },
+  { feature = "feature/sim-construction/sustainability-reference-outcomes", why = "The sustainability row owns method and boundary provenance, source-retained quantities, coverage, blockers, supersession, disclosure, and reference-claim admissibility." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/sustainability-to-reference-evidence", why = "The recipe shows climate and place targets traced from charter references to accepted or rejected reference evidence." },
+]
+
+[[route]]
+id = "route/prove-three-to-six-week-construction-readiness"
+task = "Prove three-to-six-week construction readiness"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns accepted facts, shared requirements, exceptions, and retained snapshot sequence evidence." },
+  { feature = "feature/sim-construction/gantt-schedule-impact", why = "The schedule row owns accepted baseline task joins and Gantt validation without duplicating schedule logic." },
+  { feature = "feature/sim-construction/production-lookahead-readiness", why = "The lookahead row derives six-week demand, three-week commitments, constraint owner, need date, consequence, escalation, ready/not-ready/unknown, and separate human commitments." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/six-week-production-readiness", why = "The recipe shows a project-chief readiness snapshot over shared construction facts and accepted schedule joins." },
 ]
 
 [[route]]
@@ -191,6 +535,17 @@ steps = [
   { feature = "feature/sim-construction/project-control", why = "The project-control row owns the accepted fact book and baseline vocabulary the gate reads." },
   { feature = "feature/sim-construction/phase-gates", why = "The lifecycle-gates row owns reproducible reports and accountable approvals." },
   { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/mobilization-gate", why = "The mobilization-gate recipe shows a derived report and matching approval at the same sequence." },
+]
+
+[[route]]
+id = "route/prove-construction-system-ready-for-handover"
+task = "Prove a construction system ready for handover"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns stable ids, append-only facts, accountable roles, and reference-only evidence." },
+  { feature = "feature/sim-construction/obligation-evidence-exceptions", why = "The shared obligation row owns accepted evidence, validity, supersession, dependency blockers, and bounded exceptions." },
+  { feature = "feature/sim-construction/system-handover-commissioning-acceptance", why = "The handover row owns typed hierarchy membership, leaf commissioning rollup, exact burn-down counts, six distinct completion meanings, and sequence-bound acceptance." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/system-to-accepted-handover", why = "The recipe follows a cross-area ventilation system through retest, explicit evidence, accepted remaining work, contractual acceptance, and still-blocked final completion." },
 ]
 
 [[route]]
@@ -219,4 +574,80 @@ audiences = ["user", "code", "framework"]
 steps = [
   { feature = "feature/sim-construction/project-control", why = "The project-control row owns append-only facts, deterministic as-of snapshots, deltas, conflicts, corrections, and reference-only evidence." },
   { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/what-changed", why = "The what-changed recipe shows a modeled fact correction and a stable change report between project sequences." },
+]
+
+[[route]]
+id = "route/prove-construction-design-release"
+task = "Prove design is released for construction production"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns stable construction ids, evidence states, role accountability, and the shared graph substrate." },
+  { feature = "feature/sim-construction/design-release-authority-control", why = "The design-control row owns current revision, RFI, review, purpose-specific release, permit, inspection, authority obligation, stale release, and blocker derivation." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/design-release-to-production", why = "The recipe proves a production package through synthetic references without storing design payloads." },
+]
+
+[[route]]
+id = "route/decide-construction-work-package-award"
+task = "Decide a construction work-package award"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row supplies stable project ids, evidence references, governance roles, design inputs, and the accepted charter currency." },
+  { feature = "feature/sim-construction/work-package-procurement-awards", why = "The procurement row owns stable package scope, supplier candidates, tender comparison facts, checked Amount comparisons, award authority, date consequences, and exposed interfaces." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/work-package-award", why = "The recipe shows one package through inquiry basis, corrected tender evidence, accountable award, and need-date consequence without ledger cloning." },
+]
+
+[[route]]
+id = "route/trace-construction-change-to-final-settlement"
+task = "Trace a construction change to final settlement"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row supplies stable construction identity, accepted facts, accountable roles, corrections, and reference-only evidence." },
+  { feature = "feature/sim-construction/gantt-schedule-impact", why = "The schedule row owns accepted-baseline task joins and critical-path consequence evidence." },
+  { feature = "feature/sim-construction/change-commercial-exposure", why = "The change row owns one stable chain, exact supplier/customer components, authority state, derived exposure, and settlement reconciliation." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/instruction-to-final-settlement", why = "The modeled recipe follows one instruction through every change stage to matching final settlement without inferring journals, payment, or approval." },
+]
+
+[[route]]
+id = "route/prove-construction-supplier-production-handoff"
+task = "Prove a construction supplier is ready to hand off"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns stable project ids, evidence states, role accountability, and reference-only evidence boundaries." },
+  { feature = "feature/sim-construction/work-package-procurement-awards", why = "The procurement row proves the package has an accountable award without treating award as production readiness." },
+  { feature = "feature/sim-construction/design-release-authority-control", why = "The design-control row proves the released design is current for production." },
+  { feature = "feature/sim-construction/supplier-production-handoff", why = "The supplier handoff row owns qualification obligations, restricted supplier evidence, subcontract depth, expiry/conflict/rejection states, material lead time, and responsibility acceptance." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/supplier-to-production-handoff", why = "The recipe joins award, qualified supplier, production release, material timing, and accepted responsibility into one handoff-ready report." },
+]
+
+[[route]]
+id = "route/admit-evidence-backed-construction-reference"
+task = "Admit an evidence-backed construction reference"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns append-only accepted facts, corrections, conflicts, role authority, visibility, and reference-only evidence." },
+  { feature = "feature/sim-construction/change-commercial-exposure", why = "The change row owns exact open exposure and settlement evidence without duplicating the ledger." },
+  { feature = "feature/sim-construction/system-handover-commissioning-acceptance", why = "The handover row proves distinct completion obligations before final closeout." },
+  { feature = "feature/sim-construction/sustainability-reference-outcomes", why = "The outcome row proves chartered people, property, and city-district targets current and achieved." },
+  { feature = "feature/sim-construction/final-economy-closeout-reference-admission", why = "The final row reconciles economy, closes typed obligations, enforces disclosure and authority, and creates only an immutable manifest." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/closeout-to-reference-admission", why = "The modeled recipe follows exact Amount and evidence facts through accountable closeout to an admitted synthetic reference manifest." },
+]
+
+[[route]]
+id = "route/customer-intent-to-collaboration-gate"
+task = "Take customer intent to a construction collaboration gate"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns explicit customer intent, bid/no-bid control, and collaboration readiness without a CRM or estimating workflow substrate." },
+  { feature = "feature/sim-construction/obligation-evidence-exceptions", why = "The shared requirement graph proves that unstated customer assumptions remain missing until accepted evidence satisfies the requirement." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-project/01-basics/customer-intent-to-collaboration", why = "The recipe traces modeled customer intent through conditional bid control to missing main-contract evidence for a collaboration gate." },
+]
+
+[[route]]
+id = "route/review-construction-project-chief-weekly-pack"
+task = "Review a construction project-chief weekly pack"
+audiences = ["user", "code", "framework"]
+steps = [
+  { feature = "feature/sim-construction/project-control", why = "The project-control row owns authoritative append-only facts, accepted baselines, current and historical snapshots, deltas, evidence states, and stable control ids." },
+  { feature = "feature/sim-construction/office-role-cadence-packs", why = "The office-pack row filters facts before derivation, applies safety-first cadence ordering, preserves provenance and explained status, produces existing Doc, Sheet, and Deck values, and delegates presentation to the installed office suite surface." },
+  { specimen = "recipe/sim-construction/crates/sim-lib-construction-office/01-basics/project-chief-weekly-pack", why = "The checked recipe shows the exact weekly provenance header, priority order, changed-since controls, non-green mandatory status, existing office values, and suite presentation." },
 ]

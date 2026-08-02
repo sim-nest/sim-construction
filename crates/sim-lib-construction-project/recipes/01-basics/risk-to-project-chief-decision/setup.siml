@@ -1,0 +1,74 @@
+(expr:map
+  [kind construction/risk-to-project-chief-decision]
+  [project reference-center]
+  [as-of-seq 42]
+  [as-of-date "2026-07-30"]
+  [accepted-baseline baseline.schedule-rev-a]
+  [uncertainty (expr:map
+    [control risk.switchgear]
+    [kind Risk]
+    [cause "single-source switchgear design"]
+    [uncertain-event "supplier approval misses the accepted need date"]
+    [consequence "energization and customer opening can move"]
+    [owner package-lead]
+    [response "qualify an alternate supplier"]
+    [trigger "submittal is rejected"]
+    [trigger-crossed-seq 41]
+    [response-due-on "2026-07-28"]
+    [decision-due-on "2026-08-01"]
+    [decision-lead-days 5]
+    [authority project-chief]
+    [affected-controls [package.electrical task.energization]]
+    [likelihood (expr:map
+      [scheme project/risk-matrix]
+      [statement (expr:map [kind Qualitative] [value possible])]
+      [method "facilitated discipline review"]
+      [as-of-seq 40])]
+    [impact (expr:map
+      [scheme project/impact-score]
+      [statement (expr:map [kind Quantified] [value 4] [unit five-point-scale])]
+      [method "discipline estimate"]
+      [as-of-seq 40])])]
+  [forecast-consequences [
+    (expr:map
+      [control forecast.switchgear-time]
+      [kind Time]
+      [value (expr:map [start-on "2026-08-10"] [finish-on "2026-08-21"])]
+      [method "accepted Gantt critical-path comparison"]
+      [basis baseline.schedule-rev-a]
+      [as-of-seq 42])
+    (expr:map
+      [control forecast.switchgear-amount]
+      [kind Amount]
+      [value "125000.00"]
+      [currency SEK]
+      [scenario scenario.accepted]
+      [method "supplier alternate quotation"]
+      [basis baseline.schedule-rev-a]
+      [as-of-seq 42])
+    (expr:map
+      [control forecast.switchgear-customer]
+      [kind Customer]
+      [value (expr:map [kind Qualitative] [statement "opening confidence reduced"])]
+      [method "customer milestone review"]
+      [basis baseline.schedule-rev-a]
+      [as-of-seq 42])]]
+  [derived-exposure (expr:map
+    [current-facts-only true]
+    [critical-path true]
+    [affected-dependents [handover.energization customer.opening]]
+    [amount-buckets [
+      (expr:map
+        [kind Risk]
+        [scenario scenario.accepted]
+        [currency SEK]
+        [checked-total "125000.00"])]]
+    [correlation-annotations-retained true]
+    [parent-child-double-counting false])]
+  [attention-recommendation (expr:map
+    [level Immediate]
+    [reasons [OverdueResponse CrossedTrigger DecisionLeadTime CriticalPathConsequence]]
+    [owner package-lead]
+    [recommended-to project-chief]
+    [recommendation "review current evidence and obtain an accountable decision"]
+    [decision-made false])])

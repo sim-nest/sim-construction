@@ -23,7 +23,18 @@ ureq = "2"
 sim-cookbook = { version = "0.1.0" }
 
 [dev-dependencies]
+sim-codec = { version = "0.1.0" }
+sim-codec-lisp = { version = "0.1.0" }
+sim-codec-mspdi = { version = "0.1.0", path = "../sim-codec-mspdi" }
 sim-kernel = { version = "0.1", features = ["test-support"] }
+sim-ledger = { version = "0.1.0", git = "https://github.com/sim-nest/sim-ledger", rev = "e3f49c24257fea045a1d2c29c867981fcd3692de" }
+sim-lib-construction-office = { version = "0.1.0", path = "../sim-lib-construction-office" }
+sim-lib-construction-project = { version = "0.1.0", path = "../sim-lib-construction-project" }
+sim-lib-gantt = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "2c76395bf66978822210f2397a03482b1f429da8" }
+sim-site-powerproject = { version = "0.1.0", path = "../sim-site-powerproject" }
+sim-table-hash = { version = "0.1.2" }
+time = "0.3"
+toml = "0.8"
 
 [lints]
 workspace = true
