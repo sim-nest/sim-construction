@@ -1,6 +1,6 @@
 {
   "generator": "xtask crate-catalog v1",
-  "package_count": 5,
+  "package_count": 6,
   "packages": [
     {
       "description": "MSPDI schedule codec for SIM construction Gantt documents.",
@@ -16,6 +16,19 @@
       ]
     },
     {
+      "description": "Visibility-safe office evidence and role-pack projections for SIM construction control.",
+      "generated_readme": false,
+      "manifest": "crates/sim-lib-construction-office/Cargo.toml",
+      "name": "sim-lib-construction-office",
+      "publish": "false",
+      "readme": "crates/sim-lib-construction-office/README.md",
+      "root": "crates/sim-lib-construction-office",
+      "target_kinds": [
+        "custom-build",
+        "lib"
+      ]
+    },
+    {
       "description": "Construction project-control records for SIM.",
       "generated_readme": false,
       "manifest": "crates/sim-lib-construction-project/Cargo.toml",
@@ -25,7 +38,8 @@
       "root": "crates/sim-lib-construction-project",
       "target_kinds": [
         "custom-build",
-        "lib"
+        "lib",
+        "test"
       ]
     },
     {
@@ -38,7 +52,8 @@
       "root": "crates/sim-site-dalux",
       "target_kinds": [
         "custom-build",
-        "lib"
+        "lib",
+        "test"
       ]
     },
     {

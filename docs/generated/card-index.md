@@ -5,7 +5,9 @@
 | Card | Kind | Owner | Summary |
 | --- | --- | --- | --- |
 | `browse/catalog` | `browse-root` | `workspace` | root browse catalog |
-| `cookbook/construction/project` | `cookbook-recipe` | `sim-lib-construction-project` | Project charter records and evidence readiness. |
+| `cookbook/construction/office-evidence` | `cookbook-recipe` | `sim-lib-construction-office` | Reference-only evidence joins and deterministic visibility-safe role packs over existing office values. |
+| `cookbook/construction/project` | `cookbook-recipe` | `sim-lib-construction-project` | Project charter records, append-only facts, snapshots, lifecycle and handover gates, decisions, commissioning evidence, and readiness. |
+| `cookbook/construction/reference-project-control` | `cookbook-recipe` | `sim-construction` | The one modeled-first recipe that connects construction control, schedule exchange, vendor placements, persistence, evidence, and office review. |
 | `cookbook/office/dalux-site` | `cookbook-recipe` | `sim-site-dalux` | Modeled Dalux project item reads with API identity live gates. |
 | `cookbook/office/mspdi` | `cookbook-recipe` | `sim-codec-mspdi` | Microsoft Project XML exchange for local Gantt documents. |
 | `cookbook/office/powerproject-site` | `cookbook-recipe` | `sim-site-powerproject` | Powerproject and Project for the web placements for Gantt plans. |

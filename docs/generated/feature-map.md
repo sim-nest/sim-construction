@@ -5,6 +5,7 @@
 | Package | Group | Features | Workspace feature edges |
 | --- | --- | ---: | ---: |
 | `sim-codec-mspdi` | `workspace` | 0 | 0 |
+| `sim-lib-construction-office` | `workspace` | 0 | 0 |
 | `sim-lib-construction-project` | `workspace` | 0 | 0 |
 | `sim-site-dalux` | `workspace` | 0 | 0 |
 | `sim-site-powerproject` | `workspace` | 2 | 0 |
