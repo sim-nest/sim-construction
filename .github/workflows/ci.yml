@@ -45,12 +45,16 @@ jobs:
     needs: scope
     if: ${{ needs.scope.outputs.run-heavy == 'true' }}
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: sim-construction
     env:
       SIMDOC_TOOLING_MANIFEST: ${{ github.workspace }}/sim-tooling/Cargo.toml
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: sim-construction
       - uses: actions/checkout@v4
         with:
           repository: sim-nest/sim-tooling
