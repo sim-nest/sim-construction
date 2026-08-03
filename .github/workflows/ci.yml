@@ -55,6 +55,27 @@ jobs:
         with:
           repository: sim-nest/sim-tooling
           path: sim-tooling
+      - name: Check out shared simdoc siblings
+        uses: actions/checkout@v4
+        with:
+          repository: sim-nest/sim-citizen
+          path: sim-citizen
+      - uses: actions/checkout@v4
+        with:
+          repository: sim-nest/sim-codecs
+          path: sim-codecs
+      - uses: actions/checkout@v4
+        with:
+          repository: sim-nest/sim-foundation
+          path: sim-foundation
+      - uses: actions/checkout@v4
+        with:
+          repository: sim-nest/sim-kernel
+          path: sim-kernel
+      - uses: actions/checkout@v4
+        with:
+          repository: sim-nest/sim-shape
+          path: sim-shape
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, clippy
