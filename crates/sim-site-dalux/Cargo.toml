@@ -32,7 +32,7 @@ sim-lib-construction-office = { version = "0.1.0", path = "../sim-lib-constructi
 sim-lib-construction-project = { version = "0.1.0", path = "../sim-lib-construction-project" }
 sim-lib-gantt = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "2c76395bf66978822210f2397a03482b1f429da8" }
 sim-site-powerproject = { version = "0.1.0", path = "../sim-site-powerproject" }
-sim-table-hash = { version = "0.1.2" }
+sim-table-hash = { version = "0.1.3" }
 time = "0.3"
 toml = "0.8"
 

@@ -38,7 +38,7 @@ sim-lib-binding = { version = "0.1.2" }
 sim-lib-numbers-i64 = { version = "0.3.1" }
 sim-run-core = { version = "0.2.0" }
 sim-table-fs = { version = "0.1.3" }
-sim-table-hash = { version = "0.1.2" }
+sim-table-hash = { version = "0.1.3" }
 
 [lints]
 workspace = true
