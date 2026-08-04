@@ -17,10 +17,10 @@ sim-codec = { version = "0.1.0" }
 sim-codec-json = { version = "0.2.0" }
 sim-cookbook = { version = "0.2.0" }
 sim-kernel = { version = "0.2.0" }
-sim-ledger = { version = "0.1.0", git = "https://github.com/sim-nest/sim-ledger", rev = "e3f49c24257fea045a1d2c29c867981fcd3692de" }
-sim-lib-discrete-graph = { version = "0.2.0", git = "https://github.com/sim-nest/sim-discrete", rev = "052fd59b0eb1e5330999e5b5e2537cd7cfeea147" }
-sim-lib-doc-core = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "eb617e4fd3c50fc51bcdb6a11ea5a8bbae4d1a48" }
-sim-lib-gantt = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "0b48ed7d84d5cbbf99b3c3d11bf790b03c861ba7" }
+sim-ledger = { version = "0.1.0", git = "https://github.com/sim-nest/sim-ledger", rev = "be788aa4637ee0177a17ee69a89b68804cb37ffa" }
+sim-lib-discrete-graph = { version = "0.2.0", git = "https://github.com/sim-nest/sim-discrete", rev = "4dbec61654cc73d7963da6c03ebb632b5b7e0eaa" }
+sim-lib-doc-core = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "6c0f3b6b39843b0947f48c90192dcf045d64978b" }
+sim-lib-gantt = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "6c0f3b6b39843b0947f48c90192dcf045d64978b" }
 sim-shape = { version = "0.2.0" }
 sim-table-core = { version = "0.1.2" }
 sim-value = { version = "0.2.0" }
