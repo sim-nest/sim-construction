@@ -24,7 +24,7 @@ sim-lib-gantt = { version = "0.1.0", git = "https://github.com/sim-nest/sim-offi
 sim-shape = { version = "0.2.0" }
 sim-table-core = { version = "0.1.2" }
 sim-value = { version = "0.2.0" }
-thiserror = "1"
+thiserror = "2"
 time = { version = "0.3", features = ["serde", "serde-human-readable"] }
 
 [build-dependencies]
