@@ -19,7 +19,7 @@ sim-lib-doc-surface = { version = "0.1.0", git = "https://github.com/sim-nest/si
 sim-lib-doc-store = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "6c0f3b6b39843b0947f48c90192dcf045d64978b" }
 sim-lib-sheet = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "6c0f3b6b39843b0947f48c90192dcf045d64978b" }
 sim-value = { version = "0.2.0" }
-thiserror = "1"
+thiserror = "2"
 time = "0.3"
 
 [build-dependencies]
