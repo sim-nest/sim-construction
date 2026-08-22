@@ -22,7 +22,7 @@ sim-lib-doc-site = { version = "0.1.0", git = "https://github.com/sim-nest/sim-o
 sim-lib-gantt = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "6c0f3b6b39843b0947f48c90192dcf045d64978b" }
 
 [build-dependencies]
-sim-cookbook = { version = "0.2.0" }
+sim-cookbook-build = { version = "0.1.0" }
 
 [dev-dependencies]
 time = "0.3"

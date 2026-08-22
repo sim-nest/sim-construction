@@ -18,7 +18,7 @@ sim-lib-gantt = { version = "0.1.0", git = "https://github.com/sim-nest/sim-offi
 time = "0.3"
 
 [build-dependencies]
-sim-cookbook = { version = "0.2.0" }
+sim-cookbook-build = { version = "0.1.0" }
 
 [lints]
 workspace = true
