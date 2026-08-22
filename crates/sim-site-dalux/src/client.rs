@@ -7,9 +7,6 @@ use sim_lib_doc_core::{CREDENTIALS_CAPABILITY, NET_CONNECT_CAPABILITY};
 use crate::DaluxError;
 use crate::modeled::ModeledDalux;
 
-/// Environment variable that must be set to `1` before live Dalux calls run.
-pub const DALUX_LIVE_ENV: &str = "SIM_CONSTRUCTION_LIVE_DALUX";
-
 const MAX_ERROR_BODY_CHARS: usize = 180;
 const MAX_JSON_STRING_CHARS: usize = 96;
 
@@ -17,6 +14,34 @@ const MAX_JSON_STRING_CHARS: usize = 96;
 pub trait DaluxCredentialProvider: Send + Sync {
     /// Returns a bearer token for the Dalux API identity.
     fn access_token(&self) -> Result<String, DaluxError>;
+}
+
+/// One bounded HTTP request supplied to a platform transport.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct DaluxHttpRequest {
+    /// HTTP method (`GET` or `PATCH`).
+    pub method: &'static str,
+    /// Validated absolute HTTPS URL.
+    pub url: String,
+    /// API-identity bearer token. Platform adapters must redact it from errors.
+    pub bearer_token: String,
+    /// JSON request body for a patch.
+    pub body: Option<String>,
+}
+
+/// One bounded response returned by a platform transport.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct DaluxHttpResponse {
+    /// HTTP status code.
+    pub status: u16,
+    /// Bounded response body.
+    pub body: String,
+}
+
+/// Domain-owned transport seam for live Dalux placement.
+pub trait DaluxTransport: Send + Sync {
+    /// Executes one request without interpreting construction policy.
+    fn execute(&self, request: &DaluxHttpRequest) -> Result<DaluxHttpResponse, String>;
 }
 
 /// Static Dalux credential provider used by tests and host adapters.
@@ -58,12 +83,27 @@ impl DaluxCredentialProvider for StaticDaluxCredentialProvider {
 }
 
 /// Execution mode for Dalux API calls.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone)]
 pub enum DaluxClientMode {
     /// Deterministic modeled responses.
     Modeled(ModeledDalux),
     /// Live HTTP access to Dalux.
-    Live,
+    Live(std::sync::Arc<dyn DaluxTransport>),
+}
+
+impl std::fmt::Debug for DaluxClientMode {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Modeled(model) => f.debug_tuple("Modeled").field(model).finish(),
+            Self::Live(_) => f.write_str("Live(<dalux-transport>)"),
+        }
+    }
+}
+
+impl PartialEq for DaluxClientMode {
+    fn eq(&self, other: &Self) -> bool {
+        matches!((self, other), (Self::Modeled(a), Self::Modeled(b)) if a == b)
+    }
 }
 
 /// Dalux client configuration.
@@ -80,11 +120,15 @@ pub struct DaluxClient<C> {
 impl<C> DaluxClient<C> {
     /// Builds a live Dalux client.
     #[must_use]
-    pub fn live(base_url: impl Into<String>, credentials: C) -> Self {
+    pub fn live(
+        base_url: impl Into<String>,
+        credentials: C,
+        transport: std::sync::Arc<dyn DaluxTransport>,
+    ) -> Self {
         Self {
             base_url: base_url.into(),
             credentials,
-            mode: DaluxClientMode::Live,
+            mode: DaluxClientMode::Live(transport),
         }
     }
 
@@ -107,10 +151,17 @@ impl<C: DaluxCredentialProvider> DaluxClient<C> {
                 let token = self.credentials.access_token()?;
                 modeled.get(path, Some(&token))
             }
-            DaluxClientMode::Live => {
+            DaluxClientMode::Live(transport) => {
                 require_live_gate(cx)?;
                 let token = self.credentials.access_token()?;
-                live_get_json(&self.base_url, path, &token)
+                transport_json(
+                    transport.as_ref(),
+                    "GET",
+                    &self.base_url,
+                    path,
+                    None,
+                    &token,
+                )
             }
         }
     }
@@ -127,10 +178,17 @@ impl<C: DaluxCredentialProvider> DaluxClient<C> {
                 let token = self.credentials.access_token()?;
                 modeled.patch(path, body, Some(&token))
             }
-            DaluxClientMode::Live => {
+            DaluxClientMode::Live(transport) => {
                 require_live_gate(cx)?;
                 let token = self.credentials.access_token()?;
-                live_patch_json(&self.base_url, path, body, &token)
+                transport_json(
+                    transport.as_ref(),
+                    "PATCH",
+                    &self.base_url,
+                    path,
+                    Some(body.to_string()),
+                    &token,
+                )
             }
         }
     }
@@ -157,55 +215,24 @@ pub(crate) fn status_error(status: u16, body: &JsonValue, token: Option<&str>) -
     DaluxError::Http(format!("HTTP {status}: {}", redacted_body(&body, token)))
 }
 
-fn live_get_json(base_url: &str, path: &str, token: &str) -> Result<JsonValue, DaluxError> {
-    let url = api_url(base_url, path)?;
-    let auth = format!("Bearer {token}");
-    let response = ureq::get(&url)
-        .set("Accept", "application/json")
-        .set("Authorization", &auth)
-        .call();
-    decode_response(response, token)
-}
-
-fn live_patch_json(
+fn transport_json(
+    transport: &dyn DaluxTransport,
+    method: &'static str,
     base_url: &str,
     path: &str,
-    body: &JsonValue,
+    body: Option<String>,
     token: &str,
 ) -> Result<JsonValue, DaluxError> {
     let url = api_url(base_url, path)?;
-    let auth = format!("Bearer {token}");
-    let response = ureq::request("PATCH", &url)
-        .set("Accept", "application/json")
-        .set("Content-Type", "application/json")
-        .set("Authorization", &auth)
-        .send_string(&body.to_string());
-    decode_response(response, token)
-}
-
-fn decode_response(
-    response: Result<ureq::Response, ureq::Error>,
-    token: &str,
-) -> Result<JsonValue, DaluxError> {
-    match response {
-        Ok(response) => decode_status_body(response.status(), response.into_string(), token),
-        Err(ureq::Error::Status(status, response)) => {
-            decode_status_body(status, response.into_string(), token)
-        }
-        Err(error) => Err(DaluxError::Http(redacted_body(
-            &error.to_string(),
-            Some(token),
-        ))),
-    }
-}
-
-fn decode_status_body(
-    status: u16,
-    body: Result<String, std::io::Error>,
-    token: &str,
-) -> Result<JsonValue, DaluxError> {
-    let body =
-        body.map_err(|error| DaluxError::Http(redacted_body(&error.to_string(), Some(token))))?;
+    let response = transport
+        .execute(&DaluxHttpRequest {
+            method,
+            url,
+            bearer_token: token.to_owned(),
+            body,
+        })
+        .map_err(|error| DaluxError::Http(redacted_body(&error, Some(token))))?;
+    let DaluxHttpResponse { status, body } = response;
     if !(200..300).contains(&status) {
         return Err(DaluxError::Http(format!(
             "HTTP {status}: {}",
@@ -217,22 +244,8 @@ fn decode_status_body(
 }
 
 fn require_live_gate(cx: &Cx) -> Result<(), DaluxError> {
-    require_live_gate_for_config(cx, std::env::var(DALUX_LIVE_ENV).ok().as_deref())
-}
-
-pub(crate) fn require_live_gate_for_config(
-    cx: &Cx,
-    live_enabled: Option<&str>,
-) -> Result<(), DaluxError> {
     require_capability(cx, NET_CONNECT_CAPABILITY)?;
-    require_capability(cx, CREDENTIALS_CAPABILITY)?;
-    if live_enabled == Some("1") {
-        Ok(())
-    } else {
-        Err(DaluxError::Http(format!(
-            "live Dalux access is disabled: set {DALUX_LIVE_ENV}=1"
-        )))
-    }
+    require_capability(cx, CREDENTIALS_CAPABILITY)
 }
 
 fn require_capability(cx: &Cx, capability: &str) -> Result<(), DaluxError> {

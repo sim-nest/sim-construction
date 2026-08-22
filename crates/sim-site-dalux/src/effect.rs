@@ -178,7 +178,7 @@ fn dalux_effect<C>(
 ) -> Effect {
     let requirements = match &client.mode {
         DaluxClientMode::Modeled(_) => Vec::new(),
-        DaluxClientMode::Live => vec![
+        DaluxClientMode::Live(_) => vec![
             CapabilityName::new(NET_CONNECT_CAPABILITY),
             CapabilityName::new(CREDENTIALS_CAPABILITY),
         ],

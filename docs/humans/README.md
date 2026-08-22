@@ -404,6 +404,7 @@ fn modeled_and_live_reads_share_the_site_effect_contract() {
     let live = DaluxClient::live(
         "https://example.com/dalux",
         StaticDaluxCredentialProvider::new("token-1"),
+        Arc::new(DeniedTransport),
     );
     let error =
         get_project_items_with_receipt(&mut live_cx, &live, "synthetic-project-1").unwrap_err();

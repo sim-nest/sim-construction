@@ -9,10 +9,6 @@ publish = false
 repository = "https://github.com/sim-nest/sim-construction"
 homepage = "https://github.com/sim-nest/sim-construction"
 
-[features]
-default = []
-powerproject-ole = []
-
 [dependencies]
 sim-codec-mspdi = { version = "0.1.0", path = "../sim-codec-mspdi" }
 sim-cookbook = { version = "0.2.0" }

@@ -62,7 +62,7 @@ title = "Powerproject schedule placement"
 summary = "Place construction Gantt schedules at Powerproject desktop and Project for the web boundaries."
 owner = "crate/sim-site-powerproject"
 audiences = ["user", "code", "framework"]
-guidance = "Use this row when a construction schedule needs a modeled receipt, a gated Powerproject desktop export, or a reviewed Dataverse Project Schedule Service plan."
+guidance = "Use this row when a construction schedule needs a modeled receipt, an injected platform-owned PowerprojectAutomation port, or a reviewed Dataverse Project Schedule Service plan. Construction owns MSPDI interpretation and placement policy; native process and OLE realization belong to feature/sim-platform/construction-integration-realization."
 claims_anchors = [
   "anchor/crate/sim-site-powerproject",
   "anchor/export/sim-site-powerproject/site/powerproject",
@@ -78,7 +78,7 @@ title = "Dalux project-item placement"
 summary = "Read Dalux project items into local office documents through ledgered site effects, expose URL-free item correlations, and keep writes limited to notes."
 owner = "crate/sim-site-dalux"
 audiences = ["user", "code", "framework"]
-guidance = "Use this row when construction project control needs a modeled Dalux item read, a capability- and live-enable-gated API-identity read, or a narrow item-note update. Modeled and live calls share the site/dalux effect contract; receipts expose the kernel effect reference and a stable effect-ledger reference while URL-free item correlations keep payloads, attachments, credentials, and browser URLs at the site boundary."
+guidance = "Use this row when construction project control needs a modeled Dalux item read, a capability-gated API-identity read through an injected DaluxTransport, or a narrow item-note update. Modeled and live calls share the site/dalux effect contract; construction validates requests and responses while feature/sim-platform/construction-integration-realization owns native HTTP. Receipts expose the kernel effect reference and a stable effect-ledger reference while URL-free item correlations keep payloads, attachments, credentials, and browser URLs at the site boundary."
 claims_anchors = [
   "anchor/crate/sim-site-dalux",
   "anchor/export/sim-site-dalux/site/dalux",
