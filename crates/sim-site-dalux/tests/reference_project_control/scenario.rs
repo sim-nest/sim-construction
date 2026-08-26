@@ -401,7 +401,11 @@ fn outcome_report(target: &str) -> OutcomeControlReport {
 
 fn prove_visibility_non_interference() -> bool {
     fn signature(secret: &str) -> String {
-        let mut cx = Cx::new(Arc::new(NoopEvalPolicy), Arc::new(DefaultFactory));
+        let mut cx = Cx::new(
+            Arc::new(NoopEvalPolicy),
+            Arc::new(DefaultFactory),
+            sim_kernel::HandleSeed::new(0x0a1d_4beb_32ed_21de),
+        );
         cx.grant(construction_project_read_capability());
         let mut book = ProjectBook::new(project(), role("project-chief"));
         book.append(accepted(1, "schedule.public", "critical task delayed"))

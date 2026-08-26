@@ -43,7 +43,8 @@ fn restricted_visibility_requires_the_exact_project_visibility_grant() {
 #[test]
 fn project_scopes_isolate_identical_sequences_controls_and_references() {
     let mut cx = authorized_context();
-    let store = DocStore::create(Path::new(":memory:")).unwrap();
+    let store_dir = tempfile::tempdir().unwrap();
+    let store = DocStore::create(&store_dir.path().join("docs.sqlite")).unwrap();
     let document = save_document(&mut cx, &store, "office/shared-register");
     let relation = schedule_basis_relation();
     let external = external("schedule/shared");

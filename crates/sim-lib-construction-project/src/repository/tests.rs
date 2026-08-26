@@ -183,7 +183,11 @@ fn repository(root: Value) -> ProjectBookRepository {
 }
 
 fn context() -> Cx {
-    Cx::new(Arc::new(EagerPolicy), Arc::new(DefaultFactory))
+    Cx::new(
+        Arc::new(EagerPolicy),
+        Arc::new(DefaultFactory),
+        sim_kernel::HandleSeed::new(0x9461_cc7a_148a_fbce),
+    )
 }
 
 fn grant_project_authority(cx: &mut Cx) {

@@ -14,7 +14,11 @@ use crate::*;
 // conformance: office site workflows model site placement and document exchange.
 
 fn test_context() -> Cx {
-    Cx::new(Arc::new(NoopEvalPolicy), Arc::new(DefaultFactory))
+    Cx::new(
+        Arc::new(NoopEvalPolicy),
+        Arc::new(DefaultFactory),
+        sim_kernel::HandleSeed::new(0xd2f6_fb10_d0b6_25f0),
+    )
 }
 
 #[derive(Debug)]

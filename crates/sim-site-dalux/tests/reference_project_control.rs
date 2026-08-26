@@ -253,7 +253,11 @@ struct ModeledOutcome {
 fn run_modeled_reference_project() -> ModeledOutcome {
     let project = ProjectId::new("project.nordhamn-market-renovation").unwrap();
     let writer = RoleId::new("project-chief").unwrap();
-    let mut cx = Cx::new(Arc::new(NoopEvalPolicy), Arc::new(DefaultFactory));
+    let mut cx = Cx::new(
+        Arc::new(NoopEvalPolicy),
+        Arc::new(DefaultFactory),
+        sim_kernel::HandleSeed::new(0xe6f6_0298_dc62_ead4),
+    );
     cx.grant(construction_project_read_capability());
     cx.grant(construction_project_write_capability());
     cx.grant(construction_reference_publish_capability());
@@ -459,7 +463,11 @@ fn recipe_root() -> PathBuf {
 }
 
 fn codec_context() -> Cx {
-    let mut cx = Cx::new(Arc::new(NoopEvalPolicy), Arc::new(DefaultFactory));
+    let mut cx = Cx::new(
+        Arc::new(NoopEvalPolicy),
+        Arc::new(DefaultFactory),
+        sim_kernel::HandleSeed::new(0xfe44_86f1_2927_719b),
+    );
     let codec = sim_codec_lisp::LispCodecLib::new(cx.registry_mut().fresh_codec_id()).unwrap();
     cx.load_lib(&codec).unwrap();
     cx

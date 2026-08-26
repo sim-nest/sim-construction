@@ -70,7 +70,11 @@ mod tests {
 
     #[test]
     fn ole_export_is_denied_without_process_spawn_capability() {
-        let mut cx = Cx::new(Arc::new(NoopEvalPolicy), Arc::new(DefaultFactory));
+        let mut cx = Cx::new(
+            Arc::new(NoopEvalPolicy),
+            Arc::new(DefaultFactory),
+            sim_kernel::HandleSeed::new(0xe817_7073_ffc8_3ba1),
+        );
 
         let denied = export_current_project_to_mspdi(
             &mut cx,
@@ -88,7 +92,11 @@ mod tests {
 
     #[test]
     fn unavailable_automation_is_deterministic() {
-        let (mut cx, seat) = Cx::new_seated(Arc::new(NoopEvalPolicy), Arc::new(DefaultFactory));
+        let (mut cx, seat) = Cx::new_seated(
+            Arc::new(NoopEvalPolicy),
+            Arc::new(DefaultFactory),
+            sim_kernel::HandleSeed::new(0xb94a_a34c_96b5_ce55),
+        );
         expect_granted!(seat.grant(&mut cx, CapabilityName::new(PROCESS_SPAWN_CAPABILITY)));
 
         let unavailable = export_current_project_to_mspdi(

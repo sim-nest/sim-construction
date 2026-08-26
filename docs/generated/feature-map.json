@@ -22,18 +22,7 @@
       "package": "sim-site-dalux"
     },
     {
-      "features": [
-        {
-          "edges": [],
-          "name": "default",
-          "workspace_edges": []
-        },
-        {
-          "edges": [],
-          "name": "powerproject-ole",
-          "workspace_edges": []
-        }
-      ],
+      "features": [],
       "group": "workspace",
       "package": "sim-site-powerproject"
     },

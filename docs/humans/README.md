@@ -216,7 +216,20 @@ use crate::*;
 // conformance: office site workflows model site placement and document exchange.
 
 fn test_context() -> Cx {
-    Cx::new(Arc::new(NoopEvalPolicy), Arc::new(DefaultFactory))
+    Cx::new(
+        Arc::new(NoopEvalPolicy),
+        Arc::new(DefaultFactory),
+        sim_kernel::HandleSeed::new(0xd2f6_fb10_d0b6_25f0),
+    )
+}
+
+#[derive(Debug)]
+struct DeniedTransport;
+
+impl DaluxTransport for DeniedTransport {
+    fn execute(&self, _request: &DaluxHttpRequest) -> Result<DaluxHttpResponse, String> {
+        Err("network denied by modeled platform".to_owned())
+    }
 }
 
 fn text_at(sheet: &sim_lib_sheet::Sheet, cell: &str) -> String {
@@ -283,25 +296,26 @@ fn company_api_key_provider_is_rejected() {
 }
 
 #[test]
-fn live_gate_requires_capabilities_and_construction_enable_value() {
+fn live_gate_requires_capabilities() {
     let mut cx = test_context();
 
-    let denied = client::require_live_gate_for_config(&cx, Some("1")).unwrap_err();
+    let client = DaluxClient::live(
+        "https://example.com/dalux",
+        StaticDaluxCredentialProvider::new("token"),
+        Arc::new(DeniedTransport),
+    );
+    let denied = get_project_items(&mut cx, &client, "project-1").unwrap_err();
     assert!(denied.to_string().contains(NET_CONNECT_CAPABILITY));
-
     cx.grant(CapabilityName::new(NET_CONNECT_CAPABILITY));
-    let denied = client::require_live_gate_for_config(&cx, Some("1")).unwrap_err();
+    let denied = get_project_items(&mut cx, &client, "project-1").unwrap_err();
     assert!(denied.to_string().contains(CREDENTIALS_CAPABILITY));
-
     cx.grant(CapabilityName::new(CREDENTIALS_CAPABILITY));
-    let denied = client::require_live_gate_for_config(&cx, None).unwrap_err();
-    assert!(denied.to_string().contains(DALUX_LIVE_ENV));
-
-    let denied = client::require_live_gate_for_config(&cx, Some("0")).unwrap_err();
-    assert!(denied.to_string().contains(DALUX_LIVE_ENV));
-
-    client::require_live_gate_for_config(&cx, Some("1")).unwrap();
-    assert_eq!(DALUX_LIVE_ENV, "SIM_CONSTRUCTION_LIVE_DALUX");
+    let denied = get_project_items(&mut cx, &client, "project-1").unwrap_err();
+    assert!(
+        denied
+            .to_string()
+            .contains("network denied by modeled platform")
+    );
 }
 
 #[test]
@@ -1562,7 +1576,7 @@ Specimen `spec-test/sim-construction/crates/sim-lib-construction-office/src/test
 Source `crates/sim-lib-construction-office/src/tests.rs`:
 
 ```rust
-use std::{path::Path, sync::Arc};
+use std::sync::Arc;
 
 use sim_kernel::{CapabilityName, Cx, DefaultFactory, Error, Expr, NoopEvalPolicy, Symbol};
 use sim_lib_construction_project::{
@@ -1893,6 +1907,7 @@ fn relation_and_external_reference_must_come_from_the_fact() {
 struct Fixture {
     cx: Cx,
     store: DocStore,
+    _store_dir: tempfile::TempDir,
     project: ProjectId,
     book: ProjectBook,
     access: ProjectEvidenceAccess,
@@ -1901,9 +1916,12 @@ struct Fixture {
 impl Fixture {
     fn new(project_name: &str) -> Self {
         let project = project(project_name);
+        let store_dir = tempfile::tempdir().unwrap();
+        let store = DocStore::create(&store_dir.path().join("docs.sqlite")).unwrap();
         Self {
             cx: authorized_context(),
-            store: DocStore::create(Path::new(":memory:")).unwrap(),
+            store,
+            _store_dir: store_dir,
             book: ProjectBook::new(project.clone(), role()),
             access: ProjectEvidenceAccess::project(project.clone()),
             project,
@@ -1942,7 +1960,11 @@ impl Fixture {
 }
 
 fn context() -> Cx {
-    Cx::new(Arc::new(NoopEvalPolicy), Arc::new(DefaultFactory))
+    Cx::new(
+        Arc::new(NoopEvalPolicy),
+        Arc::new(DefaultFactory),
+        sim_kernel::HandleSeed::new(0x61e3_5d6d_6317_c956),
+    )
 }
 
 fn authorized_context() -> Cx {
@@ -2661,6 +2683,7 @@ fn report(as_of_date: Date, states: Vec<ScheduleControlState>) -> crate::Schedul
     let mut cx = Cx::new(
         Arc::new(sim_kernel::NoopEvalPolicy),
         Arc::new(sim_kernel::DefaultFactory),
+        sim_kernel::HandleSeed::new(0x434f_4e53),
     );
     explain_schedule_impact(&mut cx, &plan(), &joins(), &graph(), &states, as_of_date).unwrap()
 }

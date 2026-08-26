@@ -63,6 +63,7 @@ pub fn get_project_items_with_receipt<C: DaluxCredentialProvider>(
     let path = project_items_path(project_id)?;
     let input = content_ref(cx, Datum::String(path.clone()))?;
     let mut effect = dalux_effect(
+        cx,
         client,
         "read-project-items",
         input,
@@ -125,6 +126,7 @@ pub fn patch_item_note_with_receipt<C: DaluxCredentialProvider>(
         },
     )?;
     let mut effect = dalux_effect(
+        cx,
         client,
         "patch-item-note",
         input,
@@ -171,6 +173,7 @@ fn capture<T>(
 }
 
 fn dalux_effect<C>(
+    cx: &mut Cx,
     client: &DaluxClient<C>,
     operation: &str,
     input: Ref,
@@ -184,6 +187,7 @@ fn dalux_effect<C>(
         ],
     };
     Effect::new(
+        cx.fresh_handle(),
         Symbol::qualified("construction/dalux", operation),
         Ref::Symbol(site_symbol(DALUX_SITE_ID)),
         input,

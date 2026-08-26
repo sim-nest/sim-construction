@@ -200,6 +200,7 @@ fn report(as_of_date: Date, states: Vec<ScheduleControlState>) -> crate::Schedul
     let mut cx = Cx::new(
         Arc::new(sim_kernel::NoopEvalPolicy),
         Arc::new(sim_kernel::DefaultFactory),
+        sim_kernel::HandleSeed::new(0x434f_4e53),
     );
     explain_schedule_impact(&mut cx, &plan(), &joins(), &graph(), &states, as_of_date).unwrap()
 }
