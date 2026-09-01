@@ -24,8 +24,8 @@ pub mod modeled;
 mod tests;
 
 pub use client::{
-    DALUX_LIVE_ENV, DaluxClient, DaluxClientMode, DaluxCredentialProvider,
-    StaticDaluxCredentialProvider, redacted_body,
+    DaluxClient, DaluxClientMode, DaluxCredentialProvider, DaluxHttpRequest, DaluxHttpResponse,
+    DaluxTransport, StaticDaluxCredentialProvider, redacted_body,
 };
 pub use effect::{
     DaluxEffectReference, DaluxItemReadReceipt, DaluxNotePatchReceipt, get_project_items,

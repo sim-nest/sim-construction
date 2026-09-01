@@ -321,7 +321,11 @@ fn codec_cx() -> Cx {
 }
 
 fn bare_cx() -> Cx {
-    Cx::new(Arc::new(EagerPolicy), Arc::new(DefaultFactory))
+    Cx::new(
+        Arc::new(EagerPolicy),
+        Arc::new(DefaultFactory),
+        sim_kernel::HandleSeed::new(0xef4b_88fd_b3f5_640d),
+    )
 }
 
 fn call(cx: &mut Cx, name: &str, values: Vec<Value>) -> Value {

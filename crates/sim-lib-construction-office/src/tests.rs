@@ -1,4 +1,4 @@
-use std::{path::Path, sync::Arc};
+use std::sync::Arc;
 
 use sim_kernel::{CapabilityName, Cx, DefaultFactory, Error, Expr, NoopEvalPolicy, Symbol};
 use sim_lib_construction_project::{
@@ -329,6 +329,7 @@ fn relation_and_external_reference_must_come_from_the_fact() {
 struct Fixture {
     cx: Cx,
     store: DocStore,
+    _store_dir: tempfile::TempDir,
     project: ProjectId,
     book: ProjectBook,
     access: ProjectEvidenceAccess,
@@ -337,9 +338,12 @@ struct Fixture {
 impl Fixture {
     fn new(project_name: &str) -> Self {
         let project = project(project_name);
+        let store_dir = tempfile::tempdir().unwrap();
+        let store = DocStore::create(&store_dir.path().join("docs.sqlite")).unwrap();
         Self {
             cx: authorized_context(),
-            store: DocStore::create(Path::new(":memory:")).unwrap(),
+            store,
+            _store_dir: store_dir,
             book: ProjectBook::new(project.clone(), role()),
             access: ProjectEvidenceAccess::project(project.clone()),
             project,
@@ -378,7 +382,11 @@ impl Fixture {
 }
 
 fn context() -> Cx {
-    Cx::new(Arc::new(NoopEvalPolicy), Arc::new(DefaultFactory))
+    Cx::new(
+        Arc::new(NoopEvalPolicy),
+        Arc::new(DefaultFactory),
+        sim_kernel::HandleSeed::new(0x61e3_5d6d_6317_c956),
+    )
 }
 
 fn authorized_context() -> Cx {

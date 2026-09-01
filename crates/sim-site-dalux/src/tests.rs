@@ -14,7 +14,20 @@ use crate::*;
 // conformance: office site workflows model site placement and document exchange.
 
 fn test_context() -> Cx {
-    Cx::new(Arc::new(NoopEvalPolicy), Arc::new(DefaultFactory))
+    Cx::new(
+        Arc::new(NoopEvalPolicy),
+        Arc::new(DefaultFactory),
+        sim_kernel::HandleSeed::new(0xd2f6_fb10_d0b6_25f0),
+    )
+}
+
+#[derive(Debug)]
+struct DeniedTransport;
+
+impl DaluxTransport for DeniedTransport {
+    fn execute(&self, _request: &DaluxHttpRequest) -> Result<DaluxHttpResponse, String> {
+        Err("network denied by modeled platform".to_owned())
+    }
 }
 
 fn text_at(sheet: &sim_lib_sheet::Sheet, cell: &str) -> String {
@@ -81,25 +94,26 @@ fn company_api_key_provider_is_rejected() {
 }
 
 #[test]
-fn live_gate_requires_capabilities_and_construction_enable_value() {
+fn live_gate_requires_capabilities() {
     let mut cx = test_context();
 
-    let denied = client::require_live_gate_for_config(&cx, Some("1")).unwrap_err();
+    let client = DaluxClient::live(
+        "https://example.com/dalux",
+        StaticDaluxCredentialProvider::new("token"),
+        Arc::new(DeniedTransport),
+    );
+    let denied = get_project_items(&mut cx, &client, "project-1").unwrap_err();
     assert!(denied.to_string().contains(NET_CONNECT_CAPABILITY));
-
     cx.grant(CapabilityName::new(NET_CONNECT_CAPABILITY));
-    let denied = client::require_live_gate_for_config(&cx, Some("1")).unwrap_err();
+    let denied = get_project_items(&mut cx, &client, "project-1").unwrap_err();
     assert!(denied.to_string().contains(CREDENTIALS_CAPABILITY));
-
     cx.grant(CapabilityName::new(CREDENTIALS_CAPABILITY));
-    let denied = client::require_live_gate_for_config(&cx, None).unwrap_err();
-    assert!(denied.to_string().contains(DALUX_LIVE_ENV));
-
-    let denied = client::require_live_gate_for_config(&cx, Some("0")).unwrap_err();
-    assert!(denied.to_string().contains(DALUX_LIVE_ENV));
-
-    client::require_live_gate_for_config(&cx, Some("1")).unwrap();
-    assert_eq!(DALUX_LIVE_ENV, "SIM_CONSTRUCTION_LIVE_DALUX");
+    let denied = get_project_items(&mut cx, &client, "project-1").unwrap_err();
+    assert!(
+        denied
+            .to_string()
+            .contains("network denied by modeled platform")
+    );
 }
 
 #[test]
@@ -202,6 +216,7 @@ fn modeled_and_live_reads_share_the_site_effect_contract() {
     let live = DaluxClient::live(
         "https://example.com/dalux",
         StaticDaluxCredentialProvider::new("token-1"),
+        Arc::new(DeniedTransport),
     );
     let error =
         get_project_items_with_receipt(&mut live_cx, &live, "synthetic-project-1").unwrap_err();

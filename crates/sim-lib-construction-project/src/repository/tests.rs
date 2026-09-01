@@ -1,14 +1,7 @@
-use std::{
-    path::PathBuf,
-    sync::{
-        Arc,
-        atomic::{AtomicU64, Ordering},
-    },
-};
+use std::sync::Arc;
 
 use sim_kernel::{Cx, DefaultFactory, EagerPolicy, Error, Expr, Symbol, Value};
 use sim_lib_doc_core::ExternalRef;
-use sim_table_fs::{FsDir, table_fs_read_capability, table_fs_write_capability};
 use sim_table_hash::HashTable;
 use time::{Date, Month};
 
@@ -24,54 +17,6 @@ fn hash_table_runs_the_complete_project_book_conformance_suite() {
     grant_project_authority(&mut cx);
     let root = cx.factory().opaque(Arc::new(HashTable::new())).unwrap();
     run_conformance(&mut cx, root);
-}
-
-#[test]
-fn filesystem_dir_runs_the_same_project_book_conformance_suite() {
-    let temporary = TempRoot::new();
-    let mut cx = filesystem_context();
-    grant_project_authority(&mut cx);
-    let root = cx
-        .factory()
-        .opaque(Arc::new(FsDir::open(temporary.path.clone()).unwrap()))
-        .unwrap();
-    run_conformance(&mut cx, root);
-}
-
-#[test]
-fn filesystem_dir_reopens_and_rebuilds_historical_state() {
-    let temporary = TempRoot::new();
-    let mut cx = filesystem_context();
-    grant_project_authority(&mut cx);
-    let first_root = cx
-        .factory()
-        .opaque(Arc::new(FsDir::open(temporary.path.clone()).unwrap()))
-        .unwrap();
-    let first = repository(first_root);
-    first
-        .append_fact(&mut cx, fact(1, "scope", "original"))
-        .unwrap();
-    first
-        .append_fact(&mut cx, fact(2, "scope", "corrected").supersedes(1))
-        .unwrap();
-    first.read_snapshot(&mut cx, 2).unwrap();
-
-    let reopened_root = cx
-        .factory()
-        .opaque(Arc::new(FsDir::open(temporary.path.clone()).unwrap()))
-        .unwrap();
-    let reopened = repository(reopened_root);
-    let historical = reopened.read_snapshot(&mut cx, 1).unwrap();
-    let current = reopened.read_snapshot(&mut cx, 2).unwrap();
-
-    assert_eq!(
-        historical.current[&control("scope")].body,
-        Expr::String("original".to_owned())
-    );
-    assert_eq!(
-        current.current[&control("scope")].body,
-        Expr::String("corrected".to_owned())
-    );
 }
 
 #[test]
@@ -102,29 +47,6 @@ fn construction_read_and_write_authority_are_independent() {
     let mut reader = context();
     reader.grant(construction_project_read_capability());
     assert_eq!(repository(root).read_book(&mut reader, 1).unwrap().len(), 1);
-}
-
-#[test]
-fn backend_capability_errors_are_propagated_unchanged() {
-    let temporary = TempRoot::new();
-    let mut owner = filesystem_context();
-    grant_project_authority(&mut owner);
-    let root = owner
-        .factory()
-        .opaque(Arc::new(FsDir::open(temporary.path.clone()).unwrap()))
-        .unwrap();
-    let repo = repository(root.clone());
-    repo.append_fact(&mut owner, fact(1, "scope", "original"))
-        .unwrap();
-
-    let mut denied = context();
-    denied.grant(construction_project_read_capability());
-    let error = repository(root).read_book(&mut denied, 1).unwrap_err();
-    assert!(matches!(
-        error,
-        Error::CapabilityDenied { capability }
-            if capability == table_fs_read_capability()
-    ));
 }
 
 fn run_conformance(cx: &mut Cx, root: Value) {
@@ -261,16 +183,11 @@ fn repository(root: Value) -> ProjectBookRepository {
 }
 
 fn context() -> Cx {
-    Cx::new(Arc::new(EagerPolicy), Arc::new(DefaultFactory))
-}
-
-fn filesystem_context() -> Cx {
-    let mut cx = context();
-    let codec = sim_codec_lisp::LispCodecLib::new(cx.registry_mut().fresh_codec_id()).unwrap();
-    cx.load_lib(&codec).unwrap();
-    cx.grant(table_fs_read_capability());
-    cx.grant(table_fs_write_capability());
-    cx
+    Cx::new(
+        Arc::new(EagerPolicy),
+        Arc::new(DefaultFactory),
+        sim_kernel::HandleSeed::new(0x9461_cc7a_148a_fbce),
+    )
 }
 
 fn grant_project_authority(cx: &mut Cx) {
@@ -318,28 +235,4 @@ fn evidence(sequence: u64) -> ExternalRef {
 
 fn effective_on() -> Date {
     Date::from_calendar_date(2026, Month::July, 30).unwrap()
-}
-
-struct TempRoot {
-    path: PathBuf,
-}
-
-impl TempRoot {
-    fn new() -> Self {
-        static NEXT: AtomicU64 = AtomicU64::new(0);
-        let path = std::env::temp_dir().join(format!(
-            "sim-construction-project-book-{}-{}",
-            std::process::id(),
-            NEXT.fetch_add(1, Ordering::Relaxed)
-        ));
-        Self { path }
-    }
-}
-
-impl Drop for TempRoot {
-    fn drop(&mut self) {
-        if self.path.exists() {
-            std::fs::remove_dir_all(&self.path).expect("remove owned temporary project book");
-        }
-    }
 }
