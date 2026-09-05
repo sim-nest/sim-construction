@@ -14,9 +14,9 @@ serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 sim-cookbook = { version = "0.4.0" }
 sim-kernel = { version = "0.4.0" }
-sim-lib-doc-core = { version = "0.2.0", git = "https://github.com/sim-nest/sim-office", rev = "6c0f3b6b39843b0947f48c90192dcf045d64978b" }
-sim-lib-doc-site = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "6c0f3b6b39843b0947f48c90192dcf045d64978b" }
-sim-lib-sheet = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "6c0f3b6b39843b0947f48c90192dcf045d64978b" }
+sim-lib-doc-core = { version = "0.2.0", git = "https://github.com/sim-nest/sim-office", rev = "bb8279c1bcbfe14aac8abe75f4bb03f14d29480c" }
+sim-lib-doc-site = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "bb8279c1bcbfe14aac8abe75f4bb03f14d29480c" }
+sim-lib-sheet = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "bb8279c1bcbfe14aac8abe75f4bb03f14d29480c" }
 
 [build-dependencies]
 sim-cookbook-build = { version = "0.2.0" }
@@ -26,10 +26,10 @@ sim-codec = { version = "0.3.0" }
 sim-codec-lisp = { version = "0.4.0" }
 sim-codec-mspdi = { version = "0.1.0", path = "../sim-codec-mspdi" }
 sim-kernel = { version = "0.4.0", features = ["test-support"] }
-sim-ledger = { version = "0.1.0", git = "https://github.com/sim-nest/sim-ledger", rev = "be788aa4637ee0177a17ee69a89b68804cb37ffa" }
+sim-ledger = { version = "0.1.0", git = "https://github.com/sim-nest/sim-ledger", rev = "a9a376f1376a19f153011e29257f9af7465a323f" }
 sim-lib-construction-office = { version = "0.1.0", path = "../sim-lib-construction-office" }
 sim-lib-construction-project = { version = "0.1.0", path = "../sim-lib-construction-project" }
-sim-lib-gantt = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "6c0f3b6b39843b0947f48c90192dcf045d64978b" }
+sim-lib-gantt = { version = "0.1.0", git = "https://github.com/sim-nest/sim-office", rev = "bb8279c1bcbfe14aac8abe75f4bb03f14d29480c" }
 sim-site-powerproject = { version = "0.1.0", path = "../sim-site-powerproject" }
 sim-table-hash = { version = "0.1.3" }
 time = "0.3"
