@@ -1,3 +1,8 @@
+// SPDX-License-Identifier: MPL-2.0
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
@@ -121,7 +126,7 @@ fn modeled_project_items_become_dalux_doc() {
     let mut cx = test_context();
     let client = DaluxClient::modeled(
         ModeledDalux::with_json(
-            "/projects/synthetic-project-1/items",
+            &project_items_path("synthetic-project-1").unwrap(),
             json!({
                 "items": [
                     {
@@ -166,7 +171,7 @@ fn modeled_patch_sends_only_note_field() {
     let mut cx = test_context();
     let client = DaluxClient::modeled(
         ModeledDalux::new().with_patch(
-            "/items/item-1",
+            &item_path("item-1").unwrap(),
             json!({ "note": "Reviewed in SIM" }),
             ModeledResponse::ok(json!({
                 "id": "item-1",
@@ -194,7 +199,7 @@ fn modeled_and_live_reads_share_the_site_effect_contract() {
     let mut modeled_cx = test_context();
     let modeled = DaluxClient::modeled(
         ModeledDalux::with_json(
-            "/projects/synthetic-project-1/items",
+            &project_items_path("synthetic-project-1").unwrap(),
             json!({
                 "items": [{
                     "id": "item-1",
@@ -241,7 +246,7 @@ fn errors_redact_tokens_and_long_project_names() {
     let long_name = format!("project-{}", "x".repeat(140));
     let client = DaluxClient::modeled(
         ModeledDalux::with_status(
-            "/projects/project-1/items",
+            &project_items_path("project-1").unwrap(),
             403,
             json!({
                 "token": token,
