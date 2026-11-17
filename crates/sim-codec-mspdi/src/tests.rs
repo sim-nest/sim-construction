@@ -1,3 +1,10 @@
+// SPDX-License-Identifier: MPL-2.0
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// conformance: MSPDI XML round-trips portable Gantt task dates and dependencies.
+
 use sim_kernel::{Cx, testing::bare_cx as cx};
 use sim_lib_doc_core::{DocCodec, DocCodecOptions};
 use sim_lib_gantt::{GanttPlan, LinkKind, Task, TaskLink};
